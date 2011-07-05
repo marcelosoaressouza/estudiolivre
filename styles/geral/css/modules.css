@@ -1,0 +1,10 @@
+/*module.tpl*/
+
+.userMenuContent {
+	display:list-item
+}
+
+.closeButton {
+	position:absolute;
+	right:5px;
+}

@@ -1,0 +1,62 @@
+#corpo{
+	width:90%;
+}
+
+.thumb {
+	height:120px;
+}
+
+.listItem {
+	
+	width:21.5em;
+	float:left;
+	height:22em;
+	overflow:auto;
+	margin:2px;
+}
+
+.listRB {
+	position:relative;
+	top:-15px;
+}
+
+.listThumb {
+	height:100px;
+}
+
+.listLeft {
+	width:9em;
+	text-align:right;
+	float:left;
+	margin:0.3em;
+}
+
+
+
+.listRight {
+
+	width:10em;
+	float:left;
+	margin:0.3em;
+}
+
+h2 .listRight {
+	font-size:8px;
+}
+
+.listRight span{
+
+	font-size:10pt;
+	line-height:10pt;;
+}
+
+.listRight h2 {
+	font-size:12pt;
+	line-height:12pt;
+}
+
+
+.listInfo {
+	font-size:8pt;
+	line-height:12pt;
+}

@@ -1,0 +1,1 @@
+a:2:{s:4:"data";a:2:{i:0;a:5:{s:8:"permName";s:22:"tiki_p_view_categories";s:8:"permDesc";s:21:"Can browse categories";s:4:"type";s:4:"tiki";s:5:"level";s:5:"basic";s:7:"hasPerm";s:1:"n";}i:1;a:5:{s:8:"permName";s:23:"tiki_p_admin_categories";s:8:"permDesc";s:20:"Can admin categories";s:4:"type";s:4:"tiki";s:5:"level";s:7:"editors";s:7:"hasPerm";s:1:"n";}}s:4:"cant";i:2;}

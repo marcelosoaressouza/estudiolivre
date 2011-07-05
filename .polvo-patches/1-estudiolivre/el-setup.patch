@@ -1,0 +1,10 @@
+--- tiki-setup.php	2008-02-22 17:14:43.000000000 -0200
++++ tiki-setup.php	2008-03-18 12:36:35.000000000 -0300
+@@ -2065,4 +2065,6 @@
+ $smarty->assign('tiki_star', $tiki_star);
+ $smarty->assign('tiki_uses_cvs', $tiki_uses_cvs);
+ 
+-
++// ESTUDIOLIVRE HACK BEGIN 
++require_once("el-setup.php");
++// ESTUDIOLIVRE HACK END

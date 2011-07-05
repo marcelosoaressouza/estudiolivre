@@ -1,0 +1,40 @@
+/*esse css é chamado através de {css extra='tiki-view_blog_post_item'} por:tiki-view_blog_post.tpl
+tiki-print_blog_post.tpl
+tiki-view_blog.tpl
+tiki-send_blog_post.tpl
+tiki-blog_post.tpl:*/
+
+.blogpost {
+	margin:0 2% 0 2%;
+}
+
+.blogpost .posthead .icons {
+	float:right;
+	margin-top:7px;
+}
+
+.blogpost .posthead img {
+	opacity:0.5;
+}
+
+.blogpost .posthead h1 {
+	font-weight:normal;
+	font-variant:small-caps;
+	border-bottom:1px solid grey;
+}
+
+.blogpost .posthead h4 {
+	text-align:right;
+	font-weight:normal;
+	margin-bottom:0.5em;
+}
+
+.blogpost .postbody {
+	background-color:#fbfbfb;
+	margin:0 2% 0 2%;
+}
+
+.blogpost .postbottom {
+	text-align:right;
+	font-size:8pt;
+}

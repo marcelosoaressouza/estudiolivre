@@ -1,0 +1,20 @@
+/*baloes de ajuda*/
+.tooltipCont {
+	margin-top:5px;
+	width:205px;
+}
+
+.tooltipTop {
+	height:18px;
+	background-image:url(../img/tooltipTop.png);	
+}
+
+.tooltipMid {
+	padding: 0 7px 0 7px;
+	background-image:url(../img/tooltipMid.png);	
+}
+
+.tooltipBottom {
+	height:15px;
+	background-image:url(../img/tooltipBottom.png);	
+}

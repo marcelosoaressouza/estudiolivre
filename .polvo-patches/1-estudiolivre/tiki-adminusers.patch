@@ -1,0 +1,16 @@
+--- tiki-adminusers.php	2007-11-12 17:23:03.000000000 -0200
++++ tiki-adminusers.php	2007-11-12 18:39:26.000000000 -0200
+@@ -377,7 +377,12 @@
+ 			if (!preg_match($patterns['login'],$_POST['name'])) {
+ 				$tikifeedback[] = array('num'=>1,'mes'=>tra("Login contains invalid characters"));
+ 			} elseif ($userlib->change_login($userinfo['login'],$_POST['name'])) {
+-				$tikifeedback[] = array('num'=>0,'mes'=>sprintf(tra("%s changed from %s to %s"),tra("login"),$userinfo['login'],$_POST["name"]));
++			        $tikifeedback[] = array('num'=>0,'mes'=>sprintf(tra("%s changed from %s to %s"),tra("login"),$userinfo['login'],$_POST["name"]));
++				if  (!isset($elgallib)) {
++				    require_once("lib/elgal/elgallib.php");
++				}
++				$elgallib->change_login_acervo($userinfo['login'],$_POST['name']);
++			    
+ 				$logslib->add_log('adminusers','','changed login for '.$_POST['name'].' from '.$userinfo['login'].' to '.$_POST["name"]);
+ 				$userinfo['login'] = $_POST['name'];
+ 			} else {

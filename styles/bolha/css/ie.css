@@ -1,0 +1,52 @@
+#topContainer {
+	height:30px;	
+}
+
+#tiki-midNaoWiki,#tiki-midAcervo {
+	width:100%;
+}
+
+#overlay{
+	background-image:none;
+}
+
+/* tabela que segura os tipos de arquivos no upload */
+#tipos,#js-browse {
+	text-align:center;
+}
+#js-desc {
+	text-align:left;
+}
+
+.tooltipTop {
+	background-image:url(../img/tooltipTop.gif);	
+}
+
+.tooltipMid {
+	background-image:url(../img/tooltipMid.gif);	
+}
+
+.tooltipBottom {
+	background-image:url(../img/tooltipBottom.gif);	
+}
+
+#elNotSupported {
+width:78%;
+text-align:center;
+float:left;
+}
+
+#elNotSupported h5{
+margin:5px 0;
+border:0;
+padding:0;
+}
+
+#uLoginBox {
+	margin:0;
+	padding:0;
+}
+
+#uLoginBox input.uText {
+height:20px;
+}

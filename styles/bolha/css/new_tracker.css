@@ -1,0 +1,86 @@
+#bugForm{
+	border:1px solid #ccc;
+	padding:10px 0 10px 20px;
+	margin:5px;
+	margin-bottom:20px;
+	-moz-border-radius:8px 8px 8px;
+}
+
+#tracker h3 {
+	border:1px solid #e11;
+	padding:10px 0 0 20px;
+	margin:5px;
+	margin-bottom:5px;
+	-moz-border-radius:8px 8px 8px;
+}
+
+#bugForm h4 {
+	font-weight:normal;
+}
+
+#bugForm h4 INPUT,#bugForm h4 SELECT, #bugForm h4 TEXTAREA{
+	border-top:1px solid #eee;
+	border-left:1px solid #eee;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #ccc;
+	background-color:#fcfcfc;
+}
+
+#bugForm h2 {
+	text-align:center;
+	padding:0;
+	margin:0;
+}
+
+#bugForm h4#save {
+	text-align:center;
+	margin:0;
+}
+
+#bugForm em {
+	font-size:8pt;
+}
+
+#tracker {
+	margin:5px;	
+}
+
+#tracker h2#big {
+	background-color:#eee;
+	text-align:center;
+	font-size:12pt;
+	margin:5px 0 5px 0;
+	padding:2px;
+	-moz-border-radius:8px;
+}
+
+#tracker .comment {
+	margin:10px;
+}
+
+#view h2 {
+	border-bottom:1px solid #ccc;
+	background-color:#fff;
+	text-align:left;
+	font-size:12pt;
+	margin:0;
+	padding:0;
+}
+
+
+#view h4 {
+	font-weight:normal;
+	padding:0;
+	padding-left:20px;
+}
+
+#view p {
+	margin:0;
+	margin-left:20px;
+	padding: 10px;
+	background-color:#fbfbfb;
+}
+
+#view h4#sistema {
+	text-align:right;
+}

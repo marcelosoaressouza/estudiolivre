@@ -1,0 +1,163 @@
+.editable {
+	font-size:12pt;
+}
+
+h4 {
+	text-align:center;	
+}
+	
+#tipos {
+	display:table;
+	width:300px;
+	margin:0 auto;
+}
+
+#tipos ul {
+	display:table-row;
+	list-style-type:none;
+}
+
+#tipos ul li {
+	display:table-cell;
+	width:50px;
+	text-align:center;
+}
+
+#js-browse, #js-desc {
+	display:none;
+	margin:35px auto 35px;
+}
+
+#js-browse {
+	width:400px;
+}
+
+#js-browse form {
+	text-align:center;
+}
+
+#js-browse .browseCont {
+	margin:0 auto;
+	position:relative;
+	width:245px;
+}
+
+.percent {
+	text-align:center;
+	position:relative;
+	top:-0.8em;
+	font-size:18pt;
+}
+
+.statusBar {
+	height:2em;
+	width:0;
+}
+
+.statusBarGoing {
+	background-color:#f9c8c6;
+}
+.statusBarGo {
+	background-color:#c0e6bb;
+}
+
+#js-desc {
+	width:400px;
+}
+
+#js-thumbnailM {
+	float:left;
+	width:100px;
+	height:100px;
+	margin-right:10px;
+}
+
+#tituloAutor {
+	height:100px;
+}
+
+
+#tituloAutor span {
+	position:relative;
+	top:20px;
+	width:260px;
+}
+
+#js-desc em {
+	font-size:11pt;	
+}
+
+#input-titulo, #show-titulo {
+	width:260px;
+	font-size:14pt;
+	font-weight:bold;
+}
+
+#input-autor {
+	width:217px;
+}
+
+#show-descricao {
+	width:380px;
+	font-size:11pt;
+	background-color:#f8f8f8;
+	margin-top:-7px;
+}
+#show-descricao:hover {
+	background-color:#ffffd3;
+}
+
+#error-descricao {
+	float:right;
+}
+
+#license {
+	text-align:center;
+	margin:20px 0;
+}
+
+#input-tags, #show-tags {
+	width:330px;
+}
+
+#save-exit {
+	text-align:center;
+}
+
+/*herdados at� que se mudem os el-gallery_metadata*/
+.gUpMoreOptionsItem {
+	height:3em;
+}
+
+.gUpMoreOptionsName {
+	text-align:right;
+	padding-right:5px;
+	float:left;
+	width:94px;
+	text-decoration:underline;
+}
+
+#gUpMoreOptions INPUT {
+	border:1px inset rgb(233, 233, 174);
+	padding:3px 0px 3px 3px;
+	font-size:12px;
+	font-family:Arial, Verdana, Helvetica, Lucida, Sans-Serif;
+	background-color:#f1f1f1;
+	margin-right:4px;
+	max-width:100px;
+}
+/**************/
+.flippers {
+	text-decoration:underline;
+	font-size:10pt;
+}
+
+#info {
+	text-align:center;
+	margin:20px 0;
+	font-size:12pt;
+}
+
+#ajax-gUpTagSuggestMore {
+	text-align:right;
+}

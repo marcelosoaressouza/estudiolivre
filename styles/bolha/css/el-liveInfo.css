@@ -1,0 +1,18 @@
+#live .head {
+	color:green;
+	background:#eff9ea;
+	font-size:24px;
+	font-variant:small-caps;
+	padding:10px;
+	margin: 0 auto;
+	text-align:center;
+}
+#live P {
+	text-align:right;
+	font-size:8pt;
+	margin:0;
+	margin-bottom:20px;
+	background:#eff9ea;
+	overflow:hidden;
+	padding:0 10px 0px 10px;
+}

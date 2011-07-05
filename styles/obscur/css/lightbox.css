@@ -1,0 +1,94 @@
+#lightbox {
+	position:absolute;
+	z-index:101;
+	display:none;
+}
+
+#lightboxCont {
+	display:table-row;
+	padding:0px;
+	margin:0px;
+}
+
+.lightContent, .lightBoxLeft {
+	background-color:black;	
+}
+
+.lightBoxTop,.lightBoxBottom {
+	display:table-row;
+	padding:0px;
+	margin:0px;
+}
+
+/*cells e tamanhos*/
+.lightBoxLeft,.lightBoxRight,.lightBoxTopMid,.lightBoxTopLeft,.lightBoxTopRight,.lightBoxBottomLeft,.lightBoxBottomRight,.lightBoxBottomMid {
+	display:table-cell;
+}
+
+/**********************/
+/*        TOP         */
+/**********************/
+.lightBoxTopLeft,.lightBoxTopRight {
+	width:41px;
+	height:37px;
+}
+	
+.lightBoxTopLeft {
+	background-image:url(../lBox_tl.png);
+}
+.lightBoxTopMid {
+	background-image:url(../lBox_t.png);	
+	background-repeat:repeat-x;
+}
+.lightBoxTopRight {
+	background-image:url(../lBox_tr.png);
+}
+
+/**********************/
+/*        MID         */
+/**********************/
+.lightBoxLeft {
+	background-image:url(../lBox_l.png);	
+	background-repeat:repeat-y;
+}	
+.lightBoxRight {
+	width:41px;
+	background-image:url(../lBox_r.png);	
+	background-repeat:repeat-y;
+}
+
+/**********************/
+/*        Bottom      */
+/**********************/
+.lightBoxBottomLeft,.lightBoxBottomRight{
+		height:42px;
+		width:41px;
+}
+.lightBoxBottomLeft {
+	background-image:url(../lBox_lb.png);
+}
+.lightBoxBottomMid {
+	background-image:url(../lBox_b.png);	
+	background-repeat:repeat-x;
+}
+.lightBoxBottomRight {
+	background-image:url(../lBox_rb.png);
+}
+
+/* o resto... */
+
+#closeButton{
+	float:left;
+	cursor:pointer;
+	margin-top:18px;
+}
+
+#overlay{
+	position:absolute;
+	top:0; left:0;
+	background-image: url(../overlay.png);
+	text-align:center;
+	width:100%;
+	z-index:100;
+	display:none;
+}

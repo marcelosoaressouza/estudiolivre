@@ -1,0 +1,11 @@
+/*browseFreeTags-pagination.tpl*/
+h4 {
+display:inline;
+}
+
+
+#freeTagsPagination {
+	font-size:12px;
+	font-weight:bold;
+}
+

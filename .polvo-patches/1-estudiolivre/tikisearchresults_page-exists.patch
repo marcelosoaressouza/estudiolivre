@@ -1,0 +1,11 @@
+--- tiki-searchresults.php	2006-06-14 17:28:20.000000000 -0300
++++ tiki-searchresults.php	2006-06-14 17:30:46.000000000 -0300
+@@ -180,6 +180,8 @@
+ 
+ ask_ticket('searchresults');
+ 
++$smarty->assign('pageExists',$tikilib->page_exists($words));
++
+ // Display the template
+ $smarty->assign('mid', 'tiki-searchresults.tpl');
+ // $smarty->assign('searchNoResults', 'true');       // false is default

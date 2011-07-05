@@ -1,0 +1,65 @@
+--- lib/freetag/freetaglib.php	2006-10-04 20:58:20.000000000 -0300
++++ lib/freetag/freetaglib.php	2006-10-05 18:27:14.000000000 -0300
+@@ -708,15 +708,7 @@
+ 
+     function get_most_popular_tags($user = '', $offset = 0, $maxRecords = 25) {
+ 
+-	// get top tag popularity
+-	$query = "SELECT COUNT(*) as count
+-			FROM `tiki_freetagged_objects` o
+-			GROUP BY tagId
+-			ORDER BY count DESC
+-			";
+-
+-	$top = $this->getOne($query);
+-
++	
+ 	$bindvals = array();
+ 
+ 	if (isset($user) && (!empty($user))) {
+@@ -726,6 +718,17 @@
+ 	    $mid = "";
+ 	}
+ 
++// get top tag popularity
++	$query = "SELECT COUNT(*) as count
++			FROM `tiki_freetagged_objects` o
++			WHERE 1=1 $mid
++			GROUP BY tagId
++			ORDER BY count DESC
++			";
++
++	$top = $this->getOne($query, $bindvals);
++
++
+ 	$query = "SELECT `tag`, COUNT(*) as count
+ 			FROM `tiki_freetags` t,
+                              `tiki_freetagged_objects` o
+@@ -740,7 +743,8 @@
+ 	$ret = array();
+ 	$tag = array();
+ 	$count = array();
+-
++	
++	
+ 	while ($row = $result->fetchRow()) {
+ 	    $size[] = $row['size'] = ceil($this->max_cloud_text_size * $row['count'] / $top);
+ 	    $tag[] = $row['tag'];
+@@ -749,6 +753,8 @@
+ 	    $ret[] = $row;
+ 	}
+ 	
++	
++	
+ 	// this should get out of here, function should return in order of
+ 	// popularity
+ 	array_multisort($tag, SORT_ASC, $count, SORT_DESC, $ret);
+@@ -916,5 +922,7 @@
+ 
+ }
+ 
++require_once("lib/freetag/eltaglib.php");
++
+ global $dbTiki;
+-$freetaglib = new FreetagLib($dbTiki);
++$freetaglib = new ElTagLib($dbTiki);

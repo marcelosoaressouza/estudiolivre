@@ -1,0 +1,23 @@
+--- ../estudiolivre_base/tiki-login.php	2006-05-12 16:52:57.000000000 -0300
++++ tiki-login.php	2006-06-09 15:34:05.000000000 -0300
+@@ -207,7 +207,11 @@
+ 		$_SESSION["$user_cookie_site"] = $user;
+ 
+ 		$smarty->assign_by_ref('user', $user);
+-		$url = $_SESSION['loginfrom'];
++		if ((isset($_REQUEST['redirect']))) {
++			$url = $_REQUEST['redirect'];
++		} else {		
++			$url = $_SESSION['loginfrom'];
++		}
+ 		$logslib->add_log('login','logged from '.$url);
+ //	this code doesn't work
+ //                if (($url == $tikiIndex || substr($tikiIndex, strlen($tikiIndex)-strlen($url)-1) == '/'.$url)
+@@ -273,6 +277,7 @@
+ } else {
+   header('location: ' . $url);
+ }
++
+ exit;
+ 
+ ?>

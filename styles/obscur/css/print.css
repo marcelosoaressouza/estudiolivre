@@ -1,0 +1,179 @@
+html,body,form,table,tr,td {
+	padding:5px;
+	margin:0 auto;
+	background-image:none;
+	width:95%;
+	background:white;
+	color:black;
+}
+
+body {
+	width:100%;
+	margin:0 auto;
+	font-family: Garamond, Georgia, New York, Times, Times New Roman;
+	background-color:white;
+	color:black;
+	background-image: none;
+	padding:0;
+}
+
+#tiki-main {
+	width:100%;
+}
+
+#tiki-mid {
+	background-color:white;
+	color:black;
+}
+
+.wikitext{
+	background-color:white;
+	color:black;
+}
+
+#tiki-midAudio,#tiki-midVideo, #tiki-midGraf, #tiki-midAcervo, #tiki-mid {
+	overflow:visible;
+	width: 100%;
+	border: 0;
+	margin-top:40px;
+	font-size:12pt;
+	line-height:1.5em;
+	background:white;
+	color:black;
+}
+
+.titlebar {
+	font-size: 36pt;
+	background-color:white;
+}
+	
+.titlebar:first-letter {
+   	font-size:40pt;
+}
+
+p.editdate {
+	float:none;
+	margin-top:25px;
+}
+
+#printFooter{
+	text-align:center;
+	
+}
+
+#printLogo {
+	position:relative;
+	left:0;
+	top:0;
+}
+
+#printSite{
+	position:absolute;
+	margin:0;
+	padding:0;
+	right:0px;
+	top:0px;
+	font-family:arial,verdana,helvetica,lucida,sans-serif;
+	font-size:18px;
+	margin-top:1em;
+}
+
+A.wiki {
+	text-decoration:underline;
+}
+
+A.external{
+	color:blue;
+	background: none;
+	padding-right: 0px;
+}
+
+#wikitext A.external {
+	color:blue;
+	text-decoration: none;
+}
+
+A.external:after {
+	color:black;
+	/* Expand URLs for printing */
+    content: " (" attr(href) ") ";
+    text-decoration:none;
+}
+
+.simplebox {
+	background:white;
+	color:black;
+}
+
+/* comentários */
+
+.comMainTitle	{
+	background-color:white;
+}
+
+.comment .commentTitle {
+	text-align:left;
+	background:white;
+	font-size:12pt;	
+	margin:0;
+}
+
+#comments-title, #editpost2 {
+	border: 1px inset #444;
+	background-color: white;
+}
+
+#comButtons INPUT {
+	background-color:white;
+	color:black;
+}
+
+#users h1, #forum h1, #blogs h1, #listLastChanges h1, #blogHead h1, #viewForum h1 {
+	color:black;
+	background:white;
+}
+/*******************/
+/*    blog         */
+/*******************/
+
+#blogHead h1 {
+}
+
+#blogHead #descFlipper	{
+	background-color:white;
+	color:black;
+
+}
+
+#blogHead #edit {
+	background-color:white;
+}
+
+
+.blogpost .postbody {
+	background-color:white;
+}
+
+.blogEdit {
+	background:white;
+	color:black;
+}
+
+#blogPosting .button {
+	background-color:white;
+}
+
+#blogPosting h2 {
+	background-color:white;
+	border:1px solid gray;
+}
+
+#blogPosting INPUT{
+	background:white;
+	color:black;
+}
+
+
+#blogPostPrev h3 {
+	border-bottom:1px solid white;
+}

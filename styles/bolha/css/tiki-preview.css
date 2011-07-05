@@ -1,0 +1,47 @@
+.wikiPreview {
+	margin:0px;
+	border:1px solid grey;
+}
+
+#label.wikiPreview {
+	padding:5px 5px 0px 5px;
+	font-size:16px;
+	position:relative;
+	bottom:0px;
+	border-bottom:1px solid white;
+}
+
+#wikiPreviewCont {
+	overflow:hidden;
+	padding-top:7px;
+	margin:10px 0px 20px 0px;
+}
+
+#wikiPreviewCont .image {
+	border:0;
+}
+
+#wikiPreviewCont INPUT {
+	border:1px inset rgb(233, 233, 174);
+	background-color:#f1f1f1;
+}
+
+#wikiPreviewCont #attention {
+	padding:5px;
+	text-align:justify;
+	font-weight:bold;
+	width:45%;
+	float:right;
+	position:relative;
+	top:-1px;
+	margin:0px;
+	border:1px solid grey;
+	border-bottom:1px solid grey;
+	border-top:1px solid white;
+}
+
+#edtPreviewAtt {
+	text-align:left;
+	margin-top:15px;
+	font-weight:bold;
+}

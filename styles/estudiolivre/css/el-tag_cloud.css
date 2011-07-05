@@ -1,0 +1,45 @@
+#tagCloud span {
+	line-height:20pt;
+}
+
+#tagCloud h1 {
+	text-align:center;
+	background-color:#f9f9f9;
+	border:1px solid gray;	
+}
+
+#tagCloud h5 {
+	text-align:right;
+}
+
+#tagCloud A {
+	text-decoration:underline;
+}
+
+#tagCloud A:hover {
+	color:red;
+}
+
+/* aquela caixinha de busca nas últimas alterações */
+#tagOptions{
+	padding:7px 2px 7px 2px;
+	margin-left:68%;
+	width:170px;
+	text-align:center;
+	border: 1px solid #e9e9e9;
+	font-size:12px;
+}
+
+#tagOptions INPUT {
+	border:1px outset rgb(233, 233, 174);
+	margin:2px;
+	background-color:#c1c1c1;
+	font-size:12px;
+}
+
+
+#tagOptions .input {
+	border: 1px inset rgb(233, 233, 174);
+	background-color:#f1f1f1;
+	font-size:12px;
+}

@@ -1,0 +1,17 @@
+--- lib/smarty_tiki/modifier.userlink.php	2006-06-07 19:19:16.000000000 -0300
++++ lib/smarty_tiki/modifier.userlink.php	2006-07-25 19:12:56.000000000 -0300
+@@ -12,6 +12,14 @@
+ 	$feature_community_mouseover_friends,$feature_community_mouseover_score,$feature_community_mouseover_country,
+ 	$feature_community_mouseover_email, $feature_community_mouseover_lastlogin;
+ 
++
++	//MAJOR EL HACK
++	if($other_user){
++		$link_user=$other_user;
++	}
++	return "<a href=\"el-user.php?view_user=".$link_user."\">".$link_user."</a>";
++
++
+     $cachePeriod = 60*60*2; // how long does an entry stay in the cache for?  2hr
+ 
+     $show_mouseover = $feature_community_mouseover == 'y' &&

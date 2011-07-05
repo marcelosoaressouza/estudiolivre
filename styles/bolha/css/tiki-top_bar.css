@@ -1,0 +1,125 @@
+#topContainer {
+	position:relative;
+	height:15px;
+	padding:10px;
+}
+
+#logo {
+	position:absolute;
+	top:-15px;
+	left:10px;
+	float:left;
+	z-index:3;
+height:39px;
+}
+
+/*os links do menu do site geral*/
+#topMenuGeneral {
+	margin-top:3px;
+	float:left;
+}
+
+#topMenu {
+	height:22px;
+	padding:0px 5px 0px 5px;
+	border-top:1px solid #c1dfeb;
+	border-bottom:1px solid #c1dfeb;
+	background-color:#fff/*f6fafc*/;
+	color:grey;
+	text-align:right;
+	overflow:hidden;
+}
+
+#topMenu A {
+	font-size:13px;
+	font-weight:bold;
+}
+
+/*a parte dos labs*/
+
+#grafilab, #videolab, #audiolab, #acervolivre {
+	position:relative;
+	top:-0.4em;
+}
+#audiolab {
+	color:#ffbc43;
+}
+#videolab {
+	color:#ff5247;
+}
+#grafilab {
+	color:#8c6db9;
+}
+#acervolivre {
+	color:#5a9834;
+}
+
+/*a busca*/
+#search {
+	height:42px;
+	position:absolute;
+	top:-15px;
+	right:5px;
+	float:right;
+}
+
+.searchForm {
+	float:right;
+	margin:0px;
+	padding:0px;
+}
+
+.searchOptions {
+	position:relative;
+	left:-9999px;
+	margin:0px;
+	padding:0px;
+	list-style-type:none;
+}
+
+.searchOptions li {
+	color:#a1a1a1;
+	font-size:11px;
+	font-weight:bold;
+	background-color:#ebebeb;
+	display:inline;
+	padding:0px 2px 1px 2px;
+}
+
+.searchOptions li a {
+	cursor:pointer;
+}
+
+.searchOptions li.selected a {
+	color:black;
+	background-color:#bebebe;
+	cursor:pointer;
+}
+
+#search .searchForm:hover .searchOptions {
+	left:0px;
+}
+
+#search .searchForm:hover .searchMore {
+	left:0px;
+}
+
+.searchMore span {
+	font-size:12px;
+	background-color:#ebebeb;
+}
+
+#searchField, #searchFieldResults {
+	height:15px;
+	width:160px;
+	background-color:white;
+	position:relative;
+	top:-5px;
+	margin:0px;
+	padding:0px;
+	font-size:10px;
+	border-left:1px solid #bebebe;
+	border-top:1px solid #bebebe;
+	border-bottom:1px solid #bebebe;
+	border-right:0px;
+}

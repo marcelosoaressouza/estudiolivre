@@ -1,0 +1,9 @@
+/*baloes de ajuda*/
+.tooltipCont {
+	border-top:5px #eeeeee solid;
+	border-bottom:5px #eeeeee solid;
+	border-left:10px #eeeeee solid;
+	border-right:10px #eeeeee solid;
+	background-color:#eeeeee;
+}
+

@@ -1,0 +1,57 @@
+﻿#typeIcon{
+margin-right:10px;
+position:relative;
+top:-4px;
+}
+
+#pubDesc {
+width:60%;
+}
+
+#pubTags {
+	margin-top:10px;
+
+}
+
+#author {
+position:absolute;
+left:22em;
+}
+
+
+.aItemsCont {
+	margin-top:10px;
+}
+
+#show-tags {
+	display:inline;
+}
+
+#tags{
+padding-top:5px;
+padding-bottom:5px;
+}
+
+.file img {
+	margin:0 10px 10px 0;
+}
+
+.sectionTitle {
+width:21.3em;
+}
+#pubDetails {
+width:22em;
+float:left;
+margin-right:5px
+}
+
+#pubComments {
+position:relative;
+float:left;
+margin-right:5px;
+}
+#files {
+position:relative;
+float:left;
+margin-right:5px;
+}

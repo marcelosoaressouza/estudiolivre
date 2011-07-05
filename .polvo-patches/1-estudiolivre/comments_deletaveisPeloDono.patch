@@ -1,0 +1,14 @@
+--- ../estudiolivre_base/comments.php	2006-01-17 04:46:26.000000000 -0200
++++ comments.php	2006-09-19 17:51:21.000000000 -0300
+@@ -301,8 +301,10 @@
+     }
+ }
+ 
++if ($_REQUEST["comments_threadId"] > 0)
++	$comment_info = $commentslib->get_comment($_REQUEST["comments_threadId"]);
+ if (($tiki_p_remove_comments == 'y' && (!isset($forum_mode) || $forum_mode == 'n'))
+-	|| (isset($forum_mode) && $forum_mode =='y' && $tiki_p_admin_forum == 'y' ) ) {
++	|| (isset($forum_mode) && $forum_mode =='y' && $tiki_p_admin_forum == 'y' ) || (isset($comment_info) && $user == $comment_info["userName"]) ) {
+     if (isset($_REQUEST["comments_remove"]) && isset($_REQUEST["comments_threadId"])) {
+ 	$area = 'delcomment';
+ 	if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {

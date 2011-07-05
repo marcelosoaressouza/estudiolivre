@@ -1,0 +1,43 @@
+.listFiltersButtons {
+	list-style-type:none;
+	display:inline;
+	font-size:12px;
+}
+
+.listFiltersButtons li {
+	float:left;
+}
+
+.listFiltersButtons img {
+	float:left;
+}
+
+.listFiltersButtons A {
+	position:relative;
+	top:2px;
+	color:black;
+}
+
+.buttonInactiveRight {
+	border-right:0px solid gray;
+}
+
+#browseFreeTags > H2 {
+	font-size:12px;
+	font-weight:normal;
+}
+
+#currentTag2 {
+	font-size:16px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+/*browseFreeTags-pagination.tpl*/
+#freeTagsPagination {
+	border-bottom:1px solid gray;
+	padding-bottom:3px;
+	text-align:right;
+	font-size:12px;
+	font-weight:bold;
+}

@@ -1,0 +1,16 @@
+.listNav {
+	font-size:12pt;
+	font-weight:bold;
+}
+
+.listNav .selected {
+	font-weight:bold;
+}
+
+/* para o pagination que aparece na p�gina do usu�rio*/
+#userPage .listNav {
+	position:relative;
+	top:-23px;
+	left:270px;
+	display:inline;
+}

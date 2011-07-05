@@ -1,0 +1,12 @@
+.paginacao {
+	text-align:center;
+	background-color:#f9f9f9;
+	border:1px solid gray;
+	padding:3px;
+	margin-bottom:10px;
+}
+
+.paginacao img {
+	margin:0 15px 0 15px;
+}
+

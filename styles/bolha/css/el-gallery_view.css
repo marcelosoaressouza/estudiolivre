@@ -1,0 +1,174 @@
+#pubType {
+	float:left;
+	margin-right:30px;
+}
+
+#pubTitle {
+	margin-bottom:40px;
+	font-size:20pt;
+}
+
+#input-title {
+	width:80%;
+}
+
+#info {
+	text-align:right;
+}
+
+#info * {
+	text-align:left;
+}
+
+#author {
+	float:right;
+	margin-left:30px;
+}
+
+#down a div {
+	font-size:19pt;
+	width:8em;
+	margin-top:4px;
+}
+
+#info #down {
+	float:left;
+}
+
+#viewFile {
+	margin-top:20px;
+	text-align:center
+}
+
+#viewFile img {
+	max-width:95%;
+}
+
+.fInfo {
+	padding-right:5px;
+	text-decoration:underline;
+}
+
+#viewFile INPUT {
+	border:1px inset rgb(233, 233, 174);
+	background-color:#f1f1f1;
+	max-width:100px;
+}
+
+#viewFile label {
+	font-weight:bolder;
+}
+
+#show-tags {
+	background:#eff8e9;
+	width:98%;
+	padding:2px 20px 2px 10px;
+	margin:20px 0 20px 0;
+}
+
+#tags input {
+	background:#eff8e9;
+	width:98%;
+	padding:2px 20px 2px 10px;
+	margin:20px 0 20px 0;
+}
+
+#tags img {
+	float:right;
+	margin-top:22px;
+}
+
+#more {
+	position:relative;
+}
+
+#files {
+	width:270px;
+	border-right:2px solid #c2c2be;
+	float:left;
+}
+
+.sectionTitle {
+	padding-top: 3px;
+	margin:0 0 5px 0;
+	border-top: 2px solid #c2c2be;
+}
+
+.sectionTitle h1 {
+	display:inline;
+	font-size:13px;
+	font-weight:bold;
+}
+
+.titleCont {
+	position:relative;
+	top:-12px;
+	background-color:#fff;
+	padding-right:5px;
+	padding-left:5px;
+	cursor:pointer;
+}
+
+.titleContRight {
+	left:-10px;
+}
+
+.itemCont {
+	position:relative;
+	top:-5px;
+	display:block;
+	padding-right:10px;
+	padding-left:10px;
+	text-align:justify;
+	margin-bottom:15px;
+}
+
+#descriptionInfo {
+	margin-left:270px;
+	border-left:2px solid #c2c2be;
+}
+
+#descriptionInfo .sectionTitle {
+	padding-left:20px;
+	padding-right:10px;
+}
+
+.file img {
+	margin:0 10px 10px 0;
+}
+
+.delFile {
+        position:absolute;
+        right:20px; 
+}
+
+.viewing {
+	padding:5px;
+	background-color:#f1f1f1;
+}
+
+#pThumbForm {
+	float:right;
+}
+
+.gUpMoreOptionsItem {
+	height:3em;
+}
+
+.gUpMoreOptionsName {
+	text-align:right;
+	padding-right:5px;
+	float:left;
+	width:94px;
+	text-decoration:underline;
+}
+
+#gUpMoreOptions INPUT {
+	border:1px inset rgb(233, 233, 174);
+	padding:3px 0px 3px 3px;
+	font-size:12px;
+	font-family:Arial, Verdana, Helvetica, Lucida, Sans-Serif;
+	background-color:#f1f1f1;
+	margin-right:4px;
+	max-width:100px;
+}

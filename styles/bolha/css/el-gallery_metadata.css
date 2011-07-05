@@ -1,0 +1,15 @@
+.gUpMoreOptionsName {
+	text-align:right;
+	padding-right:5px;
+	float:left;
+	width:94px;
+	text-decoration:underline;
+}
+
+.gUpMoreOptionsItem {
+	height:3em;
+}
+
+.gUpMoreOptionsItemSingle {
+	height:2em;
+}

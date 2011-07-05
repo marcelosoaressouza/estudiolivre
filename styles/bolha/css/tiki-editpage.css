@@ -1,0 +1,123 @@
+.aSaveCancel {
+	margin:10px;
+	margin-top:20px;
+	border:1px solid #c2c2be;
+	text-align:center;
+	padding:5px 0 3px 0;
+}
+
+.wikiEdit {
+	margin:0px;
+	margin-top:1px;
+	padding:10px 5px 0px 5px;
+	border:1px solid grey;
+}
+
+#label.wikiEdit {
+	padding:5px 5px 0px 5px;
+	font-size:16px;
+	position:relative;
+	bottom:0px;
+	border-bottom:1px solid white;
+}
+
+#wikiEditCont .image {
+	border:0;
+}
+
+#edtComentario INPUT {
+	width:100%;
+}
+
+#edtComentario DIV, #edtIsMinor DIV {
+	text-align:left;
+	margin-top:15px;
+	font-weight:bold;
+}
+
+#edtSaveCancel {
+	text-align:center;
+	margin-top:15px;
+}
+
+#maisOpcoes {
+	margin:5px 0px 5px 20px;
+}
+
+#editwiki {
+	margin:5px 0px 10px 0px;
+	width:99%;
+}
+
+#wikiEditCont {
+	overflow:hidden;
+	margin:0px;
+	padding-top:7px;
+}
+
+#wikiEditCont INPUT, #wikiEditCont TEXTAREA {
+	border:1px inset rgb(233, 233, 174);
+	background-color:#f1f1f1;
+}
+
+#attention {
+	text-align:center;
+	padding:5px;
+	width:35%;
+	position:relative;
+	top:-1px;
+	margin-right:10px;
+	border:1px solid grey;
+	border-bottom:1px solid grey;
+	border-top:1px solid white;
+	margin-left:60%;
+}
+
+#attention #attentionSave {
+	text-align:center;
+}
+
+#editpageform {
+	padding:0 10px 0 10px;
+}
+
+#wikiEditExtra {
+	margin-bottom:10px;
+}
+
+#labelRight {
+	float:right;
+	padding:0px;
+	padding-top:2px;
+	font-size:12px;
+	border:0;
+}
+
+/*categorize.tpl*/
+#categorizator {
+	margin:5px 0px 0px 20px;
+	overflow:hidden;
+	width:50%;
+}
+
+/*freetag.tpl*/
+.simplebox {
+	background:#efefef;
+	border:1pt dashed #aaa;
+	font-family:monospace;
+	margin:5px;
+	margin-left:40px;
+	margin-right:40px;
+	padding:2px;
+	font-weight:bold;
+}
+
+#freetager {
+	text-align:right;
+}
+
+/*tiki-edit_help.tpl*/
+#editHelp {
+	float:right;
+	margin-right:50px;
+}

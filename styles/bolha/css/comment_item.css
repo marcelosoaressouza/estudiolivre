@@ -1,0 +1,14 @@
+.comment .commentTitle {
+	text-align:left;
+	background:#eee;
+	font-size:12pt;
+	margin:0;
+}
+
+.subcomment {
+	margin-left:20%;
+}
+
+.commReply {
+	text-align:right;
+}

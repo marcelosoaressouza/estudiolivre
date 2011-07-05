@@ -1,0 +1,70 @@
+/* estilos para as páginas que listam:
+	- usuários (tiki-list_users.tpl)
+ 	- forums (tiki-list_forums.tpl)
+ 	- blogs (tiki-list_blogs.tpl)
+  	- modulos (tiki-user_assigned_modules.tpl)  */    
+
+/*tabela*/
+
+#tracker table, #users table, #forum table, #blogs table, #listLastChanges table, #editMods table, #viewForum table {
+	margin:0 0 20px 0;
+	width:100%;
+}
+
+#tracker table, #users td, #forum td, #blogs td, #listLastChanges td, #editMods td, #viewForum td {
+	padding:4px 0 4px 3px;
+}
+
+#tracker table a, #users table a, #forum table a, #blogs table a, #listLastChanges a, #editMods a, #viewForum table a {
+	text-decoration:underline;
+	color:black;
+}
+ 	
+#tracker td.heading, #users td.heading, #forum td.heading, #blogs td.heading, #listLastChanges td.heading, #editMods td.heading, #viewForum td.heading {
+	font-weight:bold;
+}
+
+#tracker td.heading a, #users td.heading a {
+	text-decoration:none;
+}
+
+#viewForum td.heading {
+	font-weight:bold;
+	background:#c1c1c1;
+}
+
+#tracker .odd, #users .odd, #forum .odd, #blogs .odd, #listLastChanges .odd, #editMods .odd, #viewForum .odd {
+	background-color:#e9e9e9;
+}
+
+#users .foto {
+	text-align:center;
+}
+
+/*headers*/
+
+#tracker h1, #users h1, #forum h1, #blogs h1, #listLastChanges h1, #blogHead h1, #viewForum h1, #live h1 {
+	text-align:center;
+	background-color:#eee/*f9f9f9*/;
+	/*border:1px solid gray;*/
+	-moz-border-radius:10px 10px 10px 10px;
+}
+
+#tracker h5, #users h5, #blogs h5, #listLastChanges h5, #viewForum h5 {
+	text-align:right;
+}
+
+/*paginacao*/
+
+.paginacao {
+	text-align:center;
+	background-color:#eee;/*f9f9f9;*/
+	-moz-border-radius:10px 10px 10px 10px;
+	/*border:1px solid gray;*/
+	padding:3px;
+	margin-bottom:10px;
+}
+
+.paginacao img {
+	margin:0 15px 0 15px;
+}

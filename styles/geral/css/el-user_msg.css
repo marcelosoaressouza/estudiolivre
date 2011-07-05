@@ -1,0 +1,14 @@
+﻿/*esse css, além do el-user_msg.tpl, é usado pelos:
+ el-gallery_view.tpl
+ comment_item.tpl*/
+.uMsgDate, .uMsgDel, .uMsgAvatar {
+
+}
+
+.uMsgAvatar {
+	margin-right:5px;
+}
+
+.uMsgAvatar IMG {
+	height:50px;
+}

@@ -1,0 +1,6 @@
+Para nao ter que duplicar esses templates, foram criados symlinks para 
+cada categoria do estudiolivre.
+estudiolivre_audio
+estudiolivre_grafico
+estudiolivre_video
+estudiolivre_biblio

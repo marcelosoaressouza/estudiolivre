@@ -1,0 +1,167 @@
+/* tags gerais */
+* {
+	margin:0;
+	padding:0;
+}
+BODY {
+	font-family: arial,verdana,helvetica,lucida,sans-serif; /*BitStream Vera Sans, Verdana;*/
+	font-size:10pt;
+}
+
+a:link {color:#000000;}
+a:visited {color:#666666;}
+a:hover {text-decoration:none;}
+a:active {color: #666666}
+
+IMG {
+	border:0px;
+}
+
+li {
+	list-style-type: none;	
+}
+
+h1,h2,h3,h4,h5,h6 {
+	line-height:1em;
+	margin-bottom:1em;
+	margin-top:1em;
+}
+
+td {
+	text-align:left;
+	vertical-align:top;
+	border: 0;
+}
+
+
+
+.blogpost {
+	margin-bottom:15px ;
+	border-top:2px solid #333333;
+	
+}
+
+#corpo {
+	position:absolute;
+	left:250px;
+	top:120px;
+	width:80%;
+	margin:0px;
+}
+
+.wikiedit {
+	width:50%;
+}
+
+#tiki-mid li{
+	list-style-type: none;
+}
+
+.localMenu {
+	font-size:2em;
+}
+
+.uText{
+	text-align:left;
+	margin-bottom:10px;
+}
+
+.userMenuContent {
+	margin-bottom:10px;
+}
+
+.topmenu {
+	font-size:14px;
+}
+
+.submenu {
+	font-size:14px;
+}
+
+.menu {
+	text-align:right;
+}
+
+.none {
+	display:none;
+}
+
+.ar {
+	position:absolute;
+	top:0;
+	right:0;
+	
+}
+
+.pb {
+	padding-bottom:3px; 
+	padding-left:5px;
+	margin-bottom:5pt;
+	border:1px dotted #aaaaaa;
+	border-top: 2px solid #000000;
+	border-left: 0;
+}
+
+
+.am {
+	background-color:#ffffff;
+	border-top: 2px solid #aaaa00;
+	border-bottom: 1px dotted #aaaa66;
+	border-right: 1px dotted #aaaa66;
+}
+
+.vr {
+	padding-bottom:3px; 
+	padding-left:5px;
+	margin-bottom:5pt;
+	background-color:#ffffff;
+	border-top: 2px solid #00aa00;
+	border-bottom: 1px dotted #66aa66;
+	border-right: 1px dotted #66aa66;	
+	}
+
+.az {
+	padding-bottom:3px; 
+	padding-left:5px;
+	margin-bottom:5pt;
+	background-color:#ffffff;
+	border-top: 2px solid #0000aa;
+	border-bottom: 1px dotted #6666aa;
+	border-right: 1px dotted #6666aa;		
+}
+
+.vm{
+	padding-bottom:3px; 
+	padding-left:5px;
+	margin-bottom:5pt;
+	background-color:#ffffff;
+	border-top: 2px solid #ff0000;
+	border-bottom: 1px dotted #aa0000;
+	border-right: 1px dotted #aa0000;		
+}
+
+.fl {
+	float:left;
+}
+
+.mini {
+	font-size:8pt;
+	line-height:8pt
+}
+
+
+#overlay {
+	display:none;
+}
+
+#tipos li {
+display:block;
+float:left;
+width:70px;
+}
+
+input {
+	border:1px solid #666666;
+}
+
+		

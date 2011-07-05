@@ -1,0 +1,55 @@
+.forumpost {
+	margin:0 2% 0 2%;
+}
+
+.forumpost .posthead .icons {
+	float:right;
+	margin-top:7px;
+}
+
+.forumpost .posthead img {
+	opacity:0.5;
+}
+
+.forumpost .posthead h1 img {
+	opacity:1;
+}
+
+.forumpost>h1 {
+	text-align:center;
+	background-color:#f9f9f9;
+	border:1px solid gray;
+	margin-bottom:0;
+}
+
+.forumpost h5 {
+	margin-top:0;
+	padding:0;
+	text-align:right;
+}
+
+.forumpost h1#threadTitle {
+	border:none;
+	text-align:left;
+	background:none;
+	font-weight:normal;
+	font-variant:small-caps;
+	border-bottom:1px solid grey;
+}
+
+.forumpost .posthead h4 {
+	text-align:right;
+	font-weight:normal;
+	margin-bottom:0.5em;
+}
+
+.forumpost .postbody {
+	padding:15px;
+	background-color:#fbfbfb;
+	margin:0 2% 0 2%;
+}
+
+.forumpost .postbottom {
+	text-align:right;
+	font-size:8pt;
+}

@@ -1,0 +1,2313 @@
+/* HeBubbles EstudioLivre theme */
+
+
+/* general tags */
+html {
+	height:100%;
+}
+
+body {
+	min-height:100%;
+	margin: 0;
+	padding: 0px 10px 5px 10px;
+	font-family: arial,verdana,helvetica,lucida,sans-serif;
+	font-size:12pt;
+	background-color:black;
+	color:white;
+}
+
+A {
+	text-decoration:none;
+	color:#ccc;
+}
+
+A:hover {
+	color: gray;
+}
+
+img {
+	border:0px;
+}
+
+#tiki-main {
+	margin:0px auto;
+	background-color:black;
+	padding-top:21px;
+	padding-bottom:21px;
+}
+.tooltipTop {
+	height:18px;
+	background-image:url(obscur/tooltipTop.png);	
+}
+
+.tooltipMid {
+	padding: 0 7px 0 7px;
+	background-image:url(obscur/tooltipMid.png);	
+}
+
+.tooltipBottom {
+	height:15px;
+	background-image:url(obscur/tooltipBottom.png);	
+}
+
+.tooltipCont {
+	margin-top:5px;
+	width:205px;
+}
+
+.center {
+	text-align:center;
+	
+}
+
+.right {
+	text-align:right;
+}
+
+.left {
+	text-align:left;
+}
+
+.uLittle {
+	font-size:90%
+}
+
+.sectionTitle {
+	padding-top: 3px;
+	margin:0 0 5px 0;
+	border-top: 2px solid #c2c2be;
+}
+
+.sectionTitle h1 {
+	display:inline;
+	font-size:13px;
+	font-weight:bold;
+}
+
+.sectionTitle h2 {
+	display:inline;
+	font-size:12px;
+	color: grey;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+/* para fazer links 'falsos' com span*/
+span.pointer {
+	text-decoration:none;
+	color:#ddd;
+}
+
+span.hiddenPointer {
+	cursor: pointer;
+}
+
+span.pointer:hover {
+	color: gray;
+}
+
+DIV.editable:hover {
+	background-color:#444;
+}
+
+INPUT.editable {
+	background-color: #222;
+	color:white;
+	border: 1px inset rgb(22, 22, 76);
+	padding: 3px 0px 3px 3px;
+	margin-right:4px;
+}
+
+/*************************************************/
+/* search a caixa de busca no canto superior direito do site, que aparece o tempo inteiro */
+
+#search {
+	/*height:42px;*/
+}
+
+.searchForm {
+/*	float:right;*/
+	margin: 0px;
+	padding: 0px;
+	
+}
+
+/* para aparecerem as opções de busca quando o mouse passa por cima da caixa de busca */
+#search .searchForm:hover .searchOptions{
+	left:0px;
+}
+
+/* para aparecer o '+' logo abaixo da busca, desabilitado nesse release*/
+#search .searchForm:hover .searchMore {
+	left:0px;
+}
+
+#searchField, #searchFieldResults {	
+	font-size: 10px;
+	
+	width:80%;
+	height:15px;
+	
+	background-color:#151515;
+	color:white;
+	
+	position:relative;
+	top: -5px;
+	margin: 0px;
+	padding: 0px;
+	
+	border-left: 1px solid #8e8e8e;
+	border-top: 1px solid #8e8e8e;
+	border-bottom: 1px solid #8e8e8e;
+	border-right: 0px;
+}
+
+/*
+#searchFieldResults {
+	width:80%
+}
+*/
+
+/* as opções de busca. o left é -9999 para que não apareça a não ser quando o mouse passa por cima (ver acima) */
+.searchOptions {
+	position:relative;
+	left: -9999px;
+	margin: 0px;
+	padding: 0px;
+	list-style-type:none;
+}
+
+.searchOptions li {
+	font-size:11px;
+	font-weight:bold;
+	background-color:#444;
+	display: inline;
+	padding: 0px 2px 1px 2px;
+}
+
+.searchOptions li a {
+	cursor:pointer;
+}
+
+.searchOptions li.selected a {
+	color:#eee;
+	background-color:#777;
+	cursor:pointer;
+}
+
+/* estilo dos breadcrumbs */
+.elcrumbs {
+	margin:7px 0px 0px 15px;
+}
+
+/*********************************/
+/*Coisas da página de edição wiki*/
+/*********************************/
+
+#editHelp.pointer img, #textareasize img, #quicktags img {
+	background-color:dimGray;
+}
+
+/* imagem da interrogação, ajuda wiki */
+#editHelp{
+	float:right;
+	margin-right:50px
+}
+
+/**/
+#textareasize {
+	float:right;
+	margin-right:3px;
+	margin-top:2px;
+}
+
+#wikiEditCont{
+	overflow:hidden;
+	margin:0px;
+	padding-top:7px;
+}
+
+.wikiEdit {
+	margin:0px;
+	padding:10px 5px 0px 5px;
+	border:1px solid grey;
+}
+
+#label.wikiEdit {
+	padding:5px 5px 0px 5px;
+	font-size:16px;
+	position:relative;
+	bottom:0px;
+	border-bottom:1px solid black;
+}
+
+#labelRight {
+	float:right;
+	padding:0px;
+	padding-top:2px;
+	font-size:12px;
+	border:0;
+}
+
+#attention {
+	text-align:center;
+	padding:5px;
+	width:35%;
+	position:relative;
+	top:-1px;
+	margin-right:10px;
+	border: 1px solid grey;
+	border-bottom:1px solid grey;
+	border-top:1px solid black;	
+	margin-left:60%;
+}
+
+#wikiPreviewCont INPUT, #wikiEditCont INPUT, #wikiEditCont TEXTAREA {
+	border: 1px inset #444;
+	background-color:#222;
+	color:white;
+	font-size:12pt;
+}
+#wikiPreviewCont .image, #wikiEditCont .image {
+	border:0;
+}
+
+#editwiki {
+	margin: 5px 0px 10px 0px;	
+	width:99%;
+}
+
+#freetager{
+	text-align:right;
+}
+
+#wikiEditExtra {
+	margin-bottom:10px;	
+}
+
+#categorizator {
+	margin:5px 0px 0px 20px;
+	overflow:hidden;
+	width:50%
+}
+
+#maisOpcoes {
+	margin:5px 0px 5px 20px;
+}
+
+#edtComentario DIV, #edtIsMinor DIV, #edtPreviewAtt {
+	text-align:left;
+	margin-top:15px;
+	font-weight:bold;
+}
+
+#edtComentario INPUT {
+	width:100%;
+}
+
+#edtSaveCancel {
+	text-align:center;
+	margin-top:15px;
+}
+
+/****************************************************/
+/* coisas específicas da pré-visualização da edição */
+/****************************************************/
+
+#wikiPreviewCont{
+	overflow:hidden;
+    padding-top:7px;
+	margin:10px 0px 20px 0px;
+}
+
+.wikiPreview {
+	margin:0px;
+	border:1px solid grey;	
+}
+
+#label.wikiPreview {
+	padding:5px 5px 0px 5px;
+	font-size:16px;
+	position:relative;
+	bottom:0px;
+	border-bottom:1px solid black;
+}
+
+#wikiPreviewCont #attention {
+	padding:5px;
+	text-align:justify;
+	font-weight:bold;
+	width:45%;
+	float:right;
+	position:relative;
+	top:-1px;
+	margin:0px;
+	border: 1px solid grey;
+	border-bottom:1px solid grey;
+	border-top:1px solid white;	
+}
+
+#attention #attentionSave {
+	text-align:center;
+}
+
+/* Wiki Text */
+/* tudo que está dentro do texto wiki em si*/
+
+A.external{
+	background: url(estudiolivre/externalLink.png) center right no-repeat;
+	padding-right: 13px;
+}
+
+#wikitext {
+	padding:0px 10px 0px 10px;
+}
+
+#wikitext H1 {
+    font-weight: normal;
+	font-variant: small-caps;
+	border-bottom: 1px solid grey;
+}
+
+#wikitext h2 {
+  font-size:14px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#wikitext h3 { 
+  font-weight: bold;
+}
+
+
+#wikitext p {
+	text-align:justify;
+	text-indent:2em;
+}
+
+
+#wikitext a:link {
+	color: #808080;
+	text-decoration: underline;
+}
+
+#wikitext a:hover {
+	color: grey;
+	text-decoration: none;
+}
+
+#wikitext a:visited {
+	color: #93a3b2;
+	text-decoration: underline;
+}
+
+/* classe usada para o que estiver entre '-=' e '=-', tipo '-=titulo=-'*/
+.titlebar {
+	padding-left:10px;
+	margin: 0 auto;
+	margin-bottom:20px;
+	font-size:24px;
+	font-variant: small-caps;
+	text-align:center;
+	border-top: 1px solid #aaaaaa;
+	background-color:#222;
+}
+
+.titlebar:first-letter {
+    text-transform: uppercase;
+   	font-size:28px;
+   	text-weight:bold;
+}
+
+#wikitext a.wikinew {
+	color: red;
+	font-size:14px;
+}
+
+/* classe das coisas dentro de '^' do wiki (fica uma caixa em volta)*/
+.simplebox {
+  background:#444;
+  border: 1pt dashed #777;
+  font-family: monospace;
+  margin:5px;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding: 2px;
+  font-weight:bold;
+}
+
+/* classe das linhas que começam com espaço no wiki, são as linhas de 'código'*/
+tt {
+	display:block;
+	font-family: courier, serif, monospace;
+	margin:2px;
+	margin-left:15px;
+	margin-bottom:5px;
+	/*border: 1px solid green;	*/
+}
+
+/*classe dos [+] e [-] que aparecem ao lado das tags wiki '!+' ou '!-' ou '!!+' e assim por diante */
+.flipper{
+	cursor:pointer;
+	margin-left:5px;
+	margin-right:5px;
+	margin-bottom:0.2em;
+	/*font-size:12px;
+	font-weight:normal;
+	float:left;
+	margin-right:5px;
+	margin-top:2px;*/
+}
+
+/*pois o [+] no h1 fica muito em cima*/
+h1 .flipper {
+	margin-top:8px;
+}
+	
+
+/* Search Result */
+
+#searchContainer {
+	padding: 5px 0px 0px 0px;
+	text-align:center;
+}
+
+#searchResults {
+	text-align:left;	
+}
+
+#searchNoResults {
+	text-align:center;
+	margin: 15px 0 15px 0;
+}
+
+.searchResultItem {
+	position:relative;
+	font-size:12px;
+	height:100%;
+	margin: 5px 5px 5px 5px;
+	/*border-top: 1px solid #eaeaea;
+	border-left: 1px solid #eaeaea;
+	border-right: 1px solid #eaeaea;
+	border-bottom: 1px solid #eaeaea;*/
+	padding: 5px 5px 0px 5px;
+}
+
+.searchResultItem .searchdesc {
+	margin-left:10px;
+}
+
+.searchResultItemLink {
+	font-size:14px;
+	font-weight:bold;
+	color:grey;
+}
+
+#searchResults .searchdesc {
+	margin-left:10px;
+}
+
+#searchOptionsCont {
+	text-align:center;
+}
+
+#searchOptionsCont a.linkbut {
+	color: #a1a1a1;
+	font-size:11px;
+	font-weight:bold;
+	background-color:#ebebeb;
+	display: inline;
+	padding: 0px 2px 1px 2px;
+}
+
+#searchOptionsCont a.selected {
+	color:white;
+	background-color:#bebebe
+}
+
+
+
+/* top menu */
+
+#topMenu {
+	padding:0px 5px 5px 5px;
+	border-bottom:1px solid #fff;
+	background-color:black/*#f6fafc;*/
+	color:#eee;
+	text-align:left;
+}
+
+#topMenu A {
+	 font-size:12pt;
+	 font-weight:bold;
+}
+
+#topMenuLinks{
+	display:inline;
+	position:relative;
+	top:-15px;
+	margin-left:25px;
+}
+
+.hiddenDescript {
+	display:inline;
+}
+#grafilab, #videolab, #audiolab, #acervolivre {
+/*	position:relative;
+	top:-0.4em;*/
+}
+
+#acervolivre {
+	color:#5a9834;
+}
+#audiolab {
+	color:#ffbc43;
+}
+#videolab {
+	color:#ff5247;
+}
+#grafilab {
+	color:#8c6db9;
+}
+
+/* content */
+
+#ajax-contentBubble{
+	overflow:hidden;
+	/*height:300px;*/
+	background-color:black;
+}
+
+/* tiki */
+
+.wikitopline {
+	opacity:0.4;
+	text-align:center;
+}
+
+.wikitopline:hover {
+	opacity:1;
+}
+
+.wikitopline {
+	margin-bottom: 5px;
+}
+
+.wikitopline img {
+	margin-left:10px;
+}
+
+#tiki-midAudio,#tiki-midVideo, #tiki-midGraf, #tiki-midAcervo, #tiki-mid {
+	float:left;
+	width:80%;
+	margin: 10px 0px 0px 10px;
+	background: black;
+	padding: 0px 10px 10px 0px;
+	overflow:hidden;
+}
+
+#tiki-midAudio {
+	border-top: 0px solid #ff8200;
+	border-bottom: 0px solid #ff8200;
+	border-right: 0px;
+}
+#tiki-midVideo {
+	border-top: 0px solid #ff8f88;
+	border-bottom: 0px solid #ff8f88;
+	border-right: 0px;
+}
+#tiki-midGraf {
+	border-top: 0px solid #b7a4d3;
+	border-bottom: 0px solid #b7a4d3;
+	border-right: 0px;
+}
+#tiki-midAcervo {
+	border-top: 0px solid #91cd6d;
+	border-bottom: 0px solid #91cd6d;
+	border-right: 2px solid #91cd6d;
+	border-right: 0px;
+}
+
+#tiki-mid .wikitext {
+	text-align:justify;
+}
+
+p.editdate {
+	float:right;
+	border-top:1px solid #ececec;
+	padding-top:5px;
+	font-size:10px;
+	text-align:right;
+}
+/* side content */
+
+#sideContent {
+	width:17%;
+	float:right;
+	text-align:center;
+	margin-top:5px;
+	padding: 0px;
+	border: 1px solid gray;
+}
+
+#localMenu {
+	position:relative;
+	/*left:-4px;*/
+	padding-left:20px;
+	
+}
+
+#localMenu ul {
+	text-align:left;
+	list-style-type:none;
+	display:inline;
+	font-weight:bold;
+}
+
+#localMenu li.selectedAcervo, li.selectedAudio, li.selectedGraf, li.selectedVideo{
+	color:white;
+	background-color:#91cd6d;
+	font-weight:bold;
+	margin-right:20px;
+}
+
+#localMenu li.selectedAudio {
+	background-color:#ff8200;
+}
+#localMenu li.selectedGraf {
+	background-color:#b7a4d3/*8742c9*/;
+}
+#localMenu li.selectedVideo {
+	background-color:#ff8f88/*ff0400*/;
+}
+
+/* El gallery home */
+
+#listOptions {
+	margin: 10px 5px 10px 5px;
+	/*border:1px solid blue;*/
+	overflow:hidden;
+	/*display:inline;*/
+}
+
+#listFilters {
+	float:left;
+}
+
+.listFiltersButtons {
+	list-style-type:none;
+	display:inline;
+	font-size:12px;
+}
+
+.listFiltersButtons li {
+	float:left;
+}
+
+.listFiltersButtons img {
+	 float:left
+}
+
+.buttonActive {
+	float:left;
+	height:20px;
+	background-image:url(estudiolivre/bMidActive.png);
+	cursor: pointer;
+	padding: 0px 4px 0px 4px;
+	border-right:1px solid #7f7f7f;
+}
+
+.buttonInactive {
+	float:left;
+	height:20px;
+	background-image:url(estudiolivre/bMidInac.png);
+	cursor: pointer;
+	padding: 0px 4px 0px 4px;
+	border-right:1px solid gray;
+}
+
+.buttonInactiveRight {
+	border-right:0px solid gray;
+}
+
+.listFiltersButtons A {
+	position:relative;
+	top:2px;
+	color:black;
+}
+
+#rightContainerTop {
+	width:55%;
+	float:right;
+}
+
+#listOrder {
+	float:right;
+	font-size:12px;
+	margin-left:10px;
+}
+
+#listOrder select {
+	border:1px solid white;
+}
+
+#listNav {
+	font-size:12px;
+}
+
+.ulistNav {
+	position: relative;
+	top: -23px;
+	left: 270px;
+	display: inline;
+}
+
+#listNav .selected {
+	font-weight:bold;
+}
+
+/* Gallery Top */
+
+#gHomeWiki {
+	background:#354135;
+	/*-moz-border-radius: 8px 8px 0px 0px;*/
+	overflow:hidden;
+	padding: 0 10px 0px 10px;
+}
+
+#gHomeWikiTitle {
+	margin-top:3px;
+	float:right;	
+}
+
+#gHomeWikiBottom {
+	text-align:right;
+	clear:both;
+}
+
+/*LISTAGEM DO ACERVO*/
+
+#ajax-gListCont {
+	padding-right:10px;
+	overflow:hidden;
+}
+
+#gListItem {
+	width:23%;
+	float:left;
+	font-size:12pt;
+	margin: 5px 5px 5px 5px;
+	border: 1px solid #555;
+}
+
+#gListItem .title, #gListItem h2, #gListItem h3, #gListItem h4, #gListItem h5, #gListItem h6 {
+	margin:0;
+	padding:0;
+	text-align:center;	
+}
+
+#gListItem .title {
+	background:#122;
+	margin-bottom:0.3em;
+	padding:0.3em;
+	font-size:13pt;
+	overflow:hidden;
+	text-align:left;
+}
+
+#gListItem h2 {
+	text-align:center;
+	font-size:11pt;
+	margin-top:7px;
+}
+
+#gListItem h3 a {
+	font-weight:normal;
+}
+
+#gListItem h3 {
+	font-weight:normal;
+	text-align:right;
+	font-size:10pt;
+	margin-right:3%;
+	max-height:3em;
+	overflow:hidden;
+}
+
+#gListItem h6 {
+	text-align:left;
+	margin-top:7px;
+	font-size:9pt;
+}
+
+.gRatingComments{
+	width:100%;
+	text-align:center;
+}
+#gLicense {
+	margin-right:3px;
+	margin-top:4px;
+	display:inline;
+}
+
+#gThumb {
+	width:51px;
+	height:51px;
+}
+
+#gThumb img {
+	width:51px;
+	height:51px;
+}
+
+.gDownloadCount, .gStreamCount {
+	position:absolute;
+	top:0px;
+	width:19px;	
+	text-align:center;
+	font-size:10px;
+	font-weight:bold;
+	padding:0px;
+}
+
+#gTags {
+	width:98%;
+	background:#333;
+	color:#eff8e9;
+	font-size:8pt;
+	padding:3px;
+	margin-top:3px;
+	max-height:1.3em;
+	overflow:hidden;
+	font-weight:bold;
+}
+
+#gDownloadPlay {
+	width:50px;
+	margin:5px 0px 0px 0px;
+}
+
+#gComments, #gRating{
+	width:100px;
+	text-align:center;
+}
+
+#ajax-gPlayerImagem h4 {
+	text-align:right;
+}
+/* User Menu */
+
+.userMenu {
+	text-align:right;
+	font-size:11pt;
+	margin:0;
+	padding:0;
+	border-bottom:1px solid #111;
+}
+
+.userMenu H1 {
+	border:0;
+	background-color:dimGray;
+	color:#ddd;
+	font-size:12pt;
+	font-weight:bolder;
+	margin:0;
+	padding:0;
+	padding-right:2px;
+}
+
+.catMenu{
+	text-align:center;	
+}
+
+.catMenu a:hover {
+	color:#aaa;
+}
+
+.catMenu a {
+	color:white;
+	text-decoration:none;
+}
+
+.catMenu.unsel {
+	color:black;	
+}
+
+#catÁudio.userMenu h1 {
+	color:#ff8200;
+}
+
+#catGráfico.userMenu h1 {
+	color:#b7a4d3
+}
+
+#catVídeo.userMenu h1 {
+	color:#ff8f88
+}
+
+#catgallery.userMenu h1 {
+	color:#eff8e9/*#eff9ea;*/
+}
+
+.userMenu .closeButton {
+	float:left;
+	margin:-1px 0 0 2px ;
+
+}
+
+.userMenuContent {
+	text-align:left;
+	background-color:black;
+	color:white;
+	font-size:12pt;
+	padding:0px 4% 2% 4%;
+	overflow:hidden;
+}
+
+.userMenuContent img.uThumb {
+	height:50px;
+	float:left;
+	margin: 5px 5px 5px 15px; 
+}
+
+.userMenuContent hr {
+	width:80px;
+}
+
+#userNameStatsKarma {
+	height:50px;
+	text-align:center;
+}
+
+#uMenuName {
+	width:100%;
+	font-size:18px;
+	font-weight:bold;
+}
+
+#uStats {
+	font-size:10px;
+	color:gray;
+}
+
+/* modules */
+
+#moduleLastChanges, #moduleWhoIsThere {
+	text-align:left;
+}
+
+#moduleLastChangesMore {
+	padding-left:20px;	
+}
+
+.modViewAll {
+	text-align:right;
+}
+
+.modCenterContent {
+	text-align:center;
+}
+
+.modViewAll A{
+	text-decoration:underline;
+}
+#moduleWhoIsThereMore {
+	padding-left:20px
+}
+
+#moduleGallery{
+	text-align:left;
+}
+
+.mod-el_msg-msg {
+	text-decoration:none;
+	color:white;
+}
+
+#moduleobsBusca	{
+	text-align:left;
+	padding-left:3px;
+}
+
+/* Login Box */
+
+#uLoginBox{
+	text-align:left;
+}
+
+#uLoginBox input.uText {
+	border:2px solid #e8e8e8;
+	height:16px;
+	margin-bottom:2px;
+}
+
+#login-user {
+	width:97%;
+}
+
+#login-pass {
+	width:85%;
+	margin-right:3px;
+}
+
+#uLoginOptions {
+	padding:2px;
+	font-size:12px;
+}
+
+/* Gallery Upload ######## */
+
+#gUpload {
+	/*border:1px solid purple;*/
+	padding: 10px 0px 10px 0px;
+	overflow:hidden;
+}
+
+/* Gallery Upload - Left ######### */
+
+IMG.separator {
+	width:140px;
+	height:2px;
+	margin: 10px 0px 10px 0;
+}
+
+#gUpLeft {
+	float:left;
+	min-width:250px;
+	margin-right:10px;
+	margin-left:10px;
+	border-right: 1px solid #91cd6d;
+	text-align:center;
+	padding-bottom:50px;
+}
+
+#gUpIcons {
+	overflow:hidden;
+	margin: 0 0 0 0;
+}
+
+#gUpIcons IMG {
+	margin-bottom:3px;
+}
+
+DIV.gUpIcon {
+	float:left;
+	margin: 0px 8px 0px 8px;
+	font-size:12px;
+	text-align:center;
+}
+
+#gUpList {
+	position:relative;
+	left:3px;
+	/*border:1px solid red;*/
+	text-align:left;
+}
+
+#gUpList IMG {
+	/*border:1px solid grey;*/
+	position:relative;
+	top:4px;
+}
+
+#gUpListAddFileCont {
+	text-align:right;
+	padding-right:17px;
+}
+
+#gUpListAddFileCont A {
+	font-size:10px;
+}
+
+DIV.gUpListItem {
+	position:relative;
+	right:2px;
+	padding: 1px 3px 1px 3px;
+	min-height:24px;
+	margin-bottom:5px;
+	margin-right:3px;
+}
+
+DIV.gUpSelected {
+	margin-right:0px;
+	border-right: 1px solid black;
+	border-top: 1px solid #91cd6d;
+	border-left: 1px solid #91cd6d;
+	border-bottom: 1px solid #91cd6d;
+	-moz-border-radius: 8px 0px 0px 8px;
+}
+
+DIV.gUpListItemField {
+	position:absolute;
+	top:5px;
+	left:23px;
+	height:14px;
+	width:156px;
+	padding-right:3px;
+	border:1px solid #c9c9c9;
+	font-size:11px;
+	background-color:#333;
+	text-align:right;
+	z-index: 1;
+}
+
+DIV.gUpForm {
+	position:absolute;
+	top: 0px;
+	left: 47px;
+	filter:alpha(opacity=0);
+	-moz-opacity:0.0;
+	opacity:0.0;
+	z-index:10;
+	clip: rect( 0px, 225px, 30px,170px);
+}
+
+DIV.gUpStatus {
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	height: 14px;
+	/*esse width esta vinculado ao upload.js, se mudar abaixo mude la tb*/
+	width: 159px;
+	z-index: 2;
+}
+
+.gUpPercent {
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	/*esse width esta vinculado ao upload.js, se mudar abaixo mude la tb*/
+	width: 158px;
+	text-align:center;
+	z-index: 3;
+	color:#222;
+	font-weight: bold;
+}
+
+#gUpPercent {
+	background-color: #e1a7a4;	
+}
+
+DIV.gUpListItemFieldComplete {
+	background-image:url(estudiolivre/bgVerde70.png);
+	font-size:11px;
+	text-align:center;
+	font-weight:bold;
+}
+
+DIV.gUpListItemFieldCompleteInside {
+	background-image:url(estudiolivre/bgVerde70.png);
+	padding: 0px 3px 0px 3px;
+	display:inline;
+}
+
+DIV.gUpEditing {
+	color:#a9a9a9;
+	background-image:url(estudiolivre/bgYellow70.png);
+}
+
+DIV.gUpUploading {
+	background-image:url(estudiolivre/bgRed50.png);
+}
+
+A.gUpButton, A.gUpButtonHover {
+	display:block;
+	position:absolute;
+	right:3px;
+	top:5px;
+	width:57px;
+	height:16px;
+	font-size:10px;
+	background-image:url(obscur/bActive.png);
+	background-repeat:no-repeat;
+	text-align:center;
+	overflow:hidden;
+}
+
+A.gUpButtonHover {
+	background-image:url(obscur/bInactive.png);
+}
+
+#gUpSet {
+	padding:0px 5px 0px 5px;
+	text-align:center;
+}
+
+#gUpSet A {
+	font-size:12px;
+	font-weight:bold;
+}
+
+#gUpRight {
+	overflow:hidden;
+}
+
+#gUpDescription {
+	margin-top:10px;
+}
+
+#gUpDescription DIV {
+	overflow: auto;	
+}
+
+#gUpDescription DIV DIV {
+	padding: 3px;
+	border: 1px solid #FFF;
+	width: 250px;
+	height:125px;
+	font-size:12px;
+	float:left;
+	font-weight:normal;
+}
+
+#gUpEditThumbTitleAuthor {
+
+}
+
+#gUpThumb {
+	float:left;
+	margin: 0px 7px 5px 0px;
+	overflow:hidden;
+	padding:4px;
+	border-top:1px solid #e7e7e7;
+	border-left:1px solid #e7e7e7;
+	border-right:2px solid #e7e7e7;
+	border-bottom:2px solid #e7e7e7;
+	width: 60px;
+	height: 60px;
+	position: relative;
+	cursor:pointer;
+}
+
+.gUpThumbImg {
+	width: 60px;
+	height: 60px;
+}
+
+.gUpThumbImgCreating {
+	margin: 20px 0px 0px 22px;
+}
+
+#gUpThumbImgForm {
+	position: relative;
+	cursor:pointer;
+}
+
+#gUserThumbFormContainer {
+	position: relative;
+	cursor:pointer;
+}
+
+#gUpThumbForm {
+	position: absolute;
+	left: -175px;
+	top: 2px;
+	clip: rect(0px, 255px, 62px, 175px);
+	z-index: 20;
+	filter:alpha(opacity=0);
+	-moz-opacity:0.0;
+	opacity:0.0;
+	cursor:pointer;
+}
+
+.gUpThumbFormButton {
+	height: 62px;
+	cursor:pointer;
+	border:30px solid blue;
+}
+#webdeveloper-ruler{
+	color:black;
+	}
+	
+#gUserThumbForm {
+	width:100%;
+	position: absolute;
+	left: -120px;
+	top: -100px;
+	clip: rect(0px, 300px, 100px, 175px);
+	z-index: 20;
+	filter:alpha(opacity=0);
+	-moz-opacity:0.0;
+	opacity:0.0;
+}
+
+.gUserThumbFormButton {
+	height: 90px;
+}
+
+#gUpThumbStatus {
+	font-size: 14px;
+	margin-top: 23px;
+	width: 60px;
+	text-align: center;
+}
+
+#gUserThumbStatus {
+	position: relative;
+	top: -55px;
+	left: 55px;
+	font-size: 14px;
+	display: none;
+	z-index: 5;
+}
+
+#gUpTitleAuthor {
+	position:relative;
+	top:0px;
+}
+
+INPUT.gUpTitle{
+	width:174px;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: Arial, Verdana, Helvetica, Lucida, Sans-Serif;
+}
+
+DIV.gUpTitle{
+	width: 185px;
+	position: relative;
+	top: 4px;
+	margin-left: 4px;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: Arial, Verdana, Helvetica, Lucida, Sans-Serif;
+}
+
+INPUT.gUpAuthor {
+	width:149px;
+}
+
+
+
+#error-descricao {
+	position:relative;
+	left:-3px;
+	float:right;
+}
+
+DIV.gUpAuthor {
+	font-style: italic;
+	font-weight:normal;
+}
+
+#gUpAuthorCont{
+	position:relative;
+	top:8px;
+}
+
+#gUpEditTags {
+	width:259px;
+	font-size:12px;
+}
+
+#gUpEditTags INPUT {
+	border: 1px inset rgb(233, 233, 174);
+	height:14px;
+	width:220px;
+	padding-right:3px;
+	background-color:#f1f1f1;
+	font-size:12px;
+}
+
+#gUpTagSugest {
+	text-align:right;
+}
+
+#gUpTagSuggestUser {
+	margin-top:3px;
+	margin-left:35px;
+	font-size:9px;
+	text-align:left;
+	overflow:hidden;
+}
+
+#ajax-gUpTagListItem {
+	width:85%;
+	border-right:2px solid #f1f1f1
+}
+
+#ajax-gUpTagSuggestMore {
+	float:right;
+	margin-top:4px;
+}
+
+#gUpmoreoptionsLink {
+	float:right;
+}
+
+A.gUpmore {
+	font-size:11px;
+	margin-right:5px;
+	/*margin-bottom:15px;*/
+}
+
+#gUpMoreOptions INPUT {
+	border: 1px inset rgb(233, 233, 174);
+	padding: 3px 0px 3px 3px;
+	font-size: 12px;
+	font-family: Arial, Verdana, Helvetica, Lucida, Sans-Serif;
+	background-color: #f1f1f1;
+	margin-right:4px;
+	max-width: 100px;
+}
+
+#ajax-gUpMoreOptionsContent {
+	padding-top:10px;
+}
+
+.gUpMoreOptionsItem{
+	height:3em;
+}
+
+.gUpMoreOptionsItemSingle{
+	height:2em;
+}
+
+.gUpMoreOptionsName {
+	text-align:right;
+	padding-right:5px;
+	float:left;
+	width:94px;
+	text-decoration:underline;
+}
+
+#gUpSave {
+	text-align:center;
+}
+
+#gUpPending {
+	list-style-type:none;
+}
+
+
+/* ####### Página do Arquivo ####### */
+
+#aThumbForm {
+	position: absolute;
+	left: -155px;
+	top: 0px;
+	clip: rect(0px, 255px, 100px, 165px);
+	z-index: 25;
+	filter:alpha(opacity=0);
+	-moz-opacity:0.0;
+	opacity:0.0;
+}
+
+#aThumbFormButton {
+	height:100px;
+	cursor:pointer;
+}
+
+#arqCont {
+	padding:5px;
+}
+
+#aTopCont {
+	position:relative;
+	/*overflow:hidden;*/
+	height: 117px;
+}
+
+#aThumbRatingLic {
+	position:relative;
+	width:100px;
+	float:left;
+	margin: 0 10px 0 0;
+	text-align:center;
+}
+
+#aThumbLic {
+	position:absolute;
+	bottom:opx;
+	margin-bottom:5px;
+	z-index:20;
+}
+
+#aThumb {
+	width:100px;
+	height:100px;
+}
+
+#aLic {
+	position:absolute;
+	bottom:0;
+	left:0px;
+	z-index:20;
+}
+
+#aMainInfo {
+	margin-left:110px;
+}
+
+#aNameAuthorDown {
+
+}
+
+#aNameAuthor {
+	width:85%;
+}
+
+#aName {
+	font-size:18px;
+	font-weight:bold;
+}
+
+#aDelete {
+	float:right;
+	filter:alpha(opacity=40);
+	-moz-opacity:.40;
+	opacity:.40;
+}
+
+#aDelete:hover {
+	filter:alpha(opacity=100);
+	-moz-opacity:1;
+	opacity:1;			
+}
+
+#aAuthorDate {
+	font-size: 14px;
+	text-align:right;
+}
+
+#aAuthorDate A {
+	font-style:italic;
+}
+
+#aDown{
+	position:relative;
+	float:right;
+	border-left: 1px solid green;
+	padding: 0 5px 0 5px;
+}
+
+#aActions {
+/*	margint-top:50px;*/
+	min-height:40px;
+	margin-bottom:20px;
+	vertical-align:middle;
+}
+
+#aActions DIV {
+	margin-top:10px;
+	display:block;
+	text-align:center;
+}
+
+#aMiddleCont{
+	
+}
+
+.aTags {
+	background:#333;
+	color:#eff8e9;
+	width:100%;
+	padding: 2px 20px 2px 10px;
+	margin-top:5px;	
+}
+
+.aTagsEdit {
+	float:right;
+	margin-top:7px;
+}
+
+.aTagsInput {
+	background:#222;
+	color:white;
+	width:98%;
+	padding: 2px 20px 2px 10px;
+	margin-top:5px;	
+}
+
+#aMiddle {
+	position:relative;
+}
+
+#aComments {
+/*	position:absolute;
+	left:0px;
+	top:0px;*/
+	width:270px;
+	/*height:100%;*/
+	border-right: 2px solid #c2c2be;
+	float: left;
+}
+
+.aTitleCont {
+	position:relative;
+	top:-12px;
+	background-color:#222;
+	display:inline;
+	padding-right:5px;
+	padding-left:5px;
+}
+
+.aTitleContRight {
+	left:-10px;	
+}
+
+.aItemsCont {
+	position:relative;
+	top:-5px;
+	display:block;
+	padding-right:10px;
+	padding-left:10px;
+	text-align:justify;
+}
+
+#aCommentsRss {
+	position:relative;
+	top:2px;
+	margin-left: 15px;	
+}
+
+#aCommentSend #uMsgSendInput {
+	width: 75%;
+	background-color:#444;
+}
+
+#aCommentSend #uMsgSend {
+	margin-right: 8px;
+}
+
+#aCommentsItemsCont .uMsgItem {
+	text-align:left;
+	margin-bottom:10px;
+	padding-bottom:3px;
+}
+
+#aDescriptionInfo {
+	margin-left:270px;
+	border-left: 2px solid #c2c2be;
+}
+
+#aDescriptionInfo .sectionTitle {
+	padding-left: 20px;
+	padding-right: 10px;
+}
+
+#aDescCont {
+	margin-bottom:15px;
+}
+
+.aSaveCancel {
+	margin:10px;
+	margin-top:20px;
+	border: 1px solid #c2c2be;
+	text-align:center;
+	padding:5px 0 3px 0;
+}
+
+/* ####### User Page ####### */
+
+#uName {
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	margin-top:10px;
+}
+
+#uContactKarmaAccount {
+	overflow:hidden;
+	margin:10px 0px 10px 0px;
+	width:100%;
+	padding:0;
+}
+
+.uContactInfoCont {
+	margin:2px;
+	padding:5px;
+	float:left;
+	width:30%;
+}	
+
+#uKarmaThumb {
+	border-right:2px solid #e3e3e1;
+	border-left:2px solid #e3e3e1;
+}
+
+#uKarma {
+	margin-top:-5px;
+	margin-bottom:10px;
+}
+
+.uKarmaImg {
+	margin-left:2px;
+}	
+
+.uContactItem {
+	display:block;
+	max-width:100%;
+}	
+
+.uMainContainer {
+	width:100%;
+	margin-bottom:10px;
+}
+
+.uMainTitle {
+	padding: 3px;
+	border-top: 1px solid #444;
+	border-bottom: 1px solid #444;
+	background-color:#222;
+}
+
+.uMainItemContainer {
+	margin-left:10px;
+}
+
+#uGalleryItems {
+	margin-left:5px;
+	width: 102%;
+}
+
+.uRssCont{
+	float:right;
+	filter:alpha(opacity=40);
+	-moz-opacity:.40;
+	opacity:.40;	
+}
+
+.uRssCont:hover{
+	filter:alpha(opacity=100);
+	-moz-opacity:1.0;
+	opacity:1.0;	
+}
+
+.uBlogItem {
+	margin-top: 10px;
+	border-bottom: 1px solid grey;
+}
+
+#uBlogItemTitle h1 {
+	font-size:12px;
+	display:inline;
+}
+
+#uBlogItemText {
+	margin-left:10px;
+}
+
+#uBlogItemBottom{
+	text-align:right;
+}
+
+.uMsgItem{
+	margin-top:5px;
+	border-bottom:1px solid #adadad;
+	overflow:hidden;
+}	
+
+.uUnreadMsgItem {
+	border-right:2px solid tomato;	
+}
+
+.uMsgDate, .uMsgDel, .uMsgAvatar{
+	float:left;
+}
+
+.uMsgAvatar {
+	margin-right:5px;
+}
+
+.uMsgAvatar IMG {
+	height:50px;
+}
+
+.uMsgTxt {
+	padding: 0 5px 0 0;
+	min-height:50px;
+}
+
+.uMsgDate, .uMsgDel {
+	text-align:center;
+	float:right;
+	height:3em;
+	margin-right:2px;
+}
+
+.uMsgDate{
+	font-size:10px;
+}
+
+#uMsgSend {
+	margin-top:10px;
+	text-align:right;
+}
+
+#uMsgSendInput {
+	background-color:#222;
+	color:white;
+	height:20px;
+	width:80%;
+	border-top: 2px solid #333;
+	border-bottom: 2px solid #333;
+	border-left: 2px solid #333;
+	border-right:0;
+	-moz-border-radius:8px 0px 0px 8px;
+}
+
+#uMsgSendSubmit {
+	float:right;
+	display:block;
+	position:relative;
+	left:-2px;
+	padding-left:3px;
+	height:26px;
+	border:0px;
+	background-color:#222;
+	-moz-border-radius:0px 8px 8px 0px;
+	cursor: pointer;
+	color:#eee;
+}
+
+/******************************************************/
+/* estilos para as páginas que listam:
+	- usuários (tiki-list_users.tpl)
+	- forums (tiki-list_forums.tpl)
+	- blogs (tiki-list_blogs.tpl)
+	- modulos (tiki-user_assigned_modules.tpl)
+ */
+/******************************************************/
+
+/*o título da página e a paginacao*/
+#users h1, #forum h1, #blogs h1, #listLastChanges h1, #blogHead h1, #viewForum h1 {
+	text-align:center;
+	background-color:#222;
+	border:1px solid dimGray;
+}
+
+/* para que a contagem de usuários fique na direita */
+#users h5, #blogs h5, #listLastChanges h5, #viewForum h5 {
+	text-align:right;
+}
+
+/*margens e largura da tabela*/
+#users table, #forum table, #blogs table,  #listLastChanges table, #editMods table, #viewForum table{
+	margin: 0 0 20px 0;	
+	width:100%;
+}
+
+/*para que o título da coluna seja diferente*/
+#users td.heading, #forum td.heading, #blogs td.heading,  #listLastChanges td.heading, #editMods td.heading, #viewForum td.heading{
+	font-weight:bold;
+}
+
+/*padding nos elementos da tabela: legibilidade*/
+#users td, #forum td, #blogs td,  #listLastChanges td, , #editMods td, #viewForum td{
+	padding: 4px 0 4px 3px;	
+}
+
+/*para que os links da tabela sejam mais legíveis*/
+#users table a, #forum table a, #blogs table a, #listLastChanges a, #editMods a, #viewForum table a{
+	text-decoration:underline;
+	color:white;
+}
+/*para que as linhas da tabela tenham cores diferentes nas linhas pares*/
+#users .odd, #forum .odd, #blogs .odd,  #listLastChanges .odd, #editMods .odd, #viewForum .odd{
+	background-color: dimGray
+	
+}
+
+/* paginacoes usadas por aí... */
+.paginacao {
+	text-align:center;
+	background-color:#222;
+	border:1px solid dimGray;
+	padding:3px;
+	margin-bottom:10px;
+}
+
+/* para que as flechas da paginacao nao fiquem coladas no texto*/
+.paginacao img {
+	margin:0 15px 0 15px;
+}
+
+/*******************************/
+/* estilos extra para os blogs */
+/*******************************/
+#blogHead h1 {
+	margin:0;
+	margin-top:15px;
+	padding:5px;
+}
+
+#blogHead #desc {
+	width:50%;
+	margin-left:49%;
+}
+
+#blogHead #moduleblogDescCont {
+	text-align:justify;
+	font-size:11pt;
+	font-weight:normal;
+	border:1px solid gray;
+	border-top:0px;
+	padding:5px;
+}
+
+#blogHead #descFlipper	{
+	margin-top:-1px;
+	text-align:right;
+	background-color:#222;
+	border:1px solid gray;
+	border-top:1px solid #222;
+	font-size:10pt;
+	color:#777;
+	font-weight:bold;
+}
+
+#blogHead h5 {
+	text-align:right;
+	font-size:8pt;
+	font-style:italic;
+	margin:0;
+	padding:0;
+	margin-top:0.5em;
+}
+
+#blogHead h4 {
+	text-align:right;
+	font-size:10pt;
+	margin-right:1%;
+}
+
+#blogHead #edit {
+	text-align:center;
+	font-size:15pt;
+	background-color:#333;
+	width:70%;
+	margin:0 auto;
+}
+
+.blogpost {
+	margin: 0 2% 0 2%;	
+}
+
+.blogpost .posthead .icons {
+	float:right;
+	margin-top:7px;
+}
+
+.blogpost .posthead img {
+	opacity:0.5;
+}
+
+.blogpost .posthead h1 {
+    font-weight: normal;
+	font-variant: small-caps;
+	border-bottom: 1px solid grey;
+}
+
+.blogpost .posthead h4 {
+	text-align:right;
+	font-weight: normal;
+	margin-bottom:0.5em;
+}
+
+.blogpost .postbody {
+	background-color:#111;
+	margin: 0 2% 0 2%;	
+}
+
+.blogpost .postbottom {
+	text-align:right;
+	font-size:8pt;
+}
+#vBlogPost h2 {
+	text-align:center
+}
+
+/******************************/
+/* estilos extra para os mods */
+/******************************/
+
+#editMods .centerCellCont {
+	text-align:center;
+}
+
+/******************************/
+/* estilos extra para o fórum */
+/******************************/
+
+/*título da página e paginacao (ver acima!!)*/
+/*!!!!!!!VER ACIMA!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+/*células da tabela da tiki-forums.tpl*/
+#forumTable .forumTableCell {
+	text-align:center;
+	vertical-align:center;
+	padding:2px;
+}
+
+/*para dar destaque ao nome do fórum*/
+td.forumName {
+	font-size:18px;
+	background-color:#888;
+	text-align:center;	
+	color:white;
+}
+
+
+/**********************************************/
+/* estilos da listagem das ultimas alterações */
+/**********************************************/
+
+#listLastChanges h4 {
+	font-weight:normal;
+	text-align:center;
+}
+
+/* aquela caixinha de busca nas últimas alterações */
+#lastChangesOptions{
+	padding:7px 2px 7px 2px;
+	margin-left:68%;
+	width:170px;
+	text-align:center;
+	border: 1px solid #e9e9e9;
+	font-size:12px;
+}
+
+#lastChangesOptions INPUT {
+	border:1px outset rgb(233, 233, 174);
+	margin:2px;
+	background-color:#c1c1c1;
+	font-size:12px;
+}
+
+
+#lastChangesOptions .input {
+	border: 1px inset rgb(233, 233, 174);
+	background-color:#f1f1f1;
+	font-size:12px;
+}
+
+/* Browse FreeTags */
+
+#browseFreeTags H2 {
+	font-size:12px;
+	font-weight:normal;
+}
+
+#currentTag2 {
+	font-size:16px;
+	font-weight:bold;
+	text-transform: uppercase;
+}
+
+#freeTagsPagination {
+	border-bottom:1px solid gray;
+	padding-bottom:3px;
+	
+	text-align:right;
+	font-size:12px;
+	font-weight:bold;
+}
+
+/* página de preferências do usuário */
+
+.hide {
+	display:none;
+}
+
+.tabcontent {
+	padding: 5px;
+}
+
+.tabmark {
+	padding:2px;
+	font-weight:bold;
+	font-size:14px;
+	border: 1px solid white;
+}
+
+#userPrefs {
+	width:95%;
+	margin:0 auto;
+}
+
+#userPrefs FORM TABLE{
+	width:100%;
+}
+
+#userPrefs td.button {
+	text-align:center;
+}
+
+#userPrefs .form INPUT, #userPrefs .form SELECT {
+	border: 1px inset rgb(233, 233, 174);
+	padding: 1px 0px 1px 0px;
+	background-color: #222;
+	color:white
+}
+
+#userPrefs .form SELECT {
+	padding:0px;
+}
+
+#userPrefs .button INPUT {
+	font-size:12px;
+	background-color:#d9d9d9;
+}
+
+#userPrefs H1 {
+	text-align:center;
+	font-size:20px;
+	margin:10px;
+}
+
+.cbox-title {
+	padding-left:5px;
+	font-weight:bold;
+	font-size:16px;
+	margin:10px 0 10px 0;
+	background-color:#222;
+	border:1px solid gray;
+}
+
+/* comentários */
+
+.comMainTitle	{
+	background-color:#222;
+	border:1px solid gray;
+	text-align:center;
+	font-size:16pt;	
+	margin:5px 0 5px 0;
+	padding:2px;
+}
+
+#comzoneItems {
+	padding:10px;	
+}
+
+.comment .commentTitle {
+	text-align:left;
+	background:#222;
+	font-size:12pt;	
+	margin:0;
+}
+
+.subcomment {
+	margin-left:20%;
+}
+
+.commReply {
+	text-align:right;
+}
+
+.commPreview {
+	border:1px solid white;
+	margin:10px;
+	padding:5px;
+}
+
+#comPostCont {
+	padding:5px;	
+}
+
+#editpostform h3 {
+	margin:0;	
+}
+
+#comments-title, #editpost2 {
+	width:95%;
+	border: 1px inset #444;
+	padding: 3px 0px 3px 3px;
+	background-color: #222;
+	color:white;
+	margin-left:5px;
+}
+
+#comButtons	{
+	text-align:right;	
+	padding:3px;
+}
+
+#comButtons INPUT {
+	border:0px;
+	font-size:12pt;
+	background-color:#444;
+	color:white;
+}
+
+
+/*******************/
+/*    blog         */
+/*******************/
+
+.blogEdit {
+	border: 1px solid grey;
+	width: 100%;
+	font-size:12pt;
+	background:#222;
+	color:white;
+}
+
+#blogeditCont{
+	margin: 10px 5px 10px 5px;	
+}
+
+#blogPosting .button {
+	border:0px;
+	font-size:12px;
+	background-color:#222;
+}
+
+#blogPosting h3 {
+	margin:0;	
+}
+
+#editpageform {
+	padding:0 10px 0 10px;
+}
+
+#blogPosting h2 {
+	background-color:#222;
+	border:1px solid gray;
+	text-align:center;
+	font-size:16pt;	
+	width:90%;
+	margin-right:auto;
+	margin-left:auto;
+	margin-top:10px;
+	margin-bottom:10px;
+	padding:2px;	
+}
+
+#blogPosting INPUT{
+	background:#444;
+	color:white;
+}
+	
+#blogPostPrev {
+	padding:10px;
+	margin-bottom:15px;
+}
+
+#blogPostPrev h3 {
+	display:inline;
+	margin:0;
+	padding:3px;
+	border:1px solid gray;
+	border-bottom:1px solid black;
+	z-index:10;
+}
+#postPrevCont {
+	border:1px solid gray;
+	margin-top:2px;
+}
+
+
+/***************/
+/*   FORUM     */
+/***************/
+#viewForum TEXTAREA{
+		width:100%;
+}
+
+#viewForum td.heading {
+	font-weight:bold;
+	background:#c1c1c1;
+}

@@ -1,0 +1,1 @@
+{tr}Please notify the admin that the "sender email" option in the General configuration section has not been set.  An internal Tiki message has been sent to the admin to validate your registration request.  An email should arrive shortly after you have been validated, with information on how to login for the first time into this site{/tr}

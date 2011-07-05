@@ -1,0 +1,15 @@
+--- tiki-setup.php	2006-07-17 17:27:38.000000000 -0300
++++ tiki-setup.php	2006-07-17 17:38:40.000000000 -0300
+@@ -554,6 +554,12 @@
+ if (!empty($_SESSION["language"]))
+ 	$saveLanguage = $_SESSION["language"]; // if register_globals is on variable and _SESSION are the same
+ $language = 'en';
++//ESTUDIOLIVRE HACK BEGIN
++$language = 'pt-br';
++if (preg_match('/estudiolibre/', $_SERVER['SERVER_NAME']) && !isset($_SESSION['language'])) {
++  $_SESSION['language'] = $language = 'es';
++}
++//ESTUDIOLIVRE HACK END
+ $lang_use_db = 'n';
+ if (isset($_SESSION['style']))
+ 	$style = $_SESSION['style'];

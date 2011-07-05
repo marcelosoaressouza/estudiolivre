@@ -1,0 +1,41 @@
+﻿#sideContent {
+	position:absolute;
+	top:125px;
+	left:2em;
+	width:15em;
+	overflow:hidden;
+	text-align:left;
+	background-color:transparent;
+	
+}
+
+.localMenu {
+	font-size:24px;
+}
+
+#sideContent h1{
+	font-size:10pt;
+	font-weight:bold;
+	margin:5px 0;
+	
+}
+
+#sideContent a{color:#808080;}
+#sideContent a:link {text-decoration:none;color:#000000; font-weight:normal}
+#sideContent a:visited {text-decoration:none;color:#808080;}
+#sideContent a:hover {text-decoration:none;color: #ff0000;font-weight:bold}
+#sideContent a:active {text-decoration:none;color: #808080}
+
+.userMenu {
+	padding-bottom:3px; 
+	padding-left:5px;
+	margin-bottom:5pt;
+	border:1px dotted #aaaaaa;
+	border-top: 2px solid #000000;
+	border-left: 0;
+
+}
+
+.userMenuContent {
+	margin-left:16px;
+}

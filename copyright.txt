@@ -1,0 +1,1094 @@
+Tiki Copyright
+----------------
+$Header: /cvsroot/tikiwiki/tiki/copyright.txt,v 1.6.2.10 2007/10/11 23:56:17 mose Exp $
+
+The following list gathers the copyrights holders for tikiwiki 
+at the state of 1.9.8 version. Each member of that list wrote at 
+least one line, directly or indirectly, in tikiwiki code source. 
+The exact proportion of the contribution of each is not an issue, 
+as any copyright change will involve the agreement of everybody. 
+
+This is how we implement the TikiwikiSocialContract.
+http://dev.tikiwiki.org/SocialContract
+
+That list is accessible on
+https://sourceforge.net/project/memberlist.php?group_id=64258
+
+
+abbasmousavi - abbasmousavi  
+Developer  
+
+Vianney Lecroart - ace_mtp 
+Developer 
+
+Arve Fahlvik - afahlvik 
+Developer 
+
+Adam Gorski - agorski 
+Developer 
+
+Aigars Mahinovs - aigarius 
+Developer 
+
+Art - ajd24 
+
+Alain Désilets - alain_desilets 
+Developer 
+
+Al Brown - albrown 
+Developer 
+
+Alexandre Cunha - alercunha 
+
+Alexandre Freire - alex_freire 
+Developer 
+
+Alexander Mette - amette 
+Developer 
+
+Andreas Motl - amotl 
+Developer 
+
+Andreas Bacouroff - andreas_bac 
+Developer 
+
+Chris Kaleiki - anenga 
+Developer 
+
+Andreas Neuhaus - aneuhaus 
+Developer 
+
+Lorinc Czegledi - ang23 
+Doc Writer 
+
+Andrzej - anope 
+Translator (I18N/L10N) 
+
+Aaron Siri - as6o 
+Developer 
+
+atooni - atooni 
+Developer 
+
+Marc Packenius - aurel42 
+Developer 
+
+Andre - avdwheel 
+Developer 
+
+Amedee Van Gasse - avgasse 
+Developer 
+
+Tony Colley - awcolley 
+Developer 
+
+Andreas Wolff - awolfff 
+Developer 
+
+az3rty - az3rty 
+Translator (I18N/L10N) 
+
+Chris Bacigalupo - baci 
+Developer 
+
+Baptiste Burgaud - bburgaud 
+Developer 
+
+Wayne Herbert - beastrider 
+Developer 
+
+Berry Parker - berryweb 
+All-Hands Person 
+
+Sylvain BEUCLER - beuc 
+
+Benoit des Ligneris - bligneri 
+Developer 
+
+Bludok Systems Limited - bludok 
+Developer 
+
+Dave Thacker - bluestrain 
+Developer 
+
+Bluy Brink - bluybrink 
+Translator (I18N/L10N) 
+
+bobenrieth - bobenrieth 
+Tester 
+
+Bruno Zuzzé - bozze 
+Developer 
+
+Alan Schmitt - brab 
+Developer 
+
+Vincent B - broubrou 
+Developer 
+
+Ben Tallman - btallman 
+Developer 
+
+Brian Todoroff - btodoroff 
+Developer 
+
+Nick Rapitosovich - bulldogtor 
+Developer 
+
+Pier Luc Petitclerc - c0ldfusi0n 
+Developer 
+
+carlom - carlom 
+Developer 
+
+Carol Gauthier - carolg 
+Developer 
+
+Chris Austin - caustin_ats 
+Developer 
+
+Christopher - cbowman 
+Developer 
+
+Claudio Bustos - cdx 
+Developer 
+
+Chris Freeze - cfreeze 
+Developer 
+
+Chandi Bernier - chandi 
+Developer 
+
+Philippe Cloutier - chealer 
+Developer 
+
+Juanan Pereira - chessy 
+Developer 
+
+Gary Cunningham -Lee  - chibaguy 
+Developer 
+
+Chris Holman - chris_holman 
+Developer 
+
+Chuck Hagenbuch - chuck 
+Developer 
+
+Chris Claborne - claborne 
+Developer 
+
+Colin Morris - colinmo 
+Developer 
+
+Conner Mo - connermo 
+Developer 
+
+cyantree - cyantree 
+Translator (I18N/L10N) 
+
+D.A. Bright - dabright 
+Developer 
+
+Daniel Descheneaux - daniel_x 
+Doc Writer 
+
+C. Outteryck - darzee 
+
+Davor Cengija - dcengija 
+Developer 
+
+Deben - debenbain 
+Developer 
+
+Salem Derisavi - derisavi 
+Translator (I18N/L10N) 
+
+Nicolas Vilz - devniv 
+Developer 
+
+Douglas Green - dgreen34 
+
+diE - die 
+Developer 
+
+dimaz - dimaz-z 
+Developer 
+
+Dimitris Moraitis - dim_m 
+Developer 
+
+OneOfMany - djnz 
+Developer 
+
+Damien Joguet - djoguet 
+Developer 
+
+Dmytro Kovalov - dmytro 
+Translator (I18N/L10N) 
+
+Jan Lindåker - docekal 
+Developer 
+
+Christoph Drieschner - drieschner 
+Developer 
+
+Abdul-Wahid Paterson  - eesa 
+Developer 
+
+Thomas - einstine 
+Developer 
+
+Nicolas Marchildon - elecnix 
+Developer 
+
+emanuelq - emanuelquintana 
+Developer 
+
+Eduardo Daniel Polidor - epolidor 
+All-Hands Person 
+
+Jason M. Felice - eraserhd 
+Developer 
+
+Lee Essen - essele 
+Developer 
+
+Enrico Würfel - ewuerfel 
+Developer 
+
+Eric Zago - ezago 
+Developer 
+
+Frederic Bergeron - fbergeron 
+Developer 
+
+Fern�o Lopes - fernao_lopes 
+Developer 
+
+Fernando Henrique - fhcorrea 
+Developer 
+
+Filip Miletic - filmil 
+Developer 
+
+Florian Link - florianlink 
+
+Fabio Rampazzo Mathias - fmathias 
+
+François Rey - fmjrey 
+Developer 
+
+Frank M. Kromann - fmk_ca 
+Developer 
+
+Franck Martin - franck 
+Developer 
+
+FrankP - frank_p 
+Developer 
+
+Greg Rundlett - freephile 
+Developer 
+
+alain vicet - freevic 
+Developer 
+
+rodo - fr_rodo 
+Developer 
+
+Kentaro Fukuchi - fukuchi 
+Developer 
+
+John Bair - fumphco 
+Developer 
+
+Alain Gaeremynck - garem 
+Developer 
+
+Garfield - garfield-sf 
+
+Gary Griffin - garygriffin 
+Developer 
+
+Jinhyoung Park - gene203 
+Translator (I18N/L10N) 
+
+Georger Araujo - georger_br 
+Developer 
+
+Gert Dewit - gertdewit 
+Developer 
+
+George Geller - ggeller 
+Developer 
+
+Giacomel - giak 
+Developer 
+
+Gilles Maire - gillesm 
+Developer 
+
+Gil Shwartz - gilshwartz 
+Developer 
+
+Giotto - giottomx 
+Developer 
+
+Gustavo Muslera - gmuslera 
+Analysis / Design 
+
+Dimitri Smits - gongo 
+Developer 
+
+spider - gravesweeper 
+Developer 
+
+Greg Martin - gregmartin 
+Developer 
+
+Cameron Zemek - grom_3 
+Developer 
+
+Greg Spira - gspira 
+Developer 
+
+Samuel Denis D'Ortun - guideweb 
+Developer 
+
+Guido Scherp - guidoscherp 
+Developer 
+
+Gunnar René Øie - gunnarre 
+Developer 
+
+Sean - gunner98 
+Developer 
+
+Francois Guy - guyfr 
+Developer 
+
+Dieter Verfaillie - halon 
+Developer 
+
+Marc Kalberer - hangerman 
+Developer 
+
+Hartsa1 - hartsa1 
+
+hinasita - hina 
+Developer 
+
+Homunq - homunq 
+Developer 
+
+Hans Saelens - hsaelens 
+Developer 
+
+Hubert Sirois - hubert_doublev3 
+Developer 
+
+Peter.Lucius - hybridruide 
+Translator (I18N/L10N) 
+
+Bobby Joe - hyper 
+Developer 
+
+Dennis Cooley - ibtubed 
+Developer 
+
+Conrad Rentsch - ice8878 
+Developer 
+
+ikky - ikky 
+
+illori - illori 
+Tester 
+
+Inge Solvoll - ingesol 
+Developer 
+
+Mike Benoit - ipso 
+Developer 
+
+Kristian K�hntopp - isotopp 
+Developer 
+
+Elvira - isotrol 
+Developer 
+
+Ivan Muravyev - jaan1024 
+
+John Lewis - jahlewis 
+Doc Writer 
+
+Djamel Kadi - jamk 
+Developer 
+
+Jason Diceman - jasondiceman 
+Developer 
+
+Jason Lam - jasonlam604 
+Developer 
+
+Chandra - javaguru1729 
+Developer 
+
+Jay Campbell - jaycampbell 
+Developer 
+
+Josh Burley - jburleyebuilt 
+Developer 
+
+Jonathan Smith - jcwinnie 
+All-Hands Person 
+
+Josef Drexler - jdrexler 
+Developer 
+
+habib - jeanhabib 
+Developer 
+
+Larry Lewis - jenolan1701 
+Developer 
+
+Jean-François Noubel  - jfnoubel 
+
+John Jolly - jjolly 
+Developer 
+
+Jeremy Jongsma - jjongsma 
+Developer 
+
+Jim Kring - jkring 
+Developer 
+
+José Luis Gordo Romero - jlgordo 
+Developer 
+
+Joan Maspons - jmaspons 
+
+Juzan Jean-Michel  - jmjuzan 
+
+Johann -Peter Hartmann  - joeyhartmann 
+Developer 
+
+Johan Hovold - johan_mx 
+Developer 
+
+jonny Bradley - jonnybradley 
+Developer 
+
+Jorge Costa - jorgercosta 
+Translator (I18N/L10N) 
+
+josefgc - josefgc 
+Developer 
+
+Juan Pablo Gim�nez - jpgimenez 
+Developer 
+
+Jason powers - jpowys 
+Developer 
+
+Javier Reyes - jreyesg 
+
+It is just me - jujusl 
+Developer 
+
+James Wigdahl - jwigdahl 
+Developer 
+
+Jyes Beat - jyesbeat 
+
+Jean-Marc Libs  - jyhem 
+Developer 
+
+Martin Minka - k2sSourceForge.net Donor 
+Developer 
+
+Kyle Adams - kadams54 
+Developer 
+
+Till - kalendin 
+Developer 
+
+Karneevor - karneevor 
+Developer 
+
+Daniel Kehoe - kehoe 
+Developer 
+
+Mike Kerr - kerrnel22 
+Developer 
+
+KodeWulf - kodewulf 
+Developer 
+
+Simon Vogl - koobla 
+Developer 
+
+Kent Primrose - krose 
+Developer 
+
+Scott Harmon - ksumacgyver 
+Developer 
+
+Kyori Yaganagi - kyori 
+Developer 
+
+Jim Ramsay - lack 
+Developer 
+
+snlr - laetzer 
+Developer 
+
+Joan Vilari�o - lechuckdapirate 
+Developer 
+
+Vincent Lee - leehongfay 
+Developer 
+
+Luis Fagundes - lfagundes 
+Developer 
+
+Nathanael - lihaowei2008 
+Support Technician 
+
+Steve Brewer - limako 
+Developer 
+
+Lee Wilson (aka stella12) - limited1 
+Developer 
+
+Lluna - llunax 
+Developer 
+
+Laurent Moss - lmoss 
+
+Lew Newby - lnewby 
+Developer 
+
+Wells Wang - lonelyp 
+Developer 
+
+Jon - lorfds 
+
+Louis -Philippe Huberdeau  - lphuberdeau 
+Developer 
+
+Luis Argerich - lrargerich (admin) 
+All-Hands Person 
+
+Lester Caine - lsces 
+Developer 
+
+Luca Marletta - lucamarletta 
+Developer 
+
+luciash d' being - luciash (admin) 
+Developer 
+
+Ralf E. Lueders - lueders 
+Developer 
+
+Lukian Tabandjov - lukian-dev 
+Developer 
+
+magius - magius 
+Developer 
+
+Pawel Szymczykowski - makenai 
+Developer 
+
+marcello mannino - marcius 
+Developer 
+
+Marc Laporte - marclaporte (admin) 
+Project Manager 
+
+SnowCrash - marcmont 
+
+marco parronchi - marcop13 
+Developer 
+
+Mariana Tome - marianat 
+Developer 
+
+Markus Gunske von Koelln - markusvk 
+Developer 
+
+Philippe Marcoux - marp2901 
+Developer 
+
+martinmanyhats - martinmanyhats 
+All-Hands Person 
+
+**Mya** - marylly 
+Developer 
+
+Pete Morgan - mashmorgan 
+Developer 
+
+Massimo Infunti - massimoi 
+Developer 
+
+mastre - mastre 
+
+Matt Langley - mattlangley1 
+Developer 
+
+Michael Bravo - mbravo 
+Developer 
+
+mcfarland - mcfarland 
+Developer 
+
+Dr. Elliot McGucken - mcgucken 
+Developer 
+
+Mike Churchward - mchurch 
+
+Yannick Majoros - melmut 
+Developer 
+
+Michael Gfeller - mgfeller 
+Developer 
+
+Hausi - mhausi 
+Developer 
+
+Michal Hryciuk - mhryciuk 
+Translator (I18N/L10N) 
+
+Michael Davey - michael_davey 
+Developer 
+
+Mike Culbertson - mikelcu 
+Developer 
+
+Mike Nielsen - mikenielsen 
+Developer 
+
+Mike's Pub - mikespub 
+
+Michael Walsh - mikewalsh 
+Tester 
+
+Robin Millette - millette 
+Developer 
+
+Mitch Murphy - mitchmurphy 
+Developer 
+
+Brian Williams - mixolyde 
+Developer 
+
+Michael Linton - mlinton 
+Developer 
+
+Loïc Monthorin - monthorin 
+Developer 
+
+moresun - moresun 
+Developer 
+
+Michael Morgan - morgamic 
+Developer 
+
+Leif Mortenson - mortenson 
+Developer 
+
+mose - mose (admin) 
+Project Manager 
+
+Renato da Silva Pereira - mrbuiu 
+Translator (I18N/L10N) 
+
+Michael Wexler - mwexler 
+Developer 
+
+Jan B - najb 
+Developer 
+
+prashant - nalsar 
+Developer 
+
+nanoia - nanoia 
+Developer 
+
+Natalia Golmar - natig 
+Developer 
+
+Nathan Waterhouse - natster 
+Developer 
+
+Dietmar Neidhart - neidhart 
+Developer 
+
+Norbert Huffschmid - nhuffschmid 
+Developer 
+
+Nicolas Dimitrijevic - niclone 
+Developer 
+
+Nik Chankov - nikchankov 
+
+Nelson - nkoth 
+Developer 
+
+Norm - normandaoust 
+
+Brian Nelson - notgod 
+Developer 
+
+notix - notix 
+Developer 
+
+Patrice W. - nyloth 
+Developer 
+
+Oliver Hertel - ohertel (admin) 
+Developer 
+
+Oliver Scheck - oliverscheck 
+Developer 
+
+David Bovill - opn-tech 
+Developer 
+
+Danny Staple - orionrobots 
+Developer 
+
+Ota Lunak - otalunak 
+Developer 
+
+Justin Patrin - papercrane 
+Developer 
+
+Damian Parker - parkercroft 
+Developer 
+
+Patrick McCormick - patrickmc 
+Developer 
+
+pemen - pemen 
+Developer 
+
+Alex - penny336 
+Developer 
+
+Cedric Fontaine - peoman 
+Developer 
+
+Philippe Baret - philbaret 
+Developer 
+
+Phil - philwhipps 
+Developer 
+
+phunkymunky - phunkymunky 
+Developer 
+
+Mario Mene' - pippone 
+Developer 
+
+Pete Thompson - pistoljitsu 
+Developer 
+
+pkdille - pkdille 
+Developer 
+
+Peter Lillevold - plillevold 
+Translator (I18N/L10N) 
+
+Stephen Kurkowski - plungerman 
+Support Manager 
+
+Paulino Michelazzo - pmichelazzo 
+Developer 
+
+Nimish Pachapurkar - pnimish 
+Developer 
+
+Peter Popovich - popovich 
+Developer 
+
+Marco Pratesi - pratesi 
+Developer 
+
+Matthew Kennedy - prezkennedy 
+Developer 
+
+Peter - ptalindstrom 
+Developer 
+
+Tom Salter - ptydotcc 
+Developer 
+
+Aaron Holmes - pyrotknix 
+Developer 
+
+Everard Brown - rabiddog 
+Developer 
+
+Ragnvald Larsen - ragnvald 
+Developer 
+
+Ramiro Vera - ramiro_v 
+Developer 
+
+Reid Spencer - raspencer 
+Developer 
+
+Matt E. Patterson - razorwyre 
+Developer 
+
+Rodrigo B. Schmidt - rbschmidt 
+Developer 
+
+Rick Cogley - rcogley 
+Doc Writer 
+
+Florian Gleixner - redflo (admin) 
+Developer 
+
+Roberto H. Winter - rhwinter 
+Developer 
+
+Richard Snow - richardsnow 
+
+Richard Tango -Lowy  - richtl 
+Developer 
+
+rick - ricks99 
+Developer 
+
+mrisch - rischconsulting 
+Developer 
+
+Roberto Leibman - rleibman 
+Developer 
+
+Robin Powell - rlpowell 
+Developer 
+
+Chris Campbell - rockpaper 
+Developer 
+
+Patrice ALBARET - ronchon 
+Developer 
+
+Ross Smith - rossta 
+Developer 
+
+Roy Sinn - roysinn 
+Developer 
+
+Robert P. Goldman - rpgoldman 
+Developer 
+
+James Morgan - rubaiyat 
+Doc Writer 
+
+martin sarsale - runix2 
+Developer 
+
+Hervé Schoenenberger - rv540 
+Developer 
+
+sabdelma - sabdelma 
+Developer 
+
+Rodrigo Sampaio Primo - sampaioprimo 
+Developer 
+
+Sylvain Carle - scarle 
+Developer 
+
+Stephen Lee - sdlee 
+Developer 
+
+Stéphane Casset - sept_7 
+
+sameh - sghane 
+Developer 
+
+Daniyel Sili - shinhan 
+Developer 
+
+Chris White - shiroitenshi 
+
+Flo Wunderle - sideshow_bob 
+
+Sikko - sikko23 
+Translator (I18N/L10N) 
+
+Sridhar - siridhar 
+
+cem gencer - spaztica 
+
+Christian Fowler - spiderr 
+Developer 
+
+Max Kremmel - squareing 
+Developer 
+
+Rasheed Abdal-Aziz  - squee-d 
+Developer 
+
+Lee L Bell - starrrider 
+Doc Writer 
+
+sting tao - stingtao 
+Developer 
+
+Stuart Donaldson - stuartd 
+Developer 
+
+Sam - subnoodle 
+Developer 
+
+Vijay Aswadhati - swayambhu 
+Developer 
+
+Wil Huijben - swillie 
+Developer 
+
+Sylvie Greverend - sylvieg (admin) 
+Developer 
+
+anatoly techtonik - techtonik 
+Developer 
+
+teedog - teedog 
+Developer 
+
+TeLeNiEkO - telenieko 
+Developer 
+
+tmg - terris 
+Developer 
+
+Fernando Freire - thenano 
+Developer 
+
+Glenn Henshaw - thraxisp 
+Developer 
+
+tibi stibi - tibistibi 
+Developer 
+
+TimeO - timedout_net 
+Developer 
+
+tna - tna 
+Developer 
+
+Technical Writer - todd_here 
+Developer 
+
+Real - tofreal 
+Developer 
+
+bertrand Gugger - toggg 
+Developer 
+
+Tom Bouillut - tombombadilom 
+Developer 
+
+Harold Campbell - traivor 
+Developer 
+
+Toni - uiprncss 
+Developer 
+
+Uira ZX - uira 
+Developer 
+
+Mickey Mullin - vaguery 
+Developer 
+
+Vikas Rijsinghani - vikasrij 
+Developer 
+
+Vincent Guffens - vinsz 
+Developer 
+
+Dave Sanders - vulgrin 
+Developer 
+
+Van Woods - v-woods 
+Developer 
+
+wbeaver - wbeaver 
+Developer 
+
+Wesley Willians - wesleywillians 
+Developer 
+
+A. Zargamy - wings-of-glory 
+Developer 
+
+Nick Woolley - wu-lee 
+Developer 
+
+W van der Ploeg - wvdploeg 
+Developer 
+
+xaman - xaman 
+Developer 
+
+Xavier de Pedro - xavidp 
+
+Xavier Barnabé-Thériault  - xbtheria 
+Developer 
+
+Ben - xenfasa 
+Developer 
+
+Martin Zwickel - xeno_tt 
+Developer 
+
+yturgeon - yanturgeon 
+Developer 
+
+Yoni - yonixxx 
+
+YongHa Kim - ysoya 
+Developer 
+
+Yu Zhen Xin - yuzhenxin 
+Translator (I18N/L10N) 
+
+Diego Zamboni - zamboni 
+Developer 
+
+zaufi - zaufi 
+Developer 
+
+Cecil Sheng - zcecil 
+Translator (I18N/L10N) 
+
+Ziba - zibas 
+Developer 
+
+Eric Harris-Braun  - zippy314 
+Developer 
+
+
+
+
+
+--
+EOF
+=======
+
+That list is constantly evolving and new contributors 
+are very welcome to grow that file. Maybe some recent 
+contributor can have been omitted, and some of above
+information can be inadequate or outdated.
+
+In case of need for modification, please contact 
+admin@tikiwiki.org (alias to luci, luis, marc,
+mose, oliver, sylvie and redflo)
+

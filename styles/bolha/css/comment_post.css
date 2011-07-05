@@ -1,0 +1,41 @@
+.commPreview {
+	border:1px solid black;
+	margin:10px;
+	padding:5px;
+}
+
+.comMainTitle {
+	background-color:#f9f9f9;
+	border:1px solid gray;
+	text-align:center;
+	font-size:16pt;
+	margin:5px 0 5px 0;
+	padding:2px;
+}
+
+#comments-title, #editpost2 {
+	width:95%;
+	border:1px inset rgb(233, 233, 174);
+	padding:3px 0px 3px 3px;
+	background-color:#f1f1f1;
+	margin-left:5px;
+}
+
+#comPostCont {
+	padding:5px;
+}
+
+#comButtons {
+	text-align:right;
+	padding:3px;
+}
+
+#comButtons INPUT {
+	border:0px;
+	font-size:12px;
+	background-color:#d9d9d9;
+}
+
+#editpostform h3 {
+	margin:0;
+}

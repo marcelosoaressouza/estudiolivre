@@ -1,0 +1,14 @@
+#lightbox {
+	background-color:#aaaaaa;
+	border:10px solid #aaaaaa;
+	display:none;
+	}
+
+#closeButton{
+	cursor:pointer;
+	text-align:right;
+	background-color:#ff0000;
+}
+
+
+

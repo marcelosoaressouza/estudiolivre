@@ -1,0 +1,13 @@
+--- lib/wiki/wikilib.php	2006-07-18 11:14:03.000000000 -0300
++++ lib/wiki/wikilib.php	2006-07-18 11:14:10.000000000 -0300
+@@ -205,8 +205,8 @@
+ 
+ 		// in tiki_categorized_objects update objId
+ 		$newcathref = 'tiki-index.php?page=' . urlencode($newName);
+-		$query = "update `tiki_categorized_objects` set `objId`=?,`name`=?,`href`=? where `objId`=?";
+-		$this->query($query, array( $newName, $newName, $newcathref, $oldName));
++		$query = "update `tiki_objects` set `itemId`=?,`name`=?,`href`=? where `type`=? and `itemId`=?";
++		$this->query($query, array( $newName, $newName, $newcathref, 'wiki page', $oldName));
+ 	
+ 		// old code that doesn't seem to be working
+ 		//	$query = "update tiki_categorized_objects set objId='$newId' where objId='$oldId'";

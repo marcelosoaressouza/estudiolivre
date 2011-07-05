@@ -1,0 +1,17 @@
+#corpo {
+	width:50%;
+}
+
+#wikitopline {
+	position:relative;
+	top:-20px;
+	left:0px;
+	width:100%;
+	text-align:left;
+}
+.wikitopline {
+
+	width:300px;
+	text-align:left;
+	
+}

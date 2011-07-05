@@ -1,0 +1,11 @@
+--- lib/tikilib.php	2006-05-23 13:45:05.000000000 -0300
++++ lib/tikilib.php	2006-05-26 14:55:03.000000000 -0300
+@@ -3231,7 +3231,7 @@
+ 
+     function last_pages($maxRecords = -1) {
+         global $user;
+-	$query = "select `pageName`,`lastModif`,`user` from `tiki_pages` order by ".$this->convert_sortmode('lastModif_desc');
++	$query = "select `pageName`,`lastModif`,`user`,`comment` from `tiki_pages` order by ".$this->convert_sortmode('lastModif_desc');
+ 	$result = $this->query($query,array(),$maxRecords,0);
+ 	$ret = array();
+ 	while ($res = $result->fetchRow()) {

@@ -1,0 +1,42 @@
+/* estilos para as páginas que listam:
+	- usuários (tiki-list_users.tpl)
+ 	- forums (tiki-list_forums.tpl)
+ 	- blogs (tiki-list_blogs.tpl)
+  	- modulos (tiki-user_assigned_modules.tpl)  */    
+
+/*tabela*/
+
+#corpo {
+	width:80%
+}
+
+#tracker table, #users table, #forum table, #blogs table, #listLastChanges table, #editMods table, #viewForum table {
+	border-collapse:collapse;
+	vertical-align:baseline;
+	width:100%;
+	text-align:left;
+
+}
+
+.tableTitle {
+	width:30%;
+}
+
+#tracker table, #users td, #forum td, #blogs td, #listLastChanges td, #editMods td, #viewForum td {
+	line-height:20px;
+	border-bottom:1px solid #aaaaaa;
+	border-right:1px dotted #eeeeee;
+	
+}
+
+#tracker td.heading, #users td.heading, #forum td.heading, #blogs td.heading, #listLastChanges td.heading, #editMods td.heading, #viewForum td.heading {
+font-weight:bold;
+padding-right:20px;
+border-bottom:1px solid #000000;
+border-right:0px solid #000000;
+}
+
+#users .foto {
+}
+
+/*headers*/

@@ -1,0 +1,12 @@
+#tiki-mid .wikitext {
+	text-align:	justify;
+}
+
+#viewForum TEXTAREA {
+	width:	100%;
+}
+
+#editpageform {
+	padding:	0 10px 0 10px;
+}
+

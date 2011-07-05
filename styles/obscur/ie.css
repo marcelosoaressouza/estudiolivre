@@ -1,0 +1,44 @@
+html {
+	background-image:url(estudiolivre/bgGradientBlue.png);
+	background-repeat:repeat-x;
+}
+
+body {
+	background-image:url(estudiolivre/bgShadowIE.png);
+	background-repeat:repeat-y;
+	background-position: center;
+}
+
+DIV#topContainer {
+	height:35px;
+	padding:10px;
+}
+
+UL.searchOptions {
+	position:relative;
+	left: 0px;
+	margin: 0px;
+	padding: 0px;
+	list-style-type:none;
+}
+
+DIV#topMenuGeneral {
+	margin-top:0px;
+	float:left;
+}
+
+DIV#topMenuCubes {
+
+}
+
+DIV#uLoginBox input.uText {
+	border:2px solid #e8e8e8;
+	height:22px;
+	margin-bottom:2px;
+	display:block
+}
+
+#listFilters LI {
+	position:relative;
+	left:-5px;
+}

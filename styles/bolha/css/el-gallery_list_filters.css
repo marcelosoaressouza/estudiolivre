@@ -1,0 +1,68 @@
+.buttonActive {
+	float:left;
+	height:20px;
+	background-image:url(../img/bMidActive.png);
+	cursor:pointer;
+	padding:0px 4px 0px 4px;
+	border-right:1px solid #7f7f7f;
+}
+
+.buttonInactive {
+	float:left;
+	height:20px;
+	background-image:url(../img/bMidInac.png);
+	cursor:pointer;
+	padding:0px 4px 0px 4px;
+	border-right:1px solid gray;
+}
+
+.listFiltersButtons {
+	list-style-type:none;
+	display:inline;
+	font-size:12px;
+}
+
+.listFiltersButtons li {
+	float:left;
+}
+
+.listFiltersButtons img {
+	float:left;
+}
+
+.listFiltersButtons A {
+	position:relative;
+	top:2px;
+	color:black;
+}
+
+.buttonInactiveRight {
+	border-right:0px solid gray;
+}
+
+
+#listOptions {
+	margin:10px 0;
+	padding:0 5px;
+	width:100%;
+}
+
+#listOrder {
+	font-size:12px;
+}
+
+#listOrder select {
+	border:1px solid white;
+}
+
+.left {
+	text-align:left;
+}
+
+.right {
+	text-align:right;
+}
+
+.center {
+	text-align:center;
+}

@@ -1,0 +1,120 @@
+p.editdate {
+	float:right;
+	border-top:1px solid #ececec;
+	padding-top:5px;
+	font-size:10px;
+	text-align:right;
+}
+
+#tiki-mid .wikitext {
+	text-align:justify;
+}
+
+.wikitopline {
+	margin-bottom:5px;
+	padding-top:5px;
+}
+
+.wikitopline IMG {
+	margin-left:10px;
+}
+
+#wikitext H1 {
+	font-weight:normal;
+	font-variant:small-caps;
+	border-bottom:1px solid grey;
+}
+
+#wikitext H2 {
+	font-size:14px;
+	text-transform:uppercase;
+	font-weight:bold;
+}
+
+#wikitext H3 {
+	font-weight:bold;
+}
+
+#wikitext P {
+	text-align:justify;
+	text-indent:2em;
+}
+
+#wikitext A:link {
+	color:#808080;
+	text-decoration:underline;
+}
+
+#wikitext A:hover {
+	color:grey;
+	text-decoration:none;
+}
+
+#wikitext A:visited {
+	color:#93a3b2;
+	text-decoration:underline;
+}
+
+#wikitext A.wikinew {
+	color:red;
+	font-size:14px;
+}
+
+/* classe usada para o que estiver entre '-=' e '=-', tipo '-=titulo=-'*/
+.titlebar {
+	padding-left:10px;
+	margin: 0 auto;
+	margin-bottom:20px;
+	font-size:24px;
+	font-variant: small-caps;
+	text-align:center;
+	border-top: 1px solid #aaaaaa;
+	background-color:#eeeeee;
+}
+
+.titlebar:first-letter {
+    text-transform: uppercase;
+   	font-size:28px;
+   	font-weight:bold;
+}
+
+#wikitext A.wikinew {
+	color: red;
+	font-size:14px;
+}
+
+A.external{
+	background:url(../img/externalLink.png) center right no-repeat;
+	padding-right:13px;
+}
+
+/* classe das coisas dentro de '^' do wiki (fica uma caixa em volta)*/
+.simplebox {
+  background: #efefef;
+  border: 1pt dashed #aaa;
+  font-family: monospace;
+/*  white-space: pre;*/
+  margin:5px;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding: 2px;
+  font-weight:bold;
+}
+
+/* classe das linhas que comecam com espaco no wiki, sao as linhas de 'codigo'*/
+tt {
+	display:block;
+	font-family: courier, serif, monospace;
+	margin:2px;
+	margin-left:15px;
+	margin-bottom:5px;
+	/*border: 1px solid green;	*/
+}
+
+/*classe dos [+] e [-] que aparecem ao lado das tags wiki '!+' ou '!-' ou '!!+' e assim por diante */
+.flipper{
+	cursor:pointer;
+	margin-left:5px;
+	margin-right:5px;
+	margin-bottom:0.2em;
+}

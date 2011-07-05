@@ -1,0 +1,12 @@
+--- lib/tikilib.php	2007-07-25 01:09:38.000000000 -0300
++++ lib/tikilib.php	2007-07-25 01:07:05.000000000 -0300
+@@ -1574,6 +1574,9 @@
+ 	// Remove individual permissions for this object if they exist
+ 	$query = "delete from `users_objectpermissions` where `objectId`=? and `objectType`=?";
+ 	$result = $this->query($query,array(md5($object),$type));
++	// remove object
++	global $objectlib;
++	$objectlib->delete_object($type, $id);
+ 	return true;
+     }
+ 

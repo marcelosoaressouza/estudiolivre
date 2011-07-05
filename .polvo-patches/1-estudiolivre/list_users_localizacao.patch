@@ -1,0 +1,27 @@
+--- lib/tikilib.php	2006-06-04 22:28:58.000000000 -0300
++++ lib/tikilib.php	2006-09-19 18:37:07.000000000 -0300
+@@ -2115,8 +2115,8 @@
+ 
+ 	// Fixed the not null. After some research i came to the conclusion that only these dbms that i use
+ 	// lack a ansi outer join syntax. I guess using outer joins should be ok. redflo.
+-	if (substr($sort_mode,1,7)=="country") {
+-		$query = "select u.*, f.`user` as friend, p.`value` as country from `users_users` as u left join `tiki_friends` as f on u.`login`=f.`friend` and f.`user`=? left join `tiki_user_preferences` p on u.`login`=p.`user` and p.`prefName`='country' $mid order by $sort_mode";
++	if (substr($sort_mode,1,5)=="local") {
++		$query = "select u.*, f.`user` as friend, p.`value` as local from `users_users` as u left join `tiki_friends` as f on u.`login`=f.`friend` and f.`user`=? left join `tiki_user_preferences` p on u.`login`=p.`user` and p.`prefName`='local' $mid order by $sort_mode";
+ 	} else {
+ 		$query = "select u.*, f.`user` as friend, p.`value` as realName from `users_users` as u left join `tiki_friends` as f on u.`login`=f.`friend` and f.`user`=? left join `tiki_user_preferences` p on u.`login`=p.`user` and p.`prefName`='realName' $mid order by $sort_mode";
+ 	}
+--- tiki-list_users.php	2005-06-29 23:21:27.000000000 -0300
++++ tiki-list_users.php	2006-09-19 18:30:59.000000000 -0300
+@@ -81,9 +81,9 @@
+ 	}
+ 
+ 	$userprefs=$listusers["data"][$i]["preferences"];
+-	$country="None";
++	$country="";
+ 	for ($j=0;$j<count($userprefs);$j++) {
+-			if ($userprefs[$j]["prefName"]=="country") $country=$userprefs[$j]["value"];
++			if ($userprefs[$j]["prefName"]=="local") $country=$userprefs[$j]["value"];
+ 			if ($userprefs[$j]["prefName"]=="realName") $listusers["data"][$i]["realName"]=$userprefs[$j]["value"];
+ 	}
+ 	$listuserscountry[]=$country;

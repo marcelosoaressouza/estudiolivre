@@ -1,0 +1,16 @@
+--- tiki-editpage.php	2006-11-24 14:58:01.000000000 -0200
++++ tiki-editpage.php	2006-11-24 14:59:29.000000000 -0200
+@@ -876,6 +876,13 @@
+ 
+ ask_ticket('edit-page');
+ 
++if (isset($_REQUEST["freetag_string"])) {
++    $smarty->assign_by_ref('taglist', $_REQUEST["freetag_string"]);
++}
++
++$useJs=$tikilib->get_user_preference($user,'user_useEditJs');
++$smarty->assign('useJavascript',$useJs);
++
+ // disallow robots to index page:
+ $smarty->assign('metatag_robots', 'NOINDEX, NOFOLLOW');
+ 

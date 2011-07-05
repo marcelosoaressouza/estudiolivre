@@ -1,0 +1,127 @@
+.modCenterContent {
+	text-align:center;
+}
+.modViewAll {
+	text-align:right;
+}
+
+.modViewAll A {
+	text-decoration:underline;
+}
+
+/*module.tpl*/
+.userMenu .closeButton {
+	float:left;
+	margin:-1px 0 0 2px;
+}
+
+.userMenuContent {
+	text-align:left;
+	background-color:white;
+	font-size:12px;
+	padding:5px 0 5px 0;
+	overflow:hidden;
+}
+
+.userMenuContent img.uThumb {
+	height:50px;
+	float:left;
+	margin:5px 5px 5px 15px;
+}
+
+.userMenuContent hr {
+	width:80px;
+}
+
+.userMenu {
+	-moz-border-radius:8px 8px 8px 8px;
+	border:1px solid #e5e5e5;
+	text-align:right;
+	font-size:11px;
+	margin:0 10px 10px 10px;
+	padding:0px 5px 0px 5px;
+}
+
+.userMenu H1 {
+	-moz-border-radius:10px 10px 2px 2px;
+	background-color:#e5e5e5;
+	color:#aaa;
+	font-size:12px;
+	font-weight:bolder;
+	margin:0 -5px 0px -5px;
+	padding-right:2px;
+}
+
+/*mod-el_msgs.tpl*/
+.mod-el_msg-msg {
+	text-decoration:none;
+	color:black;
+}
+
+/*mod-who_is_there.tpl*/
+#moduleWhoIsThereMore {
+	padding-left:20px;
+}
+
+/*tiki-poll.tpl e mod-login_box.tpl*/
+/*#userNameStatsKarma {
+	height:50px;
+	text-align:center;
+}
+
+#uMenuName {
+	width:100%;
+	font-size:18px;
+	font-weight:bold;
+}
+
+#uStats {
+	font-size:10px;
+	color:gray;
+}
+*/
+
+/*quando NAO está logado:*/
+#uLoginBox input.uText {
+	border:2px solid #e8e8e8;
+	height:16px;
+	margin-bottom:2px;
+}
+
+#uLoginBox {
+	text-align:left;
+}
+
+#login-user {
+	width:97%;
+}
+
+#uLoginOptions {
+	padding:2px;
+	font-size:12px;
+}
+
+#login-pass {
+	width:85%;
+	margin-right:3px;
+}
+/*quando está logado:*/
+
+#userMod {
+	margin-top:5px;
+	text-align:center;
+}
+
+#userMod img{
+	max-width:100px;
+	max-height:100px;
+}
+
+#userMod a{
+	display:block;
+}
+
+#userMod #nome{
+	font-size:20px;
+	font-weight:bold;
+}

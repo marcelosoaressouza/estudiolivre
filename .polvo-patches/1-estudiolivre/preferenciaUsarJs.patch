@@ -1,0 +1,29 @@
+--- tiki-user_preferences.php	2006-06-07 19:03:29.000000000 -0300
++++ tiki-user_preferences.php	2006-07-25 17:27:06.000000000 -0300
+@@ -102,6 +102,16 @@
+ 		$smarty->assign('user_dbl', 'n');
+ 	}
+ 
++	if (isset($_REQUEST['user_useEditJs']) && $_REQUEST['user_useEditJs'] == 'on') {
++		$tikilib->set_user_preference($userwatch, 'user_useEditJs', 'y');
++
++		$smarty->assign('user_useEditJs', 'y');
++	} else {
++		$tikilib->set_user_preference($userwatch, 'user_useEditJs', 'n');
++
++		$smarty->assign('user_useEditJs', 'n');
++	}
++
+ 	if (isset($_REQUEST['diff_versions']) && $_REQUEST['diff_versions'] == 'on') {
+ 		$tikilib->set_user_preference($userwatch, 'diff_versions', 'y');
+ 
+@@ -404,6 +414,9 @@
+ $user_dbl = $tikilib->get_user_preference($userwatch, 'user_dbl', 'y');
+ $smarty->assign_by_ref('user_dbl', $user_dbl);
+ 
++$user_useEditJs = $tikilib->get_user_preference($userwatch, 'user_useEditJs', 'n');
++$smarty->assign_by_ref('user_useEditJs', $user_useEditJs);
++
+ $user_information = $tikilib->get_user_preference($userwatch, 'user_information', 'public');
+ $smarty->assign('user_information', $user_information);
+ $diff_versions = $tikilib->get_user_preference($userwatch, 'diff_versions', 'n');

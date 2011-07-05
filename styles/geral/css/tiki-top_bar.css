@@ -1,0 +1,96 @@
+﻿/*futuras tags especiais*/
+
+#topMenuCubesContainer {
+	position:absolute;
+	top:35px;
+	height:5em;
+	left:230px;
+	width:85px;
+	text-align:left;
+}
+
+#topMenuCubesContainer a {
+	color:#000000;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#topMenuCubesContainer a:hover {
+	color:#00aa00;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#logo {
+	position:absolute;
+	top:14px;
+	left:35px;
+}
+
+#topMenuGeneral {
+	position:absolute;
+	top:35px;
+	height:5em;
+	width:70px;
+	left:330px;
+	text-align:left;
+}
+
+#topMenuGeneral a{
+	color:#000000;
+	font-weight:bold;
+	text-decoration:none;
+}
+#topMenuGeneral a:hover {
+	color:#0000aa;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#topSubMenu {
+	position:absolute;
+	top:35px;
+	left:415px;
+	width:60px;
+	text-align:left;
+}
+
+#topSubMenu a {
+	color:#000000;
+	font-weight:bold;
+	text-decoration:none;
+}	
+	
+#topSubMenu a:hover {
+	color:#ff0000;
+	font-weight:bold;
+	text-decoration:none;
+}
+	
+/* ultimas alteracoes */
+.editdate{
+	position:absolute;
+	top:-35px;
+	left:350px;
+	width:150px;
+	text-align:left;
+	color:#666666;
+	font-size:10px;
+	line-height:10px;
+}
+
+/*a busca*/
+
+#search {
+	background-color:#ffffff;
+	position:absolute;
+	top:35px;
+	left:600px;
+}
+.submit {
+border:0px solid #000000;
+}
+
+.selected {
+border:1px dotted #aaaaaa;
+}

@@ -1,0 +1,51 @@
+.tabcontent {
+	padding:5px;
+}
+
+.cbox-title {
+	padding-left:5px;
+	font-weight:bold;
+	font-size:16px;
+	margin:10px 0 10px 0;
+	background-color:#f9f9f9;
+	border:1px solid gray;
+}
+
+#userPrefs {
+	width:95%;
+	margin:0 auto;
+}
+
+#userPrefs FORM TABLE {
+	width:100%;
+}
+
+#userPrefs td.button {
+	text-align:center;
+}
+
+#userPrefs .form INPUT, #userPrefs .form SELECT {
+	border:1px inset rgb(233, 233, 174);
+	padding:1px 0px 1px 0px;
+	background-color:#f1f1f1;
+}
+
+#userPrefs .form SELECT {
+	padding:0px;
+}
+
+#userPrefs .button INPUT {
+	font-size:12px;
+	background-color:#d9d9d9;
+}
+
+#userPrefs H1 {
+	text-align:center;
+	font-size:20px;
+	margin:10px;
+}
+
+/*tiki-user_asigned_modules.css*/
+#editMods .centerCellCont {
+	text-align:center;
+}

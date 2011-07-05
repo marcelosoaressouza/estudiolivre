@@ -1,0 +1,34 @@
+.diffadded {
+	font-weight:bold;	
+}
+
+.diffdeleted {
+	text-decoration: line-through;
+}
+
+.diff td{
+	border-right:1px dotted #aaaaaa;
+	border-bottom:1px dotted #aaaaaa;
+	
+}
+
+.simplebox td {
+	border-right:1px dotted #aaaaaa;
+	border-bottom:1px dotted #aaaaaa;
+}
+#tiki-midAudio, #tiki-midVideo, #tiki-midGraf, #tiki-midAcervo, #tiki-mid {
+	
+	
+
+}
+
+#tiki-midNaoWiki,#tiki-midAcervo {
+	width:90%;
+}
+
+
+#ajax-contentBubble {
+	overflow:hidden;
+
+}
+

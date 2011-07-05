@@ -1,0 +1,1 @@
+update tiki_preferences set value='a:4:{i:0;s:9:"bolha.css";i:1;s:9:"geral.css";i:2;s:10:"obscur.css";i:3;s:12:"original.css";}' where name='available_styles';

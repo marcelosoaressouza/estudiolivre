@@ -1,0 +1,17 @@
+--- ../estudiolivre_base/tiki-logout.php	2006-06-07 19:00:28.000000000 -0300
++++ tiki-logout.php	2006-06-22 05:59:02.000000000 -0300
+@@ -45,7 +45,13 @@
+ } else {
+ 	unset ($user);
+ }
+-header ("location: $tikiIndex");
++
++if ((isset($_REQUEST['page']))) {
++	$page=$_REQUEST['page'];
++} else{
++	$page=$tikilib->get_preference("tikiIndex",'tiki-index.php');
++}
++header ("location: $page");
+ exit;
+ 
+ ?>

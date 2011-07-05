@@ -1,0 +1,19 @@
+--- tiki-show_user_avatar.php	2006-07-25 14:52:28.000000000 -0300
++++ tiki-show_user_avatar.php	2006-07-25 14:53:05.000000000 -0300
+@@ -22,7 +22,14 @@
+ $type = $info["avatarFileType"];
+ $content = $info["avatarData"];
+ 
+-header ("Content-type: $type");
+-echo "$content";
++if ($content) {
++	header ("Content-type: $type");
++	echo "$content";
++} else{
++	header ("Content-type: image/png");
++	$user_style = $tikilib->get_user_preference($user, 'theme', $style);
++	$curstyle=str_replace(".css", "", $user_style);
++	readfile("styles/".$curstyle."/img/iThumbUser.png");
++}
+ 
+ ?>

@@ -1,0 +1,98 @@
+.listItem {
+	position:relative;
+	border-top:1px solid #91cd6d;
+	/*border-bottom:1px solid #91cd6d;*/
+	margin:0 0 5px 0;
+	padding:5px 0 5px 0;
+}
+
+.listLeft {
+	position:absolute;
+	font-size:14pt;
+	text-align:center;
+	width:100px;
+	line-height:1.5em;
+}
+
+.listLeft img {
+	max-width:100px;
+	max-height:100px;
+}
+
+.listLeft .listRating{
+	position:absolute;
+	top:2px;
+	left:5px;
+}
+
+.listItem h2 {
+	margin:0;
+	padding:0;
+	padding-left:111px;
+	width:420px;
+	margin-left:2px;
+	font-family:Verdana;
+}
+
+.listItem h5 {
+	margin:0;
+	padding:0;
+	padding-left:111px;
+	width:420px;
+	margin-left:2px;
+	font-family:Verdana;
+	text-align:right;
+}
+
+.listItem h2 a {
+	line-height:1.5em;
+}
+
+.listItem .listInfo {
+	padding-left:101px;
+	/*width:400px;*/
+	margin-left:20px;
+}
+
+
+.listItem .listInfo h3{
+	font-family:Trebuchet MS;
+	font-size:12pt;
+	font-weight:normal;
+	font-style:italic;
+	margin-top:0.5em;
+	margin-bottom:0.2em;
+}
+
+.listItem .listInfo h4 {
+display:table;
+width:100%;
+	margin:0;
+	margin-top:10px;
+	font-size:8pt;
+	color:#79c245;
+	font-family:Arial Black;
+}
+
+.listItem .asRow {
+display:table-row;
+}
+
+.listItem .listInfo h4 span.lef, .listItem .listInfo h4 span.mid, .listItem .listInfo h4 span.rig{
+display:table-cell;
+width:33%;
+vertical-align:middle;
+}
+.listItem .listInfo h4 span.mid{
+text-align:center;
+}
+.listItem .listInfo h4 span.rig{
+text-align:right;
+}
+
+.listItem .listInfo h4 span em {
+	color:black;
+	font-style:normal;
+	font-family:Arial;
+	font-weight:normal;
+}

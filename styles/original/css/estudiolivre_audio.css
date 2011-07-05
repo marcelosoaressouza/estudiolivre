@@ -1,0 +1,23 @@
+@import "estudiolivre_orig.css";
+
+SPAN.page-title {
+	color:    #ff8200;
+}
+
+#tiki-coluna-direita {
+	top:630px;
+}
+
+#tiki-mid-fundo {
+	position:relative;
+	background:#f0f0f0;
+	background-image:url(estudiolivre_orig/back_audio.png);
+	background-repeat:no-repeat;
+	background-position: 10px 250px;
+	background-attachment: fixed;
+	width:80%;
+}
+
+div#tiki-top-bottom {
+	background-color: #ff8200;
+}
