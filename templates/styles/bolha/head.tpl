@@ -51,15 +51,20 @@ You are most likely wanting to modify the top of your Tiki site. Please consider
     
 	<link rel="StyleSheet"  href="styles/{$style}" type="text/css" />
 	<link rel="StyleSheet"  href="styles/{$style|replace:".css":""}/css/tooltip.css" type="text/css" />
-  
+  	<link rel="stylesheet" href="styles/{$style|replace:".css":""}/css/lightbox.css" type="text/css"/>
+
 	{* ---- JavaScripts ----*}
 		<script language="JavaScript" type="text/javascript" src="lib/ajax/tiki-ajax.js"></script>
 		{$xajax_js}
 		<script type="text/javascript" src="lib/js/general.js"></script>		
 		<script type="text/javascript" src="lib/js/toggleImage.js"></script>
-		<script language="JavaScript" type="text/javascript" src="lib/js/tooltip.js"></script>
-		<script language="JavaScript" src="lib/elgal/player/cortado.js"></script>
-		<script language="JavaScript">var style = '{$style|replace:".css":""}'</script>
+		<script type="text/javascript" src="lib/js/tooltip.js"></script>
+		<script type="text/javascript" src="lib/elgal/player/cortado.js"></script>
+		<script type="text/javascript" src="lib/js/lightbox.js"></script>
+
+		<script type="text/javascript">
+			var style = '{$style|replace:".css":""}'
+		</script>
 	{* ---- END ---- *}
 	
 	{if $favicon}

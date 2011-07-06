@@ -7,7 +7,7 @@
 {/literal}
 <div id="wikiPreviewCont">
 	<span id="label" class="wikiPreview hiddenPointer" onclick="javascript:flip('previewCont');javascript:flip('labelLine');toggleImage(document.getElementById('pTArrow'),'iArrowGreyRight.png');">
-		<img id="pTArrow" src="styles/{$style|replace:".css":""}/img/iArrowGreyDown.png">
+		<img alt="iArrowGreyDown" id="pTArrow" src="styles/{$style|replace:".css":""}/img/iArrowGreyDown.png"/>
 		{tr}Preview{/tr} {tr}da página{/tr} <b>{$page|escape|truncate:15:"(...)":true}</b>
 	</span>
 

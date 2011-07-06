@@ -4,12 +4,12 @@
 		{if $findwhat != ""}
 				{tr}Busca nas últimas alterações{/tr}
 		{else} 
-			{tr}Last Changes{/tr} &nbsp;&nbsp;&nbsp; <a href="tiki-wiki_rss.php?ver=2"><img src="styles/{$style|replace:".css":""}/img/iRss.png"></a>
+			{tr}Last Changes{/tr} &nbsp;&nbsp;&nbsp; <a href="tiki-wiki_rss.php?ver=2"><img alt="rss" src="styles/{$style|replace:".css":""}/img/iRss.png"/></a>
 		{/if}
 	</h1>
 	
 	<h5>
-		{tr}Busca{/tr} <img class="pointer" onclick="javascript:flip('lastChangesOptions');toggleImage(this,'iArrowGreyDown.png')" src="styles/{$style|replace:".css":""}/img/iArrowGreyLeft.png">
+		{tr}Busca{/tr} <img alt="arrowgreydown" class="pointer" onclick="javascript:flip('lastChangesOptions');toggleImage(this,'iArrowGreyDown.png')" src="styles/{$style|replace:".css":""}/img/iArrowGreyLeft.png"/>
 		<div id="lastChangesOptions" style="display:none">
 			<form method="get" action="tiki-lastchanges.php">
 				{tr}Modificações com texto{/tr}: <br/>
@@ -38,12 +38,12 @@
 			<tr>
 				<td class="heading">
 					<a class="tableheading" href="tiki-lastchanges.php?days={$days}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'lastModif_desc'}lastModif_asc{else}lastModif_desc{/if}">
-						<img src="styles/{$style|replace:".css":""}/img/sort{if $sort_mode eq 'lastModif_desc'}ArrowUp{elseif $sort_mode eq 'lastModif_asc'}ArrowDown{else}GreyArrowDown{/if}.png">
+						<img alt="lastchange" src="styles/{$style|replace:".css":""}/img/sort{if $sort_mode eq 'lastModif_desc'}ArrowUp{elseif $sort_mode eq 'lastModif_asc'}ArrowDown{else}GreyArrowDown{/if}.png"/>
 					</a>{tr}Date{/tr}
 				</td>
 				<td class="heading">
 					<a class="tableheading" href="tiki-lastchanges.php?days={$days}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'pageName_desc'}pageName_asc{else}pageName_desc{/if}">
-						<img src="styles/{$style|replace:".css":""}/img/sort{if $sort_mode eq 'pageName_desc'}ArrowUp{elseif $sort_mode eq 'pageName_asc'}ArrowDown{else}GreyArrowDown{/if}.png">
+						<img alt="lastchange" src="styles/{$style|replace:".css":""}/img/sort{if $sort_mode eq 'pageName_desc'}ArrowUp{elseif $sort_mode eq 'pageName_asc'}ArrowDown{else}GreyArrowDown{/if}.png"/>
 					</a>{tr}Page{/tr}
 				</td>
 				{*

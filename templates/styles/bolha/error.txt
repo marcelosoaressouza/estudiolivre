@@ -1,0 +1,64 @@
+line 6 column 1 - Warning: missing <!DOCTYPE> declaration
+line 6 column 1 - Warning: plain text isn't allowed in <head> elements
+line 6 column 1 - Info: <head> previously mentioned
+line 6 column 1 - Warning: inserting implicit <body>
+line 6 column 1 - Warning: <head> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 8 column 9 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 10 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 13 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 16 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 19 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 22 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 25 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 28 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 31 column 17 - Warning: <meta> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 34 column 9 - Warning: <title> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 52 column 9 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 53 column 9 - Warning: <link> attribute with missing trailing quote mark
+line 53 column 9 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 67 column 25 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 69 column 25 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 74 column 11 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 76 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 79 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 82 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 85 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 88 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 91 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 94 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 97 column 19 - Warning: <link> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+line 101 column 1 - Warning: </head> isn't allowed in <body> elements
+line 6 column 1 - Info: <body> previously mentioned
+Info: Document content looks like HTML 4.01 Transitional
+Info: No system identifier in emitted doctype
+29 warnings, 0 errors were found!
+
+To learn more about HTML Tidy see http://tidy.sourceforge.net
+Please fill bug reports and queries using the "tracker" on the Tidy web site.
+Additionally, questions can be sent to html-tidy@w3.org
+HTML and CSS specifications are available from http://www.w3.org/
+Lobby your company to join W3C, see http://www.w3.org/Consortium

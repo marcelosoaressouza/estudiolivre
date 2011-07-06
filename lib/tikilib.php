@@ -751,7 +751,7 @@ class TikiLib extends TikiDB {
     $csort_mode = '';
 
     if(substr($sort_mode,0,2) == "f_") {
-      list($a,$csort_mode,$corder) = split('_',$sort_mode);
+      list($a,$csort_mode,$corder) = preg_split('/_/',$sort_mode);
     }
 
     $trackerId = (int) $trackerId;
@@ -1397,7 +1397,7 @@ class TikiLib extends TikiDB {
 
       if(isset($interlist[$realm])) {
         $groups = $interlist[$realm]['groups'].',Anonymous';
-        return split(',',$interlist[$realm]['groups']);
+        return preg_split('/,/',$interlist[$realm]['groups']);
       }
     }
     elseif(!isset($this->usergroups_cache[$user])) {
@@ -1850,7 +1850,7 @@ class TikiLib extends TikiDB {
         $display = true;
 
         if(isset($res['section']) and $res['section']) {
-          $sections = split(",",$res['section']);
+          $sections = preg_split("/,/",$res['section']);
           foreach($sections as $sec) {
             if(!isset($smarty->_tpl_vars["$sec"]) or $smarty->_tpl_vars["$sec"] != 'y') {
               $display = false;
@@ -1861,7 +1861,7 @@ class TikiLib extends TikiDB {
 
         if($display && $tiki_p_admin != 'y') {
           if(isset($res['perm']) and $res['perm']) {
-            $sections = split(",",$res['perm']);
+            $sections = preg_split("/,/",$res['perm']);
             foreach($sections as $sec) {
               if(!isset($smarty->_tpl_vars["$sec"]) or $smarty->_tpl_vars["$sec"] != 'y') {
                 $display = false;
@@ -1875,7 +1875,7 @@ class TikiLib extends TikiDB {
           $usergroups = $this->get_user_groups($user);
 
           if(isset($res['groupname']) and $res['groupname']) {
-            $sections = split(",",$res['groupname']);
+            $sections = preg_split("/,/",$res['groupname']);
             foreach($sections as $sec) {
               if($sec and !in_array($sec,$usergroups)) {
                 $display = false;
@@ -2584,7 +2584,7 @@ class TikiLib extends TikiDB {
       $rest = $type;
 
       while($rest <> "") {
-        @list($type, $rest) = split("\+", $rest, 2);  //split 'x+y+z' into 'x' and 'y+z'
+        @list($type, $rest) = preg_split("/\+/", $rest, 2);  //split 'x+y+z' into 'x' and 'y+z'
 
         if($type <>"") {
           if($add == "") {
@@ -2627,7 +2627,7 @@ class TikiLib extends TikiDB {
       $rest = $topicId;
 
       while($rest <> "") {
-        @list($topicId, $rest) = split("\+", $rest, 2);  //split 'x+y+z' into 'x' and 'y+z'
+        @list($topicId, $rest) = preg_split("/\+/", $rest, 2);  //split 'x+y+z' into 'x' and 'y+z'
 
         if($topicId <>"") {
           if($add == "") {
@@ -2670,7 +2670,7 @@ class TikiLib extends TikiDB {
       $rest = $topic;
 
       while($rest <> "") {
-        @list($topic, $rest) = split("\+", $rest, 2);  //split 'x+y+z' into 'x' and 'y+z'
+        @list($topic, $rest) = preg_split("/\+/", $rest, 2);  //split 'x+y+z' into 'x' and 'y+z'
 
         if($topic <>"") {
           if($add == "") {
@@ -6042,7 +6042,7 @@ function get_user_preference($user, $name, $default = '') {
           $temp_max5 = count($tables[0]);
 
           for($i = 0; $i < $temp_max5; $i++) {
-            $rows = split("\n|\<br\/\>", $tables[0][$i]);
+            $rows = preg_split("/\n|\<br\/\>/", $tables[0][$i]);
 
             $col[$i] = array();
 
@@ -7449,7 +7449,7 @@ function get_user_preference($user, $name, $default = '') {
   }
 
   function read_raw($text) {
-    $file = split("\n",$text);
+    $file = preg_split("/\n/",$text);
     $back = '';
     foreach($file as $line) {
       $r = $s = '';

@@ -6,13 +6,13 @@
   	{* Logo TESTE *}
     {if $showTeste}
   	 <a href="http://dev.estudiolivre.org/tiki-view_tracker.php?status=o&trackerId=13&offset=0&sort_mode=created_desc">
-  	  {tooltip text="Clique aqui e <b>relate os bugs</b> encontrados! Ajude-nos a <b>melhorar</b> o EstúdioLivre!!!"}<img src="styles/{$style|replace:".css":""}/img/faixaTeste.{if $isIE}gif{else}png{/if}" style="position:absolute; top:-25px; left:0px; z-index:5"/>{/tooltip}
+  	  {tooltip text="Clique aqui e <b>relate os bugs</b> encontrados! Ajude-nos a <b>melhorar</b> o EstúdioLivre!!!"}<img alt="faixaTeste" src="styles/{$style|replace:".css":""}/img/faixaTeste.{if $isIE}gif{else}png{/if}" style="position:absolute; top:-25px; left:0px; z-index:5"/>{/tooltip}
   	 </a>
     {/if}
   	<div id="logo">
       <a href="/">
         {tooltip name="navegue-home" text="Ir para a Página Inicial"}
-          <img src="styles/{$style|replace:".css":""}/img/logoTop.png" alt="estudiolivre.org">
+          <img src="styles/{$style|replace:".css":""}/img/logoTop.png" alt="estudiolivre.org"/>
         {/tooltip}
       </a>
       {* idéia
@@ -24,7 +24,7 @@
 	  *}
     </div>
   
-    <script language="JavaScript" src="lib/js/busca.js"></script>
+    <script type="text/javascript" src="lib/js/busca.js"></script>
 
   <div id="search" onLoad="marcaBusca(getCookie('busca'));">
     <form id='form-busca' name="searchForm" class="searchForm" method="get" action="tiki-searchresults.php" onSubmit="busca('{$category}', this.highlight.value); return false;">
@@ -70,25 +70,25 @@
 		
 		{if $category eq "Áudio"}{assign var='audioStyle' value="opacity:0.3"}{/if}
         <a style="{$audioStyle}" href="tiki-index.php?page=Áudio&bl" {if $isIE}title="AUDIO||LAB"{/if}>
-          <img src="styles/{$style|replace:".css":""}/img/cube{$audio}.png">
+          <img alt="audio" src="styles/{$style|replace:".css":""}/img/cube{$audio}.png"/>
 	      <span id="audiolab">{tr}áudio{/tr}</span>
         </a>
 	        
 	    {if $category eq "Gráfico"}{assign var='graficoStyle' value="opacity:0.3"}{/if}
         <a style="{$graficoStyle}"  href="tiki-index.php?page=Gráfico&bl" {if $isIE}title="GRAFI||LAB"{/if}>
-          <img src="styles/{$style|replace:".css":""}/img/cube{$grafico}.png">
+          <img alt="grafico" src="styles/{$style|replace:".css":""}/img/cube{$grafico}.png"/>
 		  <span id="grafilab">{tr}gráfico{/tr}</span>
         </a>
 
 	    {if $category eq "Vídeo"}{assign var='videoStyle' value="opacity:0.3"}{/if}
         <a style="{$videoStyle}"  href="tiki-index.php?page=Vídeo&bl" {if $isIE}title="VIDEO||LAB"{/if}>
-          <img src="styles/{$style|replace:".css":""}/img/cube{$video}.png">
+          <img alt="video" src="styles/{$style|replace:".css":""}/img/cube{$video}.png"/>
 	      <span id="videolab">{tr}vídeo{/tr}</span>
         </a>
 	    
 	    {if $category eq "gallery"}{assign var='galleryStyle' value="opacity:0.3"}{/if}
         <a style="{$galleryStyle}" href="el-gallery_home.php" {if $isIE}title="ACERVO.LIVRE"{/if}>
-	        <img src="styles/{$style|replace:".css":""}/img/cube{$gallery}.png">
+	        <img alt="galeria" src="styles/{$style|replace:".css":""}/img/cube{$gallery}.png"/>
 	        <span id="acervolivre">{tr}acervo{/tr}</span>      
         </a> 
         
