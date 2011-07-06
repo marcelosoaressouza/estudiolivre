@@ -8,9 +8,9 @@
 // See license.txt for details.
 
 // This script may only be included! Die if called directly...
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
-	header("location: index.php");
-	exit;
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+  header("location: index.php");
+  exit;
 }
 
 /** change_class Encompases functions that alter calendar data in the
@@ -18,14 +18,14 @@ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
  */
 class delete_class extends CalendarLib {
 
-	// Constructor for the change_class library.
-	function delete_class() {
-		// Do nothing at the moment.
-	}
+  // Constructor for the change_class library.
+  function delete_class() {
+    // Do nothing at the moment.
+  }
 
-/*
- * Common Calendar-ish functions.
- */
+  /*
+   * Common Calendar-ish functions.
+   */
 
 }
 

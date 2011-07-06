@@ -5,21 +5,22 @@
 //
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
-if (!function_exists("wiki_last_comments")) {
-function wiki_last_comments($limit)
-{
+
+if(!function_exists("wiki_last_comments")) {
+  function wiki_last_comments($limit)
+  {
     $query = "select `object`,`title`,`commentDate`,`userName`
-              from `tiki_comments` where `objectType`='wiki page' order by `commentDate` desc";
+             from `tiki_comments` where `objectType`='wiki page' order by `commentDate` desc";
     global $tikilib;
     global $user;
     $result = $tikilib->query($query, array(), $limit, 0);
     $ret = array();
 
-    while ($res = $result->fetchRow())
+    while($res = $result->fetchRow())
     {
       //WYSIWYCA hack: the $limit will not be respected
       if($tikilib->user_has_perm_on_object($user,$res["object"],'wiki page','tiki_p_view')) {
@@ -30,8 +31,9 @@ function wiki_last_comments($limit)
         $ret[] = $aux;
       }
     }
+
     return $ret;
-}
+  }
 }
 
 $comments = wiki_last_comments($module_rows);

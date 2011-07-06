@@ -3,10 +3,11 @@
 //{MODULE(nonums=y|n /}
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
+
 $ranking = $tikilib->list_visible_galleries(0, $module_rows, 'lastModif_desc', $user, '');
 
 $smarty->assign('modLastGalleries', $ranking["data"]);

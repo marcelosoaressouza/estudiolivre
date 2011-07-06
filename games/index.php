@@ -8,7 +8,7 @@
 
 // This redirects to the sites root to prevent directory browsing
 
-header ("location: ../tiki-list_games.php");
+header("location: ../tiki-list_games.php");
 die;
 
 ?>

@@ -7,7 +7,7 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== FALSE) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== FALSE) {
   //smarty is not there - we need setup
   require_once('tiki-setup.php');
   $smarty->assign('msg',tra("This script cannot be called directly"));
@@ -23,10 +23,12 @@ $rows = isset($_REQUEST['rows'])? $_REQUEST['rows']: (isset($defaultRows)?$defau
 $smarty->assign('rows', (int) $rows);
 
 $cols = isset($_REQUEST['cols'])? $_REQUEST['cols']: 80;
-if (isset($_REQUEST['enlargeW']) || isset($_REQUEST['enlargeW_x']))
-	$cols += 20;
-elseif ((isset($_REQUEST['reduceW']) || isset($_REQUEST['reduceW_x'])) && $cols >= 40)
-	$cols -= 20;
+
+if(isset($_REQUEST['enlargeW']) || isset($_REQUEST['enlargeW_x']))
+  $cols += 20;
+
+elseif((isset($_REQUEST['reduceW']) || isset($_REQUEST['reduceW_x'])) && $cols >= 40)
+$cols -= 20;
 $smarty->assign('cols', (int) $cols);
 
 ?>

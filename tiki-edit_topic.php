@@ -5,30 +5,32 @@ include_once('lib/articles/artlib.php');
 if($feature_articles != 'y') {
   $smarty->assign('msg', tra("This feature is disabled").": feature_articles");
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 
 
 // PERMISSIONS: NEEDS p_admin
 
-  if($tiki_p_admin_cms != 'y') {
-    $smarty->assign('msg',tra("You do not have permission to use this feature"));
-    $smarty->display("error.tpl");
-    die;
-  }
+if($tiki_p_admin_cms != 'y') {
+  $smarty->assign('msg',tra("You do not have permission to use this feature"));
+  $smarty->display("error.tpl");
+  die;
+}
 
-if (!isset($_REQUEST["topicid"])) {
+if(!isset($_REQUEST["topicid"])) {
   $smarty->assign('msg', tra("No topic id specified"));
   $smarty->display("error.tpl");
   die;
 }
 
 $topic_info = $artlib->get_topic($_REQUEST["topicid"]);
-if ($topic_info == DB_ERROR) {
+
+if($topic_info == DB_ERROR) {
   $smarty->assign('msg', tra("Invalid topic id specified"));
   $smarty->display("error.tpl");
   die;
 }
+
 $smarty->assign_by_ref('topic_info', $topic_info);
 
 if(isset($_REQUEST["edittopic"])) {
@@ -49,8 +51,9 @@ if(isset($_REQUEST["edittopic"])) {
 
   header("Location: tiki-admin_topics.php");
 }
+
 $section = 'cms';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 
 // disallow robots to index page:
 $smarty->assign('metatag_robots', 'NOINDEX, NOFOLLOW');

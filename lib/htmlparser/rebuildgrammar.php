@@ -3,7 +3,7 @@
 die;
 //include ("common.inc");
 
-include ("htmlgrammarparser.inc");
+include("htmlgrammarparser.inc");
 $p = new HtmlGrammarParser("htmlgrammar.dat");
 $p->Parse();
 $p->PrintErrors();

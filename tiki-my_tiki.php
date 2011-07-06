@@ -7,33 +7,38 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/messu/messulib.php');
-include_once ('lib/wiki/wikilib.php');
-include_once ('lib/tasks/tasklib.php');
+include_once('lib/messu/messulib.php');
+include_once('lib/wiki/wikilib.php');
+include_once('lib/tasks/tasklib.php');
 
-if (!$user) {
-	$smarty->assign('msg', tra("You are not logged in"));
-	$smarty->display("error.tpl");
-	die;
+if(!$user) {
+  $smarty->assign('msg', tra("You are not logged in"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 $userwatch = $user;
 
-if (isset($_REQUEST["view_user"])) {
-	if ($_REQUEST["view_user"] <> $user) {
-		if ($tiki_p_admin == 'y') {
-			$userwatch = $_REQUEST["view_user"];
-		} else {
-			$smarty->assign('msg', tra("You do not have permission to view other users data"));
-			$smarty->display("error.tpl");
-			die;
-		}
-	} else {
-		$userwatch = $user;
-	}
+if(isset($_REQUEST["view_user"])) {
+  if($_REQUEST["view_user"] <> $user) {
+    if($tiki_p_admin == 'y') {
+      $userwatch = $_REQUEST["view_user"];
+    }
+
+    else {
+      $smarty->assign('msg', tra("You do not have permission to view other users data"));
+      $smarty->display("error.tpl");
+      die;
+    }
+  }
+
+  else {
+    $userwatch = $user;
+  }
 }
+
 $smarty->assign('userwatch', $userwatch);
 
 $foo = parse_url($_SERVER["REQUEST_URI"]);
@@ -42,29 +47,33 @@ $foo2 = str_replace("tiki-user_preferences", "tiki-index", $foo["path"]);
 $smarty->assign('url_edit', $tikilib->httpPrefix(). $foo1);
 $smarty->assign('url_visit', $tikilib->httpPrefix(). $foo2);
 
-if (isset($_REQUEST['messprefs'])) {
-	check_ticket('my-tiki');
-	$tikilib->set_user_preference($userwatch, 'mess_maxRecords', $_REQUEST['mess_maxRecords']);
+if(isset($_REQUEST['messprefs'])) {
+  check_ticket('my-tiki');
+  $tikilib->set_user_preference($userwatch, 'mess_maxRecords', $_REQUEST['mess_maxRecords']);
 
-	if (isset($_REQUEST['mess_sendReadStatus']) && $_REQUEST['mess_sendReadStatus'] == 'on') {
-		$tikilib->set_user_preference($userwatch, 'mess_sendReadStatus', 'y');
-	} else {
-		$tikilib->set_user_preference($userwatch, 'mess_sendReadStatus', 'n');
-	}
+  if(isset($_REQUEST['mess_sendReadStatus']) && $_REQUEST['mess_sendReadStatus'] == 'on') {
+    $tikilib->set_user_preference($userwatch, 'mess_sendReadStatus', 'y');
+  }
 
-	$tikilib->set_user_preference($userwatch, 'mess_archiveAfter', $_REQUEST['mess_archiveAfter']);
-	$tikilib->set_user_preference($userwatch, 'minPrio', $_REQUEST['minPrio']);
+  else {
+    $tikilib->set_user_preference($userwatch, 'mess_sendReadStatus', 'n');
+  }
 
-	if (isset($_REQUEST['allowMsgs']) && $_REQUEST['allowMsgs'] == 'on') {
-		$tikilib->set_user_preference($userwatch, 'allowMsgs', 'y');
-	} else {
-		$tikilib->set_user_preference($userwatch, 'allowMsgs', 'n');
-	}
+  $tikilib->set_user_preference($userwatch, 'mess_archiveAfter', $_REQUEST['mess_archiveAfter']);
+  $tikilib->set_user_preference($userwatch, 'minPrio', $_REQUEST['minPrio']);
+
+  if(isset($_REQUEST['allowMsgs']) && $_REQUEST['allowMsgs'] == 'on') {
+    $tikilib->set_user_preference($userwatch, 'allowMsgs', 'y');
+  }
+
+  else {
+    $tikilib->set_user_preference($userwatch, 'allowMsgs', 'n');
+  }
 }
 
-if (isset($_REQUEST['tasksprefs'])) {
-	check_ticket('my-tiki');
-	$tikilib->set_user_preference($userwatch, 'tasks_maxRecords', $_REQUEST['tasks_maxRecords']);
+if(isset($_REQUEST['tasksprefs'])) {
+  check_ticket('my-tiki');
+  $tikilib->set_user_preference($userwatch, 'tasks_maxRecords', $_REQUEST['tasks_maxRecords']);
 }
 
 $tasks_maxRecords = $tikilib->get_user_preference($userwatch, 'tasks_maxRecords');
@@ -93,9 +102,9 @@ $styles = array();
 $h = opendir("styles/");
 
 while ($file = readdir($h)) {
-	if (strstr($file, "css")) {
-		$styles[] = $file;
-	}
+  if (strstr($file, "css")) {
+    $styles[] = $file;
+  }
 }
 
 closedir ($h);*/
@@ -106,24 +115,28 @@ $styles = $tikilib->list_styles();
 $smarty->assign_by_ref('styles', $list_styles);
 
 $languages = array();
-if (is_dir("lang/")) {
-$h = opendir("lang/");
 
-while ($file = readdir($h)) {
-	if ($file != '.' && $file != '..' && is_dir('lang/' . $file) && strlen($file) == 2) {
-		$languages[] = $file;
-	}
+if(is_dir("lang/")) {
+  $h = opendir("lang/");
+
+  while($file = readdir($h)) {
+    if($file != '.' && $file != '..' && is_dir('lang/' . $file) && strlen($file) == 2) {
+      $languages[] = $file;
+    }
+  }
+
+  closedir($h);
 }
 
-closedir ($h);
-}
 $smarty->assign_by_ref('languages', $languages);
 
 // Get user pages
-if (!isset($_REQUEST["sort_mode"]))
-	$sort_mode = 'pageName_asc';
+if(!isset($_REQUEST["sort_mode"]))
+  $sort_mode = 'pageName_asc';
+
 else
-	$sort_mode = $_REQUEST["sort_mode"];
+  $sort_mode = $_REQUEST["sort_mode"];
+
 $smarty->assign_by_ref('sort_mode', $sort_mode);
 $user_pages = $wikilib->get_user_all_pages($userwatch, $sort_mode);
 $user_blogs = $tikilib->list_user_blogs($userwatch,false);
@@ -139,22 +152,24 @@ $smarty->assign_by_ref('user_items', $user_items);
 $flags = array();
 $h = opendir("img/flags/");
 
-while ($file = readdir($h)) {
-	if (strstr($file, ".gif")) {
-		$parts = explode('.', $file);
+while($file = readdir($h)) {
+  if(strstr($file, ".gif")) {
+    $parts = explode('.', $file);
 
-		$flags[] = $parts[0];
-	}
+    $flags[] = $parts[0];
+  }
 }
 
-closedir ($h);
+closedir($h);
 $smarty->assign('flags', $flags);
 
 // Get preferences
-if ($change_theme == 'y')
-	$style = $tikilib->get_user_preference($userwatch, 'theme', $style);
-if ($change_language == "y")
-	$language = $tikilib->get_user_preference($userwatch, 'language', $language);
+if($change_theme == 'y')
+  $style = $tikilib->get_user_preference($userwatch, 'theme', $style);
+
+if($change_language == "y")
+  $language = $tikilib->get_user_preference($userwatch, 'language', $language);
+
 $smarty->assign_by_ref('style', $style);
 $realName = $tikilib->get_user_preference($userwatch, 'realName', '');
 $country = $tikilib->get_user_preference($userwatch, 'country', 'Other');
@@ -174,10 +189,12 @@ $msgs = $messulib->list_user_messages($user, 0, -1, 'date_desc', '', 'isRead', '
 $smarty->assign('msgs', $msgs['data']);
 
 //Get tasks
-if (isset($_SESSION['thedate'])) {
-	$pdate = $_SESSION['thedate'];
-} else {
-	$pdate = date("U");
+if(isset($_SESSION['thedate'])) {
+  $pdate = $_SESSION['thedate'];
+}
+
+else {
+  $pdate = date("U");
 }
 
 $tasks = $tasklib->list_tasks($user, 0, 20,NULL,'priority_asc',true,false,true);
@@ -187,13 +204,13 @@ $smarty->assign('tasks', $tasks['data']);
 $user_information = $tikilib->get_user_preference($userwatch, 'user_information', 'public');
 $smarty->assign('user_information', $user_information);
 
-if ($feature_messages == 'y' && $tiki_p_messages == 'y') {
-	$unread = $tikilib->user_unread_messages($userwatch);
-	$smarty->assign('unread', $unread);
+if($feature_messages == 'y' && $tiki_p_messages == 'y') {
+  $unread = $tikilib->user_unread_messages($userwatch);
+  $smarty->assign('unread', $unread);
 }
 
 //Get Workflow processes + activity instances
-if ($feature_workflow == 'y' && $tiki_p_use_workflow == 'y' && $tikilib->get_user_preference($user, 'mytiki_workflow') == 'y') {
+if($feature_workflow == 'y' && $tiki_p_use_workflow == 'y' && $tikilib->get_user_preference($user, 'mytiki_workflow') == 'y') {
   include_once('tiki-g-my_activities.php');
   include_once('tiki-g-my_instances.php');
 }
@@ -213,7 +230,7 @@ $smarty->assign('mytiki_tasks', $tikilib->get_user_preference($user, 'mytiki_tas
 $smarty->assign('mytiki_workflow', $tikilib->get_user_preference($user, 'mytiki_workflow'), 'y');
 
 $section = 'mytiki';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 ask_ticket('my-tiki');
 
 $smarty->assign('uses_tabs', 'y');

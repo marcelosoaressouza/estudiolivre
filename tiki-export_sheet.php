@@ -8,30 +8,30 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
-require_once ('lib/sheet/grid.php');
+require_once('tiki-setup.php');
+require_once('lib/sheet/grid.php');
 
 // Now check permissions to access this page
 /*
 if($tiki_p_view != 'y') {
   $smarty->assign('msg',tra("Permission denied you cannot view pages like this page"));
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 */
 
-if ($feature_sheet != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_sheets");
+if($feature_sheet != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_sheets");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_view_sheet != 'y' && $tiki_p_admin != 'y' && $tiki_p_admin_sheet != 'y') {
-	$smarty->assign('msg', tra("Access Denied").": feature_sheets");
+if($tiki_p_view_sheet != 'y' && $tiki_p_admin != 'y' && $tiki_p_admin_sheet != 'y') {
+  $smarty->assign('msg', tra("Access Denied").": feature_sheets");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $smarty->assign('sheetId', $_REQUEST["sheetId"]);
@@ -41,69 +41,71 @@ $smarty->assign('sheetId', $_REQUEST["sheetId"]);
 // Init smarty variables to blank values
 //$smarty->assign('theme','');
 
-$info = $sheetlib->get_sheet_info( $_REQUEST["sheetId"] );
+$info = $sheetlib->get_sheet_info($_REQUEST["sheetId"]);
 
 $smarty->assign('title', $info['title']);
 $smarty->assign('description', $info['description']);
 
-$smarty->assign('page_mode', 'form' );
+$smarty->assign('page_mode', 'form');
 
 // Process the insertion or modification of a gallery here
 
 $grid = &new TikiSheet;
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' )
+if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
-	$smarty->assign('page_mode', 'submit' );
+  $smarty->assign('page_mode', 'submit');
 
-	$sheetId = $_REQUEST['sheetId'];
+  $sheetId = $_REQUEST['sheetId'];
 
-	$handler = &new TikiSheetDatabaseHandler( $sheetId );
-	$grid->import( $handler );
+  $handler = &new TikiSheetDatabaseHandler($sheetId);
+  $grid->import($handler);
 
-	$handler = $_REQUEST['handler'];
-	
-	if( !in_array( $handler, TikiSheet::getHandlerList() ) )
-	{
-		$smarty->assign('msg', "Handler is not allowed.");
+  $handler = $_REQUEST['handler'];
 
-		$smarty->display("error.tpl");
-		die;
-	}
+  if(!in_array($handler, TikiSheet::getHandlerList()))
+  {
+    $smarty->assign('msg', "Handler is not allowed.");
 
-	$handler = &new $handler( "php://stdout" );
-	$grid->export( $handler );
+    $smarty->display("error.tpl");
+    die;
+  }
 
-	exit;
+  $handler = &new $handler("php://stdout");
+  $grid->export($handler);
+
+  exit;
 }
+
 else
 {
-	$list = array();
+  $list = array();
 
-	$handlers = TikiSheet::getHandlerList();
-	
-	foreach( $handlers as $key=>$handler )
-	{
-		$temp = &new $handler;
-		if( !$temp->supports( TIKISHEET_SAVE_DATA | TIKISHEET_SAVE_CALC ) )
-			continue;
+  $handlers = TikiSheet::getHandlerList();
 
-		$list[$key] = array(
-			"name" => $temp->name(),
-			"version" => $temp->version(),
-			"class" => $handler
-		);
-	}
+  foreach($handlers as $key=>$handler)
+  {
+    $temp = &new $handler;
 
-	$smarty->assign_by_ref( "handlers", $list );
+    if(!$temp->supports(TIKISHEET_SAVE_DATA | TIKISHEET_SAVE_CALC))
+      continue;
+
+    $list[$key] = array(
+                    "name" => $temp->name(),
+                    "version" => $temp->version(),
+                    "class" => $handler
+                  );
+  }
+
+  $smarty->assign_by_ref("handlers", $list);
 }
 
 $cat_type = 'sheet';
 $cat_objid = $_REQUEST["sheetId"];
-include_once ("categorize_list.php");
+include_once("categorize_list.php");
 
 $section = 'sheet';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 ask_ticket('sheet');
 // Display the template
 $smarty->assign('mid', 'tiki-export-sheets.tpl');

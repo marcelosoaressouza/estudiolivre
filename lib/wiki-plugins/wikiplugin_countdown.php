@@ -15,33 +15,34 @@
  * wiki page.
  */
 function wikiplugin_countdown_help() {
-	return tra("Example").":<br />~np~{COUNTDOWN(enddate=>April 1 2004[,locatetime=>on])}".tra("text")."{COUNTDOWN}~/np~";
+  return tra("Example").":<br />~np~{COUNTDOWN(enddate=>April 1 2004[,locatetime=>on])}".tra("text")."{COUNTDOWN}~/np~";
 }
 function wikiplugin_countdown($data, $params) {
-	extract ($params,EXTR_SKIP);
+  extract($params,EXTR_SKIP);
 
-	if (!isset($enddate)) {
-		return ("<b>COUNTDOWN: Missing 'enddate' parameter for plugin</b><br />");
-	}
+  if(!isset($enddate)) {
+    return ("<b>COUNTDOWN: Missing 'enddate' parameter for plugin</b><br />");
+  }
 
-	if (isset($localtime) && $localtime == 'on')
-		$tz = 0;
-	else
-		$tz = $_COOKIE['tz_offset'];
+  if(isset($localtime) && $localtime == 'on')
+    $tz = 0;
 
-	$now = strtotime ("now") + $tz;
-	$then = strtotime ($enddate);
-	$difference = $then - $now;
-	$num = $difference/86400;
-	$days = intval($num);
-	$num2 = ($num - $days)*24;
-	$hours = intval($num2);
-	$num3 = ($num2 - $hours)*60;
-	$mins = intval($num3);
-	$num4 = ($num3 - $mins)*60;
-	$secs = intval($num4);
-	$ret = "$days ".tra("days").", $hours ".tra("hours").", $mins ".tra("minutes")." ".tra("and")." $secs ".tra("seconds")." $data";
-	return $ret;
+  else
+    $tz = $_COOKIE['tz_offset'];
+
+  $now = strtotime("now") + $tz;
+  $then = strtotime($enddate);
+  $difference = $then - $now;
+  $num = $difference/86400;
+  $days = intval($num);
+  $num2 = ($num - $days)*24;
+  $hours = intval($num2);
+  $num3 = ($num2 - $hours)*60;
+  $mins = intval($num3);
+  $num4 = ($num3 - $mins)*60;
+  $secs = intval($num4);
+  $ret = "$days ".tra("days").", $hours ".tra("hours").", $mins ".tra("minutes")." ".tra("and")." $secs ".tra("seconds")." $data";
+  return $ret;
 }
 
 ?>

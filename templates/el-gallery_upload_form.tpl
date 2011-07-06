@@ -6,9 +6,11 @@
 	<span id="js-file{$i}"><input type="file" name="arquivo{$i}" onChange="fileSelected(this.value, {$i});"></span>
 </form>
 
+<!-- [Debugando]
 <div class="browseCont">
 	<div id="js-statusBar{$i}" class="statusBar statusBarGoing"></div>
 	<div id="js-percent{$i}" class="percent"></div>
 </div>
 
 <h4 id="js-cancel{$i}" class="pointer"></h4>
+-->

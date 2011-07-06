@@ -9,14 +9,14 @@
 // so ive included the die here as well - Damian
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
-error_reporting (E_ALL);
+error_reporting(E_ALL);
 
-include ('htmlMimeMail.php');
+include('htmlMimeMail.php');
 
 /**
 * Example of usage. This example shows
@@ -83,10 +83,12 @@ $mail->setHeader('X-Mailer', 'HTML Mime mail class (http://www.phpguru.org)');
 $result = $mail->send(array('postmaster@localhost'), 'smtp');
 
 // These errors are only set if you're using SMTP to send the message
-if (!$result) {
-	print_r ($mail->errors);
-} else {
-	echo 'Mail sent!';
+if(!$result) {
+  print_r($mail->errors);
+}
+
+else {
+  echo 'Mail sent!';
 }
 
 ?>

@@ -5,9 +5,9 @@
 // Copyright (c) 2002-2007, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-require ("lib/hawhaw/hawhaw.inc");
+require("lib/hawhaw/hawhaw.inc");
 /*
 $DemoPage = new HAW_deck("Tiki", HAW_ALIGN_CENTER);
 $title = new HAW_text("Tiki", HAW_TEXTFORMAT_BOLD);
@@ -18,10 +18,10 @@ $link3 = new HAW_link("Blogs","tiki-list_blogs.php?mode=wap");
 $linkset = new HAW_linkset();
 //$linkset->add_link($link1);
 if($feature_wiki == 'y') {
-	$linkset->add_link($link2);
+  $linkset->add_link($link2);
 }
 if($feature_blogs == 'y') {
-	$linkset->add_link($link3);
+  $linkset->add_link($link3);
 }
 $DemoPage->add_linkset($linkset);
 $DemoPage->create_page();
@@ -41,7 +41,7 @@ $newLink->set_br(2);
 $TikiPage->add_link($newLink);
 
 $text3 = new HAW_text(
-	"Reason: This URL is not restricted to WAP only. It can be used by PDA's, voice browser and other mobile devices too.");
+  "Reason: This URL is not restricted to WAP only. It can be used by PDA's, voice browser and other mobile devices too.");
 $TikiPage->add_text($text3);
 
 $TikiPage->create_page();

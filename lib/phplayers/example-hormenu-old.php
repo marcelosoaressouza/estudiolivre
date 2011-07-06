@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
 
-<?php
-/* TO USE RELATIVE PATHS: */
-$myDirPath = '';
+                                        <?php
+                                        /* TO USE RELATIVE PATHS: */
+                                        $myDirPath = '';
 $myWwwPath = '';
 /* TO USE ABSOLUTE PATHS: */
 //$myDirPath = '/home/pratesi/public_html/phplayersmenu/';
@@ -14,28 +14,29 @@ $myWwwPath = '';
 ?>
 
 <link rel="stylesheet" href="<?php print $myWwwPath; ?>layersmenu-demo.css" type="text/css"></link>
-<link rel="stylesheet" href="<?php print $myWwwPath; ?>layersmenu-old.css" type="text/css"></link>
-<link rel="shortcut icon" href="<?php print $myWwwPath; ?>LOGOS/shortcut_icon_phplm.png"></link>
-<title>The PHP Layers Menu System</title>
+                            <link rel="stylesheet" href="<?php print $myWwwPath; ?>layersmenu-old.css" type="text/css"></link>
+                                      <link rel="shortcut icon" href="<?php print $myWwwPath; ?>LOGOS/shortcut_icon_phplm.png"></link>
+                                          <title>The PHP Layers Menu System</title>
 
-<script language="JavaScript" type="text/javascript">
-<!--
-<?php require_once $myDirPath . 'libjs/layersmenu-browser_detection.js'; ?>
+                                          <script language="JavaScript" type="text/javascript">
+                                              <!--
+                                              <?php require_once $myDirPath . 'libjs/layersmenu-browser_detection.js';
+?>
 // -->
 </script>
 <script language="JavaScript" type="text/javascript" src="<?php print $myWwwPath; ?>libjs/layersmenu-library.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print $myWwwPath; ?>libjs/layersmenu.js"></script>
+                                   <script language="JavaScript" type="text/javascript" src="<?php print $myWwwPath; ?>libjs/layersmenu.js"></script>
 
-<?php
-require_once $myDirPath . 'lib/PHPLIB.php';
+                                       <?php
+                                       require_once $myDirPath . 'lib/PHPLIB.php';
 require_once $myDirPath . 'lib/layersmenu-common.inc.php';
 require_once $myDirPath . 'lib/layersmenu.inc.php';
 
 //$mid = new LayersMenu(6, 7, 2, 5, 140);
-//$mid = new LayersMenu(6, 7, 2, 1);	// Gtk2-like
-//$mid = new LayersMenu(3, 8, 1, 1);	// Keramik-like
-//$mid = new LayersMenu(3, 9, 2, 1);	// Galaxy-like
-$mid = new LayersMenu(-12, 10, 6, 5);	// "Traditional" PHPLM look
+//$mid = new LayersMenu(6, 7, 2, 1);  // Gtk2-like
+//$mid = new LayersMenu(3, 8, 1, 1);  // Keramik-like
+//$mid = new LayersMenu(3, 9, 2, 1);  // Galaxy-like
+$mid = new LayersMenu(-12, 10, 6, 5); // "Traditional" PHPLM look
 
 /* TO USE RELATIVE PATHS: */
 //$mid->setDirroot('./');
@@ -91,23 +92,27 @@ print $hormenu1;
 ?>
 
 <div class="normalbox">
-<div class="normal" align="center">
-<b><?php print basename(__FILE__); ?> - an "old-style" file-based example with a Horizontal Layers Menu</b>
+             <div class="normal" align="center">
+                                           <b><?php print basename(__FILE__);
+?> - an "old-style" file-based example with a Horizontal Layers Menu</b>
 <div style="height: 5px"></div>
-<a href="http://phplayersmenu.sourceforge.net/"><img border="0"
-src="<?php print $myWwwPath; ?>LOGOS/powered_by_phplm.png" alt="Powered by PHP Layers Menu"
-height="31" width="88" /></a>&nbsp;<a
+           <a href="http://phplayersmenu.sourceforge.net/"><img border="0"
+                   src="<?php print $myWwwPath; ?>LOGOS/powered_by_phplm.png" alt="Powered by PHP Layers Menu"
+                       height="31" width="88" /></a>&nbsp;
+<a
 href="http://validator.w3.org/check/referer"><img border="0"
-src="<?php print $myWwwPath; ?>images/valid-xhtml10.png" alt="Valid XHTML 1.0!"
-height="31" width="88" /></a>&nbsp;<a
+     src="<?php print $myWwwPath; ?>images/valid-xhtml10.png" alt="Valid XHTML 1.0!"
+         height="31" width="88" /></a>&nbsp;
+<a
 href="http://jigsaw.w3.org/css-validator/"><img border="0"
-src="<?php print $myWwwPath; ?>images/vcss.png" alt="Valid CSS!" height="31" width="88" /></a>
-</div>
-</div>
+     src="<?php print $myWwwPath; ?>images/vcss.png" alt="Valid CSS!" height="31" width="88" /></a>
+         </div>
+         </div>
 
-<div class="normalbox">
-<div class="normal">
-<?php require_once $myDirPath . 'README.ihtml'; ?>
+         <div class="normalbox">
+                      <div class="normal">
+                                     <?php require_once $myDirPath . 'README.ihtml';
+?>
 </div>
 </div>
 

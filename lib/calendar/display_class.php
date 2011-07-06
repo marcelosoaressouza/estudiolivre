@@ -8,25 +8,25 @@
 // See license.txt for details.
 
 // This script may only be included! Die if called directly...
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
-	header("location: index.php");
-	exit;
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+  header("location: index.php");
+  exit;
 }
 
-/** display_class Encompases display functions that incorporate HTML in 
+/** display_class Encompases display functions that incorporate HTML in
  * modules.  Extends the CalendarLib class.
  */
 class display_class extends CalendarLib {
 
-	// Constructor for the display_class library.
-	function display_class() {
+  // Constructor for the display_class library.
+  function display_class() {
 
-		// Do nothing at the moment.
-	}
+    // Do nothing at the moment.
+  }
 
-/*
- * Common Calendar Display functions.
- */
+  /*
+   * Common Calendar Display functions.
+   */
 
 }
 

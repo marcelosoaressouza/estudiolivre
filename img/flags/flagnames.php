@@ -1,12 +1,12 @@
 <?php // -*- coding:utf-8 -*- $Header: /cvsroot/tikiwiki/tiki/img/flags/flagnames.php,v 1.1.2.9 2007/03/02 13:57:35 luciash Exp $
-/* 
+/*
  * The listing associates country names used as filenames for flags in Tikiwiki for language translation
  */
 
 // This script is only for language translations - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
-	exit;
+  exit;
 }
 
 // Here come the dynamically generated strings for img/flags/*.gif

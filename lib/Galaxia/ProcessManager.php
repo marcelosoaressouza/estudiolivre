@@ -3,18 +3,18 @@
 // Load configuration of the Galaxia Workflow Engine
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
-include_once (dirname(__FILE__) . '/config.php');
+include_once(dirname(__FILE__) . '/config.php');
 
-include_once (GALAXIA_LIBRARY.'/src/ProcessManager/ProcessManager.php');
-include_once (GALAXIA_LIBRARY.'/src/ProcessManager/InstanceManager.php');
-include_once (GALAXIA_LIBRARY.'/src/ProcessManager/RoleManager.php');
-include_once (GALAXIA_LIBRARY.'/src/ProcessManager/ActivityManager.php');
-include_once (GALAXIA_LIBRARY.'/src/ProcessManager/GraphViz.php');
+include_once(GALAXIA_LIBRARY.'/src/ProcessManager/ProcessManager.php');
+include_once(GALAXIA_LIBRARY.'/src/ProcessManager/InstanceManager.php');
+include_once(GALAXIA_LIBRARY.'/src/ProcessManager/RoleManager.php');
+include_once(GALAXIA_LIBRARY.'/src/ProcessManager/ActivityManager.php');
+include_once(GALAXIA_LIBRARY.'/src/ProcessManager/GraphViz.php');
 
 /// $roleManager is the object that will be used to manipulate roles.
 $roleManager = new RoleManager($dbGalaxia);
@@ -25,13 +25,13 @@ $processManager = new ProcessManager($dbGalaxia);
 /// $instanceManager is the object that will be used to manipulate instances.
 $instanceManager = new InstanceManager($dbGalaxia);
 
-if (defined('GALAXIA_LOGFILE') && GALAXIA_LOGFILE) {
-    include_once (GALAXIA_LIBRARY.'/src/Observers/Logger.php');
+if(defined('GALAXIA_LOGFILE') && GALAXIA_LOGFILE) {
+  include_once(GALAXIA_LIBRARY.'/src/Observers/Logger.php');
 
-    $logger = new Logger(GALAXIA_LOGFILE);
-    $processManager->attach_all($logger);
-    $activityManager->attach_all($logger);
-    $roleManager->attach_all($logger);
+  $logger = new Logger(GALAXIA_LOGFILE);
+  $processManager->attach_all($logger);
+  $activityManager->attach_all($logger);
+  $roleManager->attach_all($logger);
 }
 
 ?>

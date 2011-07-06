@@ -7,15 +7,15 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class TikiHelpLib {
-	// function TikiHelpLib() {
-        // }
-/* end of class */
+  // function TikiHelpLib() {
+  // }
+  /* end of class */
 }
 
 
@@ -26,24 +26,27 @@ class TikiHelpLib {
  */
 /* static */
 function help_doclink($params) {
-    global $feature_help, $helpurl;
-    
-     extract($params);
-    // Param = zone
-    if(empty($url) && empty($desc) && empty($crumb)) {
-        return;
-    }
-    if ($crumb) {
-        $url = $crumb->helpUrl;
-        $desc = $crumb->helpDescription;
-    }
-    
-    if ($feature_help == 'y' and $url) {
-        $ret = ' <a title="'.$desc.'" href="'
-        .$helpurl.$url.'" target="tikihelp" class="tikihelp">'
-        .'<img src="img/icons/help.gif"'
-        .' border="0" height="16" width="16" alt="'.tra('Help').'" /></a>';
-    }
-    return $ret;
+  global $feature_help, $helpurl;
+
+  extract($params);
+
+  // Param = zone
+  if(empty($url) && empty($desc) && empty($crumb)) {
+    return;
+  }
+
+  if($crumb) {
+    $url = $crumb->helpUrl;
+    $desc = $crumb->helpDescription;
+  }
+
+  if($feature_help == 'y' and $url) {
+    $ret = ' <a title="'.$desc.'" href="'
+           .$helpurl.$url.'" target="tikihelp" class="tikihelp">'
+           .'<img src="img/icons/help.gif"'
+           .' border="0" height="16" width="16" alt="'.tra('Help').'" /></a>';
+  }
+
+  return $ret;
 }
 ?>

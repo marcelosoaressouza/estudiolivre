@@ -6,15 +6,15 @@
 // based on sub plugin
 
 function wikiplugin_sup_help() {
-        return tra("Displays text in superscript.").":<br />~np~{SUP()}text{SUP}~/np~";
+  return tra("Displays text in superscript.").":<br />~np~{SUP()}text{SUP}~/np~";
 }
 
 function wikiplugin_sup($data, $params)
 {
-        global $tikilib;
+  global $tikilib;
 
-        extract ($params,EXTR_SKIP);
-	return "<sup>$data</sup>";
+  extract($params,EXTR_SKIP);
+  return "<sup>$data</sup>";
 }
 
 ?>

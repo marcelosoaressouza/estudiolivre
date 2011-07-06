@@ -8,20 +8,20 @@
 
 // Initialization
 $section = 'livesupport';
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/live_support/lslib.php');
-header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");             // Date in the past
-header ("Last-Modified: " . gmdate("D, d M Y H:i:s"). " GMT"); // always modified
-header ("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
+include_once('lib/live_support/lslib.php');
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");              // Date in the past
+header("Last-Modified: " . gmdate("D, d M Y H:i:s"). " GMT");  // always modified
+header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 header("Cache-Control: post-check=0, pre-check=0", false);
-header ("Pragma: no-cache");                                   // HTTP/1.0
+header("Pragma: no-cache");                                    // HTTP/1.0
 
-if ($feature_live_support != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_live_support");
+if($feature_live_support != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_live_support");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 // This is a generic chat window used by users, operators and observers
@@ -33,16 +33,16 @@ if ($feature_live_support != 'y') {
 $senderId = md5(uniqId('.'));
 $smarty->assign('senderId', $senderId);
 
-if ($_REQUEST['role'] == 'operator') {
-	$lslib->operator_accept($_REQUEST['reqId'], $user, $senderId);
+if($_REQUEST['role'] == 'operator') {
+  $lslib->operator_accept($_REQUEST['reqId'], $user, $senderId);
 
-	$lslib->set_operator_id($_REQUEST['reqId'], $senderId);
+  $lslib->set_operator_id($_REQUEST['reqId'], $senderId);
 }
 
-if ($_REQUEST['role'] == 'user') {
-	$lslib->set_user_id($_REQUEST['reqId'], $senderId);
+if($_REQUEST['role'] == 'user') {
+  $lslib->set_user_id($_REQUEST['reqId'], $senderId);
 
-	$lslib->set_request_status($_REQUEST['reqId'], 'op_accepted');
+  $lslib->set_request_status($_REQUEST['reqId'], 'op_accepted');
 }
 
 $smarty->assign('role', $_REQUEST['role']);
@@ -51,10 +51,12 @@ $smarty->assign('req_info', $lslib->get_request($_REQUEST['reqId']));
 
 $smarty->assign('reqId', $_REQUEST['reqId']);
 
-if (!isset($user)) {
-	$smarty->assign('username', 'anonymous');
-} else {
-	$smarty->assign('username', $user);
+if(!isset($user)) {
+  $smarty->assign('username', 'anonymous');
+}
+
+else {
+  $smarty->assign('username', $user);
 }
 
 // Display the template

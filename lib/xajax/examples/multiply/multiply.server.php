@@ -6,9 +6,9 @@
 
 function multiply($x, $y)
 {
-	$objResponse = new xajaxResponse();
-	$objResponse->addAssign("z", "value", $x*$y);
-	return $objResponse;
+  $objResponse = new xajaxResponse();
+  $objResponse->addAssign("z", "value", $x*$y);
+  return $objResponse;
 }
 
 require("multiply.common.php");

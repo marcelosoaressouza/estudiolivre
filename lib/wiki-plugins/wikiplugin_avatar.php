@@ -8,28 +8,31 @@
 //
 // If no avatar nothing is displayed
 function wikiplugin_avatar_help() {
-	return tra("Displays the user Avatar").":<br />~np~{AVATAR(page=>,float=>left|right)}".tra("username")."{AVATAR}~/np~";
+  return tra("Displays the user Avatar").":<br />~np~{AVATAR(page=>,float=>left|right)}".tra("username")."{AVATAR}~/np~";
 }
 
 function wikiplugin_avatar($data, $params) {
-	global $tikilib;
+  global $tikilib;
 
-	global $userlib;
+  global $userlib;
 
-	extract ($params,EXTR_SKIP);
+  extract($params,EXTR_SKIP);
 
-	if (isset($float))
-		$avatar = $tikilib->get_user_avatar($data, $float);
-	else
-		$avatar = $tikilib->get_user_avatar($data);
+  if(isset($float))
+    $avatar = $tikilib->get_user_avatar($data, $float);
 
-	if (isset($page)) {
-		$avatar = "<a href='tiki-index.php?page=$page'>" . $avatar . '</a>';
-	} else if ($userlib->user_exists($data) && $tikilib->get_user_preference($data, 'user_information', 'public') == 'public') {
-		$avatar = "<a href='tiki-user_information.php?view_user=$data'>" . $avatar . '</a>';
-	}
+  else
+    $avatar = $tikilib->get_user_avatar($data);
 
-	return $avatar;
+  if(isset($page)) {
+    $avatar = "<a href='tiki-index.php?page=$page'>" . $avatar . '</a>';
+  }
+
+  else if($userlib->user_exists($data) && $tikilib->get_user_preference($data, 'user_information', 'public') == 'public') {
+    $avatar = "<a href='tiki-user_information.php?view_user=$data'>" . $avatar . '</a>';
+  }
+
+  return $avatar;
 }
 
 ?>

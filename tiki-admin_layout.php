@@ -7,20 +7,20 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($layout_section != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": layout_section");
+if($layout_section != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": layout_section");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $sections = $tikilib->list_sections();
@@ -28,76 +28,87 @@ $sections = $tikilib->list_sections();
 $sections_smt = array();
 
 $temp_max = count($sections);
-for ($i = 0; $i < $temp_max; $i++) {
-	$aux["name"] = $sections[$i];
 
-	$name = $sections[$i];
-	$aux["left_column"] = $tikilib->get_preference("${name}_left_column", 'y');
-	$aux["right_column"] = $tikilib->get_preference("${name}_right_column", 'y');
-	$aux["top_bar"] = $tikilib->get_preference("${name}_top_bar", 'y');
-	$aux["bot_bar"] = $tikilib->get_preference("${name}_bot_bar", 'y');
-	$sections_smt[] = $aux;
+for($i = 0; $i < $temp_max; $i++) {
+  $aux["name"] = $sections[$i];
+
+  $name = $sections[$i];
+  $aux["left_column"] = $tikilib->get_preference("${name}_left_column", 'y');
+  $aux["right_column"] = $tikilib->get_preference("${name}_right_column", 'y');
+  $aux["top_bar"] = $tikilib->get_preference("${name}_top_bar", 'y');
+  $aux["bot_bar"] = $tikilib->get_preference("${name}_bot_bar", 'y');
+  $sections_smt[] = $aux;
 }
 
 $smarty->assign('sections', $sections_smt);
 
-foreach ($sections as $section) {
-	if (isset($_REQUEST["${section}_layout"])) {
-		check_ticket('admin-layout');
-		if (isset($_REQUEST["${section}_left_column"]) && $_REQUEST["${section}_left_column"] == "on") {
-			$tikilib->set_preference("${section}_left_column", 'y');
+foreach($sections as $section) {
+  if(isset($_REQUEST["${section}_layout"])) {
+    check_ticket('admin-layout');
 
-			$smarty->assign("${section}_left_column", 'y');
-		} else {
-			$tikilib->set_preference("${section}_left_column", 'n');
+    if(isset($_REQUEST["${section}_left_column"]) && $_REQUEST["${section}_left_column"] == "on") {
+      $tikilib->set_preference("${section}_left_column", 'y');
 
-			$smarty->assign("${section}_left_column", 'n');
-		}
+      $smarty->assign("${section}_left_column", 'y');
+    }
 
-		if (isset($_REQUEST["${section}_right_column"]) && $_REQUEST["${section}_right_column"] == "on") {
-			$tikilib->set_preference("${section}_right_column", 'y');
+    else {
+      $tikilib->set_preference("${section}_left_column", 'n');
 
-			$smarty->assign("${section}_right_column", 'y');
-		} else {
-			$tikilib->set_preference("${section}_right_column", 'n');
+      $smarty->assign("${section}_left_column", 'n');
+    }
 
-			$smarty->assign("${section}_right_column", 'n');
-		}
+    if(isset($_REQUEST["${section}_right_column"]) && $_REQUEST["${section}_right_column"] == "on") {
+      $tikilib->set_preference("${section}_right_column", 'y');
 
-		if (isset($_REQUEST["${section}_top_bar"]) && $_REQUEST["${section}_top_bar"] == "on") {
-			$tikilib->set_preference("${section}_top_bar", 'y');
+      $smarty->assign("${section}_right_column", 'y');
+    }
 
-			$smarty->assign("${section}_top_bar", 'y');
-		} else {
-			$tikilib->set_preference("${section}_top_bar", 'n');
+    else {
+      $tikilib->set_preference("${section}_right_column", 'n');
 
-			$smarty->assign("${section}_top_bar", 'n');
-		}
+      $smarty->assign("${section}_right_column", 'n');
+    }
 
-		if (isset($_REQUEST["${section}_bot_bar"]) && $_REQUEST["${section}_bot_bar"] == "on") {
-			$tikilib->set_preference("${section}_bot_bar", 'y');
+    if(isset($_REQUEST["${section}_top_bar"]) && $_REQUEST["${section}_top_bar"] == "on") {
+      $tikilib->set_preference("${section}_top_bar", 'y');
 
-			$smarty->assign("${section}_bot_bar", 'y');
-		} else {
-			$tikilib->set_preference("${section}_bot_bar", 'n');
+      $smarty->assign("${section}_top_bar", 'y');
+    }
 
-			$smarty->assign("${section}_bot_bar", 'n');
-		}
-	}
+    else {
+      $tikilib->set_preference("${section}_top_bar", 'n');
+
+      $smarty->assign("${section}_top_bar", 'n');
+    }
+
+    if(isset($_REQUEST["${section}_bot_bar"]) && $_REQUEST["${section}_bot_bar"] == "on") {
+      $tikilib->set_preference("${section}_bot_bar", 'y');
+
+      $smarty->assign("${section}_bot_bar", 'y');
+    }
+
+    else {
+      $tikilib->set_preference("${section}_bot_bar", 'n');
+
+      $smarty->assign("${section}_bot_bar", 'n');
+    }
+  }
 }
 
 $sections_smt = array();
 
 $temp_max = count($sections);
-for ($i = 0; $i < $temp_max; $i++) {
-	$aux["name"] = $sections[$i];
 
-	$name = $sections[$i];
-	$aux["left_column"] = $tikilib->get_preference("${name}_left_column", 'y');
-	$aux["right_column"] = $tikilib->get_preference("${name}_right_column", 'y');
-	$aux["top_bar"] = $tikilib->get_preference("${name}_top_bar", 'y');
-	$aux["bot_bar"] = $tikilib->get_preference("${name}_bot_bar", 'y');
-	$sections_smt[] = $aux;
+for($i = 0; $i < $temp_max; $i++) {
+  $aux["name"] = $sections[$i];
+
+  $name = $sections[$i];
+  $aux["left_column"] = $tikilib->get_preference("${name}_left_column", 'y');
+  $aux["right_column"] = $tikilib->get_preference("${name}_right_column", 'y');
+  $aux["top_bar"] = $tikilib->get_preference("${name}_top_bar", 'y');
+  $aux["bot_bar"] = $tikilib->get_preference("${name}_bot_bar", 'y');
+  $sections_smt[] = $aux;
 }
 
 $smarty->assign('sections', $sections_smt);

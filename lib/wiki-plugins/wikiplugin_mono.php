@@ -2,7 +2,7 @@
 
 // Displays the data inline using a monospace font
 //
-// Parameters: 
+// Parameters:
 //   font -- a font name. If the name contains whitespace, you must enclose
 //           the name in single quotes. Note, the fallback standard browser
 //           font "monospace" is specified in case the viewing browser cannot
@@ -17,27 +17,29 @@
 //      browser-specified "monospace" font
 //
 function wikiplugin_mono_help() {
-	return tra("Displays the data using a monospace font").":<br />~np~{MONO(font=>}".tra("text")."{MONO}~/np~";
+  return tra("Displays the data using a monospace font").":<br />~np~{MONO(font=>}".tra("text")."{MONO}~/np~";
 }
 
 function wikiplugin_mono($data, $params) {
-	global $tikilib;
+  global $tikilib;
 
-	extract ($params,EXTR_SKIP);
+  extract($params,EXTR_SKIP);
 
-	$code = /* htmlentities( htmlspecialchars(*/ trim($data) /* ) )*/;
-	$code = preg_replace("/\n/", "<br />", $code);
+  $code = /* htmlentities( htmlspecialchars(*/ trim($data) /* ) )*/;
+  $code = preg_replace("/\n/", "<br />", $code);
 
-	if (!isset($font)) {
-		$font = "monospace";
-	} else {
-		$font .= ", monospace";
-	}
+  if(!isset($font)) {
+    $font = "monospace";
+  }
 
-	$style = "style=\"font-family: " . $font . ";\"";
-	$data = "<span " . $style . ">" . $code . "</span>";
+  else {
+    $font .= ", monospace";
+  }
 
-	return $data;
+  $style = "style=\"font-family: " . $font . ";\"";
+  $data = "<span " . $style . ">" . $code . "</span>";
+
+  return $data;
 }
 
 ?>

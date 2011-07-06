@@ -7,106 +7,123 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/taglines/taglinelib.php');
+include_once('lib/taglines/taglinelib.php');
 
-if ($tiki_p_edit_cookies != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_edit_cookies != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["cookieId"])) {
-	$_REQUEST["cookieId"] = 0;
+if(!isset($_REQUEST["cookieId"])) {
+  $_REQUEST["cookieId"] = 0;
 }
 
 $smarty->assign('cookieId', $_REQUEST["cookieId"]);
 
-if ($_REQUEST["cookieId"]) {
-	$info = $taglinelib->get_cookie($_REQUEST["cookieId"]);
-} else {
-	$info = array();
+if($_REQUEST["cookieId"]) {
+  $info = $taglinelib->get_cookie($_REQUEST["cookieId"]);
+}
 
-	$info["cookie"] = '';
+else {
+  $info = array();
+
+  $info["cookie"] = '';
 }
 
 $smarty->assign('cookie', $info["cookie"]);
 
-if (isset($_REQUEST["remove"])) {
-	$area = 'delcookie';
-	if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
-		key_check($area);
-		$taglinelib->remove_cookie($_REQUEST["remove"]);
-	} else {
-		key_get($area);
-	}
+if(isset($_REQUEST["remove"])) {
+  $area = 'delcookie';
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+    key_check($area);
+    $taglinelib->remove_cookie($_REQUEST["remove"]);
+  }
+
+  else {
+    key_get($area);
+  }
 }
 
-if (isset($_REQUEST["removeall"])) {
-	$area = 'delcookieall';
-	if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
-		key_check($area);
-		$taglinelib->remove_all_cookies();
-	} else {
-		key_get($area);
-	}
+if(isset($_REQUEST["removeall"])) {
+  $area = 'delcookieall';
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+    key_check($area);
+    $taglinelib->remove_all_cookies();
+  }
+
+  else {
+    key_get($area);
+  }
 }
 
-if (isset($_REQUEST["upload"])) {
-	check_ticket('admin-cookies');
-	if (isset($_FILES['userfile1']) && is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
-		$fp = fopen($_FILES['userfile1']['tmp_name'], "r");
+if(isset($_REQUEST["upload"])) {
+  check_ticket('admin-cookies');
 
-		while (!feof($fp)) {
-			$data = fgets($fp, 65535);
+  if(isset($_FILES['userfile1']) && is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
+    $fp = fopen($_FILES['userfile1']['tmp_name'], "r");
 
-			if (!empty($data)) {
-				$data = str_replace("\n", "", $data);
+    while(!feof($fp)) {
+      $data = fgets($fp, 65535);
 
-				$taglinelib->replace_cookie(0, $data);
-			}
-		}
+      if(!empty($data)) {
+        $data = str_replace("\n", "", $data);
 
-		fclose ($fp);
-		$size = $_FILES['userfile1']['size'];
-		$name = $_FILES['userfile1']['name'];
-		$type = $_FILES['userfile1']['type'];
-	} else {
-		$smarty->assign('msg', tra("Upload failed"));
+        $taglinelib->replace_cookie(0, $data);
+      }
+    }
 
-		$smarty->display("error.tpl");
-		die;
-	}
+    fclose($fp);
+    $size = $_FILES['userfile1']['size'];
+    $name = $_FILES['userfile1']['name'];
+    $type = $_FILES['userfile1']['type'];
+  }
+
+  else {
+    $smarty->assign('msg', tra("Upload failed"));
+
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
-if (isset($_REQUEST["save"])) {
-	check_ticket('admin-cookies');
-	$taglinelib->replace_cookie($_REQUEST["cookieId"], $_REQUEST["cookie"]);
+if(isset($_REQUEST["save"])) {
+  check_ticket('admin-cookies');
+  $taglinelib->replace_cookie($_REQUEST["cookieId"], $_REQUEST["cookie"]);
 
-	$smarty->assign("cookieId", '0');
-	$smarty->assign('cookie', '');
+  $smarty->assign("cookieId", '0');
+  $smarty->assign('cookie', '');
 }
 
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'cookieId_desc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'cookieId_desc';
 }
 
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
+}
+
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -118,17 +135,21 @@ $cant_pages = ceil($channels["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($channels["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($channels["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('channels', $channels["data"]);

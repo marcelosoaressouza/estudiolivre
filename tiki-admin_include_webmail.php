@@ -7,28 +7,32 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 
-include_once ("lib/webmail/htmlMimeMail.php");
+include_once("lib/webmail/htmlMimeMail.php");
 
-if (isset($_REQUEST["webmail"])) {
-	check_ticket('admin-inc-webmail');
-	if (isset($_REQUEST["webmail_view_html"]) && $_REQUEST["webmail_view_html"] == "on") {
-		$tikilib->set_preference("webmail_view_html", 'y');
+if(isset($_REQUEST["webmail"])) {
+  check_ticket('admin-inc-webmail');
 
-		$smarty->assign('webmail_view_html', 'y');
-	} else {
-		$tikilib->set_preference("webmail_view_html", 'n');
+  if(isset($_REQUEST["webmail_view_html"]) && $_REQUEST["webmail_view_html"] == "on") {
+    $tikilib->set_preference("webmail_view_html", 'y');
 
-		$smarty->assign('webmail_view_html', 'n');
-	}
+    $smarty->assign('webmail_view_html', 'y');
+  }
 
-	$tikilib->set_preference('webmail_max_attachment', $_REQUEST["webmail_max_attachment"]);
-	$smarty->assign('webmail_max_attachment', $_REQUEST["webmail_max_attachment"]);
+  else {
+    $tikilib->set_preference("webmail_view_html", 'n');
+
+    $smarty->assign('webmail_view_html', 'n');
+  }
+
+  $tikilib->set_preference('webmail_max_attachment', $_REQUEST["webmail_max_attachment"]);
+  $smarty->assign('webmail_max_attachment', $_REQUEST["webmail_max_attachment"]);
 }
+
 ask_ticket('admin-inc-webmail');
 ?>

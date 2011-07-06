@@ -7,48 +7,50 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 //Include the code
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-require_once ("graph-engine/graph.bar.php");
-require_once ("graph-engine/gd.php");
-include_once ('lib/stats/statslib.php');
+require_once("graph-engine/graph.bar.php");
+require_once("graph-engine/gd.php");
+include_once('lib/stats/statslib.php');
 
-if ($feature_stats != 'y') {
-	die;
+if($feature_stats != 'y') {
+  die;
 }
 
-if ($tiki_p_view_stats != 'y') {
-	die;
+if($tiki_p_view_stats != 'y') {
+  die;
 }
 
 //Define the object
 
 
-if (isset($_REQUEST["type"])) {
-	if ($_REQUEST["type"]=="daily") {
-		$renderer = &new GD_GRenderer(450,400);
-		$graph = &new MultibarGraphic;
-		$data = $statslib->get_daily_usage_chart_data();
-		$graph->setTitle( tra('Daily Usage') );
-		$graph->setData( array( 'x' => $data['xdata'], 'y0' => $data['ydata'] ) );
-		$graph->setParam( 'grid-independant-location', 'vertical' );
-		$graph->setParam( 'grid-independant-major-font', 'Normal-Text' );
-		$graph->setParam( 'grid-independant-major-guide', false );
-	}
-} else {
-	$renderer = &new GD_GRenderer(450,300);
-	$graph = &new MultibarGraphic;
-	$data = $tikilib->get_usage_chart_data();
-	$graph->setTitle( tra('Usage') );
-	$graph->setData( array( 'x' => $data['xdata'], 'y0' => $data['ydata'] ) );
-	$graph->setParam( 'grid-independant-location', 'vertical' );
-	$graph->setParam( 'grid-independant-major-font', 'Normal-Text' );
-	$graph->setParam( 'grid-independant-major-guide', false );
+if(isset($_REQUEST["type"])) {
+  if($_REQUEST["type"]=="daily") {
+    $renderer = &new GD_GRenderer(450,400);
+    $graph = &new MultibarGraphic;
+    $data = $statslib->get_daily_usage_chart_data();
+    $graph->setTitle(tra('Daily Usage'));
+    $graph->setData(array('x' => $data['xdata'], 'y0' => $data['ydata']));
+    $graph->setParam('grid-independant-location', 'vertical');
+    $graph->setParam('grid-independant-major-font', 'Normal-Text');
+    $graph->setParam('grid-independant-major-guide', false);
+  }
+}
+
+else {
+  $renderer = &new GD_GRenderer(450,300);
+  $graph = &new MultibarGraphic;
+  $data = $tikilib->get_usage_chart_data();
+  $graph->setTitle(tra('Usage'));
+  $graph->setData(array('x' => $data['xdata'], 'y0' => $data['ydata']));
+  $graph->setParam('grid-independant-location', 'vertical');
+  $graph->setParam('grid-independant-major-font', 'Normal-Text');
+  $graph->setParam('grid-independant-major-guide', false);
 }
 
 
-$graph->draw( $renderer );
+$graph->draw($renderer);
 
-$renderer->httpOutput( 'stats.png' );
+$renderer->httpOutput('stats.png');
 
 ?>

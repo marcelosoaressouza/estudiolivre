@@ -3,32 +3,37 @@
 
 // Initialization
 require_once('tiki-setup.php');
-include_once ('lib/userprefs/userprefslib.php');
+include_once('lib/userprefs/userprefslib.php');
 
 if($feature_friends != 'y') {
   $smarty->assign('msg',tra("This feature is disabled"));
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 
 if($tiki_p_list_users != 'y') {
-    $smarty->assign('msg',tra("You do not have permission to use this feature"));
-    $smarty->display("error.tpl");
-    die;
+  $smarty->assign('msg',tra("You do not have permission to use this feature"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 if(isset($_REQUEST["find"])) {
-  $find = $_REQUEST["find"];  
-} else {
-  $find = ''; 
+  $find = $_REQUEST["find"];
 }
+
+else {
+  $find = '';
+}
+
 $smarty->assign('find',$find);
 
 if(!isset($_REQUEST["sort_mode"])) {
   $sort_mode = $user_list_order;
-} else {
+}
+
+else {
   $sort_mode = $_REQUEST["sort_mode"];
-} 
+}
 
 
 $smarty->assign_by_ref('sort_mode',$sort_mode);
@@ -37,16 +42,22 @@ $smarty->assign_by_ref('sort_mode',$sort_mode);
 // use the maxRecords php variable to set the limit
 if(!isset($_REQUEST["offset"])) {
   $offset = 0;
-} else {
-  $offset = $_REQUEST["offset"]; 
 }
+
+else {
+  $offset = $_REQUEST["offset"];
+}
+
 $smarty->assign_by_ref('offset',$offset);
 
 if(isset($_REQUEST["find"])) {
-  $find = $_REQUEST["find"];  
-} else {
-  $find = ''; 
+  $find = $_REQUEST["find"];
 }
+
+else {
+  $find = '';
+}
+
 $smarty->assign('find',$find);
 
 $listusers = $tikilib->list_users($offset,$maxRecords,$sort_mode,$find);
@@ -58,35 +69,47 @@ $smarty->assign('actual_page',1+($offset/$maxRecords));
 
 if($listusers["cant"] > ($offset + $maxRecords)) {
   $smarty->assign('next_offset',$offset + $maxRecords);
-} else {
-  $smarty->assign('next_offset',-1); 
 }
+
+else {
+  $smarty->assign('next_offset',-1);
+}
+
 // If offset is > 0 then prev_offset
 if($offset>0) {
   $smarty->assign('prev_offset',$offset - $maxRecords);
-} else {
+}
+
+else {
   $smarty->assign('prev_offset',-1);
 }
 
 //get the distance
 $listdistance = array();
 $listuserscountry = array();
-for ($i=0;$i<count($listusers["data"]);$i++) {
-	$userlogin=$listusers["data"][$i]["login"];
-	$distance=$userprefslib->get_userdistance($userlogin,$user);
-	if (is_null($distance)) {
-		$listdistance[]=NULL;
-	} else {
-		$listdistance[]=round($distance,0);
-	}
 
-	$userprefs=$listusers["data"][$i]["preferences"];
-	$country="";
-	for ($j=0;$j<count($userprefs);$j++) {
-			if ($userprefs[$j]["prefName"]=="local") $country=$userprefs[$j]["value"];
-			if ($userprefs[$j]["prefName"]=="realName") $listusers["data"][$i]["realName"]=$userprefs[$j]["value"];
-	}
-	$listuserscountry[]=$country;
+for($i=0; $i<count($listusers["data"]); $i++) {
+  $userlogin=$listusers["data"][$i]["login"];
+  $distance=$userprefslib->get_userdistance($userlogin,$user);
+
+  if(is_null($distance)) {
+    $listdistance[]=NULL;
+  }
+
+  else {
+    $listdistance[]=round($distance,0);
+  }
+
+  $userprefs=$listusers["data"][$i]["preferences"];
+  $country="";
+
+  for($j=0; $j<count($userprefs); $j++) {
+    if($userprefs[$j]["prefName"]=="local") $country=$userprefs[$j]["value"];
+
+    if($userprefs[$j]["prefName"]=="realName") $listusers["data"][$i]["realName"]=$userprefs[$j]["value"];
+  }
+
+  $listuserscountry[]=$country;
 }
 
 $smarty->assign_by_ref('listusers',$listusers["data"]);

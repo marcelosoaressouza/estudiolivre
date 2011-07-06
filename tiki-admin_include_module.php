@@ -5,38 +5,38 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 
 
-if (isset($_REQUEST["modulesetup"])) {
-ask_ticket('admin-inc-module');
+if(isset($_REQUEST["modulesetup"])) {
+  ask_ticket('admin-inc-module');
 
-    $pref_toggles = array(
-	"feature_modulecontrols",
-	"user_assigned_modules",
-	"modallgroups",
-	"modseparateanon", // MGvK
-    );
-
-
-    $pref_byref_values = array(
-	"user_flip_modules"
-    );
+  $pref_toggles = array(
+                    "feature_modulecontrols",
+                    "user_assigned_modules",
+                    "modallgroups",
+                    "modseparateanon", // MGvK
+                  );
 
 
+  $pref_byref_values = array(
+                         "user_flip_modules"
+                       );
 
 
-    foreach ($pref_toggles as $toggle) {
-        simple_set_toggle ($toggle);
-    }
 
-    foreach ($pref_byref_values as $britem) {
-        byref_set_value ($britem);
-    }
+
+  foreach($pref_toggles as $toggle) {
+    simple_set_toggle($toggle);
+  }
+
+  foreach($pref_byref_values as $britem) {
+    byref_set_value($britem);
+  }
 
 
 }

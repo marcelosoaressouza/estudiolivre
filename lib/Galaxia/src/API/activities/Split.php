@@ -6,9 +6,9 @@ include_once(GALAXIA_LIBRARY.'/src/API/BaseActivity.php');
 This class handles activities of type 'split'
 */
 class Split extends BaseActivity {
-	function Split($db)
-	{
-	  $this->setDb($db);
-	}
+  function Split($db)
+  {
+    $this->setDb($db);
+  }
 }
 ?>

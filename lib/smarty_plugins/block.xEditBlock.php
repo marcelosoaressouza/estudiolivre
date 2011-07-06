@@ -2,30 +2,34 @@
 
 function smarty_block_xEditBlock($params, $text) {
 
-    $name = $params['name'];
+  $name = $params['name'];
 
-    if (isset($params['itemType'])) {
-	$itemType = $params['itemType'];
-    } else {
-	$itemType = $_REQUEST['tipo'];
-    }
-    
-    if (isset($params['itemId'])) {
-	$itemId = $params['itemId'];
-    } else {
-	$itemId = $_REQUEST['id'];
-    }
+  if(isset($params['itemType'])) {
+    $itemType = $params['itemType'];
+  }
 
-    $itemId = (int)$itemId;
+  else {
+    $itemType = $_REQUEST['tipo'];
+  }
 
-    global $smarty;
+  if(isset($params['itemId'])) {
+    $itemId = $params['itemId'];
+  }
 
-    $smarty->assign('itemType',$itemType);
-    $smarty->assign('itemId',$itemId);
-    $smarty->assign('blockName',$name);
-    $smarty->assign('blockText', $text);
+  else {
+    $itemId = $_REQUEST['id'];
+  }
 
-    return $smarty->fetch("fields/xEditBlock.tpl");
+  $itemId = (int)$itemId;
+
+  global $smarty;
+
+  $smarty->assign('itemType',$itemType);
+  $smarty->assign('itemId',$itemId);
+  $smarty->assign('blockName',$name);
+  $smarty->assign('blockText', $text);
+
+  return $smarty->fetch("fields/xEditBlock.tpl");
 
 }
 

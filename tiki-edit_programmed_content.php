@@ -7,33 +7,33 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/dcs/dcslib.php');
+include_once('lib/dcs/dcslib.php');
 
-if (!isset($dcslib)) {
-	$dcslib = new DCSLib($dbTiki);
+if(!isset($dcslib)) {
+  $dcslib = new DCSLib($dbTiki);
 }
 
-if ($feature_dynamic_content != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_dynamic_content");
+if($feature_dynamic_content != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_dynamic_content");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin_dynamic != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin_dynamic != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["contentId"])) {
-	$smarty->assign('msg', tra("No content id indicated"));
+if(!isset($_REQUEST["contentId"])) {
+  $smarty->assign('msg', tra("No content id indicated"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $smarty->assign('contentId', $_REQUEST["contentId"]);
@@ -41,12 +41,15 @@ $smarty->assign('pId', 0);
 $info = $dcslib->get_content($_REQUEST["contentId"]);
 $smarty->assign('description', $info["description"]);
 
-if (isset($_REQUEST["remove"])) {
+if(isset($_REQUEST["remove"])) {
   $area = 'deldyncontent';
-  if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
     key_check($area);
-		$dcslib->remove_programmed_content($_REQUEST["remove"]);
-  } else {
+    $dcslib->remove_programmed_content($_REQUEST["remove"]);
+  }
+
+  else {
     key_get($area);
   }
 }
@@ -56,26 +59,26 @@ $smarty->assign('data', '');
 $smarty->assign('publishDate', $now);
 $smarty->assign('actual', '');
 
-if (isset($_REQUEST["save"])) {
-	check_ticket('edit-programmed-content');
-	$dc = $tikilib->get_date_converter($user);
-	$publishDate = $dc->getServerDateFromDisplayDate(mktime($_REQUEST["Time_Hour"], $_REQUEST["Time_Minute"],
-																   0, $_REQUEST["Date_Month"], $_REQUEST["Date_Day"], $_REQUEST["Date_Year"]));
+if(isset($_REQUEST["save"])) {
+  check_ticket('edit-programmed-content');
+  $dc = $tikilib->get_date_converter($user);
+  $publishDate = $dc->getServerDateFromDisplayDate(mktime($_REQUEST["Time_Hour"], $_REQUEST["Time_Minute"],
+                 0, $_REQUEST["Date_Month"], $_REQUEST["Date_Day"], $_REQUEST["Date_Year"]));
 
-	$id = $dcslib->replace_programmed_content($_REQUEST["pId"], $_REQUEST["contentId"], $publishDate, $_REQUEST["data"]);
-	$smarty->assign('data', $_REQUEST["data"]);
-	$smarty->assign('publishDate', $publishDate);
-	$smarty->assign('pId', $id);
+  $id = $dcslib->replace_programmed_content($_REQUEST["pId"], $_REQUEST["contentId"], $publishDate, $_REQUEST["data"]);
+  $smarty->assign('data', $_REQUEST["data"]);
+  $smarty->assign('publishDate', $publishDate);
+  $smarty->assign('pId', $id);
 }
 
-if (isset($_REQUEST["edit"])) {
-	$info = $dcslib->get_programmed_content($_REQUEST["edit"]);
+if(isset($_REQUEST["edit"])) {
+  $info = $dcslib->get_programmed_content($_REQUEST["edit"]);
 
-	$actual = $dcslib->get_actual_content_date($_REQUEST["contentId"]);
-	$smarty->assign('actual', $actual);
-	$smarty->assign('data', $info["data"]);
-	$smarty->assign('publishDate', $info["publishDate"]);
-	$smarty->assign('pId', $info["pId"]);
+  $actual = $dcslib->get_actual_content_date($_REQUEST["contentId"]);
+  $smarty->assign('actual', $actual);
+  $smarty->assign('data', $info["data"]);
+  $smarty->assign('publishDate', $info["publishDate"]);
+  $smarty->assign('pId', $info["pId"]);
 }
 
 $actual = $dcslib->get_actual_content_date($_REQUEST["contentId"]);
@@ -85,10 +88,12 @@ $smarty->assign('actual', $actual);
 // for the information as the number of
 // days to get in the log 1,3,4,etc
 // it will default to 1 recovering information for today
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'publishDate_desc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'publishDate_desc';
+}
+
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
 }
 
 $smarty->assign_by_ref('sort_mode', $sort_mode);
@@ -96,18 +101,22 @@ $smarty->assign_by_ref('sort_mode', $sort_mode);
 // If offset is set use it if not then use offset =0
 // use the maxRecords php variable to set the limit
 // if sortMode is not set then use lastModif_desc
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -120,17 +129,21 @@ $cant_pages = ceil($listpages["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($listpages["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($listpages["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('listpages', $listpages["data"]);

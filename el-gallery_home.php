@@ -16,60 +16,74 @@ $pdata = $tikilib->parse_data($info["data"],$info["is_html"]);
 $smarty->assign_by_ref('destak', $pdata);
 
 if(isset($_COOKIE['sortMode'])) {
-	$sortField = $_COOKIE['sortMode'];
-} else {
-	$sortField = 'publishDate';
+  $sortField = $_COOKIE['sortMode'];
 }
+
+else {
+  $sortField = 'publishDate';
+}
+
 if(isset($_COOKIE['sortDirection'])) {
-	if($_COOKIE['sortDirection'] == '_desc') {
-		$smarty->assign('sortDirection', 'Down');
-		$sortDirection = '_desc';
-	}
-	else {
-		$smarty->assign('sortDirection', 'Up');
-		$sortDirection = '_asc';
-	}	
-} else {
-	$smarty->assign('sortDirection', 'Down');
-	$sortDirection = '_desc';	
+  if($_COOKIE['sortDirection'] == '_desc') {
+    $smarty->assign('sortDirection', 'Down');
+    $sortDirection = '_desc';
+  }
+
+  else {
+    $smarty->assign('sortDirection', 'Up');
+    $sortDirection = '_asc';
+  }
 }
+
+else {
+  $smarty->assign('sortDirection', 'Down');
+  $sortDirection = '_desc';
+}
+
 $smarty->assign('sortMode', $sortField);
 $sort_mode =  $sortField .  $sortDirection;
 $smarty->assign('sort_mode', $sort_mode);
 
 $localTipos = array('Audio', 'Imagem', 'Video', 'Texto', 'Outro');
 $tipos = array();
+
 for($i = 0; $i < sizeof($localTipos); $i++) {
-	if(isset($_COOKIE[$localTipos[$i]])) {
-		if($_COOKIE[$localTipos[$i]] == '1') {
-			$tipos[] = $localTipos[$i];
-		}
-	}
+  if(isset($_COOKIE[$localTipos[$i]])) {
+    if($_COOKIE[$localTipos[$i]] == '1') {
+      $tipos[] = $localTipos[$i];
+    }
+  }
 }
+
 if(!sizeof($tipos)) {
-	$tipos = $localTipos;
+  $tipos = $localTipos;
 }
+
 $smarty->assign('tipos', $tipos);
 $actualClass = array("Video" => "VideoPublication",
-					 "Audio" => "AudioPublication",
-					 "Imagem" => "ImagePublication",
-					 "Texto" => "TextPublication",
-					 "Outro" => "OtherPublication");
+                     "Audio" => "AudioPublication",
+                     "Imagem" => "ImagePublication",
+                     "Texto" => "TextPublication",
+                     "Outro" => "OtherPublication");
 $filters = array("actualClass" => array());
-foreach ($tipos as $tipo) {
-	$filters["actualClass"][] = $actualClass[$tipo];
+foreach($tipos as $tipo) {
+  $filters["actualClass"][] = $actualClass[$tipo];
 }
 
 if(isset($_REQUEST['highlight'])) {
-	$find = $_REQUEST['highlight'];
-} else {
-	$find = '';
+  $find = $_REQUEST['highlight'];
 }
-if ($find) {
-	require_once("lib/elgal/model/Find.php");
-	$key = new Find(array("title", "description"));
-	$filters[$find] = $key;
+
+else {
+  $find = '';
 }
+
+if($find) {
+  require_once("lib/elgal/model/Find.php");
+  $key = new Find(array("title", "description"));
+  $filters[$find] = $key;
+}
+
 $filters["publishDate"] = true;
 $controller = new PersistentObjectController("Publication");
 $files = $controller->findAll($filters, 0, 10, $sort_mode);

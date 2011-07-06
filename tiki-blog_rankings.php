@@ -7,61 +7,65 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/rankings/ranklib.php');
+include_once('lib/rankings/ranklib.php');
 
-if ($feature_blogs != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_blogs");
+if($feature_blogs != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_blogs");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($feature_blog_rankings != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_blog_rankings");
+if($feature_blog_rankings != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_blog_rankings");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_read_blog != 'y') {
-	$smarty->assign('msg', tra("Permission denied you cannot view this section"));
+if($tiki_p_read_blog != 'y') {
+  $smarty->assign('msg', tra("Permission denied you cannot view this section"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $allrankings = array(
-	array(
-	'name' => tra('Top visited blogs'),
-	'value' => 'blog_ranking_top_blogs'
-),
-	array(
-	'name' => tra('Last posts'),
-	'value' => 'blog_ranking_last_posts'
-),
-	array(
-	'name' => tra('Top active blogs'),
-	'value' => 'blog_ranking_top_active_blogs'
-)
-);
+                 array(
+                   'name' => tra('Top visited blogs'),
+                   'value' => 'blog_ranking_top_blogs'
+                 ),
+                 array(
+                   'name' => tra('Last posts'),
+                   'value' => 'blog_ranking_last_posts'
+                 ),
+                 array(
+                   'name' => tra('Top active blogs'),
+                   'value' => 'blog_ranking_top_active_blogs'
+                 )
+               );
 
 $smarty->assign('allrankings', $allrankings);
 
-if (!isset($_REQUEST["which"])) {
-	$which = 'blog_ranking_top_blogs';
-} else {
-	$which = $_REQUEST["which"];
+if(!isset($_REQUEST["which"])) {
+  $which = 'blog_ranking_top_blogs';
+}
+
+else {
+  $which = $_REQUEST["which"];
 }
 
 $smarty->assign('which', $which);
 
 // Get the page from the request var or default it to HomePage
-if (!isset($_REQUEST["limit"])) {
-	$limit = 10;
-} else {
-	$limit = $_REQUEST["limit"];
+if(!isset($_REQUEST["limit"])) {
+  $limit = 10;
+}
+
+else {
+  $limit = $_REQUEST["limit"];
 }
 
 $smarty->assign_by_ref('limit', $limit);

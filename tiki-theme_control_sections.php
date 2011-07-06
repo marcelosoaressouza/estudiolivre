@@ -7,38 +7,38 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/themecontrol/tcontrol.php');
-include_once ('lib/categories/categlib.php');
+include_once('lib/themecontrol/tcontrol.php');
+include_once('lib/categories/categlib.php');
 
-if ($feature_theme_control != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_theme_control");
+if($feature_theme_control != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_theme_control");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $list_styles = $tikilib->list_styles();
 $smarty->assign_by_ref('styles', $list_styles);
 
-if (isset($_REQUEST['assign'])) {
-	check_ticket('tc-sections');
-	$tcontrollib->tc_assign_section($_REQUEST['section'], $_REQUEST['theme']);
+if(isset($_REQUEST['assign'])) {
+  check_ticket('tc-sections');
+  $tcontrollib->tc_assign_section($_REQUEST['section'], $_REQUEST['theme']);
 }
 
-if (isset($_REQUEST["delete"])) {
-	check_ticket('tc-sections');
-	foreach (array_keys($_REQUEST["sec"])as $sec) {
-		$tcontrollib->tc_remove_section($sec);
-	}
+if(isset($_REQUEST["delete"])) {
+  check_ticket('tc-sections');
+  foreach(array_keys($_REQUEST["sec"])as $sec) {
+    $tcontrollib->tc_remove_section($sec);
+  }
 }
 
 $channels = $tcontrollib->tc_list_sections(0, -1, 'section_asc', '');
@@ -46,7 +46,7 @@ $smarty->assign_by_ref('channels', $channels["data"]);
 
 $sections = $tikilib->list_sections();
 
-sort ($sections);
+sort($sections);
 $smarty->assign('sections', $sections);
 
 ask_ticket('tc-sections');

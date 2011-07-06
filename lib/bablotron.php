@@ -1,112 +1,114 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class bablotron extends TikiLib {
-	var $words;
+  var $words;
 
-	var $lan;
-	var $db;
+  var $lan;
+  var $db;
   var $tbl;
 
-	function bablotron($db, $lan) {
-		if (!$db) {
-			die ("Invalid db object passed to BablotronLib constructor");
-		}
+  function bablotron($db, $lan) {
+    if(!$db) {
+      die("Invalid db object passed to BablotronLib constructor");
+    }
 
-		$this->db = $db;
-		$this->lan = preg_replace('/-/','_',$lan);
-		$this->tbl = 'babl_words_' . $this->lan;
-	}
+    $this->db = $db;
+    $this->lan = preg_replace('/-/','_',$lan);
+    $this->tbl = 'babl_words_' . $this->lan;
+  }
 
-	function spellcheck_text($text, $threshold = 5) {
-		$words = preg_split("/\s/", $text);
+  function spellcheck_text($text, $threshold = 5) {
+    $words = preg_split("/\s/", $text);
 
-		$results = array();
+    $results = array();
 
-		foreach ($words as $word) {
-			if (!$this->word_exists($word)) {
-				$results[$word] = $this->find_similar_words($word, $threshold);
-			}
-		}
+    foreach($words as $word) {
+      if(!$this->word_exists($word)) {
+        $results[$word] = $this->find_similar_words($word, $threshold);
+      }
+    }
 
-		return $results;
-	}
+    return $results;
+  }
 
-	function spellcheck_word($word, $threshold = 5) {
-		$results = array();
+  function spellcheck_word($word, $threshold = 5) {
+    $results = array();
 
-		if (!$this->word_exists($word)) {
-			$results[$word] = $this->find_similar_words($word, $threshold);
-		}
+    if(!$this->word_exists($word)) {
+      $results[$word] = $this->find_similar_words($word, $threshold);
+    }
 
-		return $results;
-	}
+    return $results;
+  }
 
-	function quick_spellcheck_text($text, $threshold = 5) {
-		$words = preg_split("/\s/", $text);
+  function quick_spellcheck_text($text, $threshold = 5) {
+    $words = preg_split("/\s/", $text);
 
-		$results = array();
+    $results = array();
 
-		foreach ($words as $word) {
-			if (!$this->word_exists($word)) {
-				$results[] = $word;
-			}
-		}
+    foreach($words as $word) {
+      if(!$this->word_exists($word)) {
+        $results[] = $word;
+      }
+    }
 
-		return $results;
-	}
+    return $results;
+  }
 
-	function find_similar_words($word, $threshold) {
-		$similar = array();
+  function find_similar_words($word, $threshold) {
+    $similar = array();
 
-		$word = addslashes(trim($word));
-		$sndx = substr($word, 0, 2);
-		$query = "select `word` from `{$this->tbl}` where `di`=?";
-		@$result = $this->query($query, array($sndx));
+    $word = addslashes(trim($word));
+    $sndx = substr($word, 0, 2);
+    $query = "select `word` from `{$this->tbl}` where `di`=?";
+    @$result = $this->query($query, array($sndx));
 
-		while ($res = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
-			$tword = $res["word"];
+    while($res = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
+      $tword = $res["word"];
 
-			$lev = levenshtein($tword, $word);
+      $lev = levenshtein($tword, $word);
 
-			if (count($similar) < $threshold) {
-				$similar[$tword] = $lev;
+      if(count($similar) < $threshold) {
+        $similar[$tword] = $lev;
 
-				asort ($similar);
-			} else {
-				// If the array is full then if the lev is better than the worst lev
-				// then update
-				$keys = array_keys($similar);
+        asort($similar);
+      }
 
-				$last_key = $keys[count($keys) - 1];
+      else {
+        // If the array is full then if the lev is better than the worst lev
+        // then update
+        $keys = array_keys($similar);
 
-				if ($lev < $similar[$last_key]) {
-					unset ($similar[$last_key]);
+        $last_key = $keys[count($keys) - 1];
 
-					$similar[$tword] = $lev;
-					asort ($similar);
-				}
-			}
-		}
+        if($lev < $similar[$last_key]) {
+          unset($similar[$last_key]);
 
-		return $similar;
-	}
+          $similar[$tword] = $lev;
+          asort($similar);
+        }
+      }
+    }
 
-	function word_exists($word) {
-		$word = addslashes(trim($word));
-		$query = "select `word` from `{$this->tbl}` where `word`=? or `word`=?";
-		@$result = $this->query($query,array($word,strtolower($word)));
+    return $similar;
+  }
 
-		return $result->numRows();
-	}
+  function word_exists($word) {
+    $word = addslashes(trim($word));
+    $query = "select `word` from `{$this->tbl}` where `word`=? or `word`=?";
+    @$result = $this->query($query,array($word,strtolower($word)));
 
-	function find_similar($word, $threshold) {
-	}
+    return $result->numRows();
+  }
+
+  function find_similar($word, $threshold) {
+  }
 }
 
 ?>

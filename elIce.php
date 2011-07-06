@@ -11,7 +11,7 @@ $smarty->assign('category', 'gallery');
 $iceStats = new IceStats();
 $sources = $iceStats->iceinfo('estudiolivre.org', '8000', 'admin', 'xupa2006-admin');
 
-$smarty->assign('sources', $sources); 
+$smarty->assign('sources', $sources);
 $smarty->assign('mid', 'el-liveInfo.tpl');
 $smarty->display('tiki.tpl');
 

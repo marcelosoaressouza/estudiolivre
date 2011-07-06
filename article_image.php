@@ -10,46 +10,56 @@
 // application to display an image from the database with
 // option to resize the image dynamically creating a thumbnail on the fly.
 
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($feature_articles != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_articles");
+if($feature_articles != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_articles");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["id"])) {
-	die;
+if(!isset($_REQUEST["id"])) {
+  die;
 }
 
 
 
 $topiccachefile = "temp";
-if ($tikidomain) { $topiccachefile.= "/$tikidomain"; }
-$topiccachefile.= "/article.".$_REQUEST["id"];
 
-if (is_file($topiccachefile) and (!isset($_REQUEST["reload"]))) {
-	$size = getimagesize($topiccachefile);
-	header ("Content-type: ".$size['mime']); /* do not backport to 1.8 */
-	readfile($topiccachefile);
-	die();
-} else {
-	$data = $tikilib->get_article_image($_REQUEST["id"]);
-	$type = $data["image_type"];
-	$data = $data["image_data"];
-	if ($data["image_data"]) {
-		$fp = fopen($topiccachefile,"wb");
-		fputs($fp,$data);
-		fclose($fp);
-	}
+if($tikidomain) {
+  $topiccachefile.= "/$tikidomain";
 }
 
-header ("Content-type: $type");
-if (is_file($topiccachefile)) {
-	readfile($topiccachefile);
-} else {
-	echo $data;
+$topiccachefile.= "/article.".$_REQUEST["id"];
+
+if(is_file($topiccachefile) and(!isset($_REQUEST["reload"]))) {
+  $size = getimagesize($topiccachefile);
+  header("Content-type: ".$size['mime']);  /* do not backport to 1.8 */
+  readfile($topiccachefile);
+  die();
+}
+
+else {
+  $data = $tikilib->get_article_image($_REQUEST["id"]);
+  $type = $data["image_type"];
+  $data = $data["image_data"];
+
+  if($data["image_data"]) {
+    $fp = fopen($topiccachefile,"wb");
+    fputs($fp,$data);
+    fclose($fp);
+  }
+}
+
+header("Content-type: $type");
+
+if(is_file($topiccachefile)) {
+  readfile($topiccachefile);
+}
+
+else {
+  echo $data;
 }
 
 ?>

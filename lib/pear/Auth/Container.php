@@ -37,187 +37,198 @@
 class Auth_Container
 {
 
-    // {{{ properties
+  // {{{ properties
 
-    /**
-     * User that is currently selected from the storage container.
-     *
-     * @access public
-     */
-    var $activeUser = "";
+  /**
+   * User that is currently selected from the storage container.
+   *
+   * @access public
+   */
+  var $activeUser = "";
 
-    // }}}
-    // {{{ Auth_Container() [constructor]
+  // }}}
+  // {{{ Auth_Container() [constructor]
 
-    /**
-     * Constructor
-     *
-     * Has to be overwritten by each storage class
-     *
-     * @access public
-     */
-    function Auth_Container()
-    {
-    }
+  /**
+   * Constructor
+   *
+   * Has to be overwritten by each storage class
+   *
+   * @access public
+   */
+  function Auth_Container()
+  {
+  }
 
-    // }}}
-    // {{{ fetchData()
+  // }}}
+  // {{{ fetchData()
 
-    /**
-     * Fetch data from storage container
-     *
-     * Has to be overwritten by each storage class
-     *
-     * @access public
-     */
-    function fetchData($username, $password, $isChallengeResponse=false)
-    {
-    }
+  /**
+   * Fetch data from storage container
+   *
+   * Has to be overwritten by each storage class
+   *
+   * @access public
+   */
+  function fetchData($username, $password, $isChallengeResponse=false)
+  {
+  }
 
-    // }}}
-    // {{{ verifyPassword()
+  // }}}
+  // {{{ verifyPassword()
 
-    /**
-     * Crypt and verfiy the entered password
-     *
-     * @param  string Entered password
-     * @param  string Password from the data container (usually this password
-     *                is already encrypted.
-     * @param  string Type of algorithm with which the password from
-     *                the container has been crypted. (md5, crypt etc.)
-     *                Defaults to "md5".
-     * @return bool   True, if the passwords match
-     */
-    function verifyPassword($password1, $password2, $cryptType = "md5")
-    {
-        switch ($cryptType) {
-            case "crypt" :
-                return ( crypt($password1, $password2) == $password2 );
-                break;
-            case "none" :
-            case "" :
-                return ($password1 == $password2);
-                break;
-            case "md5" :
-                return (md5($password1) == $password2);
-                break;
-            default :
-                if (function_exists($cryptType)) {
-                    return ($cryptType($password1) == $password2);
-                } elseif (method_exists($this,$cryptType)) { 
-                    return ($this->$cryptType($password1) == $password2);
-                } else {
-                    return false;
-                }
-                break;
-        }
-    }
+  /**
+   * Crypt and verfiy the entered password
+   *
+   * @param  string Entered password
+   * @param  string Password from the data container (usually this password
+   *                is already encrypted.
+   * @param  string Type of algorithm with which the password from
+   *                the container has been crypted. (md5, crypt etc.)
+   *                Defaults to "md5".
+   * @return bool   True, if the passwords match
+   */
+  function verifyPassword($password1, $password2, $cryptType = "md5")
+  {
+    switch($cryptType) {
+    case "crypt" :
+      return (crypt($password1, $password2) == $password2);
+      break;
 
-    // }}}
-    // {{{ supportsChallengeResponse()
-    
-    /**
-      * Returns true if the container supports Challenge Response 
-      * password authentication
-      */
-    function supportsChallengeResponse()
-    {
-        return(false);
-    }
+    case "none" :
+    case "" :
+      return ($password1 == $password2);
+      break;
 
-    // }}}
-    // {{{ getCryptType()
-    
-    /**
-      * Returns the crypt current crypt type of the container
-      *
-      * @return string
-      */
-    function getCryptType()
-    {
-        return('');
-    }
+    case "md5" :
+      return (md5($password1) == $password2);
+      break;
 
-    // }}}
-    // {{{ listUsers()
+    default :
+      if(function_exists($cryptType)) {
+        return ($cryptType($password1) == $password2);
+      }
 
-    /**
-     * List all users that are available from the storage container
-     */
-    function listUsers()
-    {
-        return AUTH_METHOD_NOT_SUPPORTED;
-    }
+      elseif(method_exists($this,$cryptType)) {
+        return ($this->$cryptType($password1) == $password2);
+      }
 
-    // }}}
-    // {{{ getUser()
-
-    /**
-     * Returns a user assoc array
-     *
-     * Containers which want should overide this
-     *
-     * @param string The username
-     */
-    function getUser($username)
-    {
-        $users = $this->listUsers();
-        if ($users === AUTH_METHOD_NOT_SUPPORTED) {
-            return AUTH_METHOD_NOT_SUPPORTED;
-        }
-        for ($i=0; $c = count($users), $i<$c; $i++) {
-            if ($users[$i]['username'] == $username) {
-                return $users[$i];
-            }
-        }
+      else {
         return false;
+      }
+
+      break;
+    }
+  }
+
+  // }}}
+  // {{{ supportsChallengeResponse()
+
+  /**
+    * Returns true if the container supports Challenge Response
+    * password authentication
+    */
+  function supportsChallengeResponse()
+  {
+    return(false);
+  }
+
+  // }}}
+  // {{{ getCryptType()
+
+  /**
+    * Returns the crypt current crypt type of the container
+    *
+    * @return string
+    */
+  function getCryptType()
+  {
+    return('');
+  }
+
+  // }}}
+  // {{{ listUsers()
+
+  /**
+   * List all users that are available from the storage container
+   */
+  function listUsers()
+  {
+    return AUTH_METHOD_NOT_SUPPORTED;
+  }
+
+  // }}}
+  // {{{ getUser()
+
+  /**
+   * Returns a user assoc array
+   *
+   * Containers which want should overide this
+   *
+   * @param string The username
+   */
+  function getUser($username)
+  {
+    $users = $this->listUsers();
+
+    if($users === AUTH_METHOD_NOT_SUPPORTED) {
+      return AUTH_METHOD_NOT_SUPPORTED;
     }
 
-    // }}}
-    // {{{ addUser()
-
-    /**
-     * Add a new user to the storage container
-     *
-     * @param string Username
-     * @param string Password
-     * @param array  Additional information
-     *
-     * @return boolean
-     */
-    function addUser($username, $password, $additional=null)
-    {
-        return AUTH_METHOD_NOT_SUPPORTED;
+    for($i=0; $c = count($users), $i<$c; $i++) {
+      if($users[$i]['username'] == $username) {
+        return $users[$i];
+      }
     }
 
-    // }}}
-    // {{{ removeUser()
+    return false;
+  }
 
-    /**
-     * Remove user from the storage container
-     *
-     * @param string Username
-     */
-    function removeUser($username)
-    {
-        return AUTH_METHOD_NOT_SUPPORTED;
-    }
+  // }}}
+  // {{{ addUser()
 
-    // }}}
-    // {{{ changePassword()
+  /**
+   * Add a new user to the storage container
+   *
+   * @param string Username
+   * @param string Password
+   * @param array  Additional information
+   *
+   * @return boolean
+   */
+  function addUser($username, $password, $additional=null)
+  {
+    return AUTH_METHOD_NOT_SUPPORTED;
+  }
 
-    /**
-     * Change password for user in the storage container
-     *
-     * @param string Username
-     * @param string The new password
-     */
-    function changePassword($username, $password)
-    {
-        return AUTH_METHOD_NOT_SUPPORTED;
-    }
+  // }}}
+  // {{{ removeUser()
 
-    // }}}
+  /**
+   * Remove user from the storage container
+   *
+   * @param string Username
+   */
+  function removeUser($username)
+  {
+    return AUTH_METHOD_NOT_SUPPORTED;
+  }
+
+  // }}}
+  // {{{ changePassword()
+
+  /**
+   * Change password for user in the storage container
+   *
+   * @param string Username
+   * @param string The new password
+   */
+  function changePassword($username, $password)
+  {
+    return AUTH_METHOD_NOT_SUPPORTED;
+  }
+
+  // }}}
 
 }
 

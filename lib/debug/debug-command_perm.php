@@ -9,76 +9,76 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
-require_once ('lib/debug/debugger-ext.php');
+require_once('lib/debug/debugger-ext.php');
 
 /**
  * \brief Show current permissions in a convenient way
  */
 class DbgPermissions extends DebuggerCommand {
-	/// \b Must have function to announce command name in debugger console
-	function name() {
-		return 'perm';
-	}
+  /// \b Must have function to announce command name in debugger console
+  function name() {
+    return 'perm';
+  }
 
-	/// \b Must have function to provide help to debugger console
-	function description() {
-		return 'Show current permissions in a convenient way';
-	}
+  /// \b Must have function to provide help to debugger console
+  function description() {
+    return 'Show current permissions in a convenient way';
+  }
 
-	/// \b Must have function to provide help to debugger console
-	function syntax() {
-		return 'perm [partial-name]';
-	}
+  /// \b Must have function to provide help to debugger console
+  function syntax() {
+    return 'perm [partial-name]';
+  }
 
-	/// \b Must have function to show example of usage of given command
-	function example() {
-		return 'perm' . "\n" . 'perm admin' . "\n" . 'perm .*_comments$';
-	}
+  /// \b Must have function to show example of usage of given command
+  function example() {
+    return 'perm' . "\n" . 'perm admin' . "\n" . 'perm .*_comments$';
+  }
 
-	/// Execute command with given set of arguments.
-	function execute($params) {
-		$this->set_result_type(TPL_RESULT);
+  /// Execute command with given set of arguments.
+  function execute($params) {
+    $this->set_result_type(TPL_RESULT);
 
-		$this->set_result_tpl('debug/tiki-debug_permissions.tpl');
-		// Is regex to match against var name given?
-		$p = explode(" ", trim($params));
-		$mask = count($p) > 0 ? str_replace('$', '', trim($p[0])) : '';
-		// Get list of all vars
-		global $smarty;
-		$tpl_vars = $smarty->get_template_vars();
-		// Get descriptions for all permissions
-		global $userlib;
-		$pd = $userlib->get_permissions();
-		$descriptions = array();
+    $this->set_result_tpl('debug/tiki-debug_permissions.tpl');
+    // Is regex to match against var name given?
+    $p = explode(" ", trim($params));
+    $mask = count($p) > 0 ? str_replace('$', '', trim($p[0])) : '';
+    // Get list of all vars
+    global $smarty;
+    $tpl_vars = $smarty->get_template_vars();
+    // Get descriptions for all permissions
+    global $userlib;
+    $pd = $userlib->get_permissions();
+    $descriptions = array();
 
-		foreach ($pd['data'] as $p)
-			$descriptions[$p['permName']] = $p['permDesc'];
+    foreach($pd['data'] as $p)
+    $descriptions[$p['permName']] = $p['permDesc'];
 
-		// convert to vector of names, filter permissions only
-		$perms = array();
-		$len = strlen($mask);
+    // convert to vector of names, filter permissions only
+    $perms = array();
+    $len = strlen($mask);
 
-		foreach ($tpl_vars as $key => $val) {
-			if ((!$len || $len && preg_match('/' . $mask . '/', $key)) && preg_match('/tiki_p_/', $key))
-				$perms[] = array(
-					'name' => $key,
-					'value' => $val,
-					'description' => isset($descriptions[$key]) ? $descriptions[$key] : 'No description'
-				);
-		}
+    foreach($tpl_vars as $key => $val) {
+      if((!$len || $len && preg_match('/' . $mask . '/', $key)) && preg_match('/tiki_p_/', $key))
+        $perms[] = array(
+                     'name' => $key,
+                     'value' => $val,
+                     'description' => isset($descriptions[$key]) ? $descriptions[$key] : 'No description'
+                   );
+    }
 
-		return $perms;
-	}
+    return $perms;
+  }
 }
 
 /// Class factory to create instances of defined commands
 function dbg_command_factory_perm() {
-	return new DbgPermissions();
+  return new DbgPermissions();
 }
 
 ?>

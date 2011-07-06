@@ -2,12 +2,12 @@
 
 // $HEADER$
 
-include_once ('tiki-setup.php');
+include_once('tiki-setup.php');
 
-if ($wiki_feature_3d != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": wiki_feature_3d");
-	$smarty->display("error.tpl");
-	die;
+if($wiki_feature_3d != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": wiki_feature_3d");
+  $smarty->display("error.tpl");
+  die;
 }
 
 

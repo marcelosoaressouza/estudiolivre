@@ -8,7 +8,7 @@
 
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -17,38 +17,44 @@ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
 function smarty_function_wikistructure($params, &$smarty)
 {
 
-    global $tikilib, $user, $dbTiki, $structlib;
+  global $tikilib, $user, $dbTiki, $structlib;
 
-extract($params);
+  extract($params);
 
-require_once ('lib/structures/structlib.php');
-if (!isset($structlib)) {
-  $structlib = new StructLib($dbTiki);
-}
-if (!isset($_REQUEST["page"]) || $_REQUEST["page"] == '') {
-if (isset($_REQUEST["page_ref_id"])) {
-    // If a structure page has been requested
-    $page_ref_id = $_REQUEST["page_ref_id"];
-}
-}
-else {
+  require_once('lib/structures/structlib.php');
+
+  if(!isset($structlib)) {
+    $structlib = new StructLib($dbTiki);
+  }
+
+  if(!isset($_REQUEST["page"]) || $_REQUEST["page"] == '') {
+    if(isset($_REQUEST["page_ref_id"])) {
+      // If a structure page has been requested
+      $page_ref_id = $_REQUEST["page_ref_id"];
+    }
+  }
+
+  else {
 //Get the structures this page is a member of
-$structs = $structlib->get_page_structures($_REQUEST["page"],$structure);
+    $structs = $structlib->get_page_structures($_REQUEST["page"],$structure);
 //If page is only member of one structure, display if requested
-$single_struct = count($structs) == 1;
-if ($single_struct) {
-$page_ref_id=$structs[0]['req_page_ref_id'];
-$_REQUEST["page_ref_id"]=$page_ref_id;
-}
-}
-if (isset($page_ref_id) && isset($detail)) {
-  $channels.= $structlib->get_toc($page_ref_id,'asc',false,false);
-}
-else {
-  $channels.= $structlib->get_toc($id,'asc',false,false);
-}
+    $single_struct = count($structs) == 1;
 
-return $channels;
+    if($single_struct) {
+      $page_ref_id=$structs[0]['req_page_ref_id'];
+      $_REQUEST["page_ref_id"]=$page_ref_id;
+    }
+  }
+
+  if(isset($page_ref_id) && isset($detail)) {
+    $channels.= $structlib->get_toc($page_ref_id,'asc',false,false);
+  }
+
+  else {
+    $channels.= $structlib->get_toc($id,'asc',false,false);
+  }
+
+  return $channels;
 
 }
 

@@ -209,405 +209,444 @@ define('DB_AUTOQUERY_UPDATE', 2);
 
 class DB
 {
-    // {{{ &factory()
-    /**
-     * Create a new DB connection object for the specified database
-     * type
-     *
-     * @param string $type database type, for example "mysql"
-     *
-     * @return mixed a newly created DB object, or a DB error code on
-     * error
-     *
-     * access public
-     */
+  // {{{ &factory()
+  /**
+   * Create a new DB connection object for the specified database
+   * type
+   *
+   * @param string $type database type, for example "mysql"
+   *
+   * @return mixed a newly created DB object, or a DB error code on
+   * error
+   *
+   * access public
+   */
 
-    function &factory($type)
-    {
-        @include_once("DB/${type}.php");
+  function &factory($type)
+  {
+    @include_once("DB/${type}.php");
 
-        $classname = "DB_${type}";
+    $classname = "DB_${type}";
 
-        if (!class_exists($classname)) {
-            return PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
-                                    null, null, null, 'DB_Error', true);
-        }
-
-        @$obj =& new $classname;
-
-        return $obj;
+    if(!class_exists($classname)) {
+      return PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
+                              null, null, null, 'DB_Error', true);
     }
 
-    // }}}
-    // {{{ &connect()
-    /**
-     * Create a new DB connection object and connect to the specified
-     * database
-     *
-     * @param mixed $dsn "data source name", see the DB::parseDSN
-     * method for a description of the dsn format.  Can also be
-     * specified as an array of the format returned by DB::parseDSN.
-     *
-     * @param mixed $options An associative array of option names and
-     * their values.  For backwards compatibility, this parameter may
-     * also be a boolean that tells whether the connection should be
-     * persistent.  See DB_common::setOption for more information on
-     * connection options.
-     *
-     * @return mixed a newly created DB connection object, or a DB
-     * error object on error
-     *
-     * @see DB::parseDSN
-     * @see DB::isError
-     * @see DB_common::setOption
-     */
-    function &connect($dsn, $options = false)
-    {
-        if (is_array($dsn)) {
-            $dsninfo = $dsn;
-        } else {
-            $dsninfo = DB::parseDSN($dsn);
-        }
-        $type = $dsninfo["phptype"];
+    @$obj =& new $classname;
 
-        if (is_array($options) && isset($options["debug"]) &&
-            $options["debug"] >= 2) {
-            // expose php errors with sufficient debug level
-            include_once "DB/${type}.php";
-        } else {
-            @include_once "DB/${type}.php";
-        }
+    return $obj;
+  }
 
-        $classname = "DB_${type}";
-        if (!class_exists($classname)) {
-            return PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
-                                    "Unable to include the DB/{$type}.php file for `$dsn'",
-                                    'DB_Error', true);
-        }
-
-        @$obj =& new $classname;
-
-        if (is_array($options)) {
-            foreach ($options as $option => $value) {
-                $test = $obj->setOption($option, $value);
-                if (DB::isError($test)) {
-                    return $test;
-                }
-            }
-        } else {
-            $obj->setOption('persistent', $options);
-        }
-        $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
-        if (DB::isError($err)) {
-            $err->addUserInfo($dsn);
-            return $err;
-        }
-
-        return $obj;
+  // }}}
+  // {{{ &connect()
+  /**
+   * Create a new DB connection object and connect to the specified
+   * database
+   *
+   * @param mixed $dsn "data source name", see the DB::parseDSN
+   * method for a description of the dsn format.  Can also be
+   * specified as an array of the format returned by DB::parseDSN.
+   *
+   * @param mixed $options An associative array of option names and
+   * their values.  For backwards compatibility, this parameter may
+   * also be a boolean that tells whether the connection should be
+   * persistent.  See DB_common::setOption for more information on
+   * connection options.
+   *
+   * @return mixed a newly created DB connection object, or a DB
+   * error object on error
+   *
+   * @see DB::parseDSN
+   * @see DB::isError
+   * @see DB_common::setOption
+   */
+  function &connect($dsn, $options = false)
+  {
+    if(is_array($dsn)) {
+      $dsninfo = $dsn;
     }
 
-    // }}}
-    // {{{ apiVersion()
-    /**
-     * Return the DB API version
-     *
-     * @return int the DB API version number
-     *
-     * @access public
-     */
-    function apiVersion()
-    {
-        return 2;
+    else {
+      $dsninfo = DB::parseDSN($dsn);
     }
 
-    // }}}
-    // {{{ isError()
-    /**
-     * Tell whether a result code from a DB method is an error
-     *
-     * @param int $value result code
-     *
-     * @return bool whether $value is an error
-     *
-     * @access public
-     */
-    function isError($value)
-    {
-        return (is_object($value) &&
-                (get_class($value) == 'db_error' ||
-                 is_subclass_of($value, 'db_error')));
+    $type = $dsninfo["phptype"];
+
+    if(is_array($options) && isset($options["debug"]) &&
+        $options["debug"] >= 2) {
+      // expose php errors with sufficient debug level
+      include_once "DB/${type}.php";
     }
 
-    // }}}
-    // {{{ isConnection()
-    /**
-     * Tell whether a value is a DB connection
-     *
-     * @param mixed $value value to test
-     *
-     * @return bool whether $value is a DB connection
-     *
-     * @access public
-     */
-    function isConnection($value)
-    {
-        return (is_object($value) &&
-                is_subclass_of($value, 'db_common') &&
-                method_exists($value, 'simpleQuery'));
+    else {
+      @include_once "DB/${type}.php";
     }
 
-    // }}}
-    // {{{ isManip()
-    /**
-     * Tell whether a query is a data manipulation query (insert,
-     * update or delete) or a data definition query (create, drop,
-     * alter, grant, revoke).
-     *
-     * @access public
-     *
-     * @param string $query the query
-     *
-     * @return boolean whether $query is a data manipulation query
-     */
-    function isManip($query)
-    {
-        $manips = 'INSERT|UPDATE|DELETE|'.'REPLACE|CREATE|DROP|'.
-                  'ALTER|GRANT|REVOKE|'.'LOCK|UNLOCK';
-        if (preg_match('/^\s*"?('.$manips.')\s+/i', $query)) {
-            return true;
-        }
-        return false;
+    $classname = "DB_${type}";
+
+    if(!class_exists($classname)) {
+      return PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
+                              "Unable to include the DB/{$type}.php file for `$dsn'",
+                              'DB_Error', true);
     }
 
-    // }}}
-    // {{{ errorMessage()
-    /**
-     * Return a textual error message for a DB error code
-     *
-     * @param integer $value error code
-     *
-     * @return string error message, or false if the error code was
-     * not recognized
-     */
-    function errorMessage($value)
-    {
-        static $errorMessages;
-        if (!isset($errorMessages)) {
-            $errorMessages = array(
-                DB_ERROR                    => 'unknown error',
-                DB_ERROR_ALREADY_EXISTS     => 'already exists',
-                DB_ERROR_CANNOT_CREATE      => 'can not create',
-                DB_ERROR_CANNOT_DELETE      => 'can not delete',
-                DB_ERROR_CANNOT_DROP        => 'can not drop',
-                DB_ERROR_CONSTRAINT         => 'constraint violation',
-                DB_ERROR_DIVZERO            => 'division by zero',
-                DB_ERROR_INVALID            => 'invalid',
-                DB_ERROR_INVALID_DATE       => 'invalid date or time',
-                DB_ERROR_INVALID_NUMBER     => 'invalid number',
-                DB_ERROR_MISMATCH           => 'mismatch',
-                DB_ERROR_NODBSELECTED       => 'no database selected',
-                DB_ERROR_NOSUCHFIELD        => 'no such field',
-                DB_ERROR_NOSUCHTABLE        => 'no such table',
-                DB_ERROR_NOT_CAPABLE        => 'DB backend not capable',
-                DB_ERROR_NOT_FOUND          => 'not found',
-                DB_ERROR_NOT_LOCKED         => 'not locked',
-                DB_ERROR_SYNTAX             => 'syntax error',
-                DB_ERROR_UNSUPPORTED        => 'not supported',
-                DB_ERROR_VALUE_COUNT_ON_ROW => 'value count on row',
-                DB_ERROR_INVALID_DSN        => 'invalid DSN',
-                DB_ERROR_CONNECT_FAILED     => 'connect failed',
-                DB_OK                       => 'no error',
-                DB_WARNING                  => 'unknown warning',
-                DB_WARNING_READ_ONLY        => 'read only',
-                DB_ERROR_NEED_MORE_DATA     => 'insufficient data supplied',
-                DB_ERROR_EXTENSION_NOT_FOUND=> 'extension not found',
-                DB_ERROR_NOSUCHDB           => 'no such database',
-                DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions',
-                DB_ERROR_TRUNCATED          => 'truncated'
-            );
-        }
+    @$obj =& new $classname;
 
-        if (DB::isError($value)) {
-            $value = $value->getCode();
-        }
+    if(is_array($options)) {
+      foreach($options as $option => $value) {
+        $test = $obj->setOption($option, $value);
 
-        return isset($errorMessages[$value]) ? $errorMessages[$value] : $errorMessages[DB_ERROR];
+        if(DB::isError($test)) {
+          return $test;
+        }
+      }
     }
 
-    // }}}
-    // {{{ parseDSN()
-    /**
-     * Parse a data source name
-     *
-     * A array with the following keys will be returned:
-     *  phptype: Database backend used in PHP (mysql, odbc etc.)
-     *  dbsyntax: Database used with regards to SQL syntax etc.
-     *  protocol: Communication protocol to use (tcp, unix etc.)
-     *  hostspec: Host specification (hostname[:port])
-     *  database: Database to use on the DBMS server
-     *  username: User name for login
-     *  password: Password for login
-     *
-     * The format of the supplied DSN is in its fullest form:
-     *
-     *  phptype(dbsyntax)://username:password@protocol+hostspec/database
-     *
-     * Most variations are allowed:
-     *
-     *  phptype://username:password@protocol+hostspec:110//usr/db_file.db
-     *  phptype://username:password@hostspec/database_name
-     *  phptype://username:password@hostspec
-     *  phptype://username@hostspec
-     *  phptype://hostspec/database
-     *  phptype://hostspec
-     *  phptype(dbsyntax)
-     *  phptype
-     *
-     * @param string $dsn Data Source Name to be parsed
-     *
-     * @return array an associative array
-     *
-     * @author Tomas V.V.Cox <cox@idecnet.com>
-     */
-    function parseDSN($dsn)
-    {
-        if (is_array($dsn)) {
-            return $dsn;
-        }
-
-        $parsed = array(
-            'phptype'  => false,
-            'dbsyntax' => false,
-            'username' => false,
-            'password' => false,
-            'protocol' => false,
-            'hostspec' => false,
-            'port'     => false,
-            'socket'   => false,
-            'database' => false
-        );
-
-        // Find phptype and dbsyntax
-        if (($pos = strpos($dsn, '://')) !== false) {
-            $str = substr($dsn, 0, $pos);
-            $dsn = substr($dsn, $pos + 3);
-        } else {
-            $str = $dsn;
-            $dsn = NULL;
-        }
-
-        // Get phptype and dbsyntax
-        // $str => phptype(dbsyntax)
-        if (preg_match('|^(.+?)\((.*?)\)$|', $str, $arr)) {
-            $parsed['phptype']  = $arr[1];
-            $parsed['dbsyntax'] = (empty($arr[2])) ? $arr[1] : $arr[2];
-        } else {
-            $parsed['phptype']  = $str;
-            $parsed['dbsyntax'] = $str;
-        }
-
-        if (empty($dsn)) {
-            return $parsed;
-        }
-
-        // Get (if found): username and password
-        // $dsn => username:password@protocol+hostspec/database
-        if (($at = strrpos($dsn,'@')) !== false) {
-            $str = substr($dsn, 0, $at);
-            $dsn = substr($dsn, $at + 1);
-            if (($pos = strpos($str, ':')) !== false) {
-                $parsed['username'] = rawurldecode(substr($str, 0, $pos));
-                $parsed['password'] = rawurldecode(substr($str, $pos + 1));
-            } else {
-                $parsed['username'] = rawurldecode($str);
-            }
-        }
-
-        // Find protocol and hostspec
-
-        // $dsn => proto(proto_opts)/database
-        if (preg_match('|^([^(]+)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
-            $proto       = $match[1];
-            $proto_opts  = (!empty($match[2])) ? $match[2] : false;
-            $dsn         = $match[3];
-
-        // $dsn => protocol+hostspec/database (old format)
-        } else {
-            if (strpos($dsn, '+') !== false) {
-                list($proto, $dsn) = explode('+', $dsn, 2);
-            }
-            if (strpos($dsn, '/') !== false) {
-                list($proto_opts, $dsn) = explode('/', $dsn, 2);
-            } else {
-                $proto_opts = $dsn;
-                $dsn = null;
-            }
-        }
-
-        // process the different protocol options
-        $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
-        $proto_opts = rawurldecode($proto_opts);
-        if ($parsed['protocol'] == 'tcp') {
-            if (strpos($proto_opts, ':') !== false) {
-                list($parsed['hostspec'], $parsed['port']) = explode(':', $proto_opts);
-            } else {
-                $parsed['hostspec'] = $proto_opts;
-            }
-        } elseif ($parsed['protocol'] == 'unix') {
-            $parsed['socket'] = $proto_opts;
-        }
-
-        // Get dabase if any
-        // $dsn => database
-        if (!empty($dsn)) {
-            // /database
-            if (($pos = strpos($dsn, '?')) === false) {
-                $parsed['database'] = $dsn;
-            // /database?param1=value1&param2=value2
-            } else {
-                $parsed['database'] = substr($dsn, 0, $pos);
-                $dsn = substr($dsn, $pos + 1);
-                if (strpos($dsn, '&') !== false) {
-                    $opts = explode('&', $dsn);
-                } else { // database?param1=value1
-                    $opts = array($dsn);
-                }
-                foreach ($opts as $opt) {
-                    list($key, $value) = explode('=', $opt);
-                    if (!isset($parsed[$key])) { // don't allow params overwrite
-                        $parsed[$key] = rawurldecode($value);
-                    }
-                }
-            }
-        }
-
-        return $parsed;
+    else {
+      $obj->setOption('persistent', $options);
     }
 
-    // }}}
-    // {{{ assertExtension()
-    /**
-     * Load a PHP database extension if it is not loaded already.
-     *
-     * @access public
-     *
-     * @param string $name the base name of the extension (without the .so or
-     *                     .dll suffix)
-     *
-     * @return boolean true if the extension was already or successfully
-     *                 loaded, false if it could not be loaded
-     */
-    function assertExtension($name)
-    {
-        if (!extension_loaded($name)) {
-            $dlext = OS_WINDOWS ? '.dll' : '.so';
-            $dlprefix = OS_WINDOWS ? 'php_' : '';
-            @dl($dlprefix . $name . $dlext);
-            return extension_loaded($name);
-        }
-        return true;
+    $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
+
+    if(DB::isError($err)) {
+      $err->addUserInfo($dsn);
+      return $err;
     }
-    // }}}
+
+    return $obj;
+  }
+
+  // }}}
+  // {{{ apiVersion()
+  /**
+   * Return the DB API version
+   *
+   * @return int the DB API version number
+   *
+   * @access public
+   */
+  function apiVersion()
+  {
+    return 2;
+  }
+
+  // }}}
+  // {{{ isError()
+  /**
+   * Tell whether a result code from a DB method is an error
+   *
+   * @param int $value result code
+   *
+   * @return bool whether $value is an error
+   *
+   * @access public
+   */
+  function isError($value)
+  {
+    return (is_object($value) &&
+            (get_class($value) == 'db_error' ||
+             is_subclass_of($value, 'db_error')));
+  }
+
+  // }}}
+  // {{{ isConnection()
+  /**
+   * Tell whether a value is a DB connection
+   *
+   * @param mixed $value value to test
+   *
+   * @return bool whether $value is a DB connection
+   *
+   * @access public
+   */
+  function isConnection($value)
+  {
+    return (is_object($value) &&
+            is_subclass_of($value, 'db_common') &&
+            method_exists($value, 'simpleQuery'));
+  }
+
+  // }}}
+  // {{{ isManip()
+  /**
+   * Tell whether a query is a data manipulation query (insert,
+   * update or delete) or a data definition query (create, drop,
+   * alter, grant, revoke).
+   *
+   * @access public
+   *
+   * @param string $query the query
+   *
+   * @return boolean whether $query is a data manipulation query
+   */
+  function isManip($query)
+  {
+    $manips = 'INSERT|UPDATE|DELETE|'.'REPLACE|CREATE|DROP|'.
+              'ALTER|GRANT|REVOKE|'.'LOCK|UNLOCK';
+
+    if(preg_match('/^\s*"?('.$manips.')\s+/i', $query)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // }}}
+  // {{{ errorMessage()
+  /**
+   * Return a textual error message for a DB error code
+   *
+   * @param integer $value error code
+   *
+   * @return string error message, or false if the error code was
+   * not recognized
+   */
+  function errorMessage($value)
+  {
+    static $errorMessages;
+
+    if(!isset($errorMessages)) {
+      $errorMessages = array(
+                         DB_ERROR                    => 'unknown error',
+                         DB_ERROR_ALREADY_EXISTS     => 'already exists',
+                         DB_ERROR_CANNOT_CREATE      => 'can not create',
+                         DB_ERROR_CANNOT_DELETE      => 'can not delete',
+                         DB_ERROR_CANNOT_DROP        => 'can not drop',
+                         DB_ERROR_CONSTRAINT         => 'constraint violation',
+                         DB_ERROR_DIVZERO            => 'division by zero',
+                         DB_ERROR_INVALID            => 'invalid',
+                         DB_ERROR_INVALID_DATE       => 'invalid date or time',
+                         DB_ERROR_INVALID_NUMBER     => 'invalid number',
+                         DB_ERROR_MISMATCH           => 'mismatch',
+                         DB_ERROR_NODBSELECTED       => 'no database selected',
+                         DB_ERROR_NOSUCHFIELD        => 'no such field',
+                         DB_ERROR_NOSUCHTABLE        => 'no such table',
+                         DB_ERROR_NOT_CAPABLE        => 'DB backend not capable',
+                         DB_ERROR_NOT_FOUND          => 'not found',
+                         DB_ERROR_NOT_LOCKED         => 'not locked',
+                         DB_ERROR_SYNTAX             => 'syntax error',
+                         DB_ERROR_UNSUPPORTED        => 'not supported',
+                         DB_ERROR_VALUE_COUNT_ON_ROW => 'value count on row',
+                         DB_ERROR_INVALID_DSN        => 'invalid DSN',
+                         DB_ERROR_CONNECT_FAILED     => 'connect failed',
+                         DB_OK                       => 'no error',
+                         DB_WARNING                  => 'unknown warning',
+                         DB_WARNING_READ_ONLY        => 'read only',
+                         DB_ERROR_NEED_MORE_DATA     => 'insufficient data supplied',
+                         DB_ERROR_EXTENSION_NOT_FOUND=> 'extension not found',
+                         DB_ERROR_NOSUCHDB           => 'no such database',
+                         DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions',
+                         DB_ERROR_TRUNCATED          => 'truncated'
+                       );
+    }
+
+    if(DB::isError($value)) {
+      $value = $value->getCode();
+    }
+
+    return isset($errorMessages[$value]) ? $errorMessages[$value] : $errorMessages[DB_ERROR];
+  }
+
+  // }}}
+  // {{{ parseDSN()
+  /**
+   * Parse a data source name
+   *
+   * A array with the following keys will be returned:
+   *  phptype: Database backend used in PHP (mysql, odbc etc.)
+   *  dbsyntax: Database used with regards to SQL syntax etc.
+   *  protocol: Communication protocol to use (tcp, unix etc.)
+   *  hostspec: Host specification (hostname[:port])
+   *  database: Database to use on the DBMS server
+   *  username: User name for login
+   *  password: Password for login
+   *
+   * The format of the supplied DSN is in its fullest form:
+   *
+   *  phptype(dbsyntax)://username:password@protocol+hostspec/database
+   *
+   * Most variations are allowed:
+   *
+   *  phptype://username:password@protocol+hostspec:110//usr/db_file.db
+   *  phptype://username:password@hostspec/database_name
+   *  phptype://username:password@hostspec
+   *  phptype://username@hostspec
+   *  phptype://hostspec/database
+   *  phptype://hostspec
+   *  phptype(dbsyntax)
+   *  phptype
+   *
+   * @param string $dsn Data Source Name to be parsed
+   *
+   * @return array an associative array
+   *
+   * @author Tomas V.V.Cox <cox@idecnet.com>
+   */
+  function parseDSN($dsn)
+  {
+    if(is_array($dsn)) {
+      return $dsn;
+    }
+
+    $parsed = array(
+                'phptype'  => false,
+                'dbsyntax' => false,
+                'username' => false,
+                'password' => false,
+                'protocol' => false,
+                'hostspec' => false,
+                'port'     => false,
+                'socket'   => false,
+                'database' => false
+              );
+
+    // Find phptype and dbsyntax
+    if(($pos = strpos($dsn, '://')) !== false) {
+      $str = substr($dsn, 0, $pos);
+      $dsn = substr($dsn, $pos + 3);
+    }
+
+    else {
+      $str = $dsn;
+      $dsn = NULL;
+    }
+
+    // Get phptype and dbsyntax
+    // $str => phptype(dbsyntax)
+    if(preg_match('|^(.+?)\((.*?)\)$|', $str, $arr)) {
+      $parsed['phptype']  = $arr[1];
+      $parsed['dbsyntax'] = (empty($arr[2])) ? $arr[1] : $arr[2];
+    }
+
+    else {
+      $parsed['phptype']  = $str;
+      $parsed['dbsyntax'] = $str;
+    }
+
+    if(empty($dsn)) {
+      return $parsed;
+    }
+
+    // Get (if found): username and password
+    // $dsn => username:password@protocol+hostspec/database
+    if(($at = strrpos($dsn,'@')) !== false) {
+      $str = substr($dsn, 0, $at);
+      $dsn = substr($dsn, $at + 1);
+
+      if(($pos = strpos($str, ':')) !== false) {
+        $parsed['username'] = rawurldecode(substr($str, 0, $pos));
+        $parsed['password'] = rawurldecode(substr($str, $pos + 1));
+      }
+
+      else {
+        $parsed['username'] = rawurldecode($str);
+      }
+    }
+
+    // Find protocol and hostspec
+
+    // $dsn => proto(proto_opts)/database
+    if(preg_match('|^([^(]+)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
+      $proto       = $match[1];
+      $proto_opts  = (!empty($match[2])) ? $match[2] : false;
+      $dsn         = $match[3];
+
+      // $dsn => protocol+hostspec/database (old format)
+    }
+
+    else {
+      if(strpos($dsn, '+') !== false) {
+        list($proto, $dsn) = explode('+', $dsn, 2);
+      }
+
+      if(strpos($dsn, '/') !== false) {
+        list($proto_opts, $dsn) = explode('/', $dsn, 2);
+      }
+
+      else {
+        $proto_opts = $dsn;
+        $dsn = null;
+      }
+    }
+
+    // process the different protocol options
+    $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
+    $proto_opts = rawurldecode($proto_opts);
+
+    if($parsed['protocol'] == 'tcp') {
+      if(strpos($proto_opts, ':') !== false) {
+        list($parsed['hostspec'], $parsed['port']) = explode(':', $proto_opts);
+      }
+
+      else {
+        $parsed['hostspec'] = $proto_opts;
+      }
+    }
+
+    elseif($parsed['protocol'] == 'unix') {
+      $parsed['socket'] = $proto_opts;
+    }
+
+    // Get dabase if any
+    // $dsn => database
+    if(!empty($dsn)) {
+      // /database
+      if(($pos = strpos($dsn, '?')) === false) {
+        $parsed['database'] = $dsn;
+        // /database?param1=value1&param2=value2
+      }
+
+      else {
+        $parsed['database'] = substr($dsn, 0, $pos);
+        $dsn = substr($dsn, $pos + 1);
+
+        if(strpos($dsn, '&') !== false) {
+          $opts = explode('&', $dsn);
+        }
+
+        else {   // database?param1=value1
+          $opts = array($dsn);
+        }
+
+        foreach($opts as $opt) {
+          list($key, $value) = explode('=', $opt);
+
+          if(!isset($parsed[$key])) {  // don't allow params overwrite
+            $parsed[$key] = rawurldecode($value);
+          }
+        }
+      }
+    }
+
+    return $parsed;
+  }
+
+  // }}}
+  // {{{ assertExtension()
+  /**
+   * Load a PHP database extension if it is not loaded already.
+   *
+   * @access public
+   *
+   * @param string $name the base name of the extension (without the .so or
+   *                     .dll suffix)
+   *
+   * @return boolean true if the extension was already or successfully
+   *                 loaded, false if it could not be loaded
+   */
+  function assertExtension($name)
+  {
+    if(!extension_loaded($name)) {
+      $dlext = OS_WINDOWS ? '.dll' : '.so';
+      $dlprefix = OS_WINDOWS ? 'php_' : '';
+      @dl($dlprefix . $name . $dlext);
+      return extension_loaded($name);
+    }
+
+    return true;
+  }
+  // }}}
 }
 // }}}
 
@@ -621,30 +660,32 @@ class DB
  */
 class DB_Error extends PEAR_Error
 {
-    // {{{ constructor
-    /**
-     * DB_Error constructor.
-     *
-     * @param mixed   $code   DB error code, or string with error message.
-     * @param integer $mode   what "error mode" to operate in
-     * @param integer $level  what error level to use for $mode & PEAR_ERROR_TRIGGER
-     * @param mixed   $debuginfo  additional debug info, such as the last query
-     *
-     * @access public
-     *
-     * @see PEAR_Error
-     */
+  // {{{ constructor
+  /**
+   * DB_Error constructor.
+   *
+   * @param mixed   $code   DB error code, or string with error message.
+   * @param integer $mode   what "error mode" to operate in
+   * @param integer $level  what error level to use for $mode & PEAR_ERROR_TRIGGER
+   * @param mixed   $debuginfo  additional debug info, such as the last query
+   *
+   * @access public
+   *
+   * @see PEAR_Error
+   */
 
-    function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
-              $level = E_USER_NOTICE, $debuginfo = null)
-    {
-        if (is_int($code)) {
-            $this->PEAR_Error('DB Error: ' . DB::errorMessage($code), $code, $mode, $level, $debuginfo);
-        } else {
-            $this->PEAR_Error("DB Error: $code", DB_ERROR, $mode, $level, $debuginfo);
-        }
+  function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
+                    $level = E_USER_NOTICE, $debuginfo = null)
+  {
+    if(is_int($code)) {
+      $this->PEAR_Error('DB Error: ' . DB::errorMessage($code), $code, $mode, $level, $debuginfo);
     }
-    // }}}
+
+    else {
+      $this->PEAR_Error("DB Error: $code", DB_ERROR, $mode, $level, $debuginfo);
+    }
+  }
+  // }}}
 }
 // }}}
 
@@ -660,264 +701,298 @@ class DB_Error extends PEAR_Error
 
 class DB_result
 {
-    // {{{ properties
+  // {{{ properties
 
-    var $dbh;
-    var $result;
-    var $row_counter = null;
-    /**
-    * for limit queries, the row to start fetching
-    * @var integer
-    */
-    var $limit_from  = null;
+  var $dbh;
+  var $result;
+  var $row_counter = null;
+  /**
+  * for limit queries, the row to start fetching
+  * @var integer
+  */
+  var $limit_from  = null;
 
-    /**
-    * for limit queries, the number of rows to fetch
-    * @var integer
-    */
-    var $limit_count = null;
+  /**
+  * for limit queries, the number of rows to fetch
+  * @var integer
+  */
+  var $limit_count = null;
 
-    // }}}
-    // {{{ constructor
-    /**
-     * DB_result constructor.
-     * @param resource &$dbh   DB object reference
-     * @param resource $result  result resource id
-     * @param array    $options assoc array with optional result options
-     */
+  // }}}
+  // {{{ constructor
+  /**
+   * DB_result constructor.
+   * @param resource &$dbh   DB object reference
+   * @param resource $result  result resource id
+   * @param array    $options assoc array with optional result options
+   */
 
-    function DB_result(&$dbh, $result, $options = array())
-    {
-        $this->dbh = &$dbh;
-        $this->result = $result;
-        foreach ($options as $key => $value) {
-            $this->setOption($key, $value);
-        }
-        $this->limit_type  = $dbh->features['limit'];
-        $this->autofree    = $dbh->options['autofree'];
-        $this->fetchmode   = $dbh->fetchmode;
-        $this->fetchmode_object_class = $dbh->fetchmode_object_class;
+  function DB_result(&$dbh, $result, $options = array())
+  {
+    $this->dbh = &$dbh;
+    $this->result = $result;
+    foreach($options as $key => $value) {
+      $this->setOption($key, $value);
+    }
+    $this->limit_type  = $dbh->features['limit'];
+    $this->autofree    = $dbh->options['autofree'];
+    $this->fetchmode   = $dbh->fetchmode;
+    $this->fetchmode_object_class = $dbh->fetchmode_object_class;
+  }
+
+  function setOption($key, $value = null)
+  {
+    switch($key) {
+    case 'limit_from':
+      $this->limit_from = $value;
+      break;
+
+    case 'limit_count';
+      $this->limit_count = $value;
+      break;
+    }
+  }
+
+  // }}}
+  // {{{ fetchRow()
+  /**
+   * Fetch and return a row of data (it uses driver->fetchInto for that)
+   * @param int $fetchmode format of fetched row
+   * @param int $rownum    the row number to fetch
+   *
+   * @return  array a row of data, NULL on no more rows or PEAR_Error on error
+   *
+   * @access public
+   */
+  function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
+  {
+    if($fetchmode === DB_FETCHMODE_DEFAULT) {
+      $fetchmode = $this->fetchmode;
     }
 
-    function setOption($key, $value = null)
-    {
-        switch ($key) {
-            case 'limit_from':
-                $this->limit_from = $value; break;
-            case 'limit_count';
-                $this->limit_count = $value; break;
-        }
+    if($fetchmode === DB_FETCHMODE_OBJECT) {
+      $fetchmode = DB_FETCHMODE_ASSOC;
+      $object_class = $this->fetchmode_object_class;
     }
 
-    // }}}
-    // {{{ fetchRow()
-    /**
-     * Fetch and return a row of data (it uses driver->fetchInto for that)
-     * @param int $fetchmode format of fetched row
-     * @param int $rownum    the row number to fetch
-     *
-     * @return  array a row of data, NULL on no more rows or PEAR_Error on error
-     *
-     * @access public
-     */
-    function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
-    {
-        if ($fetchmode === DB_FETCHMODE_DEFAULT) {
-            $fetchmode = $this->fetchmode;
+    if($this->limit_from !== null) {
+      if($this->row_counter === null) {
+        $this->row_counter = $this->limit_from;
+
+        // Skip rows
+        if($this->limit_type == false) {
+          $i = 0;
+
+          while($i++ < $this->limit_from) {
+            $this->dbh->fetchInto($this->result, $arr, $fetchmode);
+          }
         }
-        if ($fetchmode === DB_FETCHMODE_OBJECT) {
-            $fetchmode = DB_FETCHMODE_ASSOC;
-            $object_class = $this->fetchmode_object_class;
+      }
+
+      if($this->row_counter >= (
+            $this->limit_from + $this->limit_count))
+      {
+        if($this->autofree) {
+          $this->free();
         }
-        if ($this->limit_from !== null) {
-            if ($this->row_counter === null) {
-                $this->row_counter = $this->limit_from;
-                // Skip rows
-                if ($this->limit_type == false) {
-                    $i = 0;
-                    while ($i++ < $this->limit_from) {
-                        $this->dbh->fetchInto($this->result, $arr, $fetchmode);
-                    }
-                }
-            }
-            if ($this->row_counter >= (
-                    $this->limit_from + $this->limit_count))
-            {
-                if ($this->autofree) {
-                    $this->free();
-                }
-                return null;
-            }
-            if ($this->limit_type == 'emulate') {
-                $rownum = $this->row_counter;
-            }
-            $this->row_counter++;
-        }
-        $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
-        if ($res === DB_OK) {
-            if (isset($object_class)) {
-                // default mode specified in DB_common::fetchmode_object_class property
-                if ($object_class == 'stdClass') {
-                    $arr = (object) $arr;
-                } else {
-                    $arr = &new $object_class($arr);
-                }
-            }
-            return $arr;
-        }
-        if ($res == null && $this->autofree) {
-            $this->free();
-        }
-        return $res;
+
+        return null;
+      }
+
+      if($this->limit_type == 'emulate') {
+        $rownum = $this->row_counter;
+      }
+
+      $this->row_counter++;
     }
 
-    // }}}
-    // {{{ fetchInto()
-    /**
-     * Fetch a row of data into an existing variable.
-     *
-     * @param  mixed   &$arr     reference to data containing the row
-     * @param  integer $fetchmod format of fetched row
-     * @param  integer $rownum   the row number to fetch
-     *
-     * @return  mixed  DB_OK on success, NULL on no more rows or
-     *                 a DB_Error object on error
-     *
-     * @access public
-     */
-    function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
-    {
-        if ($fetchmode === DB_FETCHMODE_DEFAULT) {
-            $fetchmode = $this->fetchmode;
+    $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
+
+    if($res === DB_OK) {
+      if(isset($object_class)) {
+        // default mode specified in DB_common::fetchmode_object_class property
+        if($object_class == 'stdClass') {
+          $arr = (object) $arr;
         }
-        if ($fetchmode === DB_FETCHMODE_OBJECT) {
-            $fetchmode = DB_FETCHMODE_ASSOC;
-            $object_class = $this->fetchmode_object_class;
+
+        else {
+          $arr = &new $object_class($arr);
         }
-        if ($this->limit_from !== null) {
-            if ($this->row_counter === null) {
-                $this->row_counter = $this->limit_from;
-                // Skip rows
-                if ($this->limit_type == false) {
-                    $i = 0;
-                    while ($i++ < $this->limit_from) {
-                        $this->dbh->fetchInto($this->result, $arr, $fetchmode);
-                    }
-                }
-            }
-            if ($this->row_counter >= (
-                    $this->limit_from + $this->limit_count))
-            {
-                if ($this->autofree) {
-                    $this->free();
-                }
-                return null;
-            }
-            if ($this->limit_type == 'emulate') {
-                $rownum = $this->row_counter;
-            }
+      }
 
-            $this->row_counter++;
+      return $arr;
+    }
+
+    if($res == null && $this->autofree) {
+      $this->free();
+    }
+
+    return $res;
+  }
+
+  // }}}
+  // {{{ fetchInto()
+  /**
+   * Fetch a row of data into an existing variable.
+   *
+   * @param  mixed   &$arr     reference to data containing the row
+   * @param  integer $fetchmod format of fetched row
+   * @param  integer $rownum   the row number to fetch
+   *
+   * @return  mixed  DB_OK on success, NULL on no more rows or
+   *                 a DB_Error object on error
+   *
+   * @access public
+   */
+  function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
+  {
+    if($fetchmode === DB_FETCHMODE_DEFAULT) {
+      $fetchmode = $this->fetchmode;
+    }
+
+    if($fetchmode === DB_FETCHMODE_OBJECT) {
+      $fetchmode = DB_FETCHMODE_ASSOC;
+      $object_class = $this->fetchmode_object_class;
+    }
+
+    if($this->limit_from !== null) {
+      if($this->row_counter === null) {
+        $this->row_counter = $this->limit_from;
+
+        // Skip rows
+        if($this->limit_type == false) {
+          $i = 0;
+
+          while($i++ < $this->limit_from) {
+            $this->dbh->fetchInto($this->result, $arr, $fetchmode);
+          }
         }
-        $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
-        if ($res === DB_OK) {
-            if (isset($object_class)) {
-                // default mode specified in DB_common::fetchmode_object_class property
-                if ($object_class == 'stdClass') {
-                    $arr = (object) $arr;
-                } else {
-                    $arr = new $object_class($arr);
-                }
-            }
-            return DB_OK;
+      }
+
+      if($this->row_counter >= (
+            $this->limit_from + $this->limit_count))
+      {
+        if($this->autofree) {
+          $this->free();
         }
-        if ($res == null && $this->autofree) {
-            $this->free();
+
+        return null;
+      }
+
+      if($this->limit_type == 'emulate') {
+        $rownum = $this->row_counter;
+      }
+
+      $this->row_counter++;
+    }
+
+    $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
+
+    if($res === DB_OK) {
+      if(isset($object_class)) {
+        // default mode specified in DB_common::fetchmode_object_class property
+        if($object_class == 'stdClass') {
+          $arr = (object) $arr;
         }
-        return $res;
-    }
 
-    // }}}
-    // {{{ numCols()
-    /**
-     * Get the the number of columns in a result set.
-     *
-     * @return int the number of columns, or a DB error
-     *
-     * @access public
-     */
-    function numCols()
-    {
-        return $this->dbh->numCols($this->result);
-    }
-
-    // }}}
-    // {{{ numRows()
-    /**
-     * Get the number of rows in a result set.
-     *
-     * @return int the number of rows, or a DB error
-     *
-     * @access public
-     */
-    function numRows()
-    {
-        return $this->dbh->numRows($this->result);
-    }
-
-    // }}}
-    // {{{ nextResult()
-    /**
-     * Get the next result if a batch of queries was executed.
-     *
-     * @return bool true if a new result is available or false if not.
-     *
-     * @access public
-     */
-    function nextResult()
-    {
-        return $this->dbh->nextResult($this->result);
-    }
-
-    // }}}
-    // {{{ free()
-    /**
-     * Frees the resources allocated for this result set.
-     * @return  int error code
-     *
-     * @access public
-     */
-    function free()
-    {
-        $err = $this->dbh->freeResult($this->result);
-        if(DB::isError($err)) {
-            return $err;
+        else {
+          $arr = new $object_class($arr);
         }
-        $this->result = false;
-        return true;
+      }
+
+      return DB_OK;
     }
 
-    // }}}
-    // {{{ tableInfo()
-    /**
-    * @deprecated
-    */
-    function tableInfo($mode = null)
-    {
-        return $this->dbh->tableInfo($this->result, $mode);
+    if($res == null && $this->autofree) {
+      $this->free();
     }
 
-    // }}}
-    // {{{ getRowCounter()
-    /**
-    * returns the actual row number
-    * @return integer
-    */
-    function getRowCounter()
-    {
-        return $this->row_counter;
+    return $res;
+  }
+
+  // }}}
+  // {{{ numCols()
+  /**
+   * Get the the number of columns in a result set.
+   *
+   * @return int the number of columns, or a DB error
+   *
+   * @access public
+   */
+  function numCols()
+  {
+    return $this->dbh->numCols($this->result);
+  }
+
+  // }}}
+  // {{{ numRows()
+  /**
+   * Get the number of rows in a result set.
+   *
+   * @return int the number of rows, or a DB error
+   *
+   * @access public
+   */
+  function numRows()
+  {
+    return $this->dbh->numRows($this->result);
+  }
+
+  // }}}
+  // {{{ nextResult()
+  /**
+   * Get the next result if a batch of queries was executed.
+   *
+   * @return bool true if a new result is available or false if not.
+   *
+   * @access public
+   */
+  function nextResult()
+  {
+    return $this->dbh->nextResult($this->result);
+  }
+
+  // }}}
+  // {{{ free()
+  /**
+   * Frees the resources allocated for this result set.
+   * @return  int error code
+   *
+   * @access public
+   */
+  function free()
+  {
+    $err = $this->dbh->freeResult($this->result);
+
+    if(DB::isError($err)) {
+      return $err;
     }
-    // }}}
+
+    $this->result = false;
+    return true;
+  }
+
+  // }}}
+  // {{{ tableInfo()
+  /**
+  * @deprecated
+  */
+  function tableInfo($mode = null)
+  {
+    return $this->dbh->tableInfo($this->result, $mode);
+  }
+
+  // }}}
+  // {{{ getRowCounter()
+  /**
+  * returns the actual row number
+  * @return integer
+  */
+  function getRowCounter()
+  {
+    return $this->row_counter;
+  }
+  // }}}
 }
 // }}}
 
@@ -928,20 +1003,20 @@ class DB_result
 */
 class DB_row
 {
-    // {{{ constructor
-    /**
-    * constructor
-    *
-    * @param resource row data as array
-    */
-    function DB_row(&$arr)
-    {
-        for (reset($arr); $key = key($arr); next($arr)) {
-            $this->$key = &$arr[$key];
-        }
+  // {{{ constructor
+  /**
+  * constructor
+  *
+  * @param resource row data as array
+  */
+  function DB_row(&$arr)
+  {
+    for(reset($arr); $key = key($arr); next($arr)) {
+      $this->$key = &$arr[$key];
     }
+  }
 
-    // }}}
+  // }}}
 }
 // }}}
 

@@ -18,7 +18,7 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -28,30 +28,32 @@ $charset = 'utf-8'; // What charset we do use in Tiki
 $in_str = '';
 
 function encode_headers($in_str, $charset) {
-   $out_str = $in_str;
-   if ($out_str && $charset) {
+  $out_str = $in_str;
 
-       // define start delimimter, end delimiter and spacer
-       $end = "?=";
-       $start = "=?" . $charset . "?b?";
-       $spacer = $end . "\r\n" . $start;
+  if($out_str && $charset) {
 
-       // determine length of encoded text within chunks
-       // and ensure length is even
-       $length = 71 - strlen($spacer); // no idea why 71 but 75 didn't work
-       $length = floor($length/2) * 2;
+    // define start delimimter, end delimiter and spacer
+    $end = "?=";
+    $start = "=?" . $charset . "?b?";
+    $spacer = $end . "\r\n" . $start;
 
-       // encode the string and split it into chunks
-       // with spacers after each chunk
-       $out_str = base64_encode($out_str);
-       $out_str = chunk_split($out_str, $length, $spacer);
+    // determine length of encoded text within chunks
+    // and ensure length is even
+    $length = 71 - strlen($spacer); // no idea why 71 but 75 didn't work
+    $length = floor($length/2) * 2;
 
-       // remove trailing spacer and
-       // add start and end delimiters
-       $spacer = preg_quote($spacer);
-       $out_str = preg_replace("/" . $spacer . "$/", "", $out_str);
-       $out_str = $start . $out_str . $end;
-   }
-   return $out_str;
+    // encode the string and split it into chunks
+    // with spacers after each chunk
+    $out_str = base64_encode($out_str);
+    $out_str = chunk_split($out_str, $length, $spacer);
+
+    // remove trailing spacer and
+    // add start and end delimiters
+    $spacer = preg_quote($spacer);
+    $out_str = preg_replace("/" . $spacer . "$/", "", $out_str);
+    $out_str = $start . $out_str . $end;
+  }
+
+  return $out_str;
 }// end function encode_headers
 ?>

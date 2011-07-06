@@ -7,19 +7,19 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($feature_userfiles != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_userfiles");
+if($feature_userfiles != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_userfiles");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-include_once ('lib/userfiles/userfileslib.php');
+include_once('lib/userfiles/userfileslib.php');
 
-if (!isset($_REQUEST["fileId"])) {
-	die;
+if(!isset($_REQUEST["fileId"])) {
+  die;
 }
 
 $uf_use_db = $tikilib->get_preference('uf_use_db', 'y');
@@ -31,13 +31,15 @@ $file = &$info["filename"];
 $content = &$info["data"];
 
 session_write_close();
-header ("Content-type: $type");
-header ("Content-Disposition: inline; filename=\"$file\"");
+header("Content-type: $type");
+header("Content-Disposition: inline; filename=\"$file\"");
 
-if ($info["path"]) {
-	readfile ($uf_use_dir . $info["path"]);
-} else {
-	echo "$content";
+if($info["path"]) {
+  readfile($uf_use_dir . $info["path"]);
+}
+
+else {
+  echo "$content";
 }
 
 ?>

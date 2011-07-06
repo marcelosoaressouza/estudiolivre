@@ -6,34 +6,35 @@
 // Franck Martin 2005
 
 function wikiplugin_objecthits_help() {
-        return tra("Displays object hit info by object and days").":<br :>~np~{OBJECTHITS(object=>,type=>,days=>)/}~/np~";
+  return tra("Displays object hit info by object and days").":<br :>~np~{OBJECTHITS(object=>,type=>,days=>)/}~/np~";
 }
 
 function wikiplugin_objecthits($data, $params) {
-	global $tikilib;
+  global $tikilib;
 
-	global $statslib;
-	if (!is_object($statslib)) {
-		global $dbTiki;
-		include "lib/stats/statslib.php";
-	}
- 
-	extract ($params,EXTR_SKIP);
+  global $statslib;
 
-	if (!isset($object)) {
-	  global $page;
-		$object = $page;
-		$type= "wiki";
-	}
+  if(!is_object($statslib)) {
+    global $dbTiki;
+    include "lib/stats/statslib.php";
+  }
 
-	if (!isset($days)) {
-		$days=0;
-	}
-	
-	if (!isset($type)) {
-		$type="wiki";
-	}
-	
+  extract($params,EXTR_SKIP);
+
+  if(!isset($object)) {
+    global $page;
+    $object = $page;
+    $type= "wiki";
+  }
+
+  if(!isset($days)) {
+    $days=0;
+  }
+
+  if(!isset($type)) {
+    $type="wiki";
+  }
+
   return $statslib->object_hits($object,$type,$days);
 }
 

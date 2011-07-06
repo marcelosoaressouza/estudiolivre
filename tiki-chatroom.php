@@ -8,44 +8,47 @@
 
 // Initialization
 $section = 'chat';
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/chat/chatlib.php');
+include_once('lib/chat/chatlib.php');
 
-if ($feature_chat != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_chat");
+if($feature_chat != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_chat");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_chat != 'y') {
-	$smarty->assign('msg', tra("Permission denied to use this feature"));
+if($tiki_p_chat != 'y') {
+  $smarty->assign('msg', tra("Permission denied to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["channelId"])) {
-	$smarty->assign('msg', tra("No channel indicated"));
+if(!isset($_REQUEST["channelId"])) {
+  $smarty->assign('msg', tra("No channel indicated"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $channelId = $_REQUEST["channelId"];
+
 //session_register('channelId');
-if ($user) {
-	$nickname = $user;
-} else {
-	if (!isset($_REQUEST["nickname"]) || empty($_REQUEST["nickname"])) {
-		$smarty->assign('msg', tra("No nickname indicated"));
+if($user) {
+  $nickname = $user;
+}
 
-		$smarty->display("error.tpl");
-		die;
-	}
+else {
+  if(!isset($_REQUEST["nickname"]) || empty($_REQUEST["nickname"])) {
+    $smarty->assign('msg', tra("No nickname indicated"));
 
-	$nickname = $_REQUEST["nickname"];
+    $smarty->display("error.tpl");
+    die;
+  }
+
+  $nickname = $_REQUEST["nickname"];
 }
 
 //session_register("nickname");
@@ -53,7 +56,7 @@ $enterTime = date("U");
 
 //session_register('enterTime');
 //if ($tiki_p_admin_chat == 'y') {
-//	$nickname = '@' . $nickname;
+//  $nickname = '@' . $nickname;
 //}
 
 $chatlib->user_to_channel($nickname, $channelId);
@@ -72,7 +75,7 @@ $smarty->assign_by_ref('channels', $channels["data"]);
 $chatusers = $chatlib->get_chat_users($channelId);
 $smarty->assign_by_ref('chatusers', $chatusers);
 
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 ask_ticket('chat');
 
 // Display the template

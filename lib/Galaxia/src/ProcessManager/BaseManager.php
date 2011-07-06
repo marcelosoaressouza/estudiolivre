@@ -14,6 +14,7 @@ class BaseManager extends Base {
     if(!$db) {
       die("Invalid db object passed to BaseManager constructor");
     }
+
     $this->db = $db;
   }
 

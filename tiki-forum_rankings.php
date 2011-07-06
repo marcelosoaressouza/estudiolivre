@@ -7,69 +7,73 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/rankings/ranklib.php');
+include_once('lib/rankings/ranklib.php');
 
-if ($feature_forums != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_forums");
+if($feature_forums != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_forums");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($feature_forum_rankings != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_forum_rankings");
+if($feature_forum_rankings != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_forum_rankings");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_forum_read != 'y') {
-	$smarty->assign('msg', tra("Permission denied you cannot view this section"));
+if($tiki_p_forum_read != 'y') {
+  $smarty->assign('msg', tra("Permission denied you cannot view this section"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $allrankings = array(
-	array(
-	'name' => tra('Last forum topics'),
-	'value' => 'forums_ranking_last_topics'
-),
-	array(
-	'name' => tra('Most read topics'),
-	'value' => 'forums_ranking_most_read_topics'
-),
-	array(
-	'name' => tra('Top topics'),
-	'value' => 'forums_ranking_top_topics'
-),
-	array(
-	'name' => tra('Forum posts'),
-	'value' => 'forums_ranking_most_commented_forum'
-),
-	array(
-	'name' => tra('Most visited forums'),
-	'value' => 'forums_ranking_most_visited_forums'
-)
-);
+                 array(
+                   'name' => tra('Last forum topics'),
+                   'value' => 'forums_ranking_last_topics'
+                 ),
+                 array(
+                   'name' => tra('Most read topics'),
+                   'value' => 'forums_ranking_most_read_topics'
+                 ),
+                 array(
+                   'name' => tra('Top topics'),
+                   'value' => 'forums_ranking_top_topics'
+                 ),
+                 array(
+                   'name' => tra('Forum posts'),
+                   'value' => 'forums_ranking_most_commented_forum'
+                 ),
+                 array(
+                   'name' => tra('Most visited forums'),
+                   'value' => 'forums_ranking_most_visited_forums'
+                 )
+               );
 
 $smarty->assign('allrankings', $allrankings);
 
-if (!isset($_REQUEST["which"])) {
-	$which = 'forums_ranking_last_topics';
-} else {
-	$which = $_REQUEST["which"];
+if(!isset($_REQUEST["which"])) {
+  $which = 'forums_ranking_last_topics';
+}
+
+else {
+  $which = $_REQUEST["which"];
 }
 
 $smarty->assign('which', $which);
 
 // Get the page from the request var or default it to HomePage
-if (!isset($_REQUEST["limit"])) {
-	$limit = 10;
-} else {
-	$limit = $_REQUEST["limit"];
+if(!isset($_REQUEST["limit"])) {
+  $limit = 10;
+}
+
+else {
+  $limit = $_REQUEST["limit"];
 }
 
 $smarty->assign_by_ref('limit', $limit);
@@ -90,7 +94,7 @@ $rankings[] = $rank;
 $smarty->assign_by_ref('rankings', $rankings);
 $smarty->assign('rpage', 'tiki-forum_rankings.php');
 $section = 'forums';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 ask_ticket('forum-rankings');
 
 // Display the template

@@ -7,32 +7,35 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ("lib/ziplib.php");
-include_once ('lib/wiki/exportlib.php');
+include_once("lib/ziplib.php");
+include_once('lib/wiki/exportlib.php');
 
-if ($tiki_p_admin_wiki != 'y') {
-	$smarty->assign('msg', tra("Permission denied"));
-	$smarty->display("error.tpl");
-	die;
+if($tiki_p_admin_wiki != 'y') {
+  $smarty->assign('msg', tra("Permission denied"));
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["page"])) {
-	$exportlib->MakeWikiZip();
+if(!isset($_REQUEST["page"])) {
+  $exportlib->MakeWikiZip();
 
-	header ("location: dump/export.tar");
-} else {
-	if (isset($_REQUEST["all"]))
-		$all = 0;
-	else
-		$all = 1;
+  header("location: dump/export.tar");
+}
 
-	$data = $exportlib->export_wiki_page($_REQUEST["page"], $all);
-	$page = $_REQUEST["page"];
-	header ("Content-type: application/unknown");
-	header ("Content-Disposition: inline; filename=$page");
-	echo $data;
+else {
+  if(isset($_REQUEST["all"]))
+    $all = 0;
+
+  else
+    $all = 1;
+
+  $data = $exportlib->export_wiki_page($_REQUEST["page"], $all);
+  $page = $_REQUEST["page"];
+  header("Content-type: application/unknown");
+  header("Content-Disposition: inline; filename=$page");
+  echo $data;
 }
 
 ?>

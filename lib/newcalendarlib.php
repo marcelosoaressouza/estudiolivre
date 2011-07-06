@@ -12,9 +12,9 @@
  */
 
 // This script may only be included! Die if called directly...
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
-	header("location: index.php");
-	die();
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+  header("location: index.php");
+  die();
 }
 
 /** CalendarLib.
@@ -24,42 +24,43 @@ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
  */
 class CalendarLib extends TikiLib {
 
-	/** Constructor for the Calendar library.  Accepts an array containing
-	 * a list of classes to include since we won't need them all all the
-	 * time, so it centralizes the calendar functions in one library.  If
-	 * no array is provided, or it has no values in it, then only the
-	 * common QUERY functions are available.
-	 *
-	 * \param $db an ADOdb pointer to the Tiki database.
-	 * \param $includes NULL or array() of keywords representing additional
-	 *	sub-classes to include as-needed.
-	 */
-	function CalendarLib($db, $includes = NULL) {
+  /** Constructor for the Calendar library.  Accepts an array containing
+   * a list of classes to include since we won't need them all all the
+   * time, so it centralizes the calendar functions in one library.  If
+   * no array is provided, or it has no values in it, then only the
+   * common QUERY functions are available.
+   *
+   * \param $db an ADOdb pointer to the Tiki database.
+   * \param $includes NULL or array() of keywords representing additional
+   *  sub-classes to include as-needed.
+   */
+  function CalendarLib($db, $includes = NULL) {
 
-		// Verify the DB handle.
-		$this->TikiLib($db);
+    // Verify the DB handle.
+    $this->TikiLib($db);
 
-		if ($includes) {
-			foreach ($includes as $inc) {
-				switch ($inc) {
-				// Functions used to add, delete, or otherwise
-				// change calendar information in the database.
-				case "change":
-					include_once ('calendar/change_class.php');
-					break;
-				// Functions used for HTML display boxes by
-				// modules.
-				case "display":
-					include_once ('calendar/display_class.php');
-					break;
-				}
-			}
-		}
-	}
+    if($includes) {
+      foreach($includes as $inc) {
+        switch($inc) {
+          // Functions used to add, delete, or otherwise
+          // change calendar information in the database.
+        case "change":
+          include_once('calendar/change_class.php');
+          break;
 
-/*!
- * Common Calendar-ish functions.
- */
+          // Functions used for HTML display boxes by
+          // modules.
+        case "display":
+          include_once('calendar/display_class.php');
+          break;
+        }
+      }
+    }
+  }
+
+  /*!
+   * Common Calendar-ish functions.
+   */
 
 
 }

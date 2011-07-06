@@ -1,7 +1,7 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -51,7 +51,7 @@ class HAWTIKI_list
   {
     $this->offset_parm_name = $name; // modify default name (e.g. for forum thread lists)
   }
-  
+
   function set_query_parameter($query_parameter)
   {
     $this->query_parms[] = $query_parameter;
@@ -61,7 +61,7 @@ class HAWTIKI_list
   {
     $this->items[] = $item; // push item on top of array
 
-    if ($item->get_size() > 1)
+    if($item->get_size() > 1)
       $this->use_separators = true;
   }
 
@@ -73,27 +73,31 @@ class HAWTIKI_list
     $listtitle = new HAW_text($this->title, HAW_TEXTFORMAT_BOLD | HAW_TEXTFORMAT_BOXED);
     $list->add_text($listtitle);
 
-    if (isset($this->backlink))
+    if(isset($this->backlink))
       $list->add_link($this->backlink);
 
-    if ($this->offset > 0)
+    if($this->offset > 0)
     {
       // previous list items are available
       $prev_offset = $this->offset - $this->maxRecords;
       $prev_url = $this->nav_url . "?mode=mobile&" . $this->offset_parm_name . "=" . $prev_offset;
-      while (list($key, $val) = each($this->query_parms))
+
+      while(list($key, $val) = each($this->query_parms))
         $prev_url .= "&" . $val; // add query parameters
+
       $prev = new HAW_link(hawtra("previous page"), $prev_url);
       $list->add_link($prev);
     }
 
-    if ($this->cant > ($this->offset + $this->maxRecords))
+    if($this->cant > ($this->offset + $this->maxRecords))
     {
       // next list items are available
       $next_offset = $this->offset + $this->maxRecords;
       $next_url = $this->nav_url . "?mode=mobile&" . $this->offset_parm_name . "=" . $next_offset;
-      while (list($key, $val) = each($this->query_parms))
+
+      while(list($key, $val) = each($this->query_parms))
         $next_url .= "&" . $val; // add query parameters
+
       $next = new HAW_link(hawtra("next page"), $next_url);
       $list->add_link($next);
     }
@@ -102,23 +106,25 @@ class HAWTIKI_list
     $list->add_rule($rule);
 
     // show all list items
-    while (list($key, $val) = each($this->items))
+    while(list($key, $val) = each($this->items))
     {
       $val->render($list);
 
-      if ($this->use_separators)
+      if($this->use_separators)
         $list->add_rule($rule);
     }
 
-    if (!$this->use_separators)
+    if(!$this->use_separators)
       $list->add_rule($rule);  // show at least one separator here ...
 
     // repeat navigation links
-    if (isset($this->backlink))
+    if(isset($this->backlink))
       $list->add_link($this->backlink);
-    if (isset($prev))
+
+    if(isset($prev))
       $list->add_link($prev);
-    if (isset($next))
+
+    if(isset($next))
       $list->add_link($next);
 
     $list->create_page();
@@ -158,10 +164,10 @@ class HAWTIKI_listitem
 
   function render(&$deck)
   {
-    while (list($key, $val) = each($this->arr_text))
+    while(list($key, $val) = each($this->arr_text))
       $deck->add_text($val);
 
-    while (list($key, $val) = each($this->arr_link))
+    while(list($key, $val) = each($this->arr_link))
       $deck->add_text($val);
   }
 };
@@ -178,11 +184,12 @@ function hawtra($string)
 function HAWTIKI_index($info)
 {
   // determine title and url switch for navigation links
-  if (isset($_REQUEST['frame']) && $_REQUEST['frame'] == 'no')
+  if(isset($_REQUEST['frame']) && $_REQUEST['frame'] == 'no')
   {
     $framearg = '&frame=no';
     $title = '';
   }
+
   else
   {
     $framearg = '';
@@ -190,13 +197,14 @@ function HAWTIKI_index($info)
   }
 
   // determine url switch for jingle playing at links
-  if (isset($_REQUEST['jingle']) && $_REQUEST['jingle'] == 'no')
+  if(isset($_REQUEST['jingle']) && $_REQUEST['jingle'] == 'no')
     $jinglearg = '&jingle=no';
+
   else
     $jinglearg = '';
 
   // try to determine calling party number in case of voice browser request
-  if (!isset($_SESSION['calling_party_number']) &&
+  if(!isset($_SESSION['calling_party_number']) &&
       ereg("session.callerid=([^&]*)", $_SERVER['REQUEST_URI'], $matches))
   {
     // request from Voxeo voice browser
@@ -207,14 +215,14 @@ function HAWTIKI_index($info)
   $wikiPage = new HAWIKI_page($info['data'],"tiki-index.php?mode=mobile$framearg$jinglearg&page=",
                               $title, $info['lang']);
 
-  if (!isset($_REQUEST['frame']) || $_REQUEST['frame'] != 'no')
+  if(!isset($_REQUEST['frame']) || $_REQUEST['frame'] != 'no')
   {
     // create standard hawiki deck with title and navigation links
     $wikiPage->set_navlink(tra('Wiki Home'), "tiki-index.php?mode=mobile$jinglearg", HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
     $wikiPage->set_navlink(tra('Home'), 'tiki-mobile.php', HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
   }
 
-  if (!isset($_REQUEST['jingle']) || $_REQUEST['jingle'] != 'no')
+  if(!isset($_REQUEST['jingle']) || $_REQUEST['jingle'] != 'no')
   {
     // play standard jingle before link text is spoken
     $wikiPage->set_link_jingle("lib/hawhaw/link.wav");
@@ -238,11 +246,12 @@ function HAWTIKI_list_blogs($listpages, $tiki_p_read_blog)
   $blogsList->add_text($title);
   $linkset = new HAW_linkset();
 
-  for($i=0;$i<count($listpages['data']);$i++) {
+  for($i=0; $i<count($listpages['data']); $i++) {
     $blog = $listpages['data'][$i];
+
     // check for tiki_p_read_blog here
     if($blog['individual'] == 'n' && $tiki_p_read_blog == 'y' ||
-    $blog['individual_tiki_p_read_blog'] == 'y') {
+        $blog['individual_tiki_p_read_blog'] == 'y') {
       $link = new HAW_link(HAWIKI_specchar($blog['title']),"tiki-view_blog.php?mode=mobile&blogId=".$blog['blogId']);
       $linkset->add_link($link);
     }
@@ -265,11 +274,12 @@ function HAWTIKI_list_blogs($listpages, $tiki_p_read_blog)
 function HAWTIKI_view_blog($listpages, $blog_data)
 {
   // determine title and url switch for navigation links
-  if (isset($_REQUEST['frame']) && $_REQUEST['frame'] == 'no')
+  if(isset($_REQUEST['frame']) && $_REQUEST['frame'] == 'no')
   {
     $framearg = '&frame=no';
     $title = '';
   }
+
   else
   {
     $framearg = '';
@@ -277,17 +287,20 @@ function HAWTIKI_view_blog($listpages, $blog_data)
   }
 
   // determine url switch for jingle playing at links
-  if (isset($_REQUEST['jingle']) && $_REQUEST['jingle'] == 'no')
+  if(isset($_REQUEST['jingle']) && $_REQUEST['jingle'] == 'no')
     $jinglearg = '&jingle=no';
+
   else
     $jinglearg = '';
 
   $browser_detector = new HAW_deck(); // this deck is used for browser detection only!
-  if ($browser_detector->ml == HAW_WML)
+
+  if($browser_detector->ml == HAW_WML)
   {
     // display only one posting on WAP browsers
     $max_posts = 1;
   }
+
   else
   {
     // display as much postings as administered by tiki
@@ -296,14 +309,14 @@ function HAWTIKI_view_blog($listpages, $blog_data)
 
   $nonparsed_text = "";
 
-  for ($i=0; ($i < $max_posts) && ($i < count($listpages['data'])); $i++)
+  for($i=0; ($i < $max_posts) && ($i < count($listpages['data'])); $i++)
   {
     // separate postings by horizontal bar
-    if ($i > 0)
+    if($i > 0)
       $nonparsed_text .= "\n---\n";
 
     // post title
-    if ($listpages['data'][$i]['title'])
+    if($listpages['data'][$i]['title'])
       $nonparsed_text .= "!" . $listpages['data'][$i]['title'] . "\n";
 
     // post header
@@ -315,12 +328,13 @@ function HAWTIKI_view_blog($listpages, $blog_data)
     $nonparsed_text .= $listpages['data'][$i]['data'];
   }
 
-  if (isset($_REQUEST['offset']))
+  if(isset($_REQUEST['offset']))
     $offset = $_REQUEST['offset'];
+
   else
     $offset = 0;
 
-  if (($offset + $max_posts) < $blog_data['posts'])
+  if(($offset + $max_posts) < $blog_data['posts'])
   {
     // next posts are available ==> create link to continue
     $offset += $max_posts;
@@ -331,13 +345,13 @@ function HAWTIKI_view_blog($listpages, $blog_data)
 
   $blog = new HAWIKI_page($nonparsed_text, "tiki-index.php?mode=mobile$framearg$jinglearg&page=", $title, "");
 
-  if (!isset($_REQUEST['frame']) || $_REQUEST['frame'] != 'no')
+  if(!isset($_REQUEST['frame']) || $_REQUEST['frame'] != 'no')
   {
     // create standard hawiki deck with title and navigation links
     $blog->set_navlink(tra('Blogs'), "tiki-list_blogs.php?mode=mobile", HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
   }
 
-  if (!isset($_REQUEST['jingle']) || $_REQUEST['jingle'] != 'no')
+  if(!isset($_REQUEST['jingle']) || $_REQUEST['jingle'] != 'no')
   {
     // play standard jingle before link text is spoken
     $blog->set_link_jingle("lib/hawhaw/link.wav");
@@ -353,11 +367,12 @@ function HAWTIKI_view_blog($listpages, $blog_data)
 function HAWTIKI_view_blog_post($blog_post_data)
 {
   // determine title and url switch for navigation links
-  if (isset($_REQUEST['frame']) && $_REQUEST['frame'] == 'no')
+  if(isset($_REQUEST['frame']) && $_REQUEST['frame'] == 'no')
   {
     $framearg = '&frame=no';
     $title = '';
   }
+
   else
   {
     $framearg = '';
@@ -365,34 +380,35 @@ function HAWTIKI_view_blog_post($blog_post_data)
   }
 
   // determine url switch for jingle playing at links
-  if (isset($_REQUEST['jingle']) && $_REQUEST['jingle'] == 'no')
+  if(isset($_REQUEST['jingle']) && $_REQUEST['jingle'] == 'no')
     $jinglearg = '&jingle=no';
+
   else
     $jinglearg = '';
 
   $nonparsed_text = "";
 
   // post title
-  if ($blog_post_data['title'])
+  if($blog_post_data['title'])
     $nonparsed_text .= "!" . $blog_post_data['title'] . "\n";
 
   // post header
   $nonparsed_text .= sprintf("__%s ~np~%s~/np~__\n__%s ~np~%s~/np~__\n",
-    hawtra("posted on"), date(HAWIKI_DATETIME_LONG, $blog_post_data['created']),
-    hawtra("by"), $blog_post_data['user']);
+                             hawtra("posted on"), date(HAWIKI_DATETIME_LONG, $blog_post_data['created']),
+                             hawtra("by"), $blog_post_data['user']);
 
   // post body
   $nonparsed_text .= $blog_post_data['data'];
 
   $blogpost = new HAWIKI_page($nonparsed_text, "tiki-index.php?mode=mobile$framearg$jinglearg&page=", $title, "");
 
-  if (!isset($_REQUEST['frame']) || $_REQUEST['frame'] != 'no')
+  if(!isset($_REQUEST['frame']) || $_REQUEST['frame'] != 'no')
   {
     // create standard hawiki deck with title and navigation links
     $blogpost->set_navlink(tra('Blog'), "tiki-view_blog.php?blogId=".$blog_post_data['blogId']."&mode=mobile", HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
   }
 
-  if (!isset($_REQUEST['jingle']) || $_REQUEST['jingle'] != 'no')
+  if(!isset($_REQUEST['jingle']) || $_REQUEST['jingle'] != 'no')
   {
     // play standard jingle before link text is spoken
     $blogpost->set_link_jingle("lib/hawhaw/link.wav");
@@ -408,12 +424,12 @@ function HAWTIKI_view_blog_post($blog_post_data)
 
 function HAWTIKI_list_articles($listpages, $tiki_p_read_article, $offset, $maxRecords, $cant)
 {
-  if ($tiki_p_read_article != 'y') die;
+  if($tiki_p_read_article != 'y') die;
 
   $article_list = new HAWTIKI_list(hawtra("Articles"), $offset, $maxRecords, "tiki-list_articles.php", $cant);
   $article_list->set_backlink(hawtra("Home"), "tiki-mobile.php");
 
-  for ( $i = 0; $i < count($listpages['data']); $i++)
+  for($i = 0; $i < count($listpages['data']); $i++)
   {
     $article = $listpages['data'][$i];
     $listitem = new HAWTIKI_listitem();
@@ -451,18 +467,19 @@ function HAWTIKI_read_article($article_data, $pages)
 
   $article->set_navlink(tra("List articles"), "tiki-list_articles.php?mode=mobile", HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
 
-  if (isset($_REQUEST['page']))
+  if(isset($_REQUEST['page']))
     $page = $_REQUEST['page'];
+
   else
     $page = 1;
 
-  if ($page > 1)
+  if($page > 1)
   {
     $link = sprintf("tiki-read_article.php?mode=mobile&articleId=%s&page=%d", $_REQUEST['articleId'], $page-1);
     $article->set_navlink(tra("previous page"), $link, HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
   }
 
-  if ($page < $pages)
+  if($page < $pages)
   {
     $link = sprintf("tiki-read_article.php?mode=mobile&articleId=%s&page=%d", $_REQUEST['articleId'], $page+1);
     $article->set_navlink(tra("next page"), $link, HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
@@ -485,7 +502,7 @@ function HAWTIKI_forums($data, $tiki_p_forum_read, $offset, $maxRecords, $cant)
   $forum_list = new HAWTIKI_list(hawtra("Forums"), $offset, $maxRecords, "tiki-forums.php", $cant);
   $forum_list->set_backlink(hawtra("Home"), "tiki-mobile.php");
 
-  for ($i = 0; $i < count($data); $i++)
+  for($i = 0; $i < count($data); $i++)
   {
     $listitem = new HAWTIKI_listitem();
     $link = new HAW_link($data[$i]['name'], "tiki-view_forum.php?mode=mobile&forumId=" . $data[$i]['forumId'] . "&comments_sort_mode=lastPost_desc");
@@ -508,20 +525,21 @@ function HAWTIKI_view_forum($forum_name, $threads, $tiki_p_forum_read, $offset, 
   $thread_list->set_query_parameter("forumId=" . $_REQUEST['forumId']);
   $thread_list->set_backlink(hawtra("Forums"), "tiki-forums.php?mode=mobile");
 
-  while (list($key, $val) = each($threads))
+  while(list($key, $val) = each($threads))
   {
     $listitem = new HAWTIKI_listitem();
 
     $title = new HAW_text(HAWIKI_specchar($val['title']), HAW_TEXTFORMAT_BOLD);
     $listitem->add_text($title);
 
-    if (isset($val['lastPostData']))
+    if(isset($val['lastPostData']))
     {
       // there's a reply available - show data of last post
       $date = new HAW_text(date(HAWIKI_DATETIME_SHORT, $val['lastPostData']['commentDate']));
       $author = new HAW_text(hawtra("By:") . HAWIKI_specchar($val['lastPostData']['userName']), HAW_TEXTFORMAT_SMALL | HAW_TEXTFORMAT_ITALIC);
       $threadId = $val['lastPostData']['threadId'];
     }
+
     else
     {
       // no reply at all - show data of original posting
@@ -575,21 +593,22 @@ function HAWTIKI_deck_init(&$deck)
 
   $deck->enable_session();
 
-  if (isset($_REQUEST['skin']))
+  if(isset($_REQUEST['skin']))
   {
-    if ($_REQUEST['skin'] == "none")
+    if($_REQUEST['skin'] == "none")
       unset($_SESSION['haw_skin']);
+
     else
       $_SESSION['haw_skin'] = $_REQUEST['skin'];
   }
 
-  if (isset($_SESSION['haw_skin']))
+  if(isset($_SESSION['haw_skin']))
     $deck->use_simulator("lib/hawhaw/skin/" . $_SESSION['haw_skin'] . "/skin.css");
 
   $banner = new HAW_banner("img/tiki/tikibutton2.png",
-"http://mobile.tikiwiki.org/", "Powered by MobileTiki");
+                           "http://mobile.tikiwiki.org/", "Powered by MobileTiki");
   $deck->add_banner($banner);
-  
+
   $deck->set_width(HAWIKI_DISP_WIDTH);
   $deck->set_height(HAWIKI_DISP_HEIGHT);
   $deck->set_disp_bgcolor(HAWIKI_DISP_BGCOLOR);

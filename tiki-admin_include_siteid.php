@@ -8,62 +8,62 @@
 
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 // Site Identity Settings
-if (isset($_REQUEST["siteidentityset"])) {
- check_ticket('admin-inc-siteid');
- 
- if (isset($_REQUEST["alter_tiki_prefs_table"])) {
-	 $alter_result = alterprefs();
- }
+if(isset($_REQUEST["siteidentityset"])) {
+  check_ticket('admin-inc-siteid');
 
- 	$pref_toggles = array(
-  			"feature_sitemycode",
-				"feature_breadcrumbs",
-				"feature_siteloclabel",
-				"feature_sitelogo",
-				"feature_sitenav",
-				"feature_sitead",
-				"feature_sitesearch",
-				"feature_sitemenu",
-				"sitemycode_publish",
-				"sitead_publish"
-    );
+  if(isset($_REQUEST["alter_tiki_prefs_table"])) {
+    $alter_result = alterprefs();
+  }
 
-    foreach ($pref_toggles as $toggle) {
-        simple_set_toggle ($toggle);
-    }
+  $pref_toggles = array(
+                    "feature_sitemycode",
+                    "feature_breadcrumbs",
+                    "feature_siteloclabel",
+                    "feature_sitelogo",
+                    "feature_sitenav",
+                    "feature_sitead",
+                    "feature_sitesearch",
+                    "feature_sitemenu",
+                    "sitemycode_publish",
+                    "sitead_publish"
+                  );
 
- 	$pref_simple_values = array(
-				"sitelogo_src",
-				"sitelogo_bgcolor",
-				"sitelogo_title",
-				"sitelogo_alt",
-				"sitemycode",
-				"sitead",
-				"sitenav",
-				"sender_email"
+  foreach($pref_toggles as $toggle) {
+    simple_set_toggle($toggle);
+  }
 
-    );
+  $pref_simple_values = array(
+                          "sitelogo_src",
+                          "sitelogo_bgcolor",
+                          "sitelogo_title",
+                          "sitelogo_alt",
+                          "sitemycode",
+                          "sitead",
+                          "sitenav",
+                          "sender_email"
 
-    foreach ($pref_simple_values as $svitem) {
-        simple_set_value ($svitem);
-    }
+                        );
 
-    $pref_byref_values = array(
-        "feature_siteloc",
-        "feature_sitetitle",
-        "feature_sitedesc",
-        "siteTitle"
-    );
+  foreach($pref_simple_values as $svitem) {
+    simple_set_value($svitem);
+  }
 
-    foreach ($pref_byref_values as $britem) {
-        byref_set_value ($britem);
-    }
+  $pref_byref_values = array(
+                         "feature_siteloc",
+                         "feature_sitetitle",
+                         "feature_sitedesc",
+                         "siteTitle"
+                       );
+
+  foreach($pref_byref_values as $britem) {
+    byref_set_value($britem);
+  }
 
 }
 

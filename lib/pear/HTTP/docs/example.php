@@ -36,21 +36,21 @@
 /**
 * This will grab a webpage and display it
 */
-	include('HTTP/Request.php');
+include('HTTP/Request.php');
 
-	$req = &new HTTP_Request('http://www.php.net');
-	$req->setMethod(HTTP_REQUEST_METHOD_POST);
-	$req->addPostData('Foo', 'bar');
-	$req->sendRequest();
-	$response1 = $req->getResponseBody();
-	
-	$req->setMethod(HTTP_REQUEST_METHOD_GET);
-	$req->setURL('http://pear.php.net');
-	$req->clearPostData();
-	$req->sendRequest();
+$req = &new HTTP_Request('http://www.php.net');
+$req->setMethod(HTTP_REQUEST_METHOD_POST);
+$req->addPostData('Foo', 'bar');
+$req->sendRequest();
+$response1 = $req->getResponseBody();
 
-	$response2 = $req->getResponseBody();
+$req->setMethod(HTTP_REQUEST_METHOD_GET);
+$req->setURL('http://pear.php.net');
+$req->clearPostData();
+$req->sendRequest();
 
-	echo $response1;
-	echo $response2;
+$response2 = $req->getResponseBody();
+
+echo $response1;
+echo $response2;
 ?>

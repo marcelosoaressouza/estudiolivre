@@ -52,229 +52,251 @@ require_once 'DB.php';
 class Auth_Container_DBLite extends Auth_Container
 {
 
-    // {{{ properties
+  // {{{ properties
 
-    /**
-     * Additional options for the storage container
-     * @var array
-     */
-    var $options = array();
+  /**
+   * Additional options for the storage container
+   * @var array
+   */
+  var $options = array();
 
-    /**
-     * DB object
-     * @var object
-     */
-    var $db = null;
-    var $dsn = '';
+  /**
+   * DB object
+   * @var object
+   */
+  var $db = null;
+  var $dsn = '';
 
-    /**
-     * User that is currently selected from the DB.
-     * @var string
-     */
-    var $activeUser = '';
+  /**
+   * User that is currently selected from the DB.
+   * @var string
+   */
+  var $activeUser = '';
 
-    // }}}
-    // {{{ Auth_Container_DBLite() [constructor]
+  // }}}
+  // {{{ Auth_Container_DBLite() [constructor]
 
-    /**
-     * Constructor of the container class
-     *
-     * Initate connection to the database via PEAR::DB
-     *
-     * @param  string Connection data or DB object
-     * @return object Returns an error object if something went wrong
-     */
-    function Auth_Container_DBLite($dsn)
-    {
-        $this->options['table']       = 'auth';
-        $this->options['usernamecol'] = 'username';
-        $this->options['passwordcol'] = 'password';
-        $this->options['dsn']         = '';
-        $this->options['db_fields']   = '';
-        $this->options['cryptType']   = 'md5';
-        $this->options['db_options']  = array();
+  /**
+   * Constructor of the container class
+   *
+   * Initate connection to the database via PEAR::DB
+   *
+   * @param  string Connection data or DB object
+   * @return object Returns an error object if something went wrong
+   */
+  function Auth_Container_DBLite($dsn)
+  {
+    $this->options['table']       = 'auth';
+    $this->options['usernamecol'] = 'username';
+    $this->options['passwordcol'] = 'password';
+    $this->options['dsn']         = '';
+    $this->options['db_fields']   = '';
+    $this->options['cryptType']   = 'md5';
+    $this->options['db_options']  = array();
 
-        if (is_array($dsn)) {
-            $this->_parseOptions($dsn);
-            if (empty($this->options['dsn'])) {
-                PEAR::raiseError('No connection parameters specified!');
-            }
-        } else {
-            $this->options['dsn'] = $dsn;
-        }
+    if(is_array($dsn)) {
+      $this->_parseOptions($dsn);
+
+      if(empty($this->options['dsn'])) {
+        PEAR::raiseError('No connection parameters specified!');
+      }
     }
 
-    // }}}
-    // {{{ _connect()
+    else {
+      $this->options['dsn'] = $dsn;
+    }
+  }
 
-    /**
-     * Connect to database by using the given DSN string
-     *
-     * @access private
-     * @param  string DSN string
-     * @return mixed  Object on error, otherwise bool
-     */
-    function _connect(&$dsn)
-    {
-        if (is_string($dsn) || is_array($dsn)) {
-            $this->db =& DB::connect($dsn, $this->options['db_options']);
-        } elseif (is_subclass_of($dsn, "db_common")) {
-            $this->db =& $dsn;
-        } else {
-            return PEAR::raiseError("Invalid dsn or db object given");
-        }
+  // }}}
+  // {{{ _connect()
 
-        if (DB::isError($this->db) || PEAR::isError($this->db)) {
-            return PEAR::raiseError($this->db->getMessage(), $this->db->getCode());
-        } else {
-            return true;
-        }
+  /**
+   * Connect to database by using the given DSN string
+   *
+   * @access private
+   * @param  string DSN string
+   * @return mixed  Object on error, otherwise bool
+   */
+  function _connect(&$dsn)
+  {
+    if(is_string($dsn) || is_array($dsn)) {
+      $this->db =& DB::connect($dsn, $this->options['db_options']);
     }
 
-    // }}}
-    // {{{ _prepare()
-
-    /**
-     * Prepare database connection
-     *
-     * This function checks if we have already opened a connection to
-     * the database. If that's not the case, a new connection is opened.
-     *
-     * @access private
-     * @return mixed True or a DB error object.
-     */
-    function _prepare()
-    {
-        if (!DB::isConnection($this->db)) {
-            $res = $this->_connect($this->options['dsn']);
-            if (DB::isError($res) || PEAR::isError($res)) {
-                return $res;
-            }
-        }
-        return true;
+    elseif(is_subclass_of($dsn, "db_common")) {
+      $this->db =& $dsn;
     }
 
-    // }}}
-    // {{{ _parseOptions()
-
-    /**
-     * Parse options passed to the container class
-     *
-     * @access private
-     * @param  array
-     */
-    function _parseOptions($array)
-    {
-        foreach ($array as $key => $value) {
-            if (isset($this->options[$key])) {
-                $this->options[$key] = $value;
-            }
-        }
+    else {
+      return PEAR::raiseError("Invalid dsn or db object given");
     }
 
-    // }}}
-    // {{{ _quoteDBFields()
-
-    /**
-     * Quote the db_fields option to avoid the possibility of SQL injection.
-     *
-     * @access private
-     * @return string A properly quoted string that can be concatenated into a
-     * SELECT clause.
-     */
-    function _quoteDBFields()
-    {
-        if (isset($this->options['db_fields'])) {
-            if (is_array($this->options['db_fields'])) {
-                $fields = array();
-                foreach ($this->options['db_fields'] as $field) {
-                    $fields[] = $this->db->quoteIdentifier($field);
-                }
-                return implode(', ', $fields);
-            } else {
-                if (strlen($this->options['db_fields']) > 0) {
-                    return $this->db->quoteIdentifier($this->options['db_fields']);
-                }
-            }
-        }
-
-        return '';
-    }
-    
-    // }}}
-    // {{{ fetchData()
-
-    /**
-     * Get user information from database
-     *
-     * This function uses the given username to fetch
-     * the corresponding login data from the database
-     * table. If an account that matches the passed username
-     * and password is found, the function returns true.
-     * Otherwise it returns false.
-     *
-     * @param   string Username
-     * @param   string Password
-     * @return  mixed  Error object or boolean
-     */
-    function fetchData($username, $password)
-    {
-        // Prepare for a database query
-        $err = $this->_prepare();
-        if ($err !== true) {
-            return PEAR::raiseError($err->getMessage(), $err->getCode());
-        }
-
-        // Find if db_fields contains a *, if so assume all col are selected
-        if (is_string($this->options['db_fields'])
-            && strstr($this->options['db_fields'], '*')) {
-            $sql_from = "*";
-        } else {
-            $sql_from = $this->db->quoteIdentifier($this->options['usernamecol']).
-                ", ".$this->db->quoteIdentifier($this->options['passwordcol']);
-
-            if (strlen($fields = $this->_quoteDBFields()) > 0) {
-                $sql_from .= ', '.$fields;
-            }
-        }
-        
-        $query = "SELECT ".$sql_from.
-                " FROM ".$this->db->quoteIdentifier($this->options['table']).
-                " WHERE ".$this->db->quoteIdentifier($this->options['usernamecol'])." = ".$this->db->quoteSmart($username);
-        $res = $this->db->getRow($query, null, DB_FETCHMODE_ASSOC);
-
-        if (DB::isError($res)) {
-            return PEAR::raiseError($res->getMessage(), $res->getCode());
-        }
-        if (!is_array($res)) {
-            $this->activeUser = '';
-            return false;
-        }
-        if ($this->verifyPassword(trim($password, "\r\n"),
-                                  trim($res[$this->options['passwordcol']], "\r\n"),
-                                  $this->options['cryptType'])) {
-            // Store additional field values in the session
-            foreach ($res as $key => $value) {
-                if ($key == $this->options['passwordcol'] ||
-                    $key == $this->options['usernamecol']) {
-                    continue;
-                }
-                // Use reference to the auth object if exists
-                // This is because the auth session variable can change so a static call to setAuthData does not make sence
-                if (is_object($this->_auth_obj)) {
-                    $this->_auth_obj->setAuthData($key, $value);
-                } else {
-                    Auth::setAuthData($key, $value);
-                }
-            }
-            $this->activeUser = $res[$this->options['usernamecol']];
-            return true;
-        }
-        $this->activeUser = $res[$this->options['usernamecol']];
-        return false;
+    if(DB::isError($this->db) || PEAR::isError($this->db)) {
+      return PEAR::raiseError($this->db->getMessage(), $this->db->getCode());
     }
 
-    // }}}
+    else {
+      return true;
+    }
+  }
+
+  // }}}
+  // {{{ _prepare()
+
+  /**
+   * Prepare database connection
+   *
+   * This function checks if we have already opened a connection to
+   * the database. If that's not the case, a new connection is opened.
+   *
+   * @access private
+   * @return mixed True or a DB error object.
+   */
+  function _prepare()
+  {
+    if(!DB::isConnection($this->db)) {
+      $res = $this->_connect($this->options['dsn']);
+
+      if(DB::isError($res) || PEAR::isError($res)) {
+        return $res;
+      }
+    }
+
+    return true;
+  }
+
+  // }}}
+  // {{{ _parseOptions()
+
+  /**
+   * Parse options passed to the container class
+   *
+   * @access private
+   * @param  array
+   */
+  function _parseOptions($array)
+  {
+    foreach($array as $key => $value) {
+      if(isset($this->options[$key])) {
+        $this->options[$key] = $value;
+      }
+    }
+  }
+
+  // }}}
+  // {{{ _quoteDBFields()
+
+  /**
+   * Quote the db_fields option to avoid the possibility of SQL injection.
+   *
+   * @access private
+   * @return string A properly quoted string that can be concatenated into a
+   * SELECT clause.
+   */
+  function _quoteDBFields()
+  {
+    if(isset($this->options['db_fields'])) {
+      if(is_array($this->options['db_fields'])) {
+        $fields = array();
+        foreach($this->options['db_fields'] as $field) {
+          $fields[] = $this->db->quoteIdentifier($field);
+        }
+        return implode(', ', $fields);
+      }
+
+      else {
+        if(strlen($this->options['db_fields']) > 0) {
+          return $this->db->quoteIdentifier($this->options['db_fields']);
+        }
+      }
+    }
+
+    return '';
+  }
+
+  // }}}
+  // {{{ fetchData()
+
+  /**
+   * Get user information from database
+   *
+   * This function uses the given username to fetch
+   * the corresponding login data from the database
+   * table. If an account that matches the passed username
+   * and password is found, the function returns true.
+   * Otherwise it returns false.
+   *
+   * @param   string Username
+   * @param   string Password
+   * @return  mixed  Error object or boolean
+   */
+  function fetchData($username, $password)
+  {
+    // Prepare for a database query
+    $err = $this->_prepare();
+
+    if($err !== true) {
+      return PEAR::raiseError($err->getMessage(), $err->getCode());
+    }
+
+    // Find if db_fields contains a *, if so assume all col are selected
+    if(is_string($this->options['db_fields'])
+        && strstr($this->options['db_fields'], '*')) {
+      $sql_from = "*";
+    }
+
+    else {
+      $sql_from = $this->db->quoteIdentifier($this->options['usernamecol']).
+                  ", ".$this->db->quoteIdentifier($this->options['passwordcol']);
+
+      if(strlen($fields = $this->_quoteDBFields()) > 0) {
+        $sql_from .= ', '.$fields;
+      }
+    }
+
+    $query = "SELECT ".$sql_from.
+             " FROM ".$this->db->quoteIdentifier($this->options['table']).
+             " WHERE ".$this->db->quoteIdentifier($this->options['usernamecol'])." = ".$this->db->quoteSmart($username);
+    $res = $this->db->getRow($query, null, DB_FETCHMODE_ASSOC);
+
+    if(DB::isError($res)) {
+      return PEAR::raiseError($res->getMessage(), $res->getCode());
+    }
+
+    if(!is_array($res)) {
+      $this->activeUser = '';
+      return false;
+    }
+
+    if($this->verifyPassword(trim($password, "\r\n"),
+                             trim($res[$this->options['passwordcol']], "\r\n"),
+                             $this->options['cryptType'])) {
+      // Store additional field values in the session
+      foreach($res as $key => $value) {
+        if($key == $this->options['passwordcol'] ||
+            $key == $this->options['usernamecol']) {
+          continue;
+        }
+
+        // Use reference to the auth object if exists
+        // This is because the auth session variable can change so a static call to setAuthData does not make sence
+        if(is_object($this->_auth_obj)) {
+          $this->_auth_obj->setAuthData($key, $value);
+        }
+
+        else {
+          Auth::setAuthData($key, $value);
+        }
+      }
+      $this->activeUser = $res[$this->options['usernamecol']];
+      return true;
+    }
+
+    $this->activeUser = $res[$this->options['usernamecol']];
+    return false;
+  }
+
+  // }}}
 
 }
 ?>

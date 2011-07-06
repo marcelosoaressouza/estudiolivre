@@ -7,29 +7,29 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/bookmarks/bookmarklib.php');
+include_once('lib/bookmarks/bookmarklib.php');
 
-if (!$user) {
-	$smarty->assign('msg', tra("You must log in to use this feature"));
+if(!$user) {
+  $smarty->assign('msg', tra("You must log in to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($feature_user_bookmarks != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_user_bookmarks");
+if($feature_user_bookmarks != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_user_bookmarks");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["urlid"])) {
-	$smarty->assign('msg', tra("No url indicated"));
+if(!isset($_REQUEST["urlid"])) {
+  $smarty->assign('msg', tra("No url indicated"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 // Get a list of last changes to the Wiki database

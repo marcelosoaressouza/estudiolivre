@@ -7,65 +7,75 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/directory/dirlib.php');
+include_once('lib/directory/dirlib.php');
 
-if ($feature_directory != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_directory");
+if($feature_directory != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_directory");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_validate_links != 'y') {
-	$smarty->assign('msg', tra("Permission denied"));
+if($tiki_p_validate_links != 'y') {
+  $smarty->assign('msg', tra("Permission denied"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (isset($_REQUEST["validate"]) && isset($_REQUEST['sites'])) {
-	check_ticket('dir-validate');
-	foreach (array_keys($_REQUEST["sites"])as $siteId) {
-		$dirlib->dir_validate_site($siteId);
-	}
+if(isset($_REQUEST["validate"]) && isset($_REQUEST['sites'])) {
+  check_ticket('dir-validate');
+  foreach(array_keys($_REQUEST["sites"])as $siteId) {
+    $dirlib->dir_validate_site($siteId);
+  }
 }
 
-if (isset($_REQUEST["remove"])) {
+if(isset($_REQUEST["remove"])) {
   $area = 'deldirvalidate';
-  if ($feature_ticketlib2 != 'y' or ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"])))) {
+
+  if($feature_ticketlib2 != 'y' or($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"])))) {
     key_check($area);
-		$dirlib->dir_remove_site($_REQUEST["remove"]);
-	} else {
-		key_get($area);
-	}
+    $dirlib->dir_remove_site($_REQUEST["remove"]);
+  }
+
+  else {
+    key_get($area);
+  }
 }
-if (isset($_REQUEST["del"]) && isset($_REQUEST['sites'])) {
-	check_ticket('dir-validate');
-	foreach (array_keys($_REQUEST["sites"])as $siteId) {
-		$dirlib->dir_remove_site($siteId);
-	}
+
+if(isset($_REQUEST["del"]) && isset($_REQUEST['sites'])) {
+  check_ticket('dir-validate');
+  foreach(array_keys($_REQUEST["sites"])as $siteId) {
+    $dirlib->dir_remove_site($siteId);
+  }
 }
 
 // Listing: invalid sites
 // Pagination resolution
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'created_desc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'created_desc';
 }
 
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
 }
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
+}
+
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign_by_ref('offset', $offset);
@@ -77,16 +87,20 @@ $cant_pages = ceil($items["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($items["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($items["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
 }
 
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+else {
+  $smarty->assign('next_offset', -1);
+}
+
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('items', $items["data"]);

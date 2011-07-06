@@ -1,170 +1,177 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class BackupLib extends TikiLib {
-	function BackupLib($db) {
-		# this is probably uneeded now
-		if (!$db) {
-			die ("Invalid db object passed to BAckupsLib constructor");
-		}
-		$this->db = $db;
-	}
+  function BackupLib($db) {
+# this is probably uneeded now
 
-	function restore_database($filename) {
-		// Get the password before it's too late
-		$query = "select `hash` from `users_users` where `login`=?";
-		$pwd = $this->getOne($query,array("admin"));
+    if(!$db) {
+      die("Invalid db object passed to BAckupsLib constructor");
+    }
 
-		// Before anything read tiki.sql from db and run it
-		$fp = fopen("db/tiki.sql", "r");
-		$data = fread($fp, filesize("db/tiki.sql"));
-		fclose ($fp);
-		// Drop all the tables
-		preg_match_all("/DROP ([^;]+);/i", $data, $reqs);
+    $this->db = $db;
+  }
 
-		foreach ($reqs[0] as $query) {
-			//print("q: $query<br />");
-			$result = $this->query($query);
-		}
+  function restore_database($filename) {
+    // Get the password before it's too late
+    $query = "select `hash` from `users_users` where `login`=?";
+    $pwd = $this->getOne($query,array("admin"));
 
-		// Create all the tables
-		preg_match_all("/create table ([^;]+);/i", $data, $reqs);
+    // Before anything read tiki.sql from db and run it
+    $fp = fopen("db/tiki.sql", "r");
+    $data = fread($fp, filesize("db/tiki.sql"));
+    fclose($fp);
+    // Drop all the tables
+    preg_match_all("/DROP ([^;]+);/i", $data, $reqs);
 
-		foreach ($reqs[0] as $query) {
-			//print("q: $query<br />");
-			$result = $this->query($query);
-		}
+    foreach($reqs[0] as $query) {
+      //print("q: $query<br />");
+      $result = $this->query($query);
+    }
 
-		$query = "update `users_users` set `hash`=? where `login`=?";
-		$result = $this->query($query,array($pwd,'admin'));
-		@$fp = fopen($filename, "rb");
+    // Create all the tables
+    preg_match_all("/create table ([^;]+);/i", $data, $reqs);
 
-		if (!$fp) return false;
+    foreach($reqs[0] as $query) {
+      //print("q: $query<br />");
+      $result = $this->query($query);
+    }
 
-		while (!feof($fp)) {
-			$rlen = fread($fp, 4);
-			if (feof($fp)) break;
+    $query = "update `users_users` set `hash`=? where `login`=?";
+    $result = $this->query($query,array($pwd,'admin'));
+    @$fp = fopen($filename, "rb");
 
-			$len = unpack("L", $rlen);
-			$len = array_pop($len);
-			//print("leer: $len bytes<br />");
-			$line = fread($fp, $len);
-			$line = $this->RC4($pwd, $line);
-			// EXECUTE SQL SENTENCE HERE
-			//print("q: $line <br />");
-			$result = $this->query($line,array());
-		}
+    if(!$fp) return false;
 
-		fclose ($fp);
-	}
+    while(!feof($fp)) {
+      $rlen = fread($fp, 4);
 
-	function RC4($pwd, $data) {
-		$key[] = "";
+      if(feof($fp)) break;
 
-		$box[] = "";
-		$temp_swap = "";
-		$pwd_length = 0;
-		$pwd_length = strlen($pwd);
+      $len = unpack("L", $rlen);
+      $len = array_pop($len);
+      //print("leer: $len bytes<br />");
+      $line = fread($fp, $len);
+      $line = $this->RC4($pwd, $line);
+      // EXECUTE SQL SENTENCE HERE
+      //print("q: $line <br />");
+      $result = $this->query($line,array());
+    }
 
-		for ($i = 0; $i <= 255; $i++) {
-			$key[$i] = ord(substr($pwd, ($i % $pwd_length) + 1, 1));
+    fclose($fp);
+  }
 
-			$box[$i] = $i;
-		}
+  function RC4($pwd, $data) {
+    $key[] = "";
 
-		$x = 0;
+    $box[] = "";
+    $temp_swap = "";
+    $pwd_length = 0;
+    $pwd_length = strlen($pwd);
 
-		for ($i = 0; $i < 255; $i++) {
-			$x = ($x + $box[$i] + $key[$i]) % 256;
+    for($i = 0; $i <= 255; $i++) {
+      $key[$i] = ord(substr($pwd, ($i % $pwd_length) + 1, 1));
 
-			$temp_swap = $box[$i];
-			$box[$i] = $box[$x];
-			$box[$x] = $temp_swap;
-		}
+      $box[$i] = $i;
+    }
 
-		$temp = "";
-		$k = "";
-		$cipherby = "";
-		$cipher = "";
-		$a = 0;
-		$j = 0;
+    $x = 0;
 
-		for ($i = 0; $i < strlen($data); $i++) {
-			$a = ($a + 1) % 256;
+    for($i = 0; $i < 255; $i++) {
+      $x = ($x + $box[$i] + $key[$i]) % 256;
 
-			$j = ($j + $box[$a]) % 256;
-			$temp = $box[$a];
-			$box[$a] = $box[$j];
-			$box[$j] = $temp;
-			$k = $box[(($box[$a] + $box[$j]) % 256)];
-			$cipherby = ord(substr($data, $i, 1)) ^ $k;
-			$cipher .= chr($cipherby);
-		}
+      $temp_swap = $box[$i];
+      $box[$i] = $box[$x];
+      $box[$x] = $temp_swap;
+    }
 
-		return $cipher;
-	}
+    $temp = "";
+    $k = "";
+    $cipherby = "";
+    $cipher = "";
+    $a = 0;
+    $j = 0;
 
-	// Functions to backup the database (mysql?)
-	function backup_database($filename) {
-		ini_set("max_execution_time", "3000");
+    for($i = 0; $i < strlen($data); $i++) {
+      $a = ($a + 1) % 256;
 
-		$query = "select `hash` from `users_users` where `login`=?";
-		$pwd = $this->getOne($query,array("admin"));
-		@$fp = fopen($filename, "w");
+      $j = ($j + $box[$a]) % 256;
+      $temp = $box[$a];
+      $box[$a] = $box[$j];
+      $box[$j] = $temp;
+      $k = $box[(($box[$a] + $box[$j]) % 256)];
+      $cipherby = ord(substr($data, $i, 1)) ^ $k;
+      $cipher .= chr($cipherby);
+    }
 
-		if (!$fp)
-			return false;
+    return $cipher;
+  }
 
-		$query = "show tables";
-		$result = $this->query($query);
-		$sql = '';
-		$part = '';
+  // Functions to backup the database (mysql?)
+  function backup_database($filename) {
+    ini_set("max_execution_time", "3000");
 
-		while ($res = $result->fetchRow()) {
-			list($key, $val) = each($res);
+    $query = "select `hash` from `users_users` where `login`=?";
+    $pwd = $this->getOne($query,array("admin"));
+    @$fp = fopen($filename, "w");
 
-			if (!strstr($val, 'babl')) {
-				// Now dump the table
-				$query2 = "select * from `$val`";
+    if(!$fp)
+      return false;
 
-				$result2 = $this->query($query2);
+    $query = "show tables";
+    $result = $this->query($query);
+    $sql = '';
+    $part = '';
 
-				while ($res2 = $result2->fetchRow()) {
-					$sentence = "values(";
+    while($res = $result->fetchRow()) {
+      list($key, $val) = each($res);
 
-					$first = 1;
+      if(!strstr($val, 'babl')) {
+        // Now dump the table
+        $query2 = "select * from `$val`";
 
-					foreach ($res2 as $field => $value) {
-						if ($first) {
-							$sentence .= "'" . addslashes($value). "'";
-							$first = 0;
-							$fields = '(' . $field;
-						} else {
-							$sentence .= ",'" . addslashes($value). "'";
-							$fields .= ",$field";
-						}
-					}
+        $result2 = $this->query($query2);
 
-					$fields .= ')';
-					$sentence .= ")";
-					$part = "insert into $val $fields $sentence;";
-					$len = pack("L", strlen($part));
-					fwrite($fp, $len);
-					$part = $this->RC4($pwd, $part);
-					fwrite($fp, $part);
-				}
-			}
-		}
-		// And now print!
-		fclose ($fp);
-		return true;
-	}
+        while($res2 = $result2->fetchRow()) {
+          $sentence = "values(";
+
+          $first = 1;
+
+          foreach($res2 as $field => $value) {
+            if($first) {
+              $sentence .= "'" . addslashes($value). "'";
+              $first = 0;
+              $fields = '(' . $field;
+            }
+
+            else {
+              $sentence .= ",'" . addslashes($value). "'";
+              $fields .= ",$field";
+            }
+          }
+
+          $fields .= ')';
+          $sentence .= ")";
+          $part = "insert into $val $fields $sentence;";
+          $len = pack("L", strlen($part));
+          fwrite($fp, $len);
+          $part = $this->RC4($pwd, $part);
+          fwrite($fp, $part);
+        }
+      }
+    }
+
+    // And now print!
+    fclose($fp);
+    return true;
+  }
 }
+
 global $dbTiki;
 $backuplib = new BackupLib($dbTiki);
 

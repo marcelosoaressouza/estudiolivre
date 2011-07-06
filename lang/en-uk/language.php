@@ -36,7 +36,7 @@
 // Usefull mode when preparing a translation for distribution.
 
 // http://www.neonchart.com/get_strings.php?nohelp&nosections
-// Prepare all languages for release 
+// Prepare all languages for release
 
 
 $lang=Array(
@@ -44,11 +44,11 @@ $lang=Array(
 // ### Please remove manually!
 // ### N.B. Legitimate strings may be marked// ### as unused!
 // ### Please see http://tikiwiki.org/tiki-index.php?page=UnusedWords for further info
-"the background color, use #rrvvbb color types.\n" => "the background colour, use #rrvvbb colour types.\n",
-"color of the border\n" => "colour of the border\n",
-"background color of the node\n" => "background colour of the node\n",
-"color for links (called edges here)\n" => "colour for links (called edges here)\n",
-"Will display using the indicated HTML color" => "Will display using the indicated HTML colour",
+        "the background color, use #rrvvbb color types.\n" => "the background colour, use #rrvvbb colour types.\n",
+        "color of the border\n" => "colour of the border\n",
+        "background color of the node\n" => "background colour of the node\n",
+        "color for links (called edges here)\n" => "colour for links (called edges here)\n",
+        "Will display using the indicated HTML color" => "Will display using the indicated HTML colour",
 // ### end of unused words
 
 // ### start of untranslated words
@@ -5448,12 +5448,12 @@ $lang=Array(
 // ### end of possibly untranslated words
 // ###
 
-"Display Tiki objects that have not been categorized" => "Display Tiki objects that have not been categorised",
-"Categorize" => "Categorise",
-"categorize this object" => "categorise this object",
-"Your account request have been stored and will be activated by the admin as soon as possible." => "Your account request has been stored and will be activated by the admin as soon as possible.",
-"\n<b>Note 1</b>: if you allow your users to configure modules then assigned\nmodules won't be reflected in the screen until you configure them\nfrom MyTiki->modules.<br />\n<b>Note 2</b>: If you assign modules to groups make sure that you\nhave turned off the option 'display modules to all groups always'\nfrom Admin->General\n" => "\n<b>Notes</b>\n<ul><li>If you allow your users to configure modules then assigned modules won't be reflected in the screen until you configure them from MyTiki->modules.</li><li>If you assign modules to groups make sure that you have turned off the option 'display modules to all groups always' from Admin->General.",
-"Colored text" => "Coloured text",
-"DATE-of" => "of",
-"###end###"=>"###end###");
+        "Display Tiki objects that have not been categorized" => "Display Tiki objects that have not been categorised",
+        "Categorize" => "Categorise",
+        "categorize this object" => "categorise this object",
+        "Your account request have been stored and will be activated by the admin as soon as possible." => "Your account request has been stored and will be activated by the admin as soon as possible.",
+        "\n<b>Note 1</b>: if you allow your users to configure modules then assigned\nmodules won't be reflected in the screen until you configure them\nfrom MyTiki->modules.<br />\n<b>Note 2</b>: If you assign modules to groups make sure that you\nhave turned off the option 'display modules to all groups always'\nfrom Admin->General\n" => "\n<b>Notes</b>\n<ul><li>If you allow your users to configure modules then assigned modules won't be reflected in the screen until you configure them from MyTiki->modules.</li><li>If you assign modules to groups make sure that you have turned off the option 'display modules to all groups always' from Admin->General.",
+        "Colored text" => "Coloured text",
+        "DATE-of" => "of",
+        "###end###"=>"###end###");
 ?>

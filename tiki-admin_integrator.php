@@ -10,17 +10,18 @@ require_once('tiki-setup.php');
 require_once('lib/integrator/integrator.php');
 
 // If Integrator is ON, check permissions...
-if ($feature_integrator != 'y')
+if($feature_integrator != 'y')
 {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_integrator");
-	$smarty->display("error.tpl");
-	die;
+  $smarty->assign('msg', tra("This feature is disabled").": feature_integrator");
+  $smarty->display("error.tpl");
+  die;
 }
-if (($tiki_p_admin_integrator != 'y') && ($tiki_p_admin != 'y'))
+
+if(($tiki_p_admin_integrator != 'y') && ($tiki_p_admin != 'y'))
 {
-    $smarty->assign('msg',tra("You do not have permission to use this feature"));
-    $smarty->display("error.tpl");
-    die;
+  $smarty->assign('msg',tra("You do not have permission to use this feature"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 // Setup local variables from request or set default values
@@ -38,59 +39,69 @@ $cacheable   = isset($_REQUEST["cacheable"])   ? ($_REQUEST["cacheable"] == 'on'
 $integrator = new TikiIntegrator($dbTiki);
 
 // Check if 'submit' pressed ...
-if (isset($_REQUEST["save"]))
+if(isset($_REQUEST["save"]))
 {
-    // ... and all mandatory paramaters r OK
-    if (strlen($name)  > 0)
-        $integrator->add_replace_repository($repID, $name, $path, $start, $cssfile,
-                                            $vis, $cacheable, $expiration, $description);
-    else
-    {
-        $smarty->assign('msg',tra("Repository name can't be an empty"));
-        $smarty->display("error.tpl");
-        die;
-    }
+  // ... and all mandatory paramaters r OK
+  if(strlen($name)  > 0)
+    $integrator->add_replace_repository($repID, $name, $path, $start, $cssfile,
+                                        $vis, $cacheable, $expiration, $description);
+
+  else
+  {
+    $smarty->assign('msg',tra("Repository name can't be an empty"));
+    $smarty->display("error.tpl");
+    die;
+  }
 }
+
 // Whether some action requested?
-if (isset($_REQUEST["action"]))
+if(isset($_REQUEST["action"]))
 {
-    switch ($_REQUEST["action"])
+  switch($_REQUEST["action"])
+  {
+  case 'edit':
+    if($repID != 0)
     {
-    case 'edit':
-        if ($repID != 0)
-        {
-            $rep = $integrator->get_repository($repID);
-            $smarty->assign('repID', $repID);
-            $smarty->assign('name', $rep["name"]);
-            $smarty->assign('path', $rep["path"]);
-            $smarty->assign('start', $rep["start_page"]);
-            $smarty->assign('cssfile', $rep["css_file"]);
-            $smarty->assign('expiration', $rep["expiration"]);
-            $smarty->assign('vis', $rep["visibility"]);
-            $smarty->assign('cacheable', $rep["cacheable"]);
-            $smarty->assign('description', $rep["description"]);
-        }
-        break;
-    case 'rm':
-        if ($repID != 0) {
-					if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
-						key_check($area);
-						$integrator->remove_repository($repID);
-					} else {
-						key_get($area);
-					}
-				}
-        break;
-    case 'clear':
-        if ($repID != 0) $integrator->clear_cache($repID);
-        header('location: '.$_SERVER['SCRIPT_NAME'].'?action=edit&repID='.$repID);
-        exit;
-    default:
-        $smarty->assign('msg', tra("Requested action is not supported on repository"));
-        $smarty->display("error.tpl");
-        die;
-        break;
+      $rep = $integrator->get_repository($repID);
+      $smarty->assign('repID', $repID);
+      $smarty->assign('name', $rep["name"]);
+      $smarty->assign('path', $rep["path"]);
+      $smarty->assign('start', $rep["start_page"]);
+      $smarty->assign('cssfile', $rep["css_file"]);
+      $smarty->assign('expiration', $rep["expiration"]);
+      $smarty->assign('vis', $rep["visibility"]);
+      $smarty->assign('cacheable', $rep["cacheable"]);
+      $smarty->assign('description', $rep["description"]);
     }
+
+    break;
+
+  case 'rm':
+    if($repID != 0) {
+      if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+        key_check($area);
+        $integrator->remove_repository($repID);
+      }
+
+      else {
+        key_get($area);
+      }
+    }
+
+    break;
+
+  case 'clear':
+    if($repID != 0) $integrator->clear_cache($repID);
+
+    header('location: '.$_SERVER['SCRIPT_NAME'].'?action=edit&repID='.$repID);
+    exit;
+
+  default:
+    $smarty->assign('msg', tra("Requested action is not supported on repository"));
+    $smarty->display("error.tpl");
+    die;
+    break;
+  }
 }
 
 // Fill list of repositories

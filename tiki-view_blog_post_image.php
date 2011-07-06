@@ -7,27 +7,27 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($feature_blogs != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_blogs");
+if($feature_blogs != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_blogs");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-include_once ('lib/blogs/bloglib.php');
+include_once('lib/blogs/bloglib.php');
 
-if (!isset($_REQUEST["imgId"])) {
-	die;
+if(!isset($_REQUEST["imgId"])) {
+  die;
 }
 
 $info = $bloglib->get_post_image($_REQUEST["imgId"]);
 $type = &$info["filetype"];
 $file = &$info["filename"];
 $content = &$info["data"];
-header ("Content-type: $type");
-header ("Content-Disposition: inline; filename=$file");
+header("Content-type: $type");
+header("Content-Disposition: inline; filename=$file");
 echo "$content";
 
 ?>

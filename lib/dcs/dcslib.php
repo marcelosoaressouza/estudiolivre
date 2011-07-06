@@ -1,196 +1,206 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class DCSLib extends TikiLib {
-	function DCSLib($db) {
-		# this is probably uneeded now
-		if (!$db) {
-			die ("Invalid db object passed to DCSLib constructor");
-		}
+  function DCSLib($db) {
+# this is probably uneeded now
 
-		$this->db = $db;
-	}
+    if(!$db) {
+      die("Invalid db object passed to DCSLib constructor");
+    }
 
-	function remove_contents($contentId) {
-		$query = "delete from `tiki_programmed_content` where `contentId`=?";
+    $this->db = $db;
+  }
 
-		$result = $this->query($query,array($contentId));
-		$query = "delete from `tiki_content` where `contentId`=?";
-		$result = $this->query($query,array($contentId));
-	}
+  function remove_contents($contentId) {
+    $query = "delete from `tiki_programmed_content` where `contentId`=?";
 
-	function list_content($offset = 0, $maxRecords = -1, $sort_mode = 'contentId_desc', $find = '') {
+    $result = $this->query($query,array($contentId));
+    $query = "delete from `tiki_content` where `contentId`=?";
+    $result = $this->query($query,array($contentId));
+  }
 
-		if ($find) {
-			$findesc = '%' . $find . '%';
+  function list_content($offset = 0, $maxRecords = -1, $sort_mode = 'contentId_desc', $find = '') {
 
-			$mid = " where (`description` like $findesc)";
-			$bindvars=array($findesc);
-		} else {
-			$mid = '';
-			$bindvars=array();
-		}
+    if($find) {
+      $findesc = '%' . $find . '%';
 
-		$query = "select * from `tiki_content` $mid order by ".$this->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `tiki_content` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
-		$ret = array();
+      $mid = " where (`description` like $findesc)";
+      $bindvars=array($findesc);
+    }
 
-		while ($res = $result->fetchRow()) {
-			// Add actual version
-			// Add number of programmed versions
-			// Add next programmed version
-			// Add number of old versions
-			$now = date("U");
+    else {
+      $mid = '';
+      $bindvars=array();
+    }
 
-			$id = $res["contentId"];
-			$query = "select count(*) from `tiki_programmed_content` where `publishDate`>? and `contentId`=?";
-			$res["future"] = $this->getOne($query,array($now,$id));
-			$query = "select max(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
-			$res["actual"] = $this->getOne($query,array($id,$now));
-			$query = "select min(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`>=?";
-			$res["next"] = $this->getOne($query,array($id,$now));
-			$query = "select count(*) from `tiki_programmed_content` where `contentId` = ? and `publishDate`<?";
-			$res["old"] = $this->getOne($query,array($id,$now));
+    $query = "select * from `tiki_content` $mid order by ".$this->convert_sortmode($sort_mode);
+    $query_cant = "select count(*) from `tiki_content` $mid";
+    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $cant = $this->getOne($query_cant,$bindvars);
+    $ret = array();
 
-			if ($res["old"] > 0)
-				$res["old"]--;
+    while($res = $result->fetchRow()) {
+      // Add actual version
+      // Add number of programmed versions
+      // Add next programmed version
+      // Add number of old versions
+      $now = date("U");
 
-			$ret[] = $res;
-		}
+      $id = $res["contentId"];
+      $query = "select count(*) from `tiki_programmed_content` where `publishDate`>? and `contentId`=?";
+      $res["future"] = $this->getOne($query,array($now,$id));
+      $query = "select max(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
+      $res["actual"] = $this->getOne($query,array($id,$now));
+      $query = "select min(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`>=?";
+      $res["next"] = $this->getOne($query,array($id,$now));
+      $query = "select count(*) from `tiki_programmed_content` where `contentId` = ? and `publishDate`<?";
+      $res["old"] = $this->getOne($query,array($id,$now));
 
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
+      if($res["old"] > 0)
+        $res["old"]--;
 
-	function get_actual_content_date($contentId) {
-		$now = date("U");
+      $ret[] = $res;
+    }
 
-		$query = "select max(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
-		$res = $this->getOne($query,array($contentId,$now));
-		return $res;
-	}
+    $retval = array();
+    $retval["data"] = $ret;
+    $retval["cant"] = $cant;
+    return $retval;
+  }
 
-	function get_random_content($contentId) {
-		$now = date("U");
+  function get_actual_content_date($contentId) {
+    $now = date("U");
 
-		$querycant = "select count(*) from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
-		$cant = $this->getOne($querycant,array($contentId,$now));
+    $query = "select max(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
+    $res = $this->getOne($query,array($contentId,$now));
+    return $res;
+  }
 
-		if (!$cant)
-			return '';
+  function get_random_content($contentId) {
+    $now = date("U");
 
-		$x = rand(0, $cant - 1);
-		$query = "select `data` from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
-		$result = $this->query($query,array($contentId,$now),1,$x);
-		$res = $result->fetchRow();
-		return $res["data"];
-	}
+    $querycant = "select count(*) from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
+    $cant = $this->getOne($querycant,array($contentId,$now));
 
-	function get_next_content($contentId) {
-		$now = date("U");
+    if(!$cant)
+      return '';
 
-		$query = "select min(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`>?";
-		$res = $this->getOne($query,array($contentId,$now));
-		return $res;
-	}
+    $x = rand(0, $cant - 1);
+    $query = "select `data` from `tiki_programmed_content` where `contentId`=? and `publishDate`<=?";
+    $result = $this->query($query,array($contentId,$now),1,$x);
+    $res = $result->fetchRow();
+    return $res["data"];
+  }
 
-	function list_programmed_content($contentId, $offset = 0, $maxRecords = -1, $sort_mode = 'publishDate_desc', $find = '') {
+  function get_next_content($contentId) {
+    $now = date("U");
 
-		if ($find) {
-			$findesc = '%' . $find . '%';
+    $query = "select min(`publishDate`) from `tiki_programmed_content` where `contentId`=? and `publishDate`>?";
+    $res = $this->getOne($query,array($contentId,$now));
+    return $res;
+  }
 
-			$mid = " where `contentId`=? and (`data` like ?) ";
-			$bindvars=array($contentId,$findesc);
-		} else {
-			$mid = " where `contentId`=?";
-			$bindvars=array($contentId);
-		}
+  function list_programmed_content($contentId, $offset = 0, $maxRecords = -1, $sort_mode = 'publishDate_desc', $find = '') {
 
-		$query = "select * from `tiki_programmed_content` $mid order by ".$this->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `tiki_programmed_content` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
-		$ret = array();
+    if($find) {
+      $findesc = '%' . $find . '%';
 
-		while ($res = $result->fetchRow()) {
-			$ret[] = $res;
-		}
+      $mid = " where `contentId`=? and (`data` like ?) ";
+      $bindvars=array($contentId,$findesc);
+    }
 
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
+    else {
+      $mid = " where `contentId`=?";
+      $bindvars=array($contentId);
+    }
 
-	function replace_programmed_content($pId, $contentId, $publishDate, $data) {
+    $query = "select * from `tiki_programmed_content` $mid order by ".$this->convert_sortmode($sort_mode);
+    $query_cant = "select count(*) from `tiki_programmed_content` $mid";
+    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $cant = $this->getOne($query_cant,$bindvars);
+    $ret = array();
 
-		if (!$pId) {
-			// was replace into ...
-			$query = "insert into `tiki_programmed_content`(`contentId`,`publishDate`,`data`) values(?,?,?)";
+    while($res = $result->fetchRow()) {
+      $ret[] = $res;
+    }
 
-			$result = $this->query($query,array($contentId,$publishDate, $data));
-			$query = "select max(`pId`) from `tiki_programmed_content` where `publishDate`=? and `data`=?";
-			$id = $this->getOne($query,array($publishDate,$data));
-		} else {
-			$query
-				= "update `tiki_programmed_content` set `contentId`=?, `publishDate`=?, `data`=? where `pId`=?";
+    $retval = array();
+    $retval["data"] = $ret;
+    $retval["cant"] = $cant;
+    return $retval;
+  }
 
-			$result = $this->query($query,array($contentId,$publishDate,$data,$pId));
-			$id = $pId;
-		}
+  function replace_programmed_content($pId, $contentId, $publishDate, $data) {
 
-		return $id;
-	}
+    if(!$pId) {
+      // was replace into ...
+      $query = "insert into `tiki_programmed_content`(`contentId`,`publishDate`,`data`) values(?,?,?)";
 
-	function remove_programmed_content($id) {
-		$query = "delete from `tiki_programmed_content` where `pId`=?";
+      $result = $this->query($query,array($contentId,$publishDate, $data));
+      $query = "select max(`pId`) from `tiki_programmed_content` where `publishDate`=? and `data`=?";
+      $id = $this->getOne($query,array($publishDate,$data));
+    }
 
-		$result = $this->query($query,array($id));
-		return true;
-	}
+    else {
+      $query
+        = "update `tiki_programmed_content` set `contentId`=?, `publishDate`=?, `data`=? where `pId`=?";
 
-	function get_content($id) {
-		$query = "select * from `tiki_content` where `contentId`=?";
+      $result = $this->query($query,array($contentId,$publishDate,$data,$pId));
+      $id = $pId;
+    }
 
-		$result = $this->query($query,array($id));
-		$res = $result->fetchRow();
-		return $res;
-	}
+    return $id;
+  }
 
-	function get_programmed_content($id) {
-		$query = "select * from `tiki_programmed_content` where `pId`=?";
+  function remove_programmed_content($id) {
+    $query = "delete from `tiki_programmed_content` where `pId`=?";
 
-		$result = $this->query($query,array($id));
-		$res = $result->fetchRow();
-		return $res;
-	}
+    $result = $this->query($query,array($id));
+    return true;
+  }
 
-	function replace_content($contentId, $description) {
+  function get_content($id) {
+    $query = "select * from `tiki_content` where `contentId`=?";
 
-		if ($contentId > 0) {
-			$query = "update `tiki_content` set `description`=? where `contentId`=?";
+    $result = $this->query($query,array($id));
+    $res = $result->fetchRow();
+    return $res;
+  }
 
-			$result = $this->query($query,array($description,$contentId));
-			return $contentId;
-		} else {
-			$query = "insert into `tiki_content`(`description`) values(?)";
+  function get_programmed_content($id) {
+    $query = "select * from `tiki_programmed_content` where `pId`=?";
 
-			$result = $this->query($query,array($description));
-			$query = "select max(`contentId`) from `tiki_content` where `description` = ?";
-			$id = $this->getOne($query,array($description));
-			return $id;
-		}
-	}
+    $result = $this->query($query,array($id));
+    $res = $result->fetchRow();
+    return $res;
+  }
+
+  function replace_content($contentId, $description) {
+
+    if($contentId > 0) {
+      $query = "update `tiki_content` set `description`=? where `contentId`=?";
+
+      $result = $this->query($query,array($description,$contentId));
+      return $contentId;
+    }
+
+    else {
+      $query = "insert into `tiki_content`(`description`) values(?)";
+
+      $result = $this->query($query,array($description));
+      $query = "select max(`contentId`) from `tiki_content` where `description` = ?";
+      $id = $this->getOne($query,array($description));
+      return $id;
+    }
+  }
 }
+
 global $dbTiki;
 $dcslib = new DCSLib($dbTiki);
 

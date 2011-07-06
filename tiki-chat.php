@@ -8,28 +8,28 @@
 
 // Initialization
 $section = 'chat';
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/chat/chatlib.php');
+include_once('lib/chat/chatlib.php');
 
-if ($feature_chat != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_chat");
+if($feature_chat != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_chat");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_chat != 'y') {
-	$smarty->assign('msg', tra("Permission denied to use this feature"));
+if($tiki_p_chat != 'y') {
+  $smarty->assign('msg', tra("Permission denied to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $channels = $chatlib->list_active_channels(0, -1, 'name_desc', '');
 $smarty->assign('channels', $channels["data"]);
 
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 
 // Display the template
 $smarty->assign('mid', 'tiki-chat.tpl');

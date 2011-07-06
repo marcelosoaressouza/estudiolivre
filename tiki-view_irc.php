@@ -16,16 +16,16 @@
 # \TODO max lines = 20/50/100/all
 # \TODO refresh = 10/30/60/never
 
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($tiki_p_admin != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-require_once ('lib/irc/irclib.php');
+require_once('lib/irc/irclib.php');
 
 $r_log = !empty($_REQUEST['log']) ? $_REQUEST['log'] : false;
 $r_channel = !empty($_REQUEST['channel']) ? $_REQUEST['channel'] : false;
@@ -33,167 +33,167 @@ $r_date = !empty($_REQUEST['date']) ? $_REQUEST['date'] : false;
 $r_showall = !empty($_REQUEST['showall']) ? $_REQUEST['showall'] : false;
 $r_filter = !empty($_REQUEST['filter']) ? $_REQUEST['filter'] : false;
 
-if ($r_log) {
-	if (preg_match('/^([^\/]+)\/([^\/]+)\/(.*)/', $r_log, $m)) {
-		$r_log = $m[1];
+if($r_log) {
+  if(preg_match('/^([^\/]+)\/([^\/]+)\/(.*)/', $r_log, $m)) {
+    $r_log = $m[1];
 
-		if (!$r_date) {
-			$r_date = $m[2];
-		}
+    if(!$r_date) {
+      $r_date = $m[2];
+    }
 
-		if (!$r_channel) {
-			$r_channel = $m[3];
-		}
-	}
+    if(!$r_channel) {
+      $r_channel = $m[3];
+    }
+  }
 }
 
 $dfiles = array();
 $d = opendir(IRC_LOG_DIR);
 
-while ($file = readdir($d)) {
-	if ($file == '.' || $file == '..') {
-		continue;
-	}
+while($file = readdir($d)) {
+  if($file == '.' || $file == '..') {
+    continue;
+  }
 
-	$fullname = IRC_LOG_DIR . '/' . $file;
+  $fullname = IRC_LOG_DIR . '/' . $file;
 
-	if (is_dir($fullname)) {
-		continue;
-	}
+  if(is_dir($fullname)) {
+    continue;
+  }
 
-	if (!@filesize($fullname)) {
-		continue;
-	}
+  if(!@filesize($fullname)) {
+    continue;
+  }
 
-	$dfiles[] = $file;
+  $dfiles[] = $file;
 }
 
-closedir ($d);
+closedir($d);
 
 $last_date_by_file = array();
 
 $files = array();
 
-foreach ($dfiles as $file) {
-	$fullname = IRC_LOG_DIR . '/' . $file;
+foreach($dfiles as $file) {
+  $fullname = IRC_LOG_DIR . '/' . $file;
 
-	$channel = '';
-	$start_date = '';
-	$end_date = '';
+  $channel = '';
+  $start_date = '';
+  $end_date = '';
 
-	$a = IRC_Log_Parser::getChannelAndDate($file);
+  $a = IRC_Log_Parser::getChannelAndDate($file);
 
-	$channel = $a['channel'];
-	$start_date = $a['date'];
-	$end_date = $start_date;
+  $channel = $a['channel'];
+  $start_date = $a['date'];
+  $end_date = $start_date;
 
-	if (!$channel) {
-		$channel = 'unknown';
-	}
+  if(!$channel) {
+    $channel = 'unknown';
+  }
 
-	if (!$start_date) {
-		$dates = IRC_Log_Parser::getDates($fullname);
+  if(!$start_date) {
+    $dates = IRC_Log_Parser::getDates($fullname);
 
-		if ($dates) {
-			$start_date = $dates['start'];
+    if($dates) {
+      $start_date = $dates['start'];
 
-			$end_date = $dates['end'];
-		}
-	}
+      $end_date = $dates['end'];
+    }
+  }
 
-	$date = $start_date;
-	$a = getdate($date);
+  $date = $start_date;
+  $a = getdate($date);
 
-	while ($date <= $end_date) {
-		$key = (1000000 - date('ymd', $date)) . $channel;
+  while($date <= $end_date) {
+    $key = (1000000 - date('ymd', $date)) . $channel;
 
-		$e = array(
-			'file' => $file,
-			'date' => $date,
-			'channel' => $channel,
-		);
+    $e = array(
+           'file' => $file,
+           'date' => $date,
+           'channel' => $channel,
+         );
 
-		$files[$key] = $e;
+    $files[$key] = $e;
 
-		if (!isset($last_date_by_file[$file]) || $date > $last_date_by_file[$file]) {
-			$last_date_by_file[$file] = $date;
-		}
+    if(!isset($last_date_by_file[$file]) || $date > $last_date_by_file[$file]) {
+      $last_date_by_file[$file] = $date;
+    }
 
-		$a['mday']++;
-		$date = mktime($a['hours'], $a['minutes'], $a['seconds'], $a['mon'], $a['mday'], $a['year']);
-	}
+    $a['mday']++;
+    $date = mktime($a['hours'], $a['minutes'], $a['seconds'], $a['mon'], $a['mday'], $a['year']);
+  }
 
-	if (!$r_log) {
-		if ($r_channel && !$r_date && $r_channel == $channel) {
-			$r_log = $file;
-		}
+  if(!$r_log) {
+    if($r_channel && !$r_date && $r_channel == $channel) {
+      $r_log = $file;
+    }
 
-		if ($r_date && !$r_channel && $r_date == $date) {
-			$r_log = $file;
-		}
+    if($r_date && !$r_channel && $r_date == $date) {
+      $r_log = $file;
+    }
 
-		if ($r_channel && $r_date && $r_channel == $channel && $r_date == $date) {
-			$r_log = $file;
-		}
-	}
+    if($r_channel && $r_date && $r_channel == $channel && $r_date == $date) {
+      $r_log = $file;
+    }
+  }
 }
 
-ksort ($files);
+ksort($files);
 
 $irc_log_options = array();
 $first_file = '';
 
-foreach ($files as $key => $value) {
-	$file = $value['file'];
+foreach($files as $key => $value) {
+  $file = $value['file'];
 
-	$date = $value['date'];
-	$channel = $value['channel'];
+  $date = $value['date'];
+  $channel = $value['channel'];
 
-	$yymmdd = date('ymd', $date);
+  $yymmdd = date('ymd', $date);
 
-	$f = IRC_LOG_DIR . '/' . $file;
-	$irc_log_options[$file . '/' . $yymmdd . '/' . $channel]
-		= $tikilib->get_long_date($date, $user). ' #' . $channel . ' (' .@filesize($f). ')';
+  $f = IRC_LOG_DIR . '/' . $file;
+  $irc_log_options[$file . '/' . $yymmdd . '/' . $channel]
+    = $tikilib->get_long_date($date, $user). ' #' . $channel . ' (' .@filesize($f). ')';
 
-	if (!$first_file) {
-		$first_file = $file;
-	}
+  if(!$first_file) {
+    $first_file = $file;
+  }
 }
 
 $file = '';
 
-if ($r_log) {
-	$fullname = IRC_LOG_DIR . '/' . $r_log;
+if($r_log) {
+  $fullname = IRC_LOG_DIR . '/' . $r_log;
 
-	if (@is_file($fullname)) {
-		$file = $r_log;
-	}
+  if(@is_file($fullname)) {
+    $file = $r_log;
+  }
 }
 
-if (!$file) {
-	$file = $first_file;
+if(!$file) {
+  $file = $first_file;
 }
 
 $fullname = IRC_LOG_DIR . '/' . $file;
 
-if (!$r_date) {
-	$a = @$last_date_by_file[$file];
+if(!$r_date) {
+  $a = @$last_date_by_file[$file];
 
-	$r_date = $a['date'];
+  $r_date = $a['date'];
 }
 
-if (!$r_channel) {
-	$a = @$last_date_by_file[$file];
+if(!$r_channel) {
+  $a = @$last_date_by_file[$file];
 
-	$r_channel = $a['channel'];
+  $r_channel = $a['channel'];
 }
 
 $irc_log_selected = $file . '/' . $r_date . '/' . $r_channel;
 
 $irc_log_rows = array();
 
-if (@is_file($fullname)) {
-	$irc_log_rows = IRC_Log_Parser::parseFile($fullname, $r_date, $r_filter);
+if(@is_file($fullname)) {
+  $irc_log_rows = IRC_Log_Parser::parseFile($fullname, $r_date, $r_filter);
 }
 
 $irc_log_channel = '#' . $r_channel;

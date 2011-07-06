@@ -3,13 +3,13 @@
 // $Header: /cvsroot/tikiwiki/tiki/help.php,v 1.1.2.2 2005/03/08 17:22:37 jmjuzan Exp $
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/wiki/wikilib.php');
-include_once ('lib/structures/structlib.php');
-include_once ('lib/notifications/notificationlib.php');
+include_once('lib/wiki/wikilib.php');
+include_once('lib/structures/structlib.php');
+include_once('lib/notifications/notificationlib.php');
 
-if ($feature_wiki != 'y') {
+if($feature_wiki != 'y') {
   $smarty->assign('msg', tra("This feature is disabled").": feature_wiki");
 
   $smarty->display("error.tpl");
@@ -23,7 +23,7 @@ $plugin_files = $wikilib->list_plugins();
 $plugins = array();
 
 // Request help string from each plugin module
-foreach ($plugin_files as $pfile) {
+foreach($plugin_files as $pfile) {
   $pinfo["file"] = $pfile;
 
   $pinfo["help"] = $wikilib->get_plugin_description($pfile);

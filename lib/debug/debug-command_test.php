@@ -9,12 +9,12 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
-require_once ('lib/debug/debugger-ext.php');
+require_once('lib/debug/debugger-ext.php');
 
 /**
  * \brief Just a test
@@ -33,22 +33,22 @@ require_once ('lib/debug/debugger-ext.php');
  *
  */
 class DebuggerCommand_Test extends DebuggerCommand {
-	/// \b Must have function to announce command name in debugger console
-	function name() {
-		return "test";
-	}
+  /// \b Must have function to announce command name in debugger console
+  function name() {
+    return "test";
+  }
 
-	/// Execute command with given set of arguments. Must return string of result.
-	function execute($params) {
-		// NOTE: Don't forget to set result type! By default it is NO_RESULT.
-		$this->set_result_type(TEXT_RESULT);
+  /// Execute command with given set of arguments. Must return string of result.
+  function execute($params) {
+    // NOTE: Don't forget to set result type! By default it is NO_RESULT.
+    $this->set_result_type(TEXT_RESULT);
 
-		return 'done';
-	}
+    return 'done';
+  }
 }
 
 function dbg_command_factory_test() {
-	return new DebuggerCommand_Test();
+  return new DebuggerCommand_Test();
 }
 
 ?>

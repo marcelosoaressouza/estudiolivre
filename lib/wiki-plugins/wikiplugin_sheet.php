@@ -1,5 +1,5 @@
 <?php
-/* Tiki-Wiki plugin example 
+/* Tiki-Wiki plugin example
  *
  * This is an example plugin to let you know how to create
  * a plugin. Plugins are called using the syntax
@@ -15,38 +15,38 @@
  * wiki page.
  */
 function wikiplugin_sheet_help() {
-	return tra("TikiSheet").":<br />~np~{SHEET(id=>)}".tra("Sheet Heading")."{SHEET}~/np~";
+  return tra("TikiSheet").":<br />~np~{SHEET(id=>)}".tra("Sheet Heading")."{SHEET}~/np~";
 }
 function wikiplugin_sheet($data, $params) {
-	global $dbTiki, $tikilib, $tiki_p_edit_sheet, $tiki_p_admin_sheet, $tiki_p_admin;
-	extract ($params,EXTR_SKIP);
-	$tikilib = &new TikiLib( $dbTiki );
+  global $dbTiki, $tikilib, $tiki_p_edit_sheet, $tiki_p_admin_sheet, $tiki_p_admin;
+  extract($params,EXTR_SKIP);
+  $tikilib = &new TikiLib($dbTiki);
 
-	if (!isset($id)) {
-		return ("<b>missing id parameter for plugin</b><br />");
-	}
+  if(!isset($id)) {
+    return ("<b>missing id parameter for plugin</b><br />");
+  }
 
-	if( !class_exists( 'TikiSheet' ) )
-		require "lib/sheet/grid.php";
+  if(!class_exists('TikiSheet'))
+    require "lib/sheet/grid.php";
 
-	// Build required objects
-	$sheet = &new TikiSheet;
-	$db = &new TikiSheetDatabaseHandler( $id );
-	$out = &new TikiSheetOutputHandler( $data );
+  // Build required objects
+  $sheet = &new TikiSheet;
+  $db = &new TikiSheetDatabaseHandler($id);
+  $out = &new TikiSheetOutputHandler($data);
 
-	// Fetch sheet from database
-	$sheet->import( $db );
-	
-	// Grab sheet output
-	ob_start();
-	$sheet->export( $out );
-	$ret = ob_get_contents();
-	ob_end_clean();
+  // Fetch sheet from database
+  $sheet->import($db);
 
-	if( $tiki_p_edit_sheet == 'y' || $tiki_p_admin_sheet == 'y' || $tiki_p_admin )
-		$ret .= "<a href='tiki-view_sheets.php?sheetId=$id&readdate=" . time() . "&mode=edit' class='linkbut'>" . tra("Edit Sheet") . "</a>";
-	
-	return $ret;
+  // Grab sheet output
+  ob_start();
+  $sheet->export($out);
+  $ret = ob_get_contents();
+  ob_end_clean();
+
+  if($tiki_p_edit_sheet == 'y' || $tiki_p_admin_sheet == 'y' || $tiki_p_admin)
+    $ret .= "<a href='tiki-view_sheets.php?sheetId=$id&readdate=" . time() . "&mode=edit' class='linkbut'>" . tra("Edit Sheet") . "</a>";
+
+  return $ret;
 }
 
 ?>

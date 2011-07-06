@@ -7,69 +7,75 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-require_once ('lib/tikilib.php'); # httpScheme()
-include_once ('lib/polls/polllib.php');
+require_once('lib/tikilib.php');
+# httpScheme()
+include_once('lib/polls/polllib.php');
 
-if (!isset($polllib)) {
-	$polllib = new PollLib($dbTiki);
+if(!isset($polllib)) {
+  $polllib = new PollLib($dbTiki);
 }
 
-if ($feature_polls != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_polls");
+if($feature_polls != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_polls");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin_polls != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin_polls != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["pollId"])) {
-	$smarty->assign('msg', tra("No poll indicated"));
+if(!isset($_REQUEST["pollId"])) {
+  $smarty->assign('msg', tra("No poll indicated"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $smarty->assign('pollId', $_REQUEST["pollId"]);
 $menu_info = $polllib->get_poll($_REQUEST["pollId"]);
 $smarty->assign('menu_info', $menu_info);
 
-if (!isset($_REQUEST["optionId"])) {
-	$_REQUEST["optionId"] = 0;
+if(!isset($_REQUEST["optionId"])) {
+  $_REQUEST["optionId"] = 0;
 }
 
-if (isset($_REQUEST["remove"])) {
-	$area = 'delpolloption';
-	if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
-		key_check($area);
-		$polllib->remove_poll_option($_REQUEST["remove"]);
-	} else {
-		key_get($area);
-	}
+if(isset($_REQUEST["remove"])) {
+  $area = 'delpolloption';
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+    key_check($area);
+    $polllib->remove_poll_option($_REQUEST["remove"]);
+  }
+
+  else {
+    key_get($area);
+  }
 }
 
-if (isset($_REQUEST["save"])) {
-	check_ticket('admin-poll-options');
-	$polllib->replace_poll_option($_REQUEST["pollId"], $_REQUEST["optionId"], $_REQUEST["title"], $_REQUEST['position']);
-	$_REQUEST["optionId"] = 0;
+if(isset($_REQUEST["save"])) {
+  check_ticket('admin-poll-options');
+  $polllib->replace_poll_option($_REQUEST["pollId"], $_REQUEST["optionId"], $_REQUEST["title"], $_REQUEST['position']);
+  $_REQUEST["optionId"] = 0;
 }
 
 $smarty->assign('optionId', $_REQUEST["optionId"]);
 
-if ($_REQUEST["optionId"]) {
-	$info = $polllib->get_poll_option($_REQUEST["optionId"]);
-} else {
-	$info = array();
-	$info["title"] = '';
-	$info["votes"] = 0;
-	$info["position"] = '';
+if($_REQUEST["optionId"]) {
+  $info = $polllib->get_poll_option($_REQUEST["optionId"]);
+}
+
+else {
+  $info = array();
+  $info["title"] = '';
+  $info["votes"] = 0;
+  $info["position"] = '';
 }
 
 $smarty->assign('title', $info["title"]);

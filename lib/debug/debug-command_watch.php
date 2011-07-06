@@ -9,182 +9,195 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
-require_once ('lib/debug/debugger-ext.php');
+
+require_once('lib/debug/debugger-ext.php');
 
 /**
  * \brief Command 'watch'
  */
 class DbgCmd_Watch extends DebuggerCommand {
-	/// Array of variables to watch in format: [md5hash] = var_name
-	var $watches;
+  /// Array of variables to watch in format: [md5hash] = var_name
+  var $watches;
 
-	/// Restore watches list at construction time
-	function DbgCmd_Watch() {
-		global $user;
+  /// Restore watches list at construction time
+  function DbgCmd_Watch() {
+    global $user;
 
-		$this->watches = array();
+    $this->watches = array();
 
-		if (is_readable($this->watchfile())) {
-			$s = implode("",@file($this->watchfile()));
+    if(is_readable($this->watchfile())) {
+      $s = implode("",@file($this->watchfile()));
 
-			$a = unserialize($s);
+      $a = unserialize($s);
 
-			if (count($a) > 0)
-				$this->watches = (array)$a;
-		}
-	}
+      if(count($a) > 0)
+        $this->watches = (array)$a;
+    }
+  }
 
-	function name() {
-		return "watch";
-	}
+  function name() {
+    return "watch";
+  }
 
-	function description() {
-		return 'Manage variables watch list';
-	}
+  function description() {
+    return 'Manage variables watch list';
+  }
 
-	function syntax() {
-		return 'watch (add|rm) $php_var1 smarty_var2 $php_var3 smarty_var4 ...';
-	}
+  function syntax() {
+    return 'watch (add|rm) $php_var1 smarty_var2 $php_var3 smarty_var4 ...';
+  }
 
-	function example() {
-		return 'watch add $user tiki_p_view' . "\n" . 'watch rm user $_REQUEST $_SERVER["HTTP_USER_AGENT"]';
-	}
+  function example() {
+    return 'watch add $user tiki_p_view' . "\n" . 'watch rm user $_REQUEST $_SERVER["HTTP_USER_AGENT"]';
+  }
 
-	function execute($params) {
-		global $user;
+  function execute($params) {
+    global $user;
 
-		// NOTE: Don't forget to set result type! By default it is NO_RESULT.
-		$this->set_result_type(TEXT_RESULT);
-		$result = '';
-		$args = explode(" ", trim($params));
+    // NOTE: Don't forget to set result type! By default it is NO_RESULT.
+    $this->set_result_type(TEXT_RESULT);
+    $result = '';
+    $args = explode(" ", trim($params));
 
-		//
-		if (count($args) > 0) {
-			$cmd = trim($args[0]);
+    //
+    if(count($args) > 0) {
+      $cmd = trim($args[0]);
 
-			if ($cmd == 'add' || $cmd == 'rm') {
-				$a_r = ($cmd == 'add');
+      if($cmd == 'add' || $cmd == 'rm') {
+        $a_r = ($cmd == 'add');
 
-				array_shift ($args);
+        array_shift($args);
 
-				if (count($args) > 0) {
-					foreach ($args as $a)
-						if (strlen(trim(str_replace("$", "", $a))) > 0) // Is there smth 'cept '$'??
-							{
-							$a = trim($a);
+        if(count($args) > 0) {
+          foreach($args as $a)
 
-							if ($a_r) {
-								$result .= "add '" . $a . "' to watch list\n";
+          if(strlen(trim(str_replace("$", "", $a))) > 0)  // Is there smth 'cept '$'??
+          {
+            $a = trim($a);
 
-								$this->watches[md5($a)] = $a;
-							} else {
-								$result .= "remove '" . $a . "' from watch list\n";
+            if($a_r) {
+              $result .= "add '" . $a . "' to watch list\n";
 
-								if (isset($this->watches[md5($a)]))
-									unset ($this->watches[md5($a)]);
-								else
-									$result .= "ERROR: No such variable in watch list\n";
-							}
-						}
+              $this->watches[md5($a)] = $a;
+            }
 
-					// Store changes in watchlist to disk
-					$this->store_watches();
-				} else
-					$result .= "ERROR: No variable to add given";
-			}
-			elseif (strlen(trim($args[0])) > 0)
-				$result .= "ERROR: Unknown subcommand '$arg[0]'";
-			else
-				$result .= "ERROR: No subcommand for 'watch' given";
-		} else
-			$result .= "ERROR: No subcommand for 'watch' given";
+            else {
+              $result .= "remove '" . $a . "' from watch list\n";
 
-		return $result;
-	}
+              if(isset($this->watches[md5($a)]))
+                unset($this->watches[md5($a)]);
 
-	/// Return the name of watches file
-	function watchfile() {
-		global $user;
+              else
+                $result .= "ERROR: No such variable in watch list\n";
+            }
+          }
 
-		return "temp/dbg-watch." . $user;
-	}
+          // Store changes in watchlist to disk
+          $this->store_watches();
+        }
 
-	/// Save watchlist for given user. If current list is empty --> remove file.
-	function store_watches() {
-		if (count($this->watches) > 0) {
-			$s = serialize($this->watches);
+        else
+          $result .= "ERROR: No variable to add given";
+      }
 
-			$fp = fopen($this->watchfile(), "w");
-			fputs($fp, $s);
-			fclose ($fp);
-		} else {
-			if (is_writable($this->watchfile()))
-				unlink ($this->watchfile());
-		}
-	}
+      elseif(strlen(trim($args[0])) > 0)
+      $result .= "ERROR: Unknown subcommand '$arg[0]'";
+      else
+        $result .= "ERROR: No subcommand for 'watch' given";
+    }
 
-	/// Function to create interface part of command: return ["button name"] = <html code>
-	function draw_interface() {
-		$result = array();
+    else
+      $result .= "ERROR: No subcommand for 'watch' given";
 
-		// Iterate through all variables
-		foreach ($this->watches as $v)
-			// NOTE: PHP variables must start with '$', else assumed smarty variable
-			$result[] = array(
-				"var" => $v,
-				"value" => ((substr($v, 0, 1) == '$') ? $this->value_of_php_var($v) : $this->value_of_smarty_var($v))
-			);
+    return $result;
+  }
 
-		//
-		global $smarty;
-		$smarty->assign_by_ref('watchlist', $result);
-		return $smarty->fetch("debug/tiki-debug_watch_tab.tpl");
-	}
+  /// Return the name of watches file
+  function watchfile() {
+    global $user;
 
-	///
-	function value_of_smarty_var($v) {
-		global $smarty;
+    return "temp/dbg-watch." . $user;
+  }
 
-		$result = '';
+  /// Save watchlist for given user. If current list is empty --> remove file.
+  function store_watches() {
+    if(count($this->watches) > 0) {
+      $s = serialize($this->watches);
 
-		if (strlen($v) != 0) {
-			$tmp = $smarty->get_template_vars();
+      $fp = fopen($this->watchfile(), "w");
+      fputs($fp, $s);
+      fclose($fp);
+    }
 
-			if (is_array($tmp) && isset($tmp[$v]))
-				$result .= print_r($tmp[$v], true). "\n";
-			else
-				$result .= 'Smarty variable "' . $v . '" not found';
-		}
+    else {
+      if(is_writable($this->watchfile()))
+        unlink($this->watchfile());
+    }
+  }
 
-		return $result;
-	}
+  /// Function to create interface part of command: return ["button name"] = <html code>
+  function draw_interface() {
+    $result = array();
 
-	///
-	function value_of_php_var($v) {
-		global $debugger;
+    // Iterate through all variables
+    foreach($this->watches as $v)
+    // NOTE: PHP variables must start with '$', else assumed smarty variable
+    $result[] = array(
+                  "var" => $v,
+                  "value" => ((substr($v, 0, 1) == '$') ? $this->value_of_php_var($v) : $this->value_of_smarty_var($v))
+                );
 
-		require_once ('lib/debug/debugger.php');
-		return $debugger->str_var_dump($v);
-	}
+    //
+    global $smarty;
+    $smarty->assign_by_ref('watchlist', $result);
+    return $smarty->fetch("debug/tiki-debug_watch_tab.tpl");
+  }
 
-	/// Function to return caption string to draw plugable tab in interface
-	function caption() {
-		return "watches";
-	}
+  ///
+  function value_of_smarty_var($v) {
+    global $smarty;
 
-	/// Need to display button if we have smth to show
-	function have_interface() {
-		return count($this->watches) > 0;
-	}
+    $result = '';
+
+    if(strlen($v) != 0) {
+      $tmp = $smarty->get_template_vars();
+
+      if(is_array($tmp) && isset($tmp[$v]))
+        $result .= print_r($tmp[$v], true). "\n";
+
+      else
+        $result .= 'Smarty variable "' . $v . '" not found';
+    }
+
+    return $result;
+  }
+
+  ///
+  function value_of_php_var($v) {
+    global $debugger;
+
+    require_once('lib/debug/debugger.php');
+    return $debugger->str_var_dump($v);
+  }
+
+  /// Function to return caption string to draw plugable tab in interface
+  function caption() {
+    return "watches";
+  }
+
+  /// Need to display button if we have smth to show
+  function have_interface() {
+    return count($this->watches) > 0;
+  }
 }
 
 /// Class factory
 function dbg_command_factory_watch() {
-	return new DbgCmd_Watch();
+  return new DbgCmd_Watch();
 }
 
 ?>

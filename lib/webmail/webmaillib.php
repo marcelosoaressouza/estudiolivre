@@ -1,263 +1,274 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class WebMailLib extends TikiLib {
-	function WebMailLib($db) {
-		parent::TikiLib($db);
-	}
+  function WebMailLib($db) {
+    parent::TikiLib($db);
+  }
 
-	// Contacts
-	function list_contacts($user, $offset, $maxRecords, $sort_mode, $find) {
-		if ($find) {
-			$findesc = '%' . $find . '%';
-			$mid = " where `user`=? and (`nickname` like ? or `firstName` like ? or `lastName` like ? or `email` like ?)";
-			$bindvars=array($user, $findesc, $findesc, $findesc, $findesc);
-		} else {
-			$mid = " where `user`=? ";
-			$bindvars=array($user);
-		}
+  // Contacts
+  function list_contacts($user, $offset, $maxRecords, $sort_mode, $find) {
+    if($find) {
+      $findesc = '%' . $find . '%';
+      $mid = " where `user`=? and (`nickname` like ? or `firstName` like ? or `lastName` like ? or `email` like ?)";
+      $bindvars=array($user, $findesc, $findesc, $findesc, $findesc);
+    }
 
-		$query = "select * from `tiki_webmail_contacts` $mid order by ".$this->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `tiki_webmail_contacts` $mid";
+    else {
+      $mid = " where `user`=? ";
+      $bindvars=array($user);
+    }
 
-		$result = $this->query($query, $bindvars, $maxRecords, $offset);
-		$cant = $this->getOne($query_cant, $bindvars);
-		$ret = array();
+    $query = "select * from `tiki_webmail_contacts` $mid order by ".$this->convert_sortmode($sort_mode);
+    $query_cant = "select count(*) from `tiki_webmail_contacts` $mid";
 
-		while ($res = $result->fetchRow()) {
-			$ret[] = $res;
-		}
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
+    $result = $this->query($query, $bindvars, $maxRecords, $offset);
+    $cant = $this->getOne($query_cant, $bindvars);
+    $ret = array();
 
-	function are_contacts($contacts, $user) {
-		$ret = array();
+    while($res = $result->fetchRow()) {
+      $ret[] = $res;
+    }
 
-		foreach ($contacts as $con) {
-			$con = trim($con);
+    $retval = array();
+    $retval["data"] = $ret;
+    $retval["cant"] = $cant;
+    return $retval;
+  }
 
-			$query = "select count(*) from `tiki_webmail_contacts` where `email`=?";
-			$cant = $this->getOne($query, array($con));
+  function are_contacts($contacts, $user) {
+    $ret = array();
 
-			if (!$cant)
-				$ret[] = $con;
-		}
-		return $ret;
-	}
+    foreach($contacts as $con) {
+      $con = trim($con);
 
-	function list_contacts_by_letter($user, $offset, $maxRecords, $sort_mode, $letter) {
-		$letter .= '%';
-		$mid = " where `user`=? and (`email` like ?)";
-		$bindvars=array($user, $letter);
+      $query = "select count(*) from `tiki_webmail_contacts` where `email`=?";
+      $cant = $this->getOne($query, array($con));
 
-		$query = "select * from `tiki_webmail_contacts` $mid order by ".$this-convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `tiki_webmail_contacts` $mid";
-			
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
-		$ret = array();
+      if(!$cant)
+        $ret[] = $con;
+    }
+    return $ret;
+  }
 
-		while ($res = $result->fetchRow()) {
-			$ret[] = $res;
-		}
+  function list_contacts_by_letter($user, $offset, $maxRecords, $sort_mode, $letter) {
+    $letter .= '%';
+    $mid = " where `user`=? and (`email` like ?)";
+    $bindvars=array($user, $letter);
 
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
+    $query = "select * from `tiki_webmail_contacts` $mid order by ".$this-convert_sortmode($sort_mode);
+    $query_cant = "select count(*) from `tiki_webmail_contacts` $mid";
 
-	function parse_nicknames($dirs) {
-		for ($i = 0; $i < count($dirs); $i++) {
-			if (!strstr($dirs[$i], '@') && !empty($dirs[$i])) {
-				print ($dirs[$i]);
+    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $cant = $this->getOne($query_cant,$bindvars);
+    $ret = array();
 
-				$query = "select `email` from `tiki_webmail_contacts` where `nickname`=?";
-				$result = $this->query($query, array($dirs[$i]));
+    while($res = $result->fetchRow()) {
+      $ret[] = $res;
+    }
 
-				if ($result->numRows()) {
-					$res = $result->fetchRow();
-					$dirs[$i] = $res["email"];
-				}
-			}
-		}
-		return $dirs;
-	}
+    $retval = array();
+    $retval["data"] = $ret;
+    $retval["cant"] = $cant;
+    return $retval;
+  }
 
-	function replace_contact($contactId, $firstName, $lastName, $email, $nickname, $user) {
-		$firstName = trim($firstName);
-		$lastName = trim($lastName);
-		$email = trim($email);
-		$nickname = trim($nickname);
+  function parse_nicknames($dirs) {
+    for($i = 0; $i < count($dirs); $i++) {
+      if(!strstr($dirs[$i], '@') && !empty($dirs[$i])) {
+        print($dirs[$i]);
 
-		// Check the name
-		if ($contactId) {
-			$query = "update `tiki_webmail_contacts` set `firstName`=?, `lastName`=?, `email`=?, `nickname`=? where `contactId`=? and `user`=?";
-			$bindvars = array($firstName,$lastName,$email,$nickname,(int)$contactId,$user);
-			$result = $this->query($query, $bindvars);
-		} else {
-		  $query = "delete from `tiki_webmail_contacts` where `contactId`=? and `user`=?"; 
-		  $result = $this->query($query,array((int)$contactId, $user),-1,-1,false); //the false allows ignoring errors 
+        $query = "select `email` from `tiki_webmail_contacts` where `nickname`=?";
+        $result = $this->query($query, array($dirs[$i]));
 
-      $query = "insert into `tiki_webmail_contacts`(`firstName`,`lastName`,`email`,`nickname`,`user`) values(?,?,?,?,?)"; 
-      $result = $this->query($query,array($firstName,$lastName,$email,$nickname,$user)); 
-		}
-		return true;
-	}
+        if($result->numRows()) {
+          $res = $result->fetchRow();
+          $dirs[$i] = $res["email"];
+        }
+      }
+    }
 
-	function remove_contact($contactId, $user) {
-		$query = "delete from `tiki_webmail_contacts` where `contactId`=? and `user`=?";
-		$result = $this->query($query, array((int)$contactId,$user));
-		return true;
-	}
+    return $dirs;
+  }
 
-	function get_contact($contactId, $user) {
-		$query = "select * from `tiki_webmail_contacts` where `contactId`=? and `user`=?";
-		$result = $this->query($query, array((int)$contactId,$user));
+  function replace_contact($contactId, $firstName, $lastName, $email, $nickname, $user) {
+    $firstName = trim($firstName);
+    $lastName = trim($lastName);
+    $email = trim($email);
+    $nickname = trim($nickname);
 
-		if (!$result->numRows())
-			return false;
+    // Check the name
+    if($contactId) {
+      $query = "update `tiki_webmail_contacts` set `firstName`=?, `lastName`=?, `email`=?, `nickname`=? where `contactId`=? and `user`=?";
+      $bindvars = array($firstName,$lastName,$email,$nickname,(int)$contactId,$user);
+      $result = $this->query($query, $bindvars);
+    }
 
-		$res = $result->fetchRow();
-		return $res;
-	}
+    else {
+      $query = "delete from `tiki_webmail_contacts` where `contactId`=? and `user`=?";
+      $result = $this->query($query,array((int)$contactId, $user),-1,-1,false); //the false allows ignoring errors
 
-	function remove_webmail_message($current, $user, $msgid) {
-		$query = "delete from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and `user`=?";
-		$result = $this->query($query, array((int)$current,(int)$msgid,$user));
-	}
+      $query = "insert into `tiki_webmail_contacts`(`firstName`,`lastName`,`email`,`nickname`,`user`) values(?,?,?,?,?)";
+      $result = $this->query($query,array($firstName,$lastName,$email,$nickname,$user));
+    }
 
-	function replace_webmail_message($current,$user,$msgid) {
-		$query = "select count(*) from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and `user`=?";
+    return true;
+  }
 
-		if ($this->getOne($query,array((int)$current,(int)$msgid,$user)) == 0) {
-			$query = "insert into `tiki_webmail_messages`(`accountId`,`mailId`,`user`,`isRead`,`isFlagged`,`isReplied`) values(?,?,?,'n','n','n')";
-			$result = $this->query($query,array((int)$current,(int)$msgid,$user));
-		}
-	}
+  function remove_contact($contactId, $user) {
+    $query = "delete from `tiki_webmail_contacts` where `contactId`=? and `user`=?";
+    $result = $this->query($query, array((int)$contactId,$user));
+    return true;
+  }
 
-	function set_mail_flag($current, $user, $msgid, $flag, $value) {
-		// flag can be: isRead,isFlagged,isReplied, value: y/n
-		$query = "delete from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and `user`=?";
-		$result = $this->query($query,array((int)$current,(int)$msgid,$user));
+  function get_contact($contactId, $user) {
+    $query = "select * from `tiki_webmail_contacts` where `contactId`=? and `user`=?";
+    $result = $this->query($query, array((int)$contactId,$user));
 
-		$query = "insert into `tiki_webmail_messages`(`$flag`,`accountId`,`mailId`,`user`) values (?,?,?,?)";
-		$result = $this->query($query,array($value,(int)$current,(int)$msgid,$user));
-		return true;
-	}
+    if(!$result->numRows())
+      return false;
 
-	function get_mail_flags($current, $user, $msgid) {
-		$query = "select `isRead`,`isFlagged`,`isReplied` from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and user=?";
-		$result = $this->query($query, array((int)$current,(int)$msgid,$user));
+    $res = $result->fetchRow();
+    return $res;
+  }
 
-		if (!$result->numRows()) {
-			return array(
-				'n',
-				'n',
-				'n'
-			);
-		}
+  function remove_webmail_message($current, $user, $msgid) {
+    $query = "delete from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and `user`=?";
+    $result = $this->query($query, array((int)$current,(int)$msgid,$user));
+  }
 
-		$res = $result->fetchRow();
-		return array(
-			$res["isRead"],
-			$res["isFlagged"],
-			$res["isReplied"]
-		);
-	}
+  function replace_webmail_message($current,$user,$msgid) {
+    $query = "select count(*) from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and `user`=?";
 
-	function current_webmail_account($user, $accountId) {
-		$query = "update `tiki_user_mail_accounts` set `current`='n' where `user`=?";
-		$result = $this->query($query, array($user));
+    if($this->getOne($query,array((int)$current,(int)$msgid,$user)) == 0) {
+      $query = "insert into `tiki_webmail_messages`(`accountId`,`mailId`,`user`,`isRead`,`isFlagged`,`isReplied`) values(?,?,?,'n','n','n')";
+      $result = $this->query($query,array((int)$current,(int)$msgid,$user));
+    }
+  }
 
-		$query = "update `tiki_user_mail_accounts` set `current`='y' where `user`=? and `accountId`=?";
-		$result = $this->query($query, array($user,(int)$accountId ));
-	}
+  function set_mail_flag($current, $user, $msgid, $flag, $value) {
+    // flag can be: isRead,isFlagged,isReplied, value: y/n
+    $query = "delete from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and `user`=?";
+    $result = $this->query($query,array((int)$current,(int)$msgid,$user));
 
-	function list_webmail_accounts($user, $offset, $maxRecords, $sort_mode, $find) {
-		if ($find) {
-			$findesc = '%' . $find . '%';
+    $query = "insert into `tiki_webmail_messages`(`$flag`,`accountId`,`mailId`,`user`) values (?,?,?,?)";
+    $result = $this->query($query,array($value,(int)$current,(int)$msgid,$user));
+    return true;
+  }
 
-			$mid = " where `user`=? and (`account` like ?)";
-			$bindvars = array($user, $findesc);
-		} else {
-			$mid = " where `user`=?";
-			$bindvars = array($user);
-		}
+  function get_mail_flags($current, $user, $msgid) {
+    $query = "select `isRead`,`isFlagged`,`isReplied` from `tiki_webmail_messages` where `accountId`=? and `mailId`=? and user=?";
+    $result = $this->query($query, array((int)$current,(int)$msgid,$user));
 
-		$query = "select * from `tiki_user_mail_accounts` $mid order by ".$this->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `tiki_user_mail_accounts` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
-		$ret = array();
+    if(!$result->numRows()) {
+      return array(
+               'n',
+               'n',
+               'n'
+             );
+    }
 
-		while ($res = $result->fetchRow()) {
-			$ret[] = $res;
-		}
+    $res = $result->fetchRow();
+    return array(
+             $res["isRead"],
+             $res["isFlagged"],
+             $res["isReplied"]
+           );
+  }
 
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
+  function current_webmail_account($user, $accountId) {
+    $query = "update `tiki_user_mail_accounts` set `current`='n' where `user`=?";
+    $result = $this->query($query, array($user));
 
-	function replace_webmail_account($accountId, $user, $account, $pop, $port, $username, $pass, $msgs, $smtp, $useAuth, $smtpPort)
-		{
-		// Check the name
-		if ($accountId) {
-			$query = "update `tiki_user_mail_accounts` set `user`=?, `account`=?, `pop`=?, `port`=?, `smtpPort`=?, `username`=?, `pass`=?, `smtp`=?, `useAuth`=?, `msgs`=? where `accountId`=? and `user`=?";
-			$bindvars = array($user,$account,$pop,(int)$port,(int)$smtpPort,$username,$pass,$smtp,$useAuth,$msgs,(int)$accountId, $user);
-			$result = $this->query($query,$bindvars);
-		} else {
-			$query = "delete from `tiki_user_mail_accounts` where `accountId`=? and `user`=?";
-			$bindvars = array((int)$accountId, $user);
-			$result = $this->query($query, $bindvars, -1, -1, false);
+    $query = "update `tiki_user_mail_accounts` set `current`='y' where `user`=? and `accountId`=?";
+    $result = $this->query($query, array($user,(int)$accountId));
+  }
 
-			$query = "insert into `tiki_user_mail_accounts`(`user`,`account`,`pop`,`port`,`smtpPort`,`username`,`pass`,`smtp`,`useAuth`,`msgs`) values(?,?,?,?,?,?,?,?,?,?)";
-			$bindvars = array($user,$account,$pop,$port,$smtpPort,$username,$pass,$smtp,$useAuth,$msgs);
-			$result = $this->query($query, $bindvars);
-		}
+  function list_webmail_accounts($user, $offset, $maxRecords, $sort_mode, $find) {
+    if($find) {
+      $findesc = '%' . $find . '%';
 
-		return true;
-	}
+      $mid = " where `user`=? and (`account` like ?)";
+      $bindvars = array($user, $findesc);
+    }
 
-	function get_current_webmail_account($user) {
-		$query = "select * from `tiki_user_mail_accounts` where `current`='y' and `user`=?";
-		$result = $this->query($query, array($user));
+    else {
+      $mid = " where `user`=?";
+      $bindvars = array($user);
+    }
 
-		if (!$result->numRows())
-			return false;
+    $query = "select * from `tiki_user_mail_accounts` $mid order by ".$this->convert_sortmode($sort_mode);
+    $query_cant = "select count(*) from `tiki_user_mail_accounts` $mid";
+    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $cant = $this->getOne($query_cant,$bindvars);
+    $ret = array();
 
-		$res = $result->fetchRow();
-		return $res;
-	}
+    while($res = $result->fetchRow()) {
+      $ret[] = $res;
+    }
 
-	function remove_webmail_account($user, $accountId) {
-		$query = "delete from `tiki_user_mail_accounts` where `accountId`=? and `user`=?";
-		$result = $this->query($query, array((int)$accountId,$user));
-		return true;
-	}
+    $retval = array();
+    $retval["data"] = $ret;
+    $retval["cant"] = $cant;
+    return $retval;
+  }
 
-	function get_webmail_account($user, $accountId) {
-		$query = "select * from `tiki_user_mail_accounts` where `accountId`=? and `user`=?";
-		$result = $this->query($query, array((int)$accountId,$user));
+  function replace_webmail_account($accountId, $user, $account, $pop, $port, $username, $pass, $msgs, $smtp, $useAuth, $smtpPort)
+  {
+    // Check the name
+    if($accountId) {
+      $query = "update `tiki_user_mail_accounts` set `user`=?, `account`=?, `pop`=?, `port`=?, `smtpPort`=?, `username`=?, `pass`=?, `smtp`=?, `useAuth`=?, `msgs`=? where `accountId`=? and `user`=?";
+      $bindvars = array($user,$account,$pop,(int)$port,(int)$smtpPort,$username,$pass,$smtp,$useAuth,$msgs,(int)$accountId, $user);
+      $result = $this->query($query,$bindvars);
+    }
 
-		if (!$result->numRows())
-			return false;
+    else {
+      $query = "delete from `tiki_user_mail_accounts` where `accountId`=? and `user`=?";
+      $bindvars = array((int)$accountId, $user);
+      $result = $this->query($query, $bindvars, -1, -1, false);
 
-		$res = $result->fetchRow();
-		return $res;
-	}
+      $query = "insert into `tiki_user_mail_accounts`(`user`,`account`,`pop`,`port`,`smtpPort`,`username`,`pass`,`smtp`,`useAuth`,`msgs`) values(?,?,?,?,?,?,?,?,?,?)";
+      $bindvars = array($user,$account,$pop,$port,$smtpPort,$username,$pass,$smtp,$useAuth,$msgs);
+      $result = $this->query($query, $bindvars);
+    }
+
+    return true;
+  }
+
+  function get_current_webmail_account($user) {
+    $query = "select * from `tiki_user_mail_accounts` where `current`='y' and `user`=?";
+    $result = $this->query($query, array($user));
+
+    if(!$result->numRows())
+      return false;
+
+    $res = $result->fetchRow();
+    return $res;
+  }
+
+  function remove_webmail_account($user, $accountId) {
+    $query = "delete from `tiki_user_mail_accounts` where `accountId`=? and `user`=?";
+    $result = $this->query($query, array((int)$accountId,$user));
+    return true;
+  }
+
+  function get_webmail_account($user, $accountId) {
+    $query = "select * from `tiki_user_mail_accounts` where `accountId`=? and `user`=?";
+    $result = $this->query($query, array((int)$accountId,$user));
+
+    if(!$result->numRows())
+      return false;
+
+    $res = $result->fetchRow();
+    return $res;
+  }
 } # class WebMailLib
 
-$webmaillib = new WebMailLib($dbTiki);
+    $webmaillib = new WebMailLib($dbTiki);
 
 ?>

@@ -7,10 +7,10 @@
 require_once("../../xajax.inc.php");
 
 function test() {
-        $objResponse = new xajaxResponse();
-        $objResponse->addAlert("hallo");
-        $objResponse->addAssign('testButton','label','Success!');
-        return $objResponse->getXML();
+  $objResponse = new xajaxResponse();
+  $objResponse->addAlert("hallo");
+  $objResponse->addAssign('testButton','label','Success!');
+  return $objResponse->getXML();
 }
 
 $xajax = new xajax();

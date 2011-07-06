@@ -8,36 +8,36 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 // This file was created by Víctor Codocedo on 01/31/2005
 
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/Galaxia/ProcessManager.php');
-include_once ('lib/Galaxia/API.php');
+include_once('lib/Galaxia/ProcessManager.php');
+include_once('lib/Galaxia/API.php');
 
-if ($feature_workflow != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_workflow");
+if($feature_workflow != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_workflow");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin_workflow != 'y') {
-	$smarty->assign('msg', tra("Permission denied"));
+if($tiki_p_admin_workflow != 'y') {
+  $smarty->assign('msg', tra("Permission denied"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST['iid'])) {
-	$smarty->assign('msg', tra("No instance indicated"));
+if(!isset($_REQUEST['iid'])) {
+  $smarty->assign('msg', tra("No instance indicated"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST['aid'])) {
-	$smarty->assign('msg', tra("No activity indicated"));
+if(!isset($_REQUEST['aid'])) {
+  $smarty->assign('msg', tra("No activity indicated"));
 
-	$smarty->display("error.tpl");
+  $smarty->display("error.tpl");
 }
 
 $smarty->assign('iid', $_REQUEST['iid']);
@@ -45,8 +45,8 @@ $smarty->assign('aid', $_REQUEST['aid']);
 
 // Get workitems and list the workitems with an option to edit workitems for
 // this instance
-if (isset($_REQUEST['save'])) {
-	$instanceManager->set_instance_user($_REQUEST['iid'],$_REQUEST['aid'],$_REQUEST['owner']);
+if(isset($_REQUEST['save'])) {
+  $instanceManager->set_instance_user($_REQUEST['iid'],$_REQUEST['aid'],$_REQUEST['owner']);
 }
 
 // Get the instance and set instance information
@@ -61,11 +61,11 @@ $smarty->assign_by_ref('proc_info', $proc_info);
 $users = $userlib->get_users(0, -1, 'login_asc', '');
 $smarty->assign_by_ref('users', $users['data']);
 
-if (isset($_REQUEST['unsetprop'])) {
-	check_ticket('g-admin-instance');
-	unset ($props[$_REQUEST['unsetprop']]);
+if(isset($_REQUEST['unsetprop'])) {
+  check_ticket('g-admin-instance');
+  unset($props[$_REQUEST['unsetprop']]);
 
-	$instanceManager->set_instance_properties($_REQUEST['iid'], $props);
+  $instanceManager->set_instance_properties($_REQUEST['iid'], $props);
 }
 
 
@@ -75,22 +75,23 @@ $smarty->assign_by_ref('acts', $acts);
 $instance->getInstance($_REQUEST['iid']);
 
 // Process comments
-if (isset($_REQUEST['__removecomment'])) {
-	check_ticket('g-admin-instance');
-	$__comment = $instance->get_instance_comment($_REQUEST['__removecomment']);
+if(isset($_REQUEST['__removecomment'])) {
+  check_ticket('g-admin-instance');
+  $__comment = $instance->get_instance_comment($_REQUEST['__removecomment']);
 
-	if ($__comment['user'] == $user or $tiki_p_admin_workflow == 'y') {
-		$instance->remove_instance_comment($_REQUEST['__removecomment']);
-	}
+  if($__comment['user'] == $user or $tiki_p_admin_workflow == 'y') {
+    $instance->remove_instance_comment($_REQUEST['__removecomment']);
+  }
 }
+
 $smarty->assign_by_ref('__comments', $__comments);
 
-if (!isset($_REQUEST['__cid']))
-	$_REQUEST['__cid'] = 0;
+if(!isset($_REQUEST['__cid']))
+  $_REQUEST['__cid'] = 0;
 
-if (isset($_REQUEST['__post'])) {
-	check_ticket('g-admin-instance');
-	$instance->replace_instance_comment($_REQUEST['__cid'], $_REQUEST['aid'], '', $user, $_REQUEST['__title'], $_REQUEST['__comment']);
+if(isset($_REQUEST['__post'])) {
+  check_ticket('g-admin-instance');
+  $instance->replace_instance_comment($_REQUEST['__cid'], $_REQUEST['aid'], '', $user, $_REQUEST['__title'], $_REQUEST['__comment']);
 }
 
 $__comments = $instance->get_instance_comments($_REQUEST['aid']);

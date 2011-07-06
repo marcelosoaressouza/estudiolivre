@@ -29,116 +29,124 @@ require_once "DB/common.php";
 
 class DB_dbase extends DB_common
 {
-    // {{{ properties
+  // {{{ properties
 
-    var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
-    var $transaction_opcount = 0;
-    var $res_row = array();
-    var $result = 0;
+  var $connection;
+  var $phptype, $dbsyntax;
+  var $prepare_tokens = array();
+  var $prepare_types = array();
+  var $transaction_opcount = 0;
+  var $res_row = array();
+  var $result = 0;
 
-    // }}}
-    // {{{ constructor
+  // }}}
+  // {{{ constructor
 
-    /**
-     * DB_mysql constructor.
-     *
-     * @access public
-     */
+  /**
+   * DB_mysql constructor.
+   *
+   * @access public
+   */
 
-    function DB_dbase()
-    {
-        $this->DB_common();
-        $this->phptype = 'dbase';
-        $this->dbsyntax = 'dbase';
-        $this->features = array(
-            'prepare'       => false,
-            'pconnect'      => false,
-            'transactions'  => false,
-            'limit'         => false
-        );
-        $this->errorcode_map = array();
+  function DB_dbase()
+  {
+    $this->DB_common();
+    $this->phptype = 'dbase';
+    $this->dbsyntax = 'dbase';
+    $this->features = array(
+                        'prepare'       => false,
+                        'pconnect'      => false,
+                        'transactions'  => false,
+                        'limit'         => false
+                      );
+    $this->errorcode_map = array();
+  }
+
+  // }}}
+  // {{{ connect()
+
+  function connect($dsninfo, $persistent = false)
+  {
+    if(!DB::assertExtension('dbase')) {
+      return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
     }
 
-    // }}}
-    // {{{ connect()
+    $this->dsn = $dsninfo;
+    ob_start();
+    $conn  = dbase_open($dsninfo['database'], 0);
+    $error = ob_get_contents();
+    ob_end_clean();
 
-    function connect($dsninfo, $persistent = false)
-    {
-        if (!DB::assertExtension('dbase')) {
-            return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
-        }
-        $this->dsn = $dsninfo;
-        ob_start();
-        $conn  = dbase_open($dsninfo['database'], 0);
-        $error = ob_get_contents();
-        ob_end_clean();
-        if (!$conn) {
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED, null,
-                                     null, null, strip_tags($error));
-        }
-        $this->connection = $conn;
-        return DB_OK;
+    if(!$conn) {
+      return $this->raiseError(DB_ERROR_CONNECT_FAILED, null,
+                               null, null, strip_tags($error));
     }
 
-    // }}}
-    // {{{ disconnect()
+    $this->connection = $conn;
+    return DB_OK;
+  }
 
-    function disconnect()
-    {
-        $ret = dbase_close($this->connection);
-        $this->connection = null;
-        return $ret;
+  // }}}
+  // {{{ disconnect()
+
+  function disconnect()
+  {
+    $ret = dbase_close($this->connection);
+    $this->connection = null;
+    return $ret;
+  }
+
+  // }}}
+  // {{{ &query()
+
+  function &query($query = null)
+  {
+    // emulate result resources
+    $this->res_row[$this->result] = 0;
+    return new DB_result($this, $this->result++);
+  }
+
+  // }}}
+  // {{{ fetchInto()
+
+  function fetchInto($res, &$row, $fetchmode, $rownum = null)
+  {
+    if($rownum === null) {
+      $rownum = $this->res_row[$res]++;
     }
 
-    // }}}
-    // {{{ &query()
-
-    function &query($query = null)
-    {
-        // emulate result resources
-        $this->res_row[$this->result] = 0;
-        return new DB_result($this, $this->result++);
+    if($fetchmode & DB_FETCHMODE_ASSOC) {
+      $row = @dbase_get_record_with_names($this->connection, $rownum);
     }
 
-    // }}}
-    // {{{ fetchInto()
-
-    function fetchInto($res, &$row, $fetchmode, $rownum = null)
-    {
-        if ($rownum === null) {
-            $rownum = $this->res_row[$res]++;
-        }
-        if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $row = @dbase_get_record_with_names($this->connection, $rownum);
-        } else {
-            $row = @dbase_get_record($this->connection, $rownum);
-        }
-        if (!$row) {
-            return null;
-        }
-        return DB_OK;
+    else {
+      $row = @dbase_get_record($this->connection, $rownum);
     }
 
-    // }}}
-    // {{{ numCols()
-
-    function numCols($foo)
-    {
-        return dbase_numfields($this->connection);
+    if(!$row) {
+      return null;
     }
 
-    // }}}
-    // {{{ numRows()
+    return DB_OK;
+  }
 
-    function numRows($foo)
-    {
-        return dbase_numrecords($this->connection);
-    }
+  // }}}
+  // {{{ numCols()
 
-    // }}}
+  function numCols($foo)
+  {
+    return dbase_numfields($this->connection);
+  }
+
+  // }}}
+  // {{{ numRows()
+
+  function numRows($foo)
+  {
+    return dbase_numrecords($this->connection);
+  }
+
+  // }}}
 
 }
 ?>

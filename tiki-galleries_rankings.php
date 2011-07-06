@@ -7,61 +7,65 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/rankings/ranklib.php');
+include_once('lib/rankings/ranklib.php');
 
-if ($feature_galleries != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_galleries");
+if($feature_galleries != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_galleries");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($feature_gal_rankings != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_gal_rankings");
+if($feature_gal_rankings != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_gal_rankings");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_view_image_gallery != 'y') {
-	$smarty->assign('msg', tra("Permission denied you cannot view this section"));
+if($tiki_p_view_image_gallery != 'y') {
+  $smarty->assign('msg', tra("Permission denied you cannot view this section"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $allrankings = array(
-	array(
-	'name' => tra('Top galleries'),
-	'value' => 'gal_ranking_top_galleries'
-),
-	array(
-	'name' => tra('Top images'),
-	'value' => 'gal_ranking_top_images'
-),
-	array(
-	'name' => tra('Last images'),
-	'value' => 'gal_ranking_last_images'
-),
-);
+                 array(
+                   'name' => tra('Top galleries'),
+                   'value' => 'gal_ranking_top_galleries'
+                 ),
+                 array(
+                   'name' => tra('Top images'),
+                   'value' => 'gal_ranking_top_images'
+                 ),
+                 array(
+                   'name' => tra('Last images'),
+                   'value' => 'gal_ranking_last_images'
+                 ),
+               );
 
 $smarty->assign('allrankings', $allrankings);
 
-if (!isset($_REQUEST["which"])) {
-	$which = 'gal_ranking_top_galleries';
-} else {
-	$which = $_REQUEST["which"];
+if(!isset($_REQUEST["which"])) {
+  $which = 'gal_ranking_top_galleries';
+}
+
+else {
+  $which = $_REQUEST["which"];
 }
 
 $smarty->assign('which', $which);
 
 // Get the page from the request var or default it to HomePage
-if (!isset($_REQUEST["limit"])) {
-	$limit = 10;
-} else {
-	$limit = $_REQUEST["limit"];
+if(!isset($_REQUEST["limit"])) {
+  $limit = 10;
+}
+
+else {
+  $limit = $_REQUEST["limit"];
 }
 
 $smarty->assign_by_ref('limit', $limit);
@@ -82,7 +86,7 @@ $rankings[] = $rank;
 $smarty->assign_by_ref('rankings', $rankings);
 $smarty->assign('rpage', 'tiki-galleries_rankings.php');
 $section = 'galleries';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 ask_ticket('galleries-rankings');
 
 // Display the template

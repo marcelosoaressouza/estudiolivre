@@ -1,5 +1,6 @@
 <pre>
-<?php print basename(__FILE__); ?> - output the DB SQL dump corresponding to the Menu Structure
+<?php print basename(__FILE__);
+?> - output the DB SQL dump corresponding to the Menu Structure
 
 <?php
 require_once 'lib/layersmenu-common.inc.php';
@@ -12,7 +13,7 @@ $mid->parseStructureForMenu('hormenu1');
 //$mid->setDBConnParms('pgsql://postgres:postgres@localhost/phplayersmenu');
 //$mid->setDBConnParms('sqlite:///DUMPS/phplayersmenu');
 //$mid->scanTableForMenu('hormenu1');
-//print $mid->getSQLDump('hormenu1', 'sqlite');	// PHP 5 only
+//print $mid->getSQLDump('hormenu1', 'sqlite'); // PHP 5 only
 print $mid->getSQLDump('hormenu1');
 ?>
 

@@ -7,30 +7,30 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/htmlpages/htmlpageslib.php');
-include_once ('lib/stats/statslib.php');
+include_once('lib/htmlpages/htmlpageslib.php');
+include_once('lib/stats/statslib.php');
 
-if ($feature_html_pages != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_html_pages");
+if($feature_html_pages != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_html_pages");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_view_html_pages != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_view_html_pages != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["pageName"])) {
-	$smarty->assign('msg', tra("No page indicated"));
+if(!isset($_REQUEST["pageName"])) {
+  $smarty->assign('msg', tra("No page indicated"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $page_data = $htmlpageslib->get_html_page($_REQUEST["pageName"]);
@@ -41,11 +41,12 @@ $parsed = $htmlpageslib->parse_html_page($_REQUEST["pageName"], $page_data["cont
 $smarty->assign_by_ref('parsed', $parsed);
 
 $section = 'html_pages';
-include_once ('tiki-section_options.php');
-if ($feature_theme_control == 'y') {
-	$cat_type = 'html page';
-	$cat_objid = $_REQUEST['pageName'];
-	include ('tiki-tc.php');
+include_once('tiki-section_options.php');
+
+if($feature_theme_control == 'y') {
+  $cat_type = 'html page';
+  $cat_objid = $_REQUEST['pageName'];
+  include('tiki-tc.php');
 }
 
 ask_ticket('html-page');

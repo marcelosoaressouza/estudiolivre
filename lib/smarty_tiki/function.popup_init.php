@@ -26,7 +26,7 @@
 
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -34,27 +34,30 @@ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
 
 function smarty_function_popup_init($params, &$smarty)
 {
-    global $popup_init_cache;
-    if (!isset($popup_init_cache)) {
-        $popup_init_cache = array();
-    }
+  global $popup_init_cache;
 
-    if (isset($popup_init_cache[$params['src']]))
-        return;
+  if(!isset($popup_init_cache)) {
+    $popup_init_cache = array();
+  }
 
-    $zindex = 1000;
+  if(isset($popup_init_cache[$params['src']]))
+    return;
 
-    if (!empty($params['zindex'])) {
-        $zindex = $params['zindex'];
-    }
+  $zindex = 1000;
 
-    if (!empty($params['src'])) {
-        $popup_init_cache[$params['src']] = 1;
-        return '<div id="overDiv" style="position: absolute; visibility: hidden; z-index:'.$zindex.';"></div>' . "\n"
-         . '<script type="text/javascript" src="'.$params['src'].'"></script>' . "\n";
-    } else {
-        $smarty->trigger_error("popup_init: missing src parameter");
-    }
+  if(!empty($params['zindex'])) {
+    $zindex = $params['zindex'];
+  }
+
+  if(!empty($params['src'])) {
+    $popup_init_cache[$params['src']] = 1;
+    return '<div id="overDiv" style="position: absolute; visibility: hidden; z-index:'.$zindex.';"></div>' . "\n"
+           . '<script type="text/javascript" src="'.$params['src'].'"></script>' . "\n";
+  }
+
+  else {
+    $smarty->trigger_error("popup_init: missing src parameter");
+  }
 
 }
 

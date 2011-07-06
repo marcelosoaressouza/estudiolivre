@@ -8,36 +8,36 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
-require_once ('lib/sheet/grid.php');
+require_once('tiki-setup.php');
+require_once('lib/sheet/grid.php');
 
 // Now check permissions to access this page
 /*
 if($tiki_p_view != 'y') {
   $smarty->assign('msg',tra("Permission denied you cannot view pages like this page"));
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 */
-if ($feature_sheet != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_sheets");
+if($feature_sheet != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_sheets");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_view_sheet != 'y' && $tiki_p_admin != 'y' && $tiki_p_admin_sheet != 'y') {
-	$smarty->assign('msg', tra("Access Denied").": feature_sheets");
+if($tiki_p_view_sheet != 'y' && $tiki_p_admin != 'y' && $tiki_p_admin_sheet != 'y') {
+  $smarty->assign('msg', tra("Access Denied").": feature_sheets");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ( !isset($_REQUEST['sheetId']) ) {
-	$smarty->assign('msg', tra("A SheetId is required."));
+if(!isset($_REQUEST['sheetId'])) {
+  $smarty->assign('msg', tra("A SheetId is required."));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $smarty->assign('sheetId', $_REQUEST["sheetId"]);
@@ -48,95 +48,99 @@ $smarty->assign('chart_enabled', (function_exists('imagepng') || function_exists
 // Init smarty variables to blank values
 //$smarty->assign('theme','');
 
-$info = $sheetlib->get_sheet_info( $_REQUEST["sheetId"] );
+$info = $sheetlib->get_sheet_info($_REQUEST["sheetId"]);
 
 $smarty->assign('title', $info['title']);
 $smarty->assign('description', $info['description']);
 
-$smarty->assign('page_mode', 'view' );
+$smarty->assign('page_mode', 'view');
 
 // Process the insertion or modification of a gallery here
 
 $grid = &new TikiSheet;
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' )
+if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
-	if ($tiki_p_edit_sheet != 'y' && $tiki_p_admin != 'y' && $tiki_p_admin_sheet != 'y') {
-		$smarty->assign('msg', tra("Access Denied").": feature_sheets");
+  if($tiki_p_edit_sheet != 'y' && $tiki_p_admin != 'y' && $tiki_p_admin_sheet != 'y') {
+    $smarty->assign('msg', tra("Access Denied").": feature_sheets");
 
-		$smarty->display("error.tpl");
-		die;
-	}
+    $smarty->display("error.tpl");
+    die;
+  }
 
-	// Load data from the form
-	$handler = &new TikiSheetFormHandler;
-	if( !$grid->import( $handler ) )
-		$grid = &new TikiSheet;
+  // Load data from the form
+  $handler = &new TikiSheetFormHandler;
 
-	// Save the changes
-	$handler = &new TikiSheetDatabaseHandler( $_REQUEST["sheetId"] );
-	$grid->export( $handler );
+  if(!$grid->import($handler))
+    $grid = &new TikiSheet;
 
-	// Load the layout settings from the database
-	$grid = &new TikiSheet;
-	$grid->import( $handler );
+  // Save the changes
+  $handler = &new TikiSheetDatabaseHandler($_REQUEST["sheetId"]);
+  $grid->export($handler);
 
-	$handler = &new TikiSheetOutputHandler;
+  // Load the layout settings from the database
+  $grid = &new TikiSheet;
+  $grid->import($handler);
 
-	ob_start();
-	$grid->export( $handler );
-	$smarty->assign( 'grid_content', ob_get_contents() );
-	ob_end_clean();
+  $handler = &new TikiSheetOutputHandler;
+
+  ob_start();
+  $grid->export($handler);
+  $smarty->assign('grid_content', ob_get_contents());
+  ob_end_clean();
 }
+
 else
 {
-	$handler = &new TikiSheetDatabaseHandler( $_REQUEST["sheetId"] );
+  $handler = &new TikiSheetDatabaseHandler($_REQUEST["sheetId"]);
 
-	$date = time();
-	if( !empty( $_REQUEST[ 'readdate' ] ) )
-	{
-		$date = $_REQUEST[ 'readdate' ];
+  $date = time();
 
-		if( !is_numeric( $date ) )
-			$date = strtotime( $date );
+  if(!empty($_REQUEST[ 'readdate' ]))
+  {
+    $date = $_REQUEST[ 'readdate' ];
 
-		if( $date == -1 )
-			$date = time();
-	}
+    if(!is_numeric($date))
+      $date = strtotime($date);
 
-	$smarty->assign( 'read_date', $date );
-	$handler->setReadDate( $date );
-	
-	$grid->import( $handler );
+    if($date == -1)
+      $date = time();
+  }
 
-	if( isset( $_REQUEST['mode'] ) && $_REQUEST['mode'] == 'edit' )
-	{
-		$handler = &new TikiSheetFormHandler;
+  $smarty->assign('read_date', $date);
+  $handler->setReadDate($date);
 
-		ob_start();
-		$grid->export( $handler );
-		$smarty->assign( 'init_grid', ob_get_contents() );
-		ob_end_clean();
+  $grid->import($handler);
 
-		$smarty->assign('page_mode', 'edit' );
-	}
-	else
-	{
-		$handler = &new TikiSheetOutputHandler;
+  if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
+  {
+    $handler = &new TikiSheetFormHandler;
 
-		ob_start();
-		$grid->export( $handler );
-		$smarty->assign( 'grid_content', ob_get_contents() );
-		ob_end_clean();
-	}
+    ob_start();
+    $grid->export($handler);
+    $smarty->assign('init_grid', ob_get_contents());
+    ob_end_clean();
+
+    $smarty->assign('page_mode', 'edit');
+  }
+
+  else
+  {
+    $handler = &new TikiSheetOutputHandler;
+
+    ob_start();
+    $grid->export($handler);
+    $smarty->assign('grid_content', ob_get_contents());
+    ob_end_clean();
+  }
 }
 
 $cat_type = 'sheet';
 $cat_objid = $_REQUEST["sheetId"];
-include_once ("categorize_list.php");
+include_once("categorize_list.php");
 
 $section = 'sheet';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 ask_ticket('sheet');
 
 // Display the template

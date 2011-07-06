@@ -3,8 +3,8 @@
 //
 // Copyright (c)2002-2003
 // Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-// All Rights Reserved. See copyright.txt for details and a complete list of 
-// authors. Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. 
+// All Rights Reserved. See copyright.txt for details and a complete list of
+// authors. Licensed under the GNU LESSER GENERAL PUBLIC LICENSE.
 // See license.txt for details.
 
 //! TikiWiki Calendar Feature Rewrite for v1.9.8.3+ and v1.10
@@ -12,13 +12,13 @@
  ** TikiWiki Calendar Feature Rewrite                           12/20/2007 **
  ****************************************************************************
  ** ReWritten by Mike Kerr (kerrnel22)
- ** 
+ **
  ** This script replaces the admin script for the old calendar system.
  ** Consolidated in this rewrite are:
  **
  **    - System calendars                 - Personal Calendars
  **    - Group Calendars                  - Public Calendars
- **   
+ **
  ** New functionality make it compatible with iCal for import/export, however
  ** the initial rewrite may not have that functionality immediately.
  **
@@ -37,19 +37,21 @@
  ****************************************************************************/
 
 // Initialization
-require_once ('tiki-setup.php');
-include_once ('lib/newcalendarlib.php');
+require_once('tiki-setup.php');
+include_once('lib/newcalendarlib.php');
 
 // 110: REMOVE THE FOLLOWING LINE OF CODE IN 1.10!
-if (isset($feature_forums)) { $prefs['feature_forums'] == $feature_forums; }
+if(isset($feature_forums)) {
+  $prefs['feature_forums'] == $feature_forums;
+}
 
 // Do a permission check, but do not do a feature check since the system
 // utilizes the calendars even if users don't, so by default it is enabled.
 // Will have to do feature checks if trying to access non-system calendars.
-if ($tiki_p_admin != 'y' && $tiki_p_admin_calendar != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to admin the calendars."));
-	$smarty->display("error.tpl");
-	die;
+if($tiki_p_admin != 'y' && $tiki_p_admin_calendar != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to admin the calendars."));
+  $smarty->display("error.tpl");
+  die;
 }
 
 

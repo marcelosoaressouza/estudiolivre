@@ -7,21 +7,23 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 $section = 'chat';
-require_once ("tiki-setup.php");
+require_once("tiki-setup.php");
 
-if ($feature_chat != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_chat");
+if($feature_chat != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_chat");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-include_once ('lib/chat/chatlib.php');
+include_once('lib/chat/chatlib.php');
 
-if (isset($_REQUEST['channelId'])) {
-    $chatusers = $chatlib->get_chat_users($_REQUEST["channelId"]);
-} else {
-    $chatusers = array();
+if(isset($_REQUEST['channelId'])) {
+  $chatusers = $chatlib->get_chat_users($_REQUEST["channelId"]);
+}
+
+else {
+  $chatusers = array();
 }
 
 $smarty->assign('chatusers',$chatusers);

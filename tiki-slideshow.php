@@ -7,56 +7,60 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($feature_wiki != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_wiki");
+if($feature_wiki != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_wiki");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 //print($GLOBALS["HTTP_REFERER"]);
 
 // Create the HomePage if it doesn't exist
-if (!$tikilib->page_exists($wikiHomePage)) {
-	$tikilib->create_page($wikiHomePage, 0, '', date("U"), 'Tiki initialization');
+if(!$tikilib->page_exists($wikiHomePage)) {
+  $tikilib->create_page($wikiHomePage, 0, '', date("U"), 'Tiki initialization');
 }
 
-if (!isset($_SESSION["thedate"])) {
-	$thedate = date("U");
-} else {
-	$thedate = $_SESSION["thedate"];
+if(!isset($_SESSION["thedate"])) {
+  $thedate = date("U");
+}
+
+else {
+  $thedate = $_SESSION["thedate"];
 }
 
 // Get the page from the request var or default it to HomePage
-if (!isset($_REQUEST["page"])) {
-	$_REQUEST["page"] = $wikiHomePage;
+if(!isset($_REQUEST["page"])) {
+  $_REQUEST["page"] = $wikiHomePage;
 
-	$page = $wikiHomePage;
-	$smarty->assign('page', $wikiHomePage);
-} else {
-	$page = $_REQUEST["page"];
-
-	$smarty->assign_by_ref('page', $_REQUEST["page"]);
+  $page = $wikiHomePage;
+  $smarty->assign('page', $wikiHomePage);
 }
 
-require_once ('tiki-pagesetup.php');
+else {
+  $page = $_REQUEST["page"];
+
+  $smarty->assign_by_ref('page', $_REQUEST["page"]);
+}
+
+require_once('tiki-pagesetup.php');
 
 // If the page doesn't exist then display an error
-if (!$tikilib->page_exists($page)) {
-	$smarty->assign('msg', tra("Page cannot be found"));
+if(!$tikilib->page_exists($page)) {
+  $smarty->assign('msg', tra("Page cannot be found"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 // Now check permissions to access this page
-if ($tiki_p_view != 'y') {
-	$smarty->assign('msg', tra("Permission denied you cannot view this page"));
+if($tiki_p_view != 'y') {
+  $smarty->assign('msg', tra("Permission denied you cannot view this page"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 // BreadCrumbNavigation here
@@ -64,35 +68,39 @@ if ($tiki_p_view != 'y') {
 // Remember to reverse the array when posting the array
 $anonpref = $tikilib->get_preference('userbreadCrumb', 4);
 
-if ($user) {
-	$userbreadCrumb = $tikilib->get_user_preference($user, 'userbreadCrumb', $anonpref);
-} else {
-	$userbreadCrumb = $anonpref;
+if($user) {
+  $userbreadCrumb = $tikilib->get_user_preference($user, 'userbreadCrumb', $anonpref);
 }
 
-if (!isset($_SESSION["breadCrumb"])) {
-	$_SESSION["breadCrumb"] = array();
+else {
+  $userbreadCrumb = $anonpref;
 }
 
-if (!in_array($page, $_SESSION["breadCrumb"])) {
-	if (count($_SESSION["breadCrumb"]) > $userbreadCrumb) {
-		array_shift ($_SESSION["breadCrumb"]);
-	}
+if(!isset($_SESSION["breadCrumb"])) {
+  $_SESSION["breadCrumb"] = array();
+}
 
-	array_push($_SESSION["breadCrumb"], $page);
-} else {
-	// If the page is in the array move to the last position
-	$pos = array_search($page, $_SESSION["breadCrumb"]);
+if(!in_array($page, $_SESSION["breadCrumb"])) {
+  if(count($_SESSION["breadCrumb"]) > $userbreadCrumb) {
+    array_shift($_SESSION["breadCrumb"]);
+  }
 
-	unset ($_SESSION["breadCrumb"][$pos]);
-	array_push($_SESSION["breadCrumb"], $page);
+  array_push($_SESSION["breadCrumb"], $page);
+}
+
+else {
+  // If the page is in the array move to the last position
+  $pos = array_search($page, $_SESSION["breadCrumb"]);
+
+  unset($_SESSION["breadCrumb"][$pos]);
+  array_push($_SESSION["breadCrumb"], $page);
 }
 
 //print_r($_SESSION["breadCrumb"]);
 
 // Now increment page hits since we are visiting this page
-if ($count_admin_pvs == 'y' || $user != 'admin') {
-	$tikilib->add_hit($page);
+if($count_admin_pvs == 'y' || $user != 'admin') {
+  $tikilib->add_hit($page);
 }
 
 // Get page data
@@ -100,62 +108,70 @@ $info = $tikilib->get_page_info($page);
 $smarty->assign('page_info', $info);
 
 // Verify lock status
-if ($info["flag"] == 'L') {
-	$smarty->assign('lock', true);
-} else {
-	$smarty->assign('lock', false);
+if($info["flag"] == 'L') {
+  $smarty->assign('lock', true);
+}
+
+else {
+  $smarty->assign('lock', false);
 }
 
 // If not locked and last version is user version then can undo
 $smarty->assign('canundo', 'n');
 
-if ($info["flag"] != 'L' && (($tiki_p_edit == 'y' && $info["user"] == $user) || ($tiki_p_remove == 'y'))) {
-	$smarty->assign('canundo', 'y');
+if($info["flag"] != 'L' && (($tiki_p_edit == 'y' && $info["user"] == $user) || ($tiki_p_remove == 'y'))) {
+  $smarty->assign('canundo', 'y');
 }
 
-if ($tiki_p_admin_wiki == 'y') {
-	$smarty->assign('canundo', 'y');
+if($tiki_p_admin_wiki == 'y') {
+  $smarty->assign('canundo', 'y');
 }
 
 //Now process the pages
 preg_match_all("/-=([^=]+)=-/", $info["data"], $reqs);
 $slides = split("-=[^=]+=-", $info["data"]);
 
-if (count($slides) < 2) {
-	$slides = explode("...page...", $info["data"]);
+if(count($slides) < 2) {
+  $slides = explode("...page...", $info["data"]);
 
-	array_unshift($slides, '');
+  array_unshift($slides, '');
 }
 
-if (!isset($_REQUEST["slide"]) or $_REQUEST["slide"] < 0) {
-	$_REQUEST["slide"] = 0;
+if(!isset($_REQUEST["slide"]) or $_REQUEST["slide"] < 0) {
+  $_REQUEST["slide"] = 0;
 }
 
-if (!isset($slides[$_REQUEST["slide"] + 1])) {
-	$_REQUEST["slide"] = count($slides) - 2;
+if(!isset($slides[$_REQUEST["slide"] + 1])) {
+  $_REQUEST["slide"] = count($slides) - 2;
 }
 
 $smarty->assign('prev_slide', $_REQUEST["slide"] - 1);
 $smarty->assign('next_slide', $_REQUEST["slide"] + 1);
 
-if (isset($reqs[1][$_REQUEST["slide"]])) {
-	$slide_title = $reqs[1][$_REQUEST["slide"]];
-} else {
-	$slide_title = '';
+if(isset($reqs[1][$_REQUEST["slide"]])) {
+  $slide_title = $reqs[1][$_REQUEST["slide"]];
+}
+
+else {
+  $slide_title = '';
 }
 
 $slide_data = $tikilib->parse_data($slides[$_REQUEST["slide"] + 1]);
 
-if (isset($reqs[1][$_REQUEST["slide"] - 1])) {
-	$slide_prev_title = $reqs[1][$_REQUEST["slide"] - 1];
-} else {
-	$slide_prev_title = '';
+if(isset($reqs[1][$_REQUEST["slide"] - 1])) {
+  $slide_prev_title = $reqs[1][$_REQUEST["slide"] - 1];
 }
 
-if (isset($reqs[1][$_REQUEST["slide"] + 1])) {
-	$slide_next_title = $reqs[1][$_REQUEST["slide"] + 1];
-} else {
-	$slide_next_title = '';
+else {
+  $slide_prev_title = '';
+}
+
+if(isset($reqs[1][$_REQUEST["slide"] + 1])) {
+  $slide_next_title = $reqs[1][$_REQUEST["slide"] + 1];
+}
+
+else {
+  $slide_next_title = '';
 }
 
 $smarty->assign('slide_prev_title', $slide_prev_title);
@@ -172,14 +188,14 @@ $smarty->assign('current_slide', $current_slide);
 //$smarty->assign_by_ref('lastModif',date("l d of F, Y  [H:i:s]",$info["lastModif"]));
 $smarty->assign_by_ref('lastModif', $info["lastModif"]);
 
-if (empty($info["user"])) {
-	$info["user"] = 'anonymous';
+if(empty($info["user"])) {
+  $info["user"] = 'anonymous';
 }
 
 $smarty->assign_by_ref('lastUser', $info["user"]);
 
 $section = 'wiki';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 
 $smarty->assign('wiki_extras', 'y');
 

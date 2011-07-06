@@ -51,53 +51,55 @@ require_once 'XML/RPC.php';
 class Auth_Container_Pear extends Auth_Container
 {
 
-    // {{{ Auth_Container_Pear() [constructor]
+  // {{{ Auth_Container_Pear() [constructor]
 
-    /**
-     * Constructor
-     *
-     * Currently does nothing
-     * 
-     * @return void
-     */
-    function Auth_Container_Pear()
-    {
-    
+  /**
+   * Constructor
+   *
+   * Currently does nothing
+   *
+   * @return void
+   */
+  function Auth_Container_Pear()
+  {
+
+  }
+
+  // }}}
+  // {{{ fetchData()
+
+  /**
+   * Get user information from pear.php.net
+   *
+   * This function uses the given username and password to authenticate
+   * against the pear.php.net website
+   *
+   * @param string    Username
+   * @param string    Password
+   * @return mixed    Error object or boolean
+   */
+  function fetchData($username, $password)
+  {
+    $rpc = new XML_RPC_Client('/xmlrpc.php', 'pear.php.net');
+    $rpc_message = new XML_RPC_Message("user.info", array(new XML_RPC_Value($username, "string")));
+
+    // Error Checking howto ???
+    $result = $rpc->send($rpc_message);
+    $value = $result->value();
+    $userinfo = xml_rpc_decode($value);
+
+    if($userinfo['password'] == md5($password)) {
+      $this->activeUser = $userinfo['handle'];
+      foreach($userinfo as $uk=>$uv) {
+        $this->_auth_obj->setAuthData($uk, $uv);
+      }
+      return true;
     }
 
-    // }}}
-    // {{{ fetchData()
-    
-    /**
-     * Get user information from pear.php.net
-     *
-     * This function uses the given username and password to authenticate
-     * against the pear.php.net website
-     *
-     * @param string    Username
-     * @param string    Password
-     * @return mixed    Error object or boolean
-     */
-    function fetchData($username, $password)
-    {
-        $rpc = new XML_RPC_Client('/xmlrpc.php', 'pear.php.net');
-        $rpc_message = new XML_RPC_Message("user.info", array(new XML_RPC_Value($username, "string")) );
-        
-        // Error Checking howto ???
-        $result = $rpc->send($rpc_message);
-        $value = $result->value();
-        $userinfo = xml_rpc_decode($value);
-        if ($userinfo['password'] == md5($password)) {
-            $this->activeUser = $userinfo['handle'];
-            foreach ($userinfo as $uk=>$uv) {
-                $this->_auth_obj->setAuthData($uk, $uv);
-            }
-            return true;
-        }
-        return false;
-    }
+    return false;
+  }
 
-    // }}}
-    
+  // }}}
+
 }
 ?>

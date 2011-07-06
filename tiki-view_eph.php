@@ -7,20 +7,20 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
 
-if ($feature_eph != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_eph");
+if($feature_eph != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_eph");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-include_once ('lib/ephemerides/ephlib.php');
+include_once('lib/ephemerides/ephlib.php');
 
-if (!isset($_REQUEST["ephId"])) {
-	die;
+if(!isset($_REQUEST["ephId"])) {
+  die;
 }
 
 $info = $ephlib->get_eph($_REQUEST["ephId"]);
@@ -28,8 +28,8 @@ $type = &$info["filetype"];
 $file = &$info["filename"];
 $content = &$info["data"];
 
-header ("Content-type: $type");
-header ("Content-Disposition: inline; filename=$file");
+header("Content-type: $type");
+header("Content-Disposition: inline; filename=$file");
 echo "$content";
 
 ?>

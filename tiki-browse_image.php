@@ -10,125 +10,146 @@
 require_once('tiki-setup.php');
 
 include_once("lib/imagegals/imagegallib.php");
-include_once ('lib/stats/statslib.php');
+include_once('lib/stats/statslib.php');
 
-if ($feature_categories == 'y') {
-	global $categlib;
-	if (!is_object($categlib)) {
-		include_once('lib/categories/categlib.php');
-	}
+if($feature_categories == 'y') {
+  global $categlib;
+
+  if(!is_object($categlib)) {
+    include_once('lib/categories/categlib.php');
+  }
 }
 
-if ($feature_galleries != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_galleries");
-	$smarty->display("error.tpl");
-	die;
+if($feature_galleries != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_galleries");
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST['imageId'])) {
-	$smarty->assign('msg', tra("No image indicated"));
-	$smarty->display("error.tpl");
-	die;
+if(!isset($_REQUEST['imageId'])) {
+  $smarty->assign('msg', tra("No image indicated"));
+  $smarty->display("error.tpl");
+  die;
 }
+
 $imageId = $_REQUEST['imageId'];
 
 // always get gallery from image so no user can fake the galleryid
 // and get an image that is truly in another (forbidden) gallery
 $galleryId = $imagegallib->get_gallery_from_image($imageId);
 
-if (!$galleryId) {
-	$smarty->assign('msg', tra("picture not found"));
-	$smarty->display("error.tpl");
-	die;
+if(!$galleryId) {
+  $smarty->assign('msg', tra("picture not found"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 $smarty->assign('individual', 'n');
 
-if ($userlib->object_has_one_permission($galleryId, 'image gallery')) {
-	$smarty->assign('individual', 'y');
+if($userlib->object_has_one_permission($galleryId, 'image gallery')) {
+  $smarty->assign('individual', 'y');
 
-	if ($tiki_p_admin != 'y') {
-		// Now get all the permissions that are set for this type of permissions 'image gallery'
-		$perms = $userlib->get_permissions(0, -1, 'permName_desc', '', 'image galleries');
+  if($tiki_p_admin != 'y') {
+    // Now get all the permissions that are set for this type of permissions 'image gallery'
+    $perms = $userlib->get_permissions(0, -1, 'permName_desc', '', 'image galleries');
 
-		foreach ($perms["data"] as $perm) {
-			$permName = $perm["permName"];
+    foreach($perms["data"] as $perm) {
+      $permName = $perm["permName"];
 
-			if ($userlib->object_has_permission($user, $galleryId, 'image gallery', $permName)) {
-				$$permName = 'y';
+      if($userlib->object_has_permission($user, $galleryId, 'image gallery', $permName)) {
+        $$permName = 'y';
 
-				$smarty->assign("$permName", 'y');
-			} else {
-				$$permName = 'n';
+        $smarty->assign("$permName", 'y');
+      }
 
-				$smarty->assign("$permName", 'n');
-			}
-		}
-	}
-} elseif ($tiki_p_admin != 'y' && $feature_categories == 'y') {
-	$perms_array = $categlib->get_object_categories_perms($user, 'image gallery', $galleryId);
-   	if ($perms_array) {
-   		$is_categorized = TRUE;
-    	foreach ($perms_array as $perm => $value) {
-    		$$perm = $value;
-    	}
-   	} else {
-   		$is_categorized = FALSE;
-   	}
-	if ($is_categorized && isset($tiki_p_view_categories) && $tiki_p_view_categories != 'y') {
-		if (!isset($user)){
-			$smarty->assign('msg',$smarty->fetch('modules/mod-login_box.tpl'));
-			$smarty->assign('errortitle',tra("Please login"));
-		} else {
-			$smarty->assign('msg',tra("Permission denied you cannot view this page"));
-    	}
-	    $smarty->display("error.tpl");
-		die;
-	}
+      else {
+        $$permName = 'n';
+
+        $smarty->assign("$permName", 'n');
+      }
+    }
+  }
 }
 
-if ($tiki_p_admin_galleries == 'y') {
-	$tiki_p_view_image_gallery = 'y';
-	$smarty->assign("tiki_p_view_image_gallery", 'y');
-	$tiki_p_upload_images = 'y';
-	$smarty->assign("tiki_p_upload_images", 'y');
-	$tiki_p_create_galleries = 'y';
-	$smarty->assign("tiki_p_create_galleries", 'y');
+elseif($tiki_p_admin != 'y' && $feature_categories == 'y') {
+  $perms_array = $categlib->get_object_categories_perms($user, 'image gallery', $galleryId);
+
+  if($perms_array) {
+    $is_categorized = TRUE;
+    foreach($perms_array as $perm => $value) {
+      $$perm = $value;
+    }
+  }
+
+  else {
+    $is_categorized = FALSE;
+  }
+
+  if($is_categorized && isset($tiki_p_view_categories) && $tiki_p_view_categories != 'y') {
+    if(!isset($user)) {
+      $smarty->assign('msg',$smarty->fetch('modules/mod-login_box.tpl'));
+      $smarty->assign('errortitle',tra("Please login"));
+    }
+
+    else {
+      $smarty->assign('msg',tra("Permission denied you cannot view this page"));
+    }
+
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
-if ($tiki_p_view_image_gallery != 'y') {
-	$smarty->assign('msg', tra("Permission denied you can not view this section"));
-	$smarty->display("error.tpl");
-	die;
+if($tiki_p_admin_galleries == 'y') {
+  $tiki_p_view_image_gallery = 'y';
+  $smarty->assign("tiki_p_view_image_gallery", 'y');
+  $tiki_p_upload_images = 'y';
+  $smarty->assign("tiki_p_upload_images", 'y');
+  $tiki_p_create_galleries = 'y';
+  $smarty->assign("tiki_p_create_galleries", 'y');
+}
+
+if($tiki_p_view_image_gallery != 'y') {
+  $smarty->assign('msg', tra("Permission denied you can not view this section"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 $gal_info = $imagegallib->get_gallery($galleryId);
 $scalesize = 0;
-if (isset($_REQUEST["scalesize"])) {
-    if (is_numeric($_REQUEST["scalesize"]) && $_REQUEST["scalesize"] > 0) {
-    	$scalesize = $_REQUEST["scalesize"];
-    } else {
-    }
-} elseif ($gal_info['defaultscale'] !=='o') {
-	$scalesize = $gal_info['defaultscale'];
+
+if(isset($_REQUEST["scalesize"])) {
+  if(is_numeric($_REQUEST["scalesize"]) && $_REQUEST["scalesize"] > 0) {
+    $scalesize = $_REQUEST["scalesize"];
+  }
+
+  else {
+  }
+} elseif($gal_info['defaultscale'] !=='o') {
+
+  $scalesize = $gal_info['defaultscale'];
 }
 $arrscales = $imagegallib->get_gallery_scale_info($galleryId);
+
 // adjust scale size to existing ones
-if ($scalesize) {
-    $testscale = 0;
-    for ($iscale = 0; $iscale < count($arrscales); $iscale++) {
-        if ($scalesize <= $arrscales[$iscale]['scale']) {
-            $testscale = $arrscales[$iscale]['scale'];
-            break;
-        }
+if($scalesize) {
+  $testscale = 0;
+
+  for($iscale = 0; $iscale < count($arrscales); $iscale++) {
+    if($scalesize <= $arrscales[$iscale]['scale']) {
+      $testscale = $arrscales[$iscale]['scale'];
+      break;
     }
-    $scalesize = $testscale;
+  }
+
+  $scalesize = $testscale;
 }
+
 $smarty->assign_by_ref('scalesize', $scalesize);
 $smarty->assign('same_scale', "&amp;scalesize={$scalesize}");
 
-if (!isset($_REQUEST["sort_mode"])) {
-	$_REQUEST["sort_mode"] = $gal_info['sortorder'].'_'.$gal_info['sortdirection'];
+if(!isset($_REQUEST["sort_mode"])) {
+  $_REQUEST["sort_mode"] = $gal_info['sortorder'].'_'.$gal_info['sortdirection'];
 }
 
 $sort_mode = $_REQUEST["sort_mode"];
@@ -136,16 +157,20 @@ $sort_mode = $_REQUEST["sort_mode"];
 $listImgId = $imagegallib->get_gallery_image($galleryId, 'all', $sort_mode);
 $offset = array_search($imageId, $listImgId);
 
-if ($offset) {
-	$smarty->assign('previmg', $listImgId[$offset-1]);
-} else {
-	$smarty->assign('previmg', '');
+if($offset) {
+  $smarty->assign('previmg', $listImgId[$offset-1]);
 }
 
-if ( isset( $listImgId[$offset+1] ) ) {
-	$smarty->assign('nextimg', $listImgId[$offset+1]);
-} else {
-	$smarty->assign('nextimg', '');
+else {
+  $smarty->assign('previmg', '');
+}
+
+if(isset($listImgId[$offset+1])) {
+  $smarty->assign('nextimg', $listImgId[$offset+1]);
+}
+
+else {
+  $smarty->assign('nextimg', '');
 }
 
 $smarty->assign('firstId', $listImgId[0]);
@@ -159,8 +184,8 @@ $foo = parse_url($_SERVER["REQUEST_URI"]);
 $foo2 = str_replace("tiki-browse_image", "show_image", $foo["path"]);
 $smarty->assign('url_browse', $tikilib->httpPrefix(). $foo["path"]);
 $smarty->assign('url_base', $foo["path"] .
-         "?galleryId={$galleryId}&amp;sort_mode={$sort_mode}" .
-         ($popup ? '&amp;popup=y' : '') . '&amp;imageId=');
+                "?galleryId={$galleryId}&amp;sort_mode={$sort_mode}" .
+                ($popup ? '&amp;popup=y' : '') . '&amp;imageId=');
 $smarty->assign('url_show', $tikilib->httpPrefix(). $foo2);
 
 $imagegallib->add_image_hit($imageId);
@@ -171,31 +196,33 @@ $smarty->assign('offset', $maxgal ? $offset - ($offset % $maxgal) : 0);
 //$smarty->assign_by_ref('theme',$gal_info["theme"]);
 //$smarty->assign('use_theme','y');
 
-if ($feature_gal_slideshow != 'n') {
-	// Require js slideshow library middle priority 50
-	$head_extra_js['lib/imagegals/imagegallib.js'] = 50;
+if($feature_gal_slideshow != 'n') {
+  // Require js slideshow library middle priority 50
+  $head_extra_js['lib/imagegals/imagegallib.js'] = 50;
 
-    $listImgId = implode(',', $listImgId);
-    $smarty->assign('listImgId', $listImgId);
+  $listImgId = implode(',', $listImgId);
+  $smarty->assign('listImgId', $listImgId);
 }
 
 // Everybody can browse images
-if (isset($_REQUEST["move_image"])) {
-	check_ticket('browse-image');
-	if ($tiki_p_admin_galleries != 'y' && (!$user || $user != $gal_info["user"])) {
-		$smarty->assign('msg', tra("Permission denied you cannot move images from this gallery"));
+if(isset($_REQUEST["move_image"])) {
+  check_ticket('browse-image');
 
-		$smarty->display("error.tpl");
-		die;
-	}
+  if($tiki_p_admin_galleries != 'y' && (!$user || $user != $gal_info["user"])) {
+    $smarty->assign('msg', tra("Permission denied you cannot move images from this gallery"));
 
-	if (isset($_REQUEST["newname"]) and $_REQUEST["newname"] != $info["name"]) {
-		if ($imagegallib->edit_image($imageId, $_REQUEST['newname'], $info['description'],$info['lat'],$info['lon'])) {
-			$info['name'] = $_REQUEST['newname'];
-		}
-	}
-	$imagegallib->move_image($imageId, $_REQUEST["newgalleryId"]);
-	$info['galleryId'] = $_REQUEST["newgalleryId"];
+    $smarty->display("error.tpl");
+    die;
+  }
+
+  if(isset($_REQUEST["newname"]) and $_REQUEST["newname"] != $info["name"]) {
+    if($imagegallib->edit_image($imageId, $_REQUEST['newname'], $info['description'],$info['lat'],$info['lon'])) {
+      $info['name'] = $_REQUEST['newname'];
+    }
+  }
+
+  $imagegallib->move_image($imageId, $_REQUEST["newgalleryId"]);
+  $info['galleryId'] = $_REQUEST["newgalleryId"];
 }
 
 $smarty->assign_by_ref('owner', $gal_info["user"]);
@@ -226,14 +253,14 @@ $winysize = 0;
 // Calculate PopUp Window size for the popup link
 $winx = $info['xsize'];
 
-if ($winx < 320) {
-	$winx = 320;
+if($winx < 320) {
+  $winx = 320;
 }
 
 $winy = $info['ysize'];
 
-if ($winy < 200) {
-	$winy = 200;
+if($winy < 200) {
+  $winy = 200;
 }
 
 // Give it some more pixels for the links and a little margin
@@ -250,57 +277,67 @@ $resultscale = $scalesize < $maxsize ? $scalesize : 0;
 $scaleinfo['nextscale'] = 0;
 $scaleinfo['prevscale'] = 0;
 $testscale = $resultscale ? $resultscale : $maxsize;
-for ($iscale = 0; $iscale < count($arrscales); $iscale++) {
-    if ($testscale == $arrscales[$iscale]['scale']) {
-        continue;
-    }
-    if ($testscale > $arrscales[$iscale]['scale']) {
-        $scaleinfo['prevscale'] = $arrscales[$iscale]['scale'];
-        continue;
-    }
-    if ($maxsize > $arrscales[$iscale]['scale']) {
-        $scaleinfo['nextscale'] = $arrscales[$iscale]['scale'];
-    }
-    break;
+
+for($iscale = 0; $iscale < count($arrscales); $iscale++) {
+  if($testscale == $arrscales[$iscale]['scale']) {
+    continue;
+  }
+
+  if($testscale > $arrscales[$iscale]['scale']) {
+    $scaleinfo['prevscale'] = $arrscales[$iscale]['scale'];
+    continue;
+  }
+
+  if($maxsize > $arrscales[$iscale]['scale']) {
+    $scaleinfo['nextscale'] = $arrscales[$iscale]['scale'];
+  }
+
+  break;
 }
+
 $scaleinfo['clickscale'] = $scaleinfo['nextscale'] ? $scaleinfo['nextscale'] :
-				($resultscale ? 0 : ( $arrscales ? $arrscales[0]['scale'] : -1) );
+                           ($resultscale ? 0 : ($arrscales ? $arrscales[0]['scale'] : -1));
 $smarty->assign('resultscale', $resultscale);
-if ($resultscale) {
-    $info = $imagegallib->get_image_info($imageId, 's', $resultscale);
-    $smarty->assign('xsize_scaled', $info["xsize"]);
-    $smarty->assign('ysize_scaled', $info["ysize"]);
+
+if($resultscale) {
+  $info = $imagegallib->get_image_info($imageId, 's', $resultscale);
+  $smarty->assign('xsize_scaled', $info["xsize"]);
+  $smarty->assign('ysize_scaled', $info["ysize"]);
 }
+
 $smarty->assign_by_ref('scaleinfo',$scaleinfo);
 
 $section = 'galleries';
 include_once('tiki-section_options.php');
 
-if ($feature_theme_control == 'y') {
-	$cat_type = 'image gallery';
+if($feature_theme_control == 'y') {
+  $cat_type = 'image gallery';
 
-	$cat_objid = $galleryId;
-	include('tiki-tc.php');
+  $cat_objid = $galleryId;
+  include('tiki-tc.php');
 }
 
 // now set it if needed
-if ($popup) {
-	$smarty->assign('feature_top_bar', 'n');
-	$smarty->assign('feature_left_column', 'n');
-	$smarty->assign('feature_right_column', 'n');
-	$smarty->assign('feature_bot_bar', 'n');
+if($popup) {
+  $smarty->assign('feature_top_bar', 'n');
+  $smarty->assign('feature_left_column', 'n');
+  $smarty->assign('feature_right_column', 'n');
+  $smarty->assign('feature_bot_bar', 'n');
 }
+
 ask_ticket('browse-image');
 
 //add a hit
 $statslib->stats_hit($info["name"],"image",$imageId);
 
 // Display the template
-if ($popup) {
-	$smarty->display("tiki-browse_image.tpl");
-} else {
-	$smarty->assign('mid', 'tiki-browse_image.tpl');
-	$smarty->display("tiki.tpl");
+if($popup) {
+  $smarty->display("tiki-browse_image.tpl");
+}
+
+else {
+  $smarty->assign('mid', 'tiki-browse_image.tpl');
+  $smarty->display("tiki.tpl");
 }
 
 ?>

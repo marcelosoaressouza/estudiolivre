@@ -9,39 +9,42 @@
 # $Header: /cvsroot/tikiwiki/tiki/tiki-section_options.php,v 1.7.2.4 2007/03/02 12:23:10 luciash Exp $
 $smarty->assign('section', $section);
 
-if ($feature_theme_control == 'y') {
-	include ('tiki-tc.php');
+if($feature_theme_control == 'y') {
+  include('tiki-tc.php');
 }
 
-if ($feature_banning == 'y') {
-	if ($msg = $tikilib->check_rules($user, $section)) {
-		$smarty->assign('msg', $msg);
+if($feature_banning == 'y') {
+  if($msg = $tikilib->check_rules($user, $section)) {
+    $smarty->assign('msg', $msg);
 
-		$smarty->display("error.tpl");
-		die;
-	}
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
-if ($layout_section == 'y') {
-	$section_top_bar = $section . '_top_bar';
+if($layout_section == 'y') {
+  $section_top_bar = $section . '_top_bar';
 
-	$section_bot_bar = $section . '_bot_bar';
-	$section_left_column = $section . '_left_column';
-	$section_right_column = $section . '_right_column';
+  $section_bot_bar = $section . '_bot_bar';
+  $section_left_column = $section . '_left_column';
+  $section_right_column = $section . '_right_column';
 
-	if (isset($$section_top_bar)) {
-		$smarty->assign('feature_top_bar', $$section_top_bar);
+  if(isset($$section_top_bar)) {
+    $smarty->assign('feature_top_bar', $$section_top_bar);
 
-		$smarty->assign('feature_bot_bar', $$section_bot_bar);
-		$smarty->assign('feature_left_column', $$section_left_column);
-		$smarty->assign('feature_right_column', $$section_right_column);
-	} else {
-		$smarty->assign('feature_top_bar', 'y');
+    $smarty->assign('feature_bot_bar', $$section_bot_bar);
+    $smarty->assign('feature_left_column', $$section_left_column);
+    $smarty->assign('feature_right_column', $$section_right_column);
+  }
 
-		$smarty->assign('feature_bot_bar', 'y');
-		$smarty->assign('feature_left_column', 'y');
-		$smarty->assign('feature_right_column', 'y');
-	}
+  else {
+    $smarty->assign('feature_top_bar', 'y');
+
+    $smarty->assign('feature_bot_bar', 'y');
+    $smarty->assign('feature_left_column', 'y');
+    $smarty->assign('feature_right_column', 'y');
+  }
 }
+
 $smarty->assign('section', $section);
 ?>

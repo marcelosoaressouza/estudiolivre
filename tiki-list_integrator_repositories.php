@@ -10,17 +10,18 @@ require_once('tiki-setup.php');
 require_once('lib/integrator/integrator.php');
 
 // If Integrator is ON, check permissions...
-if ($feature_integrator != 'y')
+if($feature_integrator != 'y')
 {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_integrator");
-	$smarty->display("error.tpl");
-	die;
+  $smarty->assign('msg', tra("This feature is disabled").": feature_integrator");
+  $smarty->display("error.tpl");
+  die;
 }
-if (($tiki_p_view_integrator != 'y') && ($tiki_p_admin_integrator != 'y') && ($tiki_p_admin != 'y'))
+
+if(($tiki_p_view_integrator != 'y') && ($tiki_p_admin_integrator != 'y') && ($tiki_p_admin != 'y'))
 {
-    $smarty->assign('msg',tra("You do not have permission to use this feature"));
-    $smarty->display("error.tpl");
-    die;
+  $smarty->assign('msg',tra("You do not have permission to use this feature"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 // Create instance of integrator

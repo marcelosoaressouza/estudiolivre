@@ -7,105 +7,116 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/htmlpages/htmlpageslib.php');
+include_once('lib/htmlpages/htmlpageslib.php');
 
-if ($feature_html_pages != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_html_pages");
+if($feature_html_pages != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_html_pages");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_edit_html_pages != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_edit_html_pages != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["pageName"])) {
-	$_REQUEST["pageName"] = '';
+if(!isset($_REQUEST["pageName"])) {
+  $_REQUEST["pageName"] = '';
 }
 
 $smarty->assign('pageName', $_REQUEST["pageName"]);
 
-if ($_REQUEST["pageName"]) {
-	$info = $htmlpageslib->get_html_page($_REQUEST["pageName"]);
-} else {
-	$info = array();
+if($_REQUEST["pageName"]) {
+  $info = $htmlpageslib->get_html_page($_REQUEST["pageName"]);
+}
 
-	$info["pageName"] = '';
-	$info["content"] = '';
-	$info["refresh"] = 0;
-	$info["type"] = 's';
+else {
+  $info = array();
+
+  $info["pageName"] = '';
+  $info["content"] = '';
+  $info["refresh"] = 0;
+  $info["type"] = 's';
 }
 
 $smarty->assign('info', $info);
 
-if (isset($_REQUEST["remove"])) {
-	$area = 'delhtmlpage';
-	if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
-		key_check($area);
-		$htmlpageslib->remove_html_page($_REQUEST["remove"]);
-	} else {
-		key_get($area);
-	}
+if(isset($_REQUEST["remove"])) {
+  $area = 'delhtmlpage';
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+    key_check($area);
+    $htmlpageslib->remove_html_page($_REQUEST["remove"]);
+  }
+
+  else {
+    key_get($area);
+  }
 }
 
-if (isset($_REQUEST["templateId"]) && $_REQUEST["templateId"] > 0) {
-	$template_data = $tikilib->get_template($_REQUEST["templateId"]);
+if(isset($_REQUEST["templateId"]) && $_REQUEST["templateId"] > 0) {
+  $template_data = $tikilib->get_template($_REQUEST["templateId"]);
 
-	$_REQUEST["content"] = $template_data["content"];
-	$_REQUEST["preview"] = 1;
+  $_REQUEST["content"] = $template_data["content"];
+  $_REQUEST["preview"] = 1;
 }
 
 $smarty->assign('preview', 'n');
 
-if (isset($_REQUEST["preview"])) {
-	$smarty->assign('preview', 'y');
+if(isset($_REQUEST["preview"])) {
+  $smarty->assign('preview', 'y');
 
-	//$parsed = $tikilib->parse_data($_REQUEST["content"]);
-	$parsed = $htmlpageslib->parse_html_page($_REQUEST["pageName"], $_REQUEST["content"]);
-	$smarty->assign('parsed', $parsed);
-	$info["content"] = $_REQUEST["content"];
-	$info["refresh"] = $_REQUEST["refresh"];
-	$info["pageName"] = $_REQUEST["pageName"];
-	$info["type"] = $_REQUEST["type"];
-	$smarty->assign('info', $info);
+  //$parsed = $tikilib->parse_data($_REQUEST["content"]);
+  $parsed = $htmlpageslib->parse_html_page($_REQUEST["pageName"], $_REQUEST["content"]);
+  $smarty->assign('parsed', $parsed);
+  $info["content"] = $_REQUEST["content"];
+  $info["refresh"] = $_REQUEST["refresh"];
+  $info["pageName"] = $_REQUEST["pageName"];
+  $info["type"] = $_REQUEST["type"];
+  $smarty->assign('info', $info);
 }
 
-if (isset($_REQUEST["save"]) && !empty($_REQUEST["pageName"])) {
-	check_ticket('admin-html-pages');
-	$tid = $htmlpageslib->replace_html_page($_REQUEST["pageName"], $_REQUEST["type"], $_REQUEST["content"], $_REQUEST["refresh"]);
+if(isset($_REQUEST["save"]) && !empty($_REQUEST["pageName"])) {
+  check_ticket('admin-html-pages');
+  $tid = $htmlpageslib->replace_html_page($_REQUEST["pageName"], $_REQUEST["type"], $_REQUEST["content"], $_REQUEST["refresh"]);
 
-	$smarty->assign("pageName", '');
-	$info["pageName"] = '';
-	$info["content"] = '';
-	$info["regresh"] = 0;
-	$info["type"] = 's';
-	$smarty->assign('info', $info);
+  $smarty->assign("pageName", '');
+  $info["pageName"] = '';
+  $info["content"] = '';
+  $info["regresh"] = 0;
+  $info["type"] = 's';
+  $smarty->assign('info', $info);
 }
 
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'created_desc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'created_desc';
 }
 
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
+}
+
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -117,23 +128,27 @@ $cant_pages = ceil($channels["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($channels["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($channels["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('channels', $channels["data"]);
 
-if ($tiki_p_use_content_templates == 'y') {
-	$templates = $tikilib->list_templates('html', 0, -1, 'name_asc', '');
+if($tiki_p_use_content_templates == 'y') {
+  $templates = $tikilib->list_templates('html', 0, -1, 'name_asc', '');
 }
 
 $smarty->assign_by_ref('templates', $templates["data"]);

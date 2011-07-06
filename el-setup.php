@@ -1,6 +1,6 @@
 <?php
 
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -11,9 +11,9 @@ $dbConnection =& $dbTiki;
 $feature_tooltip = $userlib->get_user_preference($user, 'feature_tooltip', 'y');
 $feature_tooltip_max_clicks = $userlib->get_user_preference($user,'feature_tooltip_max_clicks', 5);
 
-if ($feature_tooltip == 'y') {
-	require_once("lib/tooltip/tooltiplib.php");
-	require_once("el-tooltip_ajax.php");	
+if($feature_tooltip == 'y') {
+  require_once("lib/tooltip/tooltiplib.php");
+  require_once("el-tooltip_ajax.php");
 }
 
 require_once("el-gallery_stream_ajax.php");
@@ -24,19 +24,22 @@ require_once("el-breadcrumbs.php");
 
 //verificando versão do ie
 ereg('MSIE ([0-9]\.[0-9])',$_SERVER['HTTP_USER_AGENT'],$reg);
+
 if(!isset($reg[1]))
-	$isIE = false;
+  $isIE = false;
+
 else
-	$isIE = floatval($reg[1]);
-	
+  $isIE = floatval($reg[1]);
+
 $smarty->assign('isIE',$isIE);
 
 $showIeMsg = false;
-if ($isIE) {
-    if (!isset($_COOKIE['ieMsgSeen']) || !$_COOKIE['ieMsgSeen']) {
-	$showIeMsg = true;
-	setcookie('ieMsgSeen',1,time()+60*60*24*7);
-    }
+
+if($isIE) {
+  if(!isset($_COOKIE['ieMsgSeen']) || !$_COOKIE['ieMsgSeen']) {
+    $showIeMsg = true;
+    setcookie('ieMsgSeen',1,time()+60*60*24*7);
+  }
 }
 
 $smarty->assign('showIeMsg',$showIeMsg);

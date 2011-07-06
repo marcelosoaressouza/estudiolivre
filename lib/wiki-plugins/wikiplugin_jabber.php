@@ -15,7 +15,7 @@
 */
 
 function wikiplugin_jabber_help() {
-	return tra("Runs a Java applet to access a local Jabber service").":<br />~np~{JABBER(height=>200,width=>200,xmlhostname=>jabber.org,defaultColor=>255,255,255)}{JABBER}~/np~. See lib/wiki-plugins/wikiplugin_jabber.php to make this plugin work";
+  return tra("Runs a Java applet to access a local Jabber service").":<br />~np~{JABBER(height=>200,width=>200,xmlhostname=>jabber.org,defaultColor=>255,255,255)}{JABBER}~/np~. See lib/wiki-plugins/wikiplugin_jabber.php to make this plugin work";
 }
 
 
@@ -27,26 +27,33 @@ function wikiplugin_jabber($data,$params) {
   if(!isset($height)) {
     $height = 200;
   }
+
   if(!isset($width)) {
     $width = 200;
   }
+
   if(!isset($xmlhostname)) {
     $xmlhostname = 'jabber.org';
   }
+
   if(!isset($defaultColor)) {
     $defaultColor = '255,255,255';
   }
+
   $userpwd = $userlib->get_user_password($user);
 
   $result='<APPLET ARCHIVE="lib/jabber/JabberApplet.jar" CODE="org/jabber/applet/JabberApplet.class" HEIGHT='.$height.' WIDTH='.$width.' VIEWASTEXT>';
   $result.='<param name="xmlhostname" value="'.$xmlhostname.'">';
   $result.='<param name="defaultColor" value="'.$defaultColor.'">';
+
   if(isset($user)) {
     $result.='<param name="user" value="'.$user.'">';
   }
+
   if($userpwd != '') {
     $result.='<param name="pwd" value="'.$userpwd.'">';
   }
+
   $result.='</APPLET>';
   return $result;
 }

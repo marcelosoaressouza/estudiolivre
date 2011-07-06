@@ -6,9 +6,9 @@ include_once(GALAXIA_LIBRARY.'/src/API/BaseActivity.php');
 This class handles activities of type 'standalone'
 */
 class Standalone extends BaseActivity {
-	function Standalone($db)
-	{
-	  $this->setDb($db);
-	}
+  function Standalone($db)
+  {
+    $this->setDb($db);
+  }
 }
 ?>

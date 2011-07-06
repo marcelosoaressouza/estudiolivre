@@ -5,50 +5,50 @@
 // Copyright (c) 2002-2007, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/menubuilder/menulib.php');
-include_once ('lib/rss/rsslib.php');
-include_once ('lib/polls/polllib.php');
-include_once ('lib/banners/bannerlib.php');
-include_once ('lib/dcs/dcslib.php');
-include_once ('lib/modules/modlib.php');
-include_once ('lib/structures/structlib.php');
+include_once('lib/menubuilder/menulib.php');
+include_once('lib/rss/rsslib.php');
+include_once('lib/polls/polllib.php');
+include_once('lib/banners/bannerlib.php');
+include_once('lib/dcs/dcslib.php');
+include_once('lib/modules/modlib.php');
+include_once('lib/structures/structlib.php');
 
-if (!isset($dcslib)) {
-	$dcslib = new DCSLib($dbTiki);
+if(!isset($dcslib)) {
+  $dcslib = new DCSLib($dbTiki);
 }
 
-if (!isset($bannerlib)) {
-	$bannerlib = new BannerLib($dbTiki);
+if(!isset($bannerlib)) {
+  $bannerlib = new BannerLib($dbTiki);
 }
 
-if (!isset($rsslib)) {
-	$rsslib = new RssLib($dbTiki);
+if(!isset($rsslib)) {
+  $rsslib = new RssLib($dbTiki);
 }
 
-if (!isset($polllib)) {
-	$polllib = new PollLib($dbTiki);
+if(!isset($polllib)) {
+  $polllib = new PollLib($dbTiki);
 }
 
-if (!isset($structlib)) {
+if(!isset($structlib)) {
   $structlib = new StructLib($dbTiki);
 }
 
 $smarty->assign('wysiwyg', 'n');
 
-if (isset($_REQUEST['wysiwyg']) && $_REQUEST['wysiwyg'] == 'y') {
-	$smarty->assign('wysiwyg', 'y');
+if(isset($_REQUEST['wysiwyg']) && $_REQUEST['wysiwyg'] == 'y') {
+  $smarty->assign('wysiwyg', 'y');
 }
 
 // PERMISSIONS: NEEDS p_admin
-if ($user != 'admin') {
-	if ($tiki_p_admin != 'y') {
-		$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($user != 'admin') {
+  if($tiki_p_admin != 'y') {
+    $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-		$smarty->display("error.tpl");
-		die;
-	}
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
 // Values for the user_module edit/create form
@@ -65,214 +65,226 @@ $smarty->assign('assign_cache', 0);
 $smarty->assign('assign_rows', 10);
 $smarty->assign('assign_params', '');
 
-if (isset($_REQUEST["clear_cache"])) {
-	check_ticket('admin-modules');
-	$modlib->clear_cache(); 
+if(isset($_REQUEST["clear_cache"])) {
+  check_ticket('admin-modules');
+  $modlib->clear_cache();
 }
 
 $module_groups = array();
 
-if (isset($_REQUEST["edit_assign"])) {
-	check_ticket('admin-modules');
-	$_REQUEST["edit_assign"] = urldecode($_REQUEST["edit_assign"]);
+if(isset($_REQUEST["edit_assign"])) {
+  check_ticket('admin-modules');
+  $_REQUEST["edit_assign"] = urldecode($_REQUEST["edit_assign"]);
 
-	$info = $modlib->get_assigned_module($_REQUEST["edit_assign"]);
-	$grps = '';
+  $info = $modlib->get_assigned_module($_REQUEST["edit_assign"]);
+  $grps = '';
 
-	if ($info["groups"]) {
-		$module_groups = unserialize($info["groups"]);
+  if($info["groups"]) {
+    $module_groups = unserialize($info["groups"]);
 
-		foreach ($module_groups as $amodule) {
-			$grps = $grps . ' $amodule ';
-		}
-	}
+    foreach($module_groups as $amodule) {
+      $grps = $grps . ' $amodule ';
+    }
+  }
 
-	if (!isset($info['rows']) || empty($info['rows'])) {
-		$info['rows'] = 0;
-	}
+  if(!isset($info['rows']) || empty($info['rows'])) {
+    $info['rows'] = 0;
+  }
 
-	$smarty->assign('module_groups', $grps);
-	$smarty->assign_by_ref('assign_name', $info["name"]);
-	//$smarty->assign_by_ref('assign_title',$info["title"]);
-	$smarty->assign_by_ref('assign_position', $info["position"]);
-	$smarty->assign_by_ref('assign_cache', $info["cache_time"]);
-	$smarty->assign_by_ref('assign_rows', $info["rows"]);
-	$smarty->assign_by_ref('assign_params', $info["params"]);
-	$smarty->assign_by_ref('assign_type', $info["type"]);
+  $smarty->assign('module_groups', $grps);
+  $smarty->assign_by_ref('assign_name', $info["name"]);
+  //$smarty->assign_by_ref('assign_title',$info["title"]);
+  $smarty->assign_by_ref('assign_position', $info["position"]);
+  $smarty->assign_by_ref('assign_cache', $info["cache_time"]);
+  $smarty->assign_by_ref('assign_rows', $info["rows"]);
+  $smarty->assign_by_ref('assign_params', $info["params"]);
+  $smarty->assign_by_ref('assign_type', $info["type"]);
 
-	if (isset($info["ord"])) {
-		$cosa = "" . $info["ord"];
-	} else {
-		$cosa = "";
-	}
+  if(isset($info["ord"])) {
+    $cosa = "" . $info["ord"];
+  }
 
-	$smarty->assign_by_ref('assign_order', $cosa);
+  else {
+    $cosa = "";
+  }
 
-	if (!$info['name']) {
-	  $smarty->assign('assign_selected', $_REQUEST['edit_assign']);
-	}
+  $smarty->assign_by_ref('assign_order', $cosa);
+
+  if(!$info['name']) {
+    $smarty->assign('assign_selected', $_REQUEST['edit_assign']);
+  }
 }
 
-if (isset($_REQUEST["unassign"])) {
-	check_ticket('admin-modules');
-	$_REQUEST["unassign"] = urldecode($_REQUEST["unassign"]);
+if(isset($_REQUEST["unassign"])) {
+  check_ticket('admin-modules');
+  $_REQUEST["unassign"] = urldecode($_REQUEST["unassign"]);
 
-	$modlib->unassign_module($_REQUEST["unassign"]);
-	$logslib->add_log('adminmodules','unassigned module '.$_REQUEST["unassign"]);
+  $modlib->unassign_module($_REQUEST["unassign"]);
+  $logslib->add_log('adminmodules','unassigned module '.$_REQUEST["unassign"]);
 }
 
-if (isset($_REQUEST["modup"])) {
-	check_ticket('admin-modules');
-	$_REQUEST["modup"] = urldecode($_REQUEST["modup"]);
+if(isset($_REQUEST["modup"])) {
+  check_ticket('admin-modules');
+  $_REQUEST["modup"] = urldecode($_REQUEST["modup"]);
 
-	$modlib->module_up($_REQUEST["modup"]);
+  $modlib->module_up($_REQUEST["modup"]);
 }
 
-if (isset($_REQUEST["moddown"])) {
-	check_ticket('admin-modules');
-	$_REQUEST["moddown"] = urldecode($_REQUEST["moddown"]);
+if(isset($_REQUEST["moddown"])) {
+  check_ticket('admin-modules');
+  $_REQUEST["moddown"] = urldecode($_REQUEST["moddown"]);
 
-	$modlib->module_down($_REQUEST["moddown"]);
+  $modlib->module_down($_REQUEST["moddown"]);
 }
 
 /* Edit or delete a user module */
-if (isset($_REQUEST["um_update"])) {
-        if (empty($_REQUEST["um_name"])) {
-	    $smarty->assign('msg',tra("Cannot create or update module: You need to specify a name to the module"));
-	    $smarty->display("error.tpl");
-	    die;
-	}
-        if (empty($_REQUEST["um_data"])) {
-	    $smarty->assign('msg',tra("Cannot create or update module: You cannot leave the data field empty"));
-	    $smarty->display("error.tpl");
-	    die;
-	}
-	check_ticket('admin-modules');
-	$_REQUEST["um_update"] = urldecode($_REQUEST["um_update"]);
+if(isset($_REQUEST["um_update"])) {
+  if(empty($_REQUEST["um_name"])) {
+    $smarty->assign('msg',tra("Cannot create or update module: You need to specify a name to the module"));
+    $smarty->display("error.tpl");
+    die;
+  }
 
-	$smarty->assign_by_ref('um_name', $_REQUEST["um_name"]);
-	$smarty->assign_by_ref('um_title', $_REQUEST["um_title"]);
-	$smarty->assign_by_ref('um_data', $_REQUEST["um_data"]);
-	$smarty->assign_by_ref('um_parse', $_REQUEST["um_parse"]);
-	$modlib->replace_user_module(preg_replace("/\W/", "_",$_REQUEST["um_name"]), $_REQUEST["um_title"], $_REQUEST["um_data"], $_REQUEST["um_parse"]);
-	$logslib->add_log('adminmodules','changed user module '.$_REQUEST["um_name"]);
+  if(empty($_REQUEST["um_data"])) {
+    $smarty->assign('msg',tra("Cannot create or update module: You cannot leave the data field empty"));
+    $smarty->display("error.tpl");
+    die;
+  }
+
+  check_ticket('admin-modules');
+  $_REQUEST["um_update"] = urldecode($_REQUEST["um_update"]);
+
+  $smarty->assign_by_ref('um_name', $_REQUEST["um_name"]);
+  $smarty->assign_by_ref('um_title', $_REQUEST["um_title"]);
+  $smarty->assign_by_ref('um_data', $_REQUEST["um_data"]);
+  $smarty->assign_by_ref('um_parse', $_REQUEST["um_parse"]);
+  $modlib->replace_user_module(preg_replace("/\W/", "_",$_REQUEST["um_name"]), $_REQUEST["um_title"], $_REQUEST["um_data"], $_REQUEST["um_parse"]);
+  $logslib->add_log('adminmodules','changed user module '.$_REQUEST["um_name"]);
 }
 
-if (!isset($_REQUEST["groups"])) {
-	$_REQUEST["groups"] = array();
+if(!isset($_REQUEST["groups"])) {
+  $_REQUEST["groups"] = array();
 }
 
 $smarty->assign('preview', 'n');
 
-if (isset($_REQUEST["preview"])) {
-	check_ticket('admin-modules');
-	$smarty->assign('preview', 'y');
+if(isset($_REQUEST["preview"])) {
+  check_ticket('admin-modules');
+  $smarty->assign('preview', 'y');
 
-	$smarty->assign_by_ref('assign_name', $_REQUEST["assign_name"]);
+  $smarty->assign_by_ref('assign_name', $_REQUEST["assign_name"]);
 
-	if ($tikilib->is_user_module($_REQUEST["assign_name"])) {
-		$info = $tikilib->get_user_module($_REQUEST["assign_name"]);
-		$smarty->assign_by_ref('user_title', $info["title"]);
-		if ($info["parse"] == "y") {
-			$parse_data = $tikilib->parse_data($info["data"]);
-			$smarty->assign_by_ref('user_data', $parse_data);
-		} else {
-			$smarty->assign_by_ref('user_data', $info["data"]);
-		}
-		$data = $smarty->fetch('modules/user_module.tpl');
-	} else {
-		$phpfile = 'modules/mod-' . $_REQUEST["assign_name"] . '.php';
+  if($tikilib->is_user_module($_REQUEST["assign_name"])) {
+    $info = $tikilib->get_user_module($_REQUEST["assign_name"]);
+    $smarty->assign_by_ref('user_title', $info["title"]);
 
-		$template = 'modules/mod-' . $_REQUEST["assign_name"] . '.tpl';
+    if($info["parse"] == "y") {
+      $parse_data = $tikilib->parse_data($info["data"]);
+      $smarty->assign_by_ref('user_data', $parse_data);
+    }
 
-		if (file_exists($phpfile)) {
-			$module_rows = $_REQUEST["assign_rows"];
+    else {
+      $smarty->assign_by_ref('user_data', $info["data"]);
+    }
 
-			parse_str($_REQUEST["assign_params"], $module_params);
-			include ($phpfile);
-		}
+    $data = $smarty->fetch('modules/user_module.tpl');
+  }
 
-		if (file_exists('templates/' . $template)) {
-			$data = $smarty->fetch($template);
-		} else {
-			$data = '';
-		}
-	}
+  else {
+    $phpfile = 'modules/mod-' . $_REQUEST["assign_name"] . '.php';
 
-	$smarty->assign_by_ref('assign_name', $_REQUEST["assign_name"]);
-	$smarty->assign_by_ref('assign_params', $_REQUEST["assign_params"]);
-	$smarty->assign_by_ref('assign_position', $_REQUEST["assign_position"]);
-	$smarty->assign_by_ref('assign_order', $_REQUEST["assign_order"]);
-	$smarty->assign_by_ref('assign_cache', $_REQUEST["assign_cache"]);
-	$smarty->assign_by_ref('assign_rows', $_REQUEST["assign_rows"]);
-	$module_groups = $_REQUEST["groups"];
-	$grps = '';
+    $template = 'modules/mod-' . $_REQUEST["assign_name"] . '.tpl';
 
-	foreach ($module_groups as $amodule) {
-		$grps = $grps . " $amodule ";
-	}
+    if(file_exists($phpfile)) {
+      $module_rows = $_REQUEST["assign_rows"];
 
-	$smarty->assign('module_groups', $grps);
-	$smarty->assign_by_ref('preview_data', $data);
+      parse_str($_REQUEST["assign_params"], $module_params);
+      include($phpfile);
+    }
+
+    if(file_exists('templates/' . $template)) {
+      $data = $smarty->fetch($template);
+    }
+
+    else {
+      $data = '';
+    }
+  }
+
+  $smarty->assign_by_ref('assign_name', $_REQUEST["assign_name"]);
+  $smarty->assign_by_ref('assign_params', $_REQUEST["assign_params"]);
+  $smarty->assign_by_ref('assign_position', $_REQUEST["assign_position"]);
+  $smarty->assign_by_ref('assign_order', $_REQUEST["assign_order"]);
+  $smarty->assign_by_ref('assign_cache', $_REQUEST["assign_cache"]);
+  $smarty->assign_by_ref('assign_rows', $_REQUEST["assign_rows"]);
+  $module_groups = $_REQUEST["groups"];
+  $grps = '';
+
+  foreach($module_groups as $amodule) {
+    $grps = $grps . " $amodule ";
+  }
+
+  $smarty->assign('module_groups', $grps);
+  $smarty->assign_by_ref('preview_data', $data);
 }
 
-if (isset($_REQUEST["assign"])) {
-	check_ticket('admin-modules');
-	$_REQUEST["assign"] = urldecode($_REQUEST["assign"]);
+if(isset($_REQUEST["assign"])) {
+  check_ticket('admin-modules');
+  $_REQUEST["assign"] = urldecode($_REQUEST["assign"]);
 
-	$smarty->assign_by_ref('assign_name', $_REQUEST["assign_name"]);
-	//$smarty->assign_by_ref('assign_title',$_REQUEST["assign_title"]);
-	$smarty->assign_by_ref('assign_position', $_REQUEST["assign_position"]);
-	$smarty->assign_by_ref('assign_params', $_REQUEST["assign_params"]);
-	$smarty->assign_by_ref('assign_order', $_REQUEST["assign_order"]);
-	$smarty->assign_by_ref('assign_cache', $_REQUEST["assign_cache"]);
-	$smarty->assign_by_ref('assign_rows', $_REQUEST["assign_rows"]);
- 	$smarty->assign_by_ref('assign_type',$_REQUEST["assign_type"]);
-	$module_groups = $_REQUEST["groups"];
-	$grps = '';
+  $smarty->assign_by_ref('assign_name', $_REQUEST["assign_name"]);
+  //$smarty->assign_by_ref('assign_title',$_REQUEST["assign_title"]);
+  $smarty->assign_by_ref('assign_position', $_REQUEST["assign_position"]);
+  $smarty->assign_by_ref('assign_params', $_REQUEST["assign_params"]);
+  $smarty->assign_by_ref('assign_order', $_REQUEST["assign_order"]);
+  $smarty->assign_by_ref('assign_cache', $_REQUEST["assign_cache"]);
+  $smarty->assign_by_ref('assign_rows', $_REQUEST["assign_rows"]);
+  $smarty->assign_by_ref('assign_type',$_REQUEST["assign_type"]);
+  $module_groups = $_REQUEST["groups"];
+  $grps = '';
 
-	foreach ($module_groups as $amodule) {
-		$grps = $grps . " $amodule ";
-	}
+  foreach($module_groups as $amodule) {
+    $grps = $grps . " $amodule ";
+  }
 
-	$smarty->assign('module_groups', $grps);
-	$modlib->assign_module($_REQUEST["assign_name"],
-		'', $_REQUEST["assign_position"], $_REQUEST["assign_order"], $_REQUEST["assign_cache"], $_REQUEST["assign_rows"],
-		serialize($module_groups), $_REQUEST["assign_params"], $_REQUEST["assign_type"]);
-	$logslib->add_log('adminmodules','assigned module '.$_REQUEST["assign_name"]);
-	header ("location: tiki-admin_modules.php");
+  $smarty->assign('module_groups', $grps);
+  $modlib->assign_module($_REQUEST["assign_name"],
+                         '', $_REQUEST["assign_position"], $_REQUEST["assign_order"], $_REQUEST["assign_cache"], $_REQUEST["assign_rows"],
+                         serialize($module_groups), $_REQUEST["assign_params"], $_REQUEST["assign_type"]);
+  $logslib->add_log('adminmodules','assigned module '.$_REQUEST["assign_name"]);
+  header("location: tiki-admin_modules.php");
 }
 
-if (isset($_REQUEST["um_remove"])) {
-	check_ticket('admin-modules');
-	$_REQUEST["um_remove"] = urldecode($_REQUEST["um_remove"]);
+if(isset($_REQUEST["um_remove"])) {
+  check_ticket('admin-modules');
+  $_REQUEST["um_remove"] = urldecode($_REQUEST["um_remove"]);
 
-	$modlib->remove_user_module($_REQUEST["um_remove"]);
-	$logslib->add_log('adminmodules','removed user module '.$_REQUEST["um_remove"]);
+  $modlib->remove_user_module($_REQUEST["um_remove"]);
+  $logslib->add_log('adminmodules','removed user module '.$_REQUEST["um_remove"]);
 }
 
-if (isset($_REQUEST["um_edit"])) {
-	check_ticket('admin-modules');
-	$_REQUEST["um_edit"] = urldecode($_REQUEST["um_edit"]);
+if(isset($_REQUEST["um_edit"])) {
+  check_ticket('admin-modules');
+  $_REQUEST["um_edit"] = urldecode($_REQUEST["um_edit"]);
 
-	$um_info = $tikilib->get_user_module($_REQUEST["um_edit"]);
-	$smarty->assign_by_ref('um_name', $um_info["name"]);
-	$smarty->assign_by_ref('um_title', $um_info["title"]);
-	$smarty->assign_by_ref('um_data', $um_info["data"]);
-	$smarty->assign_by_ref('um_parse', $um_info["parse"]);
+  $um_info = $tikilib->get_user_module($_REQUEST["um_edit"]);
+  $smarty->assign_by_ref('um_name', $um_info["name"]);
+  $smarty->assign_by_ref('um_title', $um_info["title"]);
+  $smarty->assign_by_ref('um_data', $um_info["data"]);
+  $smarty->assign_by_ref('um_parse', $um_info["parse"]);
 }
 
 $user_modules = $modlib->list_user_modules();
 $smarty->assign_by_ref('user_modules', $user_modules["data"]);
 
 $all_modules = $modlib->get_all_modules();
-sort ($all_modules);
+sort($all_modules);
 $smarty->assign_by_ref('all_modules', $all_modules);
 
 $orders = array();
 
-for ($i = 1; $i < 50; $i++) {
-	$orders[] = $i;
+for($i = 1; $i < 50; $i++) {
+  $orders[] = $i;
 }
 
 $smarty->assign_by_ref('orders', $orders);
@@ -280,14 +292,17 @@ $smarty->assign_by_ref('orders', $orders);
 $groups = $userlib->list_all_groups();
 $allgroups = array();
 $temp_max = count($groups);
-for ($i = 0; $i < $temp_max; $i++) {
-	if (in_array($groups[$i], $module_groups)) {
-		$allgroups[$i]["groupName"] = $groups[$i];
-		$allgroups[$i]["selected"] = 'y';
-	} else {
-		$allgroups[$i]["groupName"] = $groups[$i];
-		$allgroups[$i]["selected"] = 'n';
-	}
+
+for($i = 0; $i < $temp_max; $i++) {
+  if(in_array($groups[$i], $module_groups)) {
+    $allgroups[$i]["groupName"] = $groups[$i];
+    $allgroups[$i]["selected"] = 'y';
+  }
+
+  else {
+    $allgroups[$i]["groupName"] = $groups[$i];
+    $allgroups[$i]["selected"] = 'n';
+  }
 }
 
 $smarty->assign("groups", $allgroups);
@@ -311,10 +326,10 @@ $smarty->assign_by_ref('left', $left);
 $smarty->assign_by_ref('right', $right);
 
 $sameurl_elements = array(
-	'offset',
-	'sort_mode',
-	'where',
-	'find'
+  'offset',
+  'sort_mode',
+  'where',
+  'find'
 );
 
 ask_ticket('admin-modules');

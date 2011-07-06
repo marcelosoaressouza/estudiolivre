@@ -7,9 +7,9 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // $Id: tiki-edit_css.php,v 1.9.2.5 2007/12/22 01:55:57 mose Exp $
-include_once ("tiki-setup.php");
+include_once("tiki-setup.php");
 
-include_once ("lib/csslib.php");
+include_once("lib/csslib.php");
 
 //
 // Load CSS2 styled file (@import aware)
@@ -17,125 +17,142 @@ include_once ("lib/csslib.php");
 // TODO: Will M$ windowz eat '/' as path delimiter?
 //
 function load_css2_file($filename, $styledir) {
-	$data = '';
+  $data = '';
 
-	$lines = file($filename);
+  $lines = file($filename);
 
-	//
-	foreach ($lines as $line) {
-		if (preg_match_all("/@import( |\t)+('|\")(.*)(|\")( |\t)*;/U", $line, $importfiles, PREG_SET_ORDER)) {
-			foreach ($importfiles as $file) {
-				$import = $styledir . '/' . $file[3];
+  //
+  foreach($lines as $line) {
+    if(preg_match_all("/@import( |\t)+('|\")(.*)(|\")( |\t)*;/U", $line, $importfiles, PREG_SET_ORDER)) {
+      foreach($importfiles as $file) {
+        $import = $styledir . '/' . $file[3];
 
-				$data .= load_css2_file($import, substr($import, 0, strrpos($import, "/")));
-				$line = str_replace($file[0], "", $line);
-			}
-		}
+        $data .= load_css2_file($import, substr($import, 0, strrpos($import, "/")));
+        $line = str_replace($file[0], "", $line);
+      }
+    }
 
-		// TODO: Does it matter what $line may contain smth before '@import'? :)
-		$data .= $line;
-	}
+    // TODO: Does it matter what $line may contain smth before '@import'? :)
+    $data .= $line;
+  }
 
-	return $data;
+  return $data;
 }
 
 // remove soon..
 #$feature_edit_css = 'y';
 #$tiki_p_create_css = 'y';
-if (!isset($feature_editcss))
-	$feature_editcss = 'n';
 
-if (!isset($tiki_p_create_css))
-	$tiki_p_create_css = 'n';
+if(!isset($feature_editcss))
+  $feature_editcss = 'n';
 
-if ($feature_editcss != 'y') {
-	$smarty->assign('msg', tra("Feature disabled"));
+if(!isset($tiki_p_create_css))
+  $tiki_p_create_css = 'n';
 
-	$smarty->display("error.tpl");
-	die;
+if($feature_editcss != 'y') {
+  $smarty->assign('msg', tra("Feature disabled"));
+
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_create_css != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_create_css != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["editstyle"]))
-	$_REQUEST["editstyle"] = '';
+if(!isset($_REQUEST["editstyle"]))
+  $_REQUEST["editstyle"] = '';
 
-if (!isset($_REQUEST["sub"]))
-	$_REQUEST["sub"] = '';
+if(!isset($_REQUEST["sub"]))
+  $_REQUEST["sub"] = '';
 
-if (!isset($_REQUEST["try"]))
-	$_REQUEST["try"] = '';
+if(!isset($_REQUEST["try"]))
+  $_REQUEST["try"] = '';
 
 $editstyle = preg_replace("/[^-_a-z\d]/i","",$_REQUEST["editstyle"]);
 $styledir = "styles";
 
-if (isset($_REQUEST["edit"])and $_REQUEST["edit"]) {
-	$action = 'edit';
+if(isset($_REQUEST["edit"])and $_REQUEST["edit"]) {
+  $action = 'edit';
 
-	//	$data = implode("",file("$styledir/$editstyle.css"));
-	if ($tikidomain and is_file("$styledir/$tikidomain/$editstyle.css")) {
-		$data = load_css2_file("$styledir/$tikidomain/$editstyle.css", $styledir);
-	} else {
-		$data = load_css2_file("$styledir/$editstyle.css", $styledir);
-	}
-} elseif (isset($_REQUEST["save"])and $_REQUEST["save"]) {
-	check_ticket('edit-css');
-	$action = 'display';
+  //  $data = implode("",file("$styledir/$editstyle.css"));
+  if($tikidomain and is_file("$styledir/$tikidomain/$editstyle.css")) {
+    $data = load_css2_file("$styledir/$tikidomain/$editstyle.css", $styledir);
+  }
 
-	$data = '';
-	if ($tikidomain and is_dir("$styledir/$tikidomain")) {
-		$fp = fopen("$styledir/$tikidomain/$editstyle.css", "w");
-	} else {
-		$fp = fopen("$styledir/$editstyle.css", "w");
-	}
+  else {
+    $data = load_css2_file("$styledir/$editstyle.css", $styledir);
+  }
+}
 
-	if (!$fp) {
-		$smarty->assign('msg', tra("You do not have permission to write the style sheet"));
+elseif(isset($_REQUEST["save"])and $_REQUEST["save"]) {
+  check_ticket('edit-css');
+  $action = 'display';
 
-		$smarty->display("error.tpl");
-		die;
-	}
+  $data = '';
 
-	fwrite($fp, $_REQUEST["data"]);
-	fclose ($fp);
-} else {
-	$action = 'display';
+  if($tikidomain and is_dir("$styledir/$tikidomain")) {
+    $fp = fopen("$styledir/$tikidomain/$editstyle.css", "w");
+  }
 
-	$data = '';
+  else {
+    $fp = fopen("$styledir/$editstyle.css", "w");
+  }
+
+  if(!$fp) {
+    $smarty->assign('msg', tra("You do not have permission to write the style sheet"));
+
+    $smarty->display("error.tpl");
+    die;
+  }
+
+  fwrite($fp, $_REQUEST["data"]);
+  fclose($fp);
+}
+
+else {
+  $action = 'display';
+
+  $data = '';
 }
 
 $smarty->assign('action', $action);
 $smarty->assign('data', $data);
 
-if ($tikidomain and is_file("$styledir/$tikidomain/$editstyle.css")) {
-	$cssdata = $csslib->browse_css("$styledir/$tikidomain/$editstyle.css");
-} else {
-	$cssdata = $csslib->browse_css("$styledir/$editstyle.css");
+if($tikidomain and is_file("$styledir/$tikidomain/$editstyle.css")) {
+  $cssdata = $csslib->browse_css("$styledir/$tikidomain/$editstyle.css");
 }
-if ((!$cssdata["error"]) and is_array($cssdata["content"])) {
-	$parsedcss = $csslib->parse_css($cssdata["content"]);
-} else {
-	$parsedcss = $cssdata["error"];
+
+else {
+  $cssdata = $csslib->browse_css("$styledir/$editstyle.css");
+}
+
+if((!$cssdata["error"]) and is_array($cssdata["content"])) {
+  $parsedcss = $csslib->parse_css($cssdata["content"]);
+}
+
+else {
+  $parsedcss = $cssdata["error"];
 }
 
 $smarty->assign('css', $parsedcss);
 $smarty->assign('editstyle', $editstyle);
 
-if ($_REQUEST["try"]) {
-	$style = "$editstyle.css";
+if($_REQUEST["try"]) {
+  $style = "$editstyle.css";
 
-	$smarty->assign('style', $style);
+  $smarty->assign('style', $style);
 }
 
 $list = $csslib->list_css($styledir);
-if ($tikidomain and is_dir("$styledir/$tikidomain")) {
-	$list = array_unique(array_merge($list,$csslib->list_css("$styledir/$tikidomain")));
+
+if($tikidomain and is_dir("$styledir/$tikidomain")) {
+  $list = array_unique(array_merge($list,$csslib->list_css("$styledir/$tikidomain")));
 }
+
 $smarty->assign('list', $list);
 
 ask_ticket('edit-css');

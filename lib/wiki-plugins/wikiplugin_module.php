@@ -28,116 +28,131 @@ so if you need to use params just add them in MODULE()
  */
 
 function wikiplugin_module_help() {
-	return tra("Displays a module inlined in page").":<br />~np~{MODULE(module=>,float=>left|right|none,decorations=>y|n,flip=>y|n,max=>,np=>0|1,args...)}{MODULE}~/np~";
+  return tra("Displays a module inlined in page").":<br />~np~{MODULE(module=>,float=>left|right|none,decorations=>y|n,flip=>y|n,max=>,np=>0|1,args...)}{MODULE}~/np~";
 }
 
 function wikiplugin_module($data, $params) {
-	global $tikilib, $cache_time, $smarty, $dbTiki, $feature_directory, $ranklib, $feature_trackers, $tikidomain, $user,
-		$feature_tasks, $feature_user_bookmarks, $tiki_p_tasks, $tiki_p_create_bookmarks, $imagegallib, $language;
+  global $tikilib, $cache_time, $smarty, $dbTiki, $feature_directory, $ranklib, $feature_trackers, $tikidomain, $user,
+         $feature_tasks, $feature_user_bookmarks, $tiki_p_tasks, $tiki_p_create_bookmarks, $imagegallib, $language;
 
-	$out = '';
-	extract ($params,EXTR_SKIP);
+  $out = '';
+  extract($params,EXTR_SKIP);
 
-	if (!isset($float)) {
-		$float = 'nofloat';
-	}
+  if(!isset($float)) {
+    $float = 'nofloat';
+  }
 
-    if (!isset($max)) {
-        if (!isset($rows)) {
-            $max = 10; // default value
-        } else $max=$rows; // rows=> used instead of max=> ?
+  if(!isset($max)) {
+    if(!isset($rows)) {
+      $max = 10; // default value
     }
 
-	if (!isset($np)) {
-		$np = '1';
-	}
+    else $max=$rows;   // rows=> used instead of max=> ?
+  }
 
-	if (!isset($module) or !$module) {
-		$out = '<form class="box" id="modulebox">';
+  if(!isset($np)) {
+    $np = '1';
+  }
 
-		$out .= '<br /><select name="choose">';
-		$out .= '<option value="">' . tra('Please choose a module'). '</option>';
-		$out .= '<option value="" style="background-color:#bebebe;">' . tra('to be used as argument'). '</option>';
-		$out .= '<option value="" style="background-color:#bebebe;">{MODULE(module=>name_of_module)}</option>';
-		$handle = opendir('modules');
+  if(!isset($module) or !$module) {
+    $out = '<form class="box" id="modulebox">';
 
-		while ($file = readdir($handle)) {
-			if ((substr($file, 0, 4) == "mod-") and (substr($file, -4, 4) == ".php")) {
-				$mod = substr(substr(basename($file), 4), 0, -4);
+    $out .= '<br /><select name="choose">';
+    $out .= '<option value="">' . tra('Please choose a module'). '</option>';
+    $out .= '<option value="" style="background-color:#bebebe;">' . tra('to be used as argument'). '</option>';
+    $out .= '<option value="" style="background-color:#bebebe;">{MODULE(module=>name_of_module)}</option>';
+    $handle = opendir('modules');
 
-				$out .= "<option value=\"$mod\">$mod</option>";
-			}
-		}
+    while($file = readdir($handle)) {
+      if((substr($file, 0, 4) == "mod-") and(substr($file, -4, 4) == ".php")) {
+        $mod = substr(substr(basename($file), 4), 0, -4);
 
-		$out .= '</select></form>';
-	} else {
-		if (!isset($args)) {
-			$args = '';
-		}
+        $out .= "<option value=\"$mod\">$mod</option>";
+      }
+    }
 
-//		$cachefile = 'modules/cache/';
-//		if ($tikidomain) { $cachefile.= "$tikidomain/"; }
-//		$cachefile.= 'mod-' . $module . '.tpl.'.$language.'.cache';
-//		$nocache = 'templates/modules/mod-' . $module . '.tpl.nocache';
-		$phpfile = 'modules/mod-' . $module . '.php';
-		$template = 'modules/mod-' . $module . '.tpl';
+    $out .= '</select></form>';
+  }
 
-		$module_rows = $max;
-		$module_params = $params;
-		$smarty->assign_by_ref('module_rows',$module_rows);
-		$smarty->assign_by_ref('module_params', $module_params); // module code can unassign this if it wants to hide params
+  else {
+    if(!isset($args)) {
+      $args = '';
+    }
 
-//		if ((!file_exists($cachefile)) || (file_exists($nocache)) || ((time() - filemtime($cachefile)) > $cache_time)) {
-			if (file_exists($phpfile)) {
-				include ($phpfile);
-			}
+//    $cachefile = 'modules/cache/';
+//    if ($tikidomain) { $cachefile.= "$tikidomain/"; }
+//    $cachefile.= 'mod-' . $module . '.tpl.'.$language.'.cache';
+//    $nocache = 'templates/modules/mod-' . $module . '.tpl.nocache';
+    $phpfile = 'modules/mod-' . $module . '.php';
+    $template = 'modules/mod-' . $module . '.tpl';
 
-			$template_file = 'templates/' . $template;
-			$smarty->assign('no_module_controls', 'y');
-			if (file_exists($template_file)) {
-				$out = $smarty->fetch($template);
-			} else {
-				if ($tikilib->is_user_module($module)) {
-					$info = $tikilib->get_user_module($module);
+    $module_rows = $max;
+    $module_params = $params;
+    $smarty->assign_by_ref('module_rows',$module_rows);
+    $smarty->assign_by_ref('module_params', $module_params); // module code can unassign this if it wants to hide params
 
-					$smarty->assign_by_ref('user_title', $info["title"]);
-					$smarty->assign_by_ref('user_data', $info["data"]);
-					$out = $smarty->fetch('modules/user_module.tpl');
-				}
-			}
-		$smarty->clear_assign('module_params'); // ensure params not available outside current module
-            	$smarty->clear_assign('no_module_controls');
-//			if (!file_exists($nocache)) {
-//				$fp = fopen($cachefile, "w+");
-//				fwrite($fp, $data, strlen($data));
-//				fclose ($fp);
-//			}
-//		} else {
-//			$fp = fopen($cachefile, "r");
-//			$out = fread($fp, filesize($cachefile));
-//			fclose ($fp);
-//		}
+//    if ((!file_exists($cachefile)) || (file_exists($nocache)) || ((time() - filemtime($cachefile)) > $cache_time)) {
+    if(file_exists($phpfile)) {
+      include($phpfile);
+    }
 
-//		$out = eregi_replace("\n", "", $out);
-	}
+    $template_file = 'templates/' . $template;
+    $smarty->assign('no_module_controls', 'y');
 
-	if ($out) {
-		if ($float != 'nofloat') {
-			$data = "<div style='float: $float;'>";
-		} else {
-			$data = "<div>";
-		}	
-		if ($np) {
-  		$data.= "~np~$out~/np~</div>";
-		} else {
-			$data.= "$out</div>";
-		}
-	} else {
-        // Display error message
-		$data = "<div class=\"highlight\">" . tra("Sorry no such module"). "<br /><b>$module</b></div>" . $data;
-	}
+    if(file_exists($template_file)) {
+      $out = $smarty->fetch($template);
+    }
 
-	return $data;
+    else {
+      if($tikilib->is_user_module($module)) {
+        $info = $tikilib->get_user_module($module);
+
+        $smarty->assign_by_ref('user_title', $info["title"]);
+        $smarty->assign_by_ref('user_data', $info["data"]);
+        $out = $smarty->fetch('modules/user_module.tpl');
+      }
+    }
+
+    $smarty->clear_assign('module_params'); // ensure params not available outside current module
+    $smarty->clear_assign('no_module_controls');
+//      if (!file_exists($nocache)) {
+//        $fp = fopen($cachefile, "w+");
+//        fwrite($fp, $data, strlen($data));
+//        fclose ($fp);
+//      }
+//    } else {
+//      $fp = fopen($cachefile, "r");
+//      $out = fread($fp, filesize($cachefile));
+//      fclose ($fp);
+//    }
+
+//    $out = eregi_replace("\n", "", $out);
+  }
+
+  if($out) {
+    if($float != 'nofloat') {
+      $data = "<div style='float: $float;'>";
+    }
+
+    else {
+      $data = "<div>";
+    }
+
+    if($np) {
+      $data.= "~np~$out~/np~</div>";
+    }
+
+    else {
+      $data.= "$out</div>";
+    }
+  }
+
+  else {
+    // Display error message
+    $data = "<div class=\"highlight\">" . tra("Sorry no such module"). "<br /><b>$module</b></div>" . $data;
+  }
+
+  return $data;
 }
 
 ?>

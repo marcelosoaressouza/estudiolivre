@@ -7,29 +7,29 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/live_support/lsadminlib.php');
+include_once('lib/live_support/lsadminlib.php');
 
-if ($feature_live_support != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_live_support");
+if($feature_live_support != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_live_support");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $smarty->assign('sent', 'n');
 $smarty->assign('nomsg', 'y');
 
-if (isset($_REQUEST['save'])) {
-	$lsadminlib->post_support_message($_REQUEST['username'],
-		$user, $_REQUEST['user_email'], $_REQUEST['data'], $_REQUEST['priority'], $_REQUEST['module'], 'o', '');
+if(isset($_REQUEST['save'])) {
+  $lsadminlib->post_support_message($_REQUEST['username'],
+                                    $user, $_REQUEST['user_email'], $_REQUEST['data'], $_REQUEST['priority'], $_REQUEST['module'], 'o', '');
 
-	$smarty->assign('sent', 'y');
+  $smarty->assign('sent', 'y');
 }
 
-if ($user) {
-	$smarty->assign('user_email', $userlib->get_user_email($user));
+if($user) {
+  $smarty->assign('user_email', $userlib->get_user_email($user));
 }
 
 $smarty->assign('modules', $lsadminlib->get_modules());

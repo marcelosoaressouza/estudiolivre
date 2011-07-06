@@ -1,6 +1,6 @@
 <?php
 
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -15,20 +15,20 @@ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
  * {elcrumbs crumbs=$crumbs}
  */
 function smarty_function_elcrumbs($params, &$smarty) {
-	$crumbs = $params['crumbs'];
-	
-	$output = '<div class="elcrumbs">';
-	
-	foreach ($crumbs as $crumb) {
-		
-		$output .= '<a href="' . $crumb['url'] . '">' . $crumb['title'] . '</a>';
-		$output .= ' <br> ';
-	}
-	
-	//$output = preg_replace("/> $/", '', $output);
-	
-	$output .= "</div>"; 
-	
-	return $output;
+  $crumbs = $params['crumbs'];
+
+  $output = '<div class="elcrumbs">';
+
+  foreach($crumbs as $crumb) {
+
+    $output .= '<a href="' . $crumb['url'] . '">' . $crumb['title'] . '</a>';
+    $output .= ' <br> ';
+  }
+
+  //$output = preg_replace("/> $/", '', $output);
+
+  $output .= "</div>";
+
+  return $output;
 }
 ?>

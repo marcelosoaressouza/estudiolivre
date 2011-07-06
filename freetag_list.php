@@ -8,36 +8,41 @@
 
 //this script may only be included - so its better to err & die if called directly.
 //smarty is not there - we need setup
-require_once('tiki-setup.php');  
+require_once('tiki-setup.php');
 
 global $feature_freetags;
 global $tiki_p_view_freetags;
 
-if ($feature_freetags == 'y' and $tiki_p_view_freetags == 'y') {
+if($feature_freetags == 'y' and $tiki_p_view_freetags == 'y') {
 
-    global $freetaglib;
-    if (!is_object($freetaglib)) {
-	include_once('lib/freetag/freetaglib.php');
+  global $freetaglib;
+
+  if(!is_object($freetaglib)) {
+    include_once('lib/freetag/freetaglib.php');
+  }
+
+  if(isset($cat_objid)) {
+
+    $tags = $freetaglib->get_tags_on_object($cat_objid, $cat_type);
+
+    $taglist = '';
+
+    for($i=0; $i<sizeof($tags['data']); $i++) {
+      if(!empty($taglist)) $taglist .= ', ';
+
+      $taglist .= $tags['data'][$i]['tag'];
     }
 
-    if (isset($cat_objid)) {
+    $smarty->assign('taglist',$taglist);
+  }
 
-	$tags = $freetaglib->get_tags_on_object($cat_objid, $cat_type);
-	
-	$taglist = '';
-	for ($i=0; $i<sizeof($tags['data']); $i++) {
-           if (!empty($taglist)) $taglist .= ', ';
-	    $taglist .= $tags['data'][$i]['tag'];
-	}
+  else {
+    $taglist = '';
+  }
 
-	$smarty->assign('taglist',$taglist);
-    } else {
-	$taglist = '';
-    }
+  $suggestion = $freetaglib->get_tag_suggestion($taglist,10);
 
-    $suggestion = $freetaglib->get_tag_suggestion($taglist,10);
-
-    $smarty->assign('tag_suggestion',$suggestion);
+  $smarty->assign('tag_suggestion',$suggestion);
 }
 
 ?>

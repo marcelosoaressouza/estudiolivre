@@ -17,7 +17,7 @@
 //header("location: index.php");
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -31,171 +31,181 @@ include_once("lib/init/initlib.php");
 
 class TikiSetup extends TikiInit {
 
-    /*!
-        Check that everything is set up properly
+  /*!
+      Check that everything is set up properly
 
 
-        \static
-    */
+      \static
+  */
 
-    function check($tikidomain='') {
-        static $checked;
+  function check($tikidomain='') {
+    static $checked;
 
-        if ($checked) {
-            return;
-        }
-
-        $checked = true;
-
-        $errors = '';
-
-        if (strpos($_SERVER["SERVER_SOFTWARE"],"IIS")==TRUE){
-		if (array_key_exists('PATH_TRANSLATED', $_SERVER)) {
-			$docroot = dirname($_SERVER['PATH_TRANSLATED']);
-		} else {
-			$docroot = getcwd();
-		}
-        }
-        else{
-        	$docroot = getcwd();
-        }
-
-        if (ini_get('session.save_handler') == 'files') {
-            $save_path = ini_get('session.save_path');
-            // check if we can check it. The session.save_path can be outside
-	    // the open_basedir paths.
-	    $open_basedir=ini_get('open_basedir');
-	    if (empty($open_basedir)) {
-                if (!is_dir($save_path)) {
-                    $errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
-                } else if (!is_writeable($save_path)) {
-                    $errors .= "The directory '$save_path' is not writeable.\n";
-                }
-	    }
-
-            if ($errors) {
-                $save_path = TikiSetup::tempdir();
-
-                if (is_dir($save_path) && is_writeable($save_path)) {
-                    session_save_path($save_path);
-
-                    $errors = '';
-                }
-            }
-        }
-
-        $wwwuser = '';
-        $wwwgroup = '';
-
-        if (TikiSetup::isWindows()) {
-            $wwwuser = 'SYSTEM';
-
-            $wwwgroup = 'SYSTEM';
-        }
-
-        if (function_exists('posix_getuid')) {
-            $user = @posix_getpwuid(@posix_getuid());
-
-            $group = @posix_getpwuid(@posix_getgid());
-            $wwwuser = $user ? $user['name'] : false;
-            $wwwgroup = $group ? $group['name'] : false;
-        }
-
-        if (!$wwwuser) {
-            $wwwuser = 'nobody (or the user account the web server is running under)';
-        }
-
-        if (!$wwwgroup) {
-            $wwwgroup = 'nobody (or the group account the web server is running under)';
-        }
-
-        static $dirs = array(
-            'backups',
-            'dump',
-            'img/wiki',
-            'img/wiki_up',
-            'modules/cache',
-            'temp',
-            'templates_c',
-        # 'var',
-        # 'var/log',
-        # 'var/log/irc',
-        );
-        foreach ($dirs as $dir) {
-            if (!is_dir("$docroot/$dir/$tikidomain")) {
-                $errors .= "The directory '$docroot/$dir/$tikidomain' does not exist.\n";
-            } else if (!is_writeable("$docroot/$dir/$tikidomain")) {
-                $errors .= "The directory '$docroot/$dir/$tikidomain' is not writeable by $wwwuser.\n";
-            }
-        }
-
-        if ($errors) {
-            $PHP_CONFIG_FILE_PATH = PHP_CONFIG_FILE_PATH;
-
-            ob_start();
-            phpinfo (INFO_MODULES);
-            $httpd_conf = 'httpd.conf';
-
-            if (preg_match('/Server Root<\/b><\/td><td\s+align="left">([^<]*)</', ob_get_contents(), $m)) {
-                $httpd_conf = $m[1] . '/' . $httpd_conf;
-            }
-
-            ob_end_clean();
-
-            print "
-<html><body>
-<center><img src=\"styles/bolha/img/logoTop.png\">
-<h2>Estamos em manuten&ccedil;&atilde;o</h2>
-<h3>Volte mais tarde</h3></center>
-<!-- 
-<h2><font color='red'>Tikiwiki is not properly set up:</font></h1>
-$errors
--->
-</body></html>
-";
-						if ($tikidomain) {
-							$install_link = '?multi='.urlencode($tikidomain);
-						}
-            if (!TikiSetup::isWindows()) {
-                            print "Your options:
-
-
-	1- With FTP access:
-		a) Change the permissions (chmod) of the directories to 777.
-		b) Create any missing directories
-		c) <a href='tiki-install.php$install_link'>Execute the Tiki installer again</a> (Once you have executed these commands, this message will disappear!)
-
-	or
-
-	2- With shell (SSH) access, you can run the command below.
-
-		a) Run setup.sh and follow the instructions:
-			\$ bash
-			\$ cd $docroot
-			\$ chmod +x setup.sh
-			\$ ./setup.sh
-
-		The script will offer you options depending on your server configuration.
-
-		b) <a href='tiki-install.php$install_link'>Execute the Tiki installer again</a> (Once you have executed these commands, this message will disappear!)
-
-
-<hr>
-If you have problems accessing a directory, check the open_basedir entry in
-$PHP_CONFIG_FILE_PATH/php.ini or $httpd_conf.
-
-<hr>
-
-<a href='http://doc.tikiwiki.org/Installation' target='_blank'>Consult the tikiwiki.org installation guide</a> if you need more help or <a href='http://tikiwiki.org/tiki-forums.php' target='_blank'>visit the forums</a>
-
-</pre></body></html>";
-            }
-
-            exit;
-        }
-
-
+    if($checked) {
+      return;
     }
+
+    $checked = true;
+
+    $errors = '';
+
+    if(strpos($_SERVER["SERVER_SOFTWARE"],"IIS")==TRUE) {
+      if(array_key_exists('PATH_TRANSLATED', $_SERVER)) {
+        $docroot = dirname($_SERVER['PATH_TRANSLATED']);
+      }
+
+      else {
+        $docroot = getcwd();
+      }
+    }
+
+    else {
+      $docroot = getcwd();
+    }
+
+    if(ini_get('session.save_handler') == 'files') {
+      $save_path = ini_get('session.save_path');
+      // check if we can check it. The session.save_path can be outside
+      // the open_basedir paths.
+      $open_basedir=ini_get('open_basedir');
+
+      if(empty($open_basedir)) {
+        if(!is_dir($save_path)) {
+          $errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
+        }
+
+        else if(!is_writeable($save_path)) {
+          $errors .= "The directory '$save_path' is not writeable.\n";
+        }
+      }
+
+      if($errors) {
+        $save_path = TikiSetup::tempdir();
+
+        if(is_dir($save_path) && is_writeable($save_path)) {
+          session_save_path($save_path);
+
+          $errors = '';
+        }
+      }
+    }
+
+    $wwwuser = '';
+    $wwwgroup = '';
+
+    if(TikiSetup::isWindows()) {
+      $wwwuser = 'SYSTEM';
+
+      $wwwgroup = 'SYSTEM';
+    }
+
+    if(function_exists('posix_getuid')) {
+      $user = @posix_getpwuid(@posix_getuid());
+
+      $group = @posix_getpwuid(@posix_getgid());
+      $wwwuser = $user ? $user['name'] : false;
+      $wwwgroup = $group ? $group['name'] : false;
+    }
+
+    if(!$wwwuser) {
+      $wwwuser = 'nobody (or the user account the web server is running under)';
+    }
+
+    if(!$wwwgroup) {
+      $wwwgroup = 'nobody (or the group account the web server is running under)';
+    }
+
+    static $dirs = array(
+                     'backups',
+                     'dump',
+                     'img/wiki',
+                     'img/wiki_up',
+                     'modules/cache',
+                     'temp',
+                     'templates_c',
+# 'var',
+# 'var/log',
+# 'var/log/irc',
+                   );
+    foreach($dirs as $dir) {
+      if(!is_dir("$docroot/$dir/$tikidomain")) {
+        $errors .= "The directory '$docroot/$dir/$tikidomain' does not exist.\n";
+      }
+
+      else if(!is_writeable("$docroot/$dir/$tikidomain")) {
+        $errors .= "The directory '$docroot/$dir/$tikidomain' is not writeable by $wwwuser.\n";
+      }
+    }
+
+    if($errors) {
+      $PHP_CONFIG_FILE_PATH = PHP_CONFIG_FILE_PATH;
+
+      ob_start();
+      phpinfo(INFO_MODULES);
+      $httpd_conf = 'httpd.conf';
+
+      if(preg_match('/Server Root<\/b><\/td><td\s+align="left">([^<]*)</', ob_get_contents(), $m)) {
+        $httpd_conf = $m[1] . '/' . $httpd_conf;
+      }
+
+      ob_end_clean();
+
+      print "
+      <html><body>
+      <center><img src=\"styles/bolha/img/logoTop.png\">
+      <h2>Estamos em manuten&ccedil;&atilde;o</h2>
+      <h3>Volte mais tarde</h3></center>
+      <!--
+      <h2><font color='red'>Tikiwiki is not properly set up:</font></h1>
+      $errors
+      -->
+      </body></html>
+      ";
+
+      if($tikidomain) {
+        $install_link = '?multi='.urlencode($tikidomain);
+      }
+
+      if(!TikiSetup::isWindows()) {
+        print "Your options:
+
+
+        1- With FTP access:
+        a) Change the permissions (chmod) of the directories to 777.
+        b) Create any missing directories
+        c) <a href='tiki-install.php$install_link'>Execute the Tiki installer again</a> (Once you have executed these commands, this message will disappear!)
+
+        or
+
+        2- With shell (SSH) access, you can run the command below.
+
+        a) Run setup.sh and follow the instructions:
+        \$ bash
+        \$ cd $docroot
+        \$ chmod +x setup.sh
+        \$ ./setup.sh
+
+        The script will offer you options depending on your server configuration.
+
+        b) <a href='tiki-install.php$install_link'>Execute the Tiki installer again</a> (Once you have executed these commands, this message will disappear!)
+
+
+        <hr>
+        If you have problems accessing a directory, check the open_basedir entry in
+        $PHP_CONFIG_FILE_PATH/php.ini or $httpd_conf.
+
+        <hr>
+
+        <a href='http://doc.tikiwiki.org/Installation' target='_blank'>Consult the tikiwiki.org installation guide</a> if you need more help or <a href='http://tikiwiki.org/tiki-forums.php' target='_blank'>visit the forums</a>
+
+        </pre></body></html>";
+      }
+
+      exit;
+    }
+
+
+  }
 
 }
 
@@ -205,35 +215,36 @@ TikiSetup::prependIncludePath('lib/pear');
 $tmpDir = TikiInit::tempdir();
 
 class timer {
-    function parseMicro($micro) {
-        list($micro, $sec) = explode(' ', microtime());
+  function parseMicro($micro) {
+    list($micro, $sec) = explode(' ', microtime());
 
-        return $sec + $micro;
+    return $sec + $micro;
+  }
+
+  function start($timer = 'default', $restart = FALSE) {
+    if(isset($this->timer[$timer]) && !$restart) {
+      // report error - timer already exists
     }
 
-    function start($timer = 'default', $restart = FALSE) {
-        if (isset($this->timer[$timer]) && !$restart) {
-            // report error - timer already exists
-        }
-        $this->timer[$timer] = $this->parseMicro(microtime());
-    }
+    $this->timer[$timer] = $this->parseMicro(microtime());
+  }
 
-    function stop($timer = 'default') {
-        $result = $this->elapsed($timer);
-        unset ($this->timer[$timer]);
-        return $result;
-    }
+  function stop($timer = 'default') {
+    $result = $this->elapsed($timer);
+    unset($this->timer[$timer]);
+    return $result;
+  }
 
-    function elapsed($timer = 'default') {
-        return $this->parseMicro(microtime()) - $this->timer[$timer];
-    }
+  function elapsed($timer = 'default') {
+    return $this->parseMicro(microtime()) - $this->timer[$timer];
+  }
 }
 
 $tiki_timer = new timer();
 $tiki_timer->start();
 
 // for PHP<4.2.0
-if (!function_exists('array_fill')) {
+if(!function_exists('array_fill')) {
   require_once('lib/compat/array_fill.func.php');
 }
 
@@ -245,69 +256,79 @@ $tikifeedback = array();
 
 $feature_referer_highlight = 'n';
 
-include_once ("tiki-setup_base.php");
+include_once("tiki-setup_base.php");
 
 TikiSetup::check($tikidomain);
 //print("tiki-setup: before rest of tiki-setup:".$tiki_timer->elapsed()."<br />");
 
 // patch for Case-sensitivity perm issue
 $case_patched = $tikilib->get_preference('case_patched','n');
-if ($case_patched == 'n') {
-	include_once 'db/case_patch.php';
-	$tikilib->set_preference('case_patched','y');
+
+if($case_patched == 'n') {
+  include_once 'db/case_patch.php';
+  $tikilib->set_preference('case_patched','y');
 }
+
 // end of patch
 
 //check to see if admin has closed the site
 $site_closed = $tikilib->get_preference('site_closed','n');
-if ($site_closed == 'y' and $tiki_p_access_closed_site != 'y' and !isset($bypass_siteclose_check)) {
-    $site_closed_msg = $tikilib->get_preference('site_closed_msg','Site is closed for maintainance; please come back later.');
-    $url = 'tiki-error_simple.php?error=' . urlencode("$site_closed_msg");
-    header('location: ' . $url);
-    exit;
+
+if($site_closed == 'y' and $tiki_p_access_closed_site != 'y' and !isset($bypass_siteclose_check)) {
+  $site_closed_msg = $tikilib->get_preference('site_closed_msg','Site is closed for maintainance; please come back later.');
+  $url = 'tiki-error_simple.php?error=' . urlencode("$site_closed_msg");
+  header('location: ' . $url);
+  exit;
 }
 
 //check to see if max server load threshold is enabled
 $use_load_threshold = $tikilib->get_preference('use_load_threshold','n');
+
 // get average server load in the last minute
-if ($load = @file('/proc/loadavg')) {
-    list($server_load) = explode(' ', $load[0]);
-    $smarty->assign('server_load',$server_load);
-    if ($use_load_threshold == 'y' and $tiki_p_access_closed_site != 'y' and !isset($bypass_siteclose_check)) {
-        $load_threshold = $tikilib->get_preference('load_threshold',3);
-        if ($server_load > $load_threshold) {
-            $site_busy_msg = $tikilib->get_preference('site_busy_msg','Server is currently too busy; please come back later.');
-            $url = 'tiki-error_simple.php?error=' . urlencode($site_busy_msg);
-            header('location: ' . $url);
-            exit;
-        }
+if($load = @file('/proc/loadavg')) {
+  list($server_load) = explode(' ', $load[0]);
+  $smarty->assign('server_load',$server_load);
+
+  if($use_load_threshold == 'y' and $tiki_p_access_closed_site != 'y' and !isset($bypass_siteclose_check)) {
+    $load_threshold = $tikilib->get_preference('load_threshold',3);
+
+    if($server_load > $load_threshold) {
+      $site_busy_msg = $tikilib->get_preference('site_busy_msg','Server is currently too busy; please come back later.');
+      $url = 'tiki-error_simple.php?error=' . urlencode($site_busy_msg);
+      header('location: ' . $url);
+      exit;
     }
-} else {
-	$smarty->assign('server_load','?');
+  }
+}
+
+else {
+  $smarty->assign('server_load','?');
 }
 
 // The votes array stores the votes the user has made
-if (!isset($_SESSION["votes"])) {
-    $votes = array();
+if(!isset($_SESSION["votes"])) {
+  $votes = array();
 
-    //session_register("votes");
-    $_SESSION["votes"] = $votes;
+  //session_register("votes");
+  $_SESSION["votes"] = $votes;
 }
 
 $appname = "tiki";
 
-if (!isset($_SESSION["appname"])) {
-    //session_register("appname");
-    $_SESSION["appname"] = $appname;
+if(!isset($_SESSION["appname"])) {
+  //session_register("appname");
+  $_SESSION["appname"] = $appname;
 }
 
 $smarty->assign("appname", $appname);
 
 
-if (isset($_REQUEST["PHPSESSID"])) {
-    $tikilib->update_session($_REQUEST["PHPSESSID"]);
-} elseif (function_exists("session_id")) {
-    $tikilib->update_session(session_id());
+if(isset($_REQUEST["PHPSESSID"])) {
+  $tikilib->update_session($_REQUEST["PHPSESSID"]);
+}
+
+elseif(function_exists("session_id")) {
+  $tikilib->update_session(session_id());
 }
 
 /* Commented on revision 1.208 because not used, log message said more
@@ -326,18 +347,20 @@ if (!isset($_SESSION["last_forum_visit"])) {
 }
 */
 
-if (file_exists('lib/bablotron.php')) {
-	$lib_spellcheck = 'y';
-	$wiki_spellcheck = 'n';
-	$cms_spellcheck = 'n';
-	$blog_spellcheck = 'n';
-	$smarty->assign('lib_spellcheck', $lib_spellcheck);
-	$smarty->assign('wiki_spellcheck', $wiki_spellcheck);
-	$smarty->assign('cms_spellcheck', $cms_spellcheck);
-	$smarty->assign('blog_spellcheck', $blog_spellcheck);
+if(file_exists('lib/bablotron.php')) {
+  $lib_spellcheck = 'y';
+  $wiki_spellcheck = 'n';
+  $cms_spellcheck = 'n';
+  $blog_spellcheck = 'n';
+  $smarty->assign('lib_spellcheck', $lib_spellcheck);
+  $smarty->assign('wiki_spellcheck', $wiki_spellcheck);
+  $smarty->assign('cms_spellcheck', $cms_spellcheck);
+  $smarty->assign('blog_spellcheck', $blog_spellcheck);
 }
 
-if (isset($_REQUEST['page'])) { $_REQUEST['page'] = strip_tags($_REQUEST['page']); }
+if(isset($_REQUEST['page'])) {
+  $_REQUEST['page'] = strip_tags($_REQUEST['page']);
+}
 
 $area = 'tiki';
 $userbreadCrumb = 4;
@@ -461,7 +484,7 @@ $wiki_uses_slides = 'n';
 $smarty->assign('wiki_uses_slides', $wiki_uses_slides);
 
 $feature_wiki_allowhtml = 'n';
-$smarty->assign('feature_wiki_allowhtml ', $feature_wiki_allowhtml );
+$smarty->assign('feature_wiki_allowhtml ', $feature_wiki_allowhtml);
 
 $feature_help = 'y';
 $smarty->assign('feature_help', $feature_help);
@@ -565,22 +588,27 @@ $wiki_cache = 0;
 $smarty->assign('wiki_cache', $wiki_cache);
 $feature_file_galleries = 'n';
 $feature_file_galleries_rankings = 'n';
-if (!empty($_SESSION["language"]))
-	$saveLanguage = $_SESSION["language"]; // if register_globals is on variable and _SESSION are the same
+
+if(!empty($_SESSION["language"]))
+  $saveLanguage = $_SESSION["language"]; // if register_globals is on variable and _SESSION are the same
+
 $language = 'en';
 //ESTUDIOLIVRE HACK BEGIN
 $language = 'pt-br';
-if (preg_match('/estudiolibre/', $_SERVER['SERVER_NAME']) && !isset($_SESSION['language'])) {
+
+if(preg_match('/estudiolibre/', $_SERVER['SERVER_NAME']) && !isset($_SESSION['language'])) {
   $_SESSION['language'] = $language = 'es';
 }
+
 //ESTUDIOLIVRE HACK END
 $lang_use_db = 'n';
-if (isset($_SESSION['style']))
-	$style = $_SESSION['style'];
 
-if( isset($_COOKIE['tiki-theme']) )
+if(isset($_SESSION['style']))
+  $style = $_SESSION['style'];
+
+if(isset($_COOKIE['tiki-theme']))
 {
-        $style = $_COOKIE['tiki-theme'];
+  $style = $_COOKIE['tiki-theme'];
 }
 
 $feature_left_column = 'y';
@@ -613,8 +641,10 @@ $smarty->assign('system_os', $system_os);
 
 // default: 1. report eveything to admin only
 $error_reporting_level = (int)($tikilib->get_preference('error_reporting_level', 1));
-if ($error_reporting_level == 1)
-	$error_reporting_level = ($tiki_p_admin == "y") ? E_ALL: 0;
+
+if($error_reporting_level == 1)
+  $error_reporting_level = ($tiki_p_admin == "y") ? E_ALL: 0;
+
 error_reporting($error_reporting_level);
 $default_mail_charset="utf-8";
 
@@ -1147,24 +1177,31 @@ $smarty->assign('wiki_page_regex', $wiki_page_regex);
 // Wiki dump tarball doesn't exist by default
 $wiki_dump_exists = 'n';
 $dump_path = 'dump';
-if ($tikidomain) {
-	$dump_path.= "/$tikidomain";
+
+if($tikidomain) {
+  $dump_path.= "/$tikidomain";
 }
-if (file_exists($dump_path.'/new.tar')){
-	$wiki_dump_exists = 'y';
+
+if(file_exists($dump_path.'/new.tar')) {
+  $wiki_dump_exists = 'y';
 };
+
 $smarty->assign('wiki_dump_exists', $wiki_dump_exists);
 
 // Please DO NOT modify any of the brackets in the regex(s).
 // It may seem redundent but, really, they are ALL REQUIRED.
-if ($wiki_page_regex == 'strict') {
-    $page_regex = '([A-Za-z0-9_])([\.: A-Za-z0-9_\-])*([A-Za-z0-9_])';
-} elseif ($wiki_page_regex == 'full') {
-    $page_regex = '([A-Za-z0-9_]|[\x80-\xFF])([\.: A-Za-z0-9_\-]|[\x80-\xFF])*([A-Za-z0-9_]|[\x80-\xFF])';
-} else {
-    // This is just evil.  The middle section means "anything, as long
-    // as it's not a | and isn't followed by ))".  -rlpowell
-    $page_regex = '([^|\(\)])([^|\(\)](?!\)\)))*?([^|\(\)])';
+if($wiki_page_regex == 'strict') {
+  $page_regex = '([A-Za-z0-9_])([\.: A-Za-z0-9_\-])*([A-Za-z0-9_])';
+}
+
+elseif($wiki_page_regex == 'full') {
+  $page_regex = '([A-Za-z0-9_]|[\x80-\xFF])([\.: A-Za-z0-9_\-]|[\x80-\xFF])*([A-Za-z0-9_]|[\x80-\xFF])';
+}
+
+else {
+  // This is just evil.  The middle section means "anything, as long
+  // as it's not a | and isn't followed by ))".  -rlpowell
+  $page_regex = '([^|\(\)])([^|\(\)](?!\)\)))*?([^|\(\)])';
 }
 
 // PEAR::Auth support
@@ -1256,11 +1293,11 @@ $smarty->assign('site_crumb_seper', $site_crumb_seper);
 
 $feature_sitemycode='n';
 $sitemycode='<div style="text-align: center; padding-top: 10px">
-<a href="."><img alt="" src="img/tiki/tw_logo.png" border="0" hspace="10"></a>
-<span style="font-size:3em; font-weight: bold; vertical-align:bottom">
-{$siteTitle}
-</span>
-</div>';
+            <a href="."><img alt="" src="img/tiki/tw_logo.png" border="0" hspace="10"></a>
+            <span style="font-size:3em; font-weight: bold; vertical-align:bottom">
+            {$siteTitle}
+            </span>
+            </div>';
 $sitemycode_publish='n';
 $smarty->assign('feature_sitemycode', $feature_sitemycode);
 $smarty->assign('sitemycode', $sitemycode);
@@ -1365,9 +1402,10 @@ $smarty->assign('cacheimages', $cacheimages);
 
 $smarty->assign('wiki_extras', 'n');
 
-if (!isset($_SERVER['SERVER_NAME'])) {
-	$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'];
+if(!isset($_SERVER['SERVER_NAME'])) {
+  $_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'];
 }
+
 $feature_server_name = $tikilib->get_preference('feature_server_name', $_SERVER["SERVER_NAME"]);
 
 //print($_SERVER["REQUEST_URI"]);
@@ -1375,15 +1413,15 @@ $smarty->assign('feature_server_name', $feature_server_name);
 $_SERVER["SERVER_NAME"] = $feature_server_name;
 
 // Fix IIS servers not setting what they should set (ay ay IIS, ay ay)
-if (!isset($_SERVER['QUERY_STRING']))
-    $_SERVER['QUERY_STRING'] = '';
+if(!isset($_SERVER['QUERY_STRING']))
+  $_SERVER['QUERY_STRING'] = '';
 
-if (!isset($_SERVER['REQUEST_URI']) || empty($_SERVER['REQUEST_URI'])) {
-    $_SERVER['REQUEST_URI'] = $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'];
+if(!isset($_SERVER['REQUEST_URI']) || empty($_SERVER['REQUEST_URI'])) {
+  $_SERVER['REQUEST_URI'] = $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'];
 }
 
-if (!isset($feature_bidi)) {
-    $feature_bidi = 'n';
+if(!isset($feature_bidi)) {
+  $feature_bidi = 'n';
 }
 
 $smarty->assign('feature_bidi', $feature_bidi);
@@ -1399,14 +1437,16 @@ $smarty->assign('https_login_required', $https_login_required);
 
 $https_mode = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
 
-if ($https_mode) {
-    $http_port = 80;
+if($https_mode) {
+  $http_port = 80;
 
-    $https_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 443;
-} else {
-    $http_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
+  $https_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 443;
+}
 
-    $https_port = 443;
+else {
+  $http_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
+
+  $https_port = 443;
 }
 
 $http_domain = $tikilib->get_preference('http_domain', '');
@@ -1430,109 +1470,117 @@ $smarty->assign('login_url', $login_url);
 $smarty->assign('login_scr', $login_scr);
 $smarty->assign('error_url', $error_url);
 
-if ($https_login == 'y' || $https_login_required == 'y') {
-    $http_login_url = 'http://' . $http_domain;
+if($https_login == 'y' || $https_login_required == 'y') {
+  $http_login_url = 'http://' . $http_domain;
 
-    if ($http_port != 80)
-        $http_login_url .= ':' . $http_port;
+  if($http_port != 80)
+    $http_login_url .= ':' . $http_port;
 
-    $http_login_url .= $http_prefix . $tikiIndex;
+  $http_login_url .= $http_prefix . $tikiIndex;
 
-    if (SID)
-        $http_login_url .= '?' . SID;
+  if(SID)
+    $http_login_url .= '?' . SID;
 
-    $edit_data = htmlentities(isset($_REQUEST["edit"]) ? $_REQUEST["edit"] : '', ENT_QUOTES);
+  $edit_data = htmlentities(isset($_REQUEST["edit"]) ? $_REQUEST["edit"] : '', ENT_QUOTES);
 
-    $https_login_url = 'https://' . $https_domain;
+  $https_login_url = 'https://' . $https_domain;
 
-    if ($https_port != 443)
-        $https_login_url .= ':' . $https_port;
+  if($https_port != 443)
+    $https_login_url .= ':' . $https_port;
 
-    $https_login_url .= $https_prefix . $tikiIndex;
+  $https_login_url .= $https_prefix . $tikiIndex;
 
-    if (SID)
-        $https_login_url .= '?' . SID;
+  if(SID)
+    $https_login_url .= '?' . SID;
 
-    $stay_in_ssl_mode = isset($_REQUEST['stay_in_ssl_mode']) ? $_REQUEST['stay_in_ssl_mode'] : '';
+  $stay_in_ssl_mode = isset($_REQUEST['stay_in_ssl_mode']) ? $_REQUEST['stay_in_ssl_mode'] : '';
 
-    if ($https_login_required == 'y') {
-        # only show "Stay in SSL checkbox if we're not already in HTTPS mode"
-        $show_stay_in_ssl_mode = !$https_mode ? 'y' : 'n';
-
-        $smarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
-
-        if (!$https_mode) {
-            $https_login_url = 'https://' . $https_domain;
-
-            if ($https_port != 443)
-                $https_login_url .= ':' . $https_port;
-
-            $https_login_url .= $https_prefix . $login_url;
-
-            if (SID)
-                $https_login_url .= '?' . SID;
-
-            $smarty->assign('login_url', $https_login_url);
-        } else {
-            # We're already in HTTPS mode, so let's stay there
-            $stay_in_ssl_mode = 'on';
-        }
-    } else {
-        $smarty->assign('http_login_url', $http_login_url);
-
-        $smarty->assign('https_login_url', $https_login_url);
-        # only show "Stay in SSL checkbox if we're not already in HTTPS mode"
-        $show_stay_in_ssl_mode = $https_mode ? 'y' : 'n';
-    }
+  if($https_login_required == 'y') {
+# only show "Stay in SSL checkbox if we're not already in HTTPS mode"
+    $show_stay_in_ssl_mode = !$https_mode ? 'y' : 'n';
 
     $smarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
-    $smarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
+
+    if(!$https_mode) {
+      $https_login_url = 'https://' . $https_domain;
+
+      if($https_port != 443)
+        $https_login_url .= ':' . $https_port;
+
+      $https_login_url .= $https_prefix . $login_url;
+
+      if(SID)
+        $https_login_url .= '?' . SID;
+
+      $smarty->assign('login_url', $https_login_url);
+    }
+
+    else {
+# We're already in HTTPS mode, so let's stay there
+      $stay_in_ssl_mode = 'on';
+    }
+  }
+
+  else {
+    $smarty->assign('http_login_url', $http_login_url);
+
+    $smarty->assign('https_login_url', $https_login_url);
+# only show "Stay in SSL checkbox if we're not already in HTTPS mode"
+    $show_stay_in_ssl_mode = $https_mode ? 'y' : 'n';
+  }
+
+  $smarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
+  $smarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
 }
 
 // ******************************************************************************************
 // start of replacement : get all prefs from db once
 $tikilib->get_all_preferences();
-foreach ($preferences as $name => $val) {
-	$$name = $val;
-	$smarty->assign("$name", $val);
+foreach($preferences as $name => $val) {
+  $$name = $val;
+  $smarty->assign("$name", $val);
 }
 // ******************************************************************************************
 
 // @TODO: bug here, serialized val being broken at char 250 that's max size of preference
 $interlist = unserialize($interlist);
 
-if ($feature_polls == 'y' and isset($_REQUEST["pollVote"])) {
-	if ($tiki_p_vote_poll == 'y' && isset($_REQUEST["polls_optionId"])) {
-		if( $feature_poll_anonymous == 'y' || $user ) {
-			if (!isset($polllib) or !is_object($polllib)) {
-				include_once('lib/polls/polllib_shared.php');
-			}
-			$polllib->poll_vote($user, $_REQUEST["polls_pollId"], $_REQUEST["polls_optionId"]);
-			// Poll vote must go first, or the new vote will be seen as the previous one.
-			$tikilib->register_user_vote($user, 'poll' . $_REQUEST["polls_pollId"], $_REQUEST["polls_optionId"]);
-		}
-	}
-	$pollId = $_REQUEST["polls_pollId"];
-	if (!isset($_REQUEST['wikipoll'])) {
-		header ("location: tiki-poll_results.php?pollId=$pollId");
-	}
+if($feature_polls == 'y' and isset($_REQUEST["pollVote"])) {
+  if($tiki_p_vote_poll == 'y' && isset($_REQUEST["polls_optionId"])) {
+    if($feature_poll_anonymous == 'y' || $user) {
+      if(!isset($polllib) or !is_object($polllib)) {
+        include_once('lib/polls/polllib_shared.php');
+      }
+
+      $polllib->poll_vote($user, $_REQUEST["polls_pollId"], $_REQUEST["polls_optionId"]);
+      // Poll vote must go first, or the new vote will be seen as the previous one.
+      $tikilib->register_user_vote($user, 'poll' . $_REQUEST["polls_pollId"], $_REQUEST["polls_optionId"]);
+    }
+  }
+
+  $pollId = $_REQUEST["polls_pollId"];
+
+  if(!isset($_REQUEST['wikipoll'])) {
+    header("location: tiki-poll_results.php?pollId=$pollId");
+  }
 }
 
 //after prefs update, must check if mailin_autocheck time is elapsed
 if($feature_mailin == 'y' && $mailin_autocheck == 'y')
 {
-  if((time() - $mailin_autocheckLast)/60 > $mailin_autocheckFreq){
+  if((time() - $mailin_autocheckLast)/60 > $mailin_autocheckFreq) {
     $tikilib->set_preference("mailin_autocheckLast", time());
     include_once("tiki-mailin-code.php");
   }
 }
 
-if ($feature_detect_language == "y") {
-    $browser_language = detect_browser_language();
-    if (!empty($browser_language)) {
-	$language = $browser_language;
-	$smarty->assign('language', $language);
-    }
+if($feature_detect_language == "y") {
+  $browser_language = detect_browser_language();
+
+  if(!empty($browser_language)) {
+    $language = $browser_language;
+    $smarty->assign('language', $language);
+  }
 }
 
 $useGroupHome = $tikilib->get_preference("useGroupHome",'n');
@@ -1541,17 +1589,21 @@ $tikiIndex = $tikilib->get_preference("tikiIndex",'tiki-index.php');
 $group = '';
 
 $group = $userlib->get_user_default_group($user);
+
 if($useGroupHome == 'y') {
-    $groupHome = $userlib->get_user_default_homepage($user);
-    if ($groupHome) {
-	if (preg_match('#^https?:#', $groupHome)) {
-		$tikiIndex = $groupHome;
-	} else {
-		$tikiIndex = "tiki-index.php?page=".$groupHome;
-		$wikiHomePage = $groupHome;
-		$smarty->assign('wikiHomePage',$wikiHomePage);
-	}
+  $groupHome = $userlib->get_user_default_homepage($user);
+
+  if($groupHome) {
+    if(preg_match('#^https?:#', $groupHome)) {
+      $tikiIndex = $groupHome;
     }
+
+    else {
+      $tikiIndex = "tiki-index.php?page=".$groupHome;
+      $wikiHomePage = $groupHome;
+      $smarty->assign('wikiHomePage',$wikiHomePage);
+    }
+  }
 }
 
 $smarty->assign('default_group',$group);
@@ -1563,85 +1615,101 @@ $diff_versions = 'n';
 $user_style = $site_style = $tikilib->get_preference("style", 'tikineat.css');
 $transition_style = $tikilib->get_preference("transition_style", 'none');
 
-if( isset($_COOKIE['tiki-theme']) )
+if(isset($_COOKIE['tiki-theme']))
 {
-        $user_style = $_COOKIE['tiki-theme'];
+  $user_style = $_COOKIE['tiki-theme'];
 }
 
-if (isset($_REQUEST['switchLang'])) {
-	if ($change_language != 'y'
-		|| !preg_match("/[a-zA-Z-_]*$/", $_REQUEST['switchLang'])
-		|| !file_exists('lang/'.$_REQUEST['switchLang'].'/language.php'))
-		unset($_REQUEST['switchLang']);
-	elseif ($available_languages) {
-		$a = unserialize($available_languages);
-		if (count($a) >= 1 && !in_array($_REQUEST['switchLang'], $a))
-			unset($_REQUEST['switchLang']);
-	}
+if(isset($_REQUEST['switchLang'])) {
+  if($change_language != 'y'
+      || !preg_match("/[a-zA-Z-_]*$/", $_REQUEST['switchLang'])
+      || !file_exists('lang/'.$_REQUEST['switchLang'].'/language.php'))
+    unset($_REQUEST['switchLang']);
+
+  elseif($available_languages) {
+    $a = unserialize($available_languages);
+
+    if(count($a) >= 1 && !in_array($_REQUEST['switchLang'], $a))
+      unset($_REQUEST['switchLang']);
+  }
 }
 
-if ($feature_userPreferences == 'y') {
-    // Check for FEATURES for the user
+if($feature_userPreferences == 'y') {
+  // Check for FEATURES for the user
 
-    if ($user) {
-        $user_dbl = $tikilib->get_user_preference($user, 'user_dbl', 'y');
-	$diff_versions = $tikilib->get_user_preference($user, 'diff_versions', 'n');
+  if($user) {
+    $user_dbl = $tikilib->get_user_preference($user, 'user_dbl', 'y');
+    $diff_versions = $tikilib->get_user_preference($user, 'diff_versions', 'n');
 
-        if ($change_theme == 'y') {
-            $user_style = $tikilib->get_user_preference($user, 'theme', $style);
+    if($change_theme == 'y') {
+      $user_style = $tikilib->get_user_preference($user, 'theme', $style);
 
-            if ($user_style and (is_file("styles/$user_style") or is_file("styles/$tikidomain/$user_style"))) {
-									$style = $user_style;
-            }
-        }
-
-        if ($change_language == 'y') {
-		if (isset($_REQUEST['switchLang'])) {
-			$language = $_REQUEST['switchLang'];
-			$tikilib->set_user_preference($user, 'language', $language);
-		} else {
-            	$user_language = $tikilib->get_user_preference($user, 'language', $language);
-	            if ($user_language && $language != $user_language && file_exists("lang/$user_language/language.php")) {
-                		$language = $user_language;
-            	}
-		}
-        }
-    } else {
-	$style = $user_style;
+      if($user_style and(is_file("styles/$user_style") or is_file("styles/$tikidomain/$user_style"))) {
+        $style = $user_style;
+      }
     }
 
-    $smarty->assign('language', $language);
-} else {
+    if($change_language == 'y') {
+      if(isset($_REQUEST['switchLang'])) {
+        $language = $_REQUEST['switchLang'];
+        $tikilib->set_user_preference($user, 'language', $language);
+      }
+
+      else {
+        $user_language = $tikilib->get_user_preference($user, 'language', $language);
+
+        if($user_language && $language != $user_language && file_exists("lang/$user_language/language.php")) {
+          $language = $user_language;
+        }
+      }
+    }
+  }
+
+  else {
     $style = $user_style;
+  }
+
+  $smarty->assign('language', $language);
 }
 
-if (!(is_file("styles/$style") or is_file("styles/$tikidomain/$style"))) { $style = "tikineat.css"; }
+else {
+  $style = $user_style;
+}
 
-if (!$user) {
-	if (isset($_REQUEST['switchLang'])) {
-		$language = $_REQUEST['switchLang'];
-		$_SESSION['language'] = $language;
-		$smarty->assign('language', $language);
-	} elseif  (!empty($saveLanguage)) { // users not logged that change the preference
-		$language = $saveLanguage;
-		$smarty->assign('language', $language);
-	}
- } elseif (!empty($saveLanguage) && $feature_userPreferences != 'y' && $change_language == 'y') {
- 	$language = $saveLanguage;
-	$smarty->assign('language', $language);
- }
+if(!(is_file("styles/$style") or is_file("styles/$tikidomain/$style"))) {
+  $style = "tikineat.css";
+}
+
+if(!$user) {
+  if(isset($_REQUEST['switchLang'])) {
+    $language = $_REQUEST['switchLang'];
+    $_SESSION['language'] = $language;
+    $smarty->assign('language', $language);
+  }
+
+  elseif(!empty($saveLanguage)) {   // users not logged that change the preference
+    $language = $saveLanguage;
+    $smarty->assign('language', $language);
+  }
+}
+
+elseif(!empty($saveLanguage) && $feature_userPreferences != 'y' && $change_language == 'y') {
+  $language = $saveLanguage;
+  $smarty->assign('language', $language);
+}
 
 $stlstl = split("-|\.", $style);
 $style_base = $stlstl[0];
 
-if ($lang_use_db != 'y') {
-    // check if needed!!!
-    global $lang;
+if($lang_use_db != 'y') {
+  // check if needed!!!
+  global $lang;
 }
 
-if ($tikidomain and is_file("styles/$tikidomain/$style")) {
-	$style = "$tikidomain/$style";
+if($tikidomain and is_file("styles/$tikidomain/$style")) {
+  $style = "$tikidomain/$style";
 }
+
 $smarty->assign('style', $style);
 include_once("csslib.php");
 $transition_style = $csslib->transition_css("styles/".$style);
@@ -1662,18 +1730,22 @@ if (0) {
 }
 */
 
-if ($feature_babelfish == 'y') {
-    require_once('lib/Babelfish.php');
-    $smarty->assign('babelfish_links', Babelfish::links($language));
-} else {
-    $smarty->assign('babelfish_links', '');
+if($feature_babelfish == 'y') {
+  require_once('lib/Babelfish.php');
+  $smarty->assign('babelfish_links', Babelfish::links($language));
 }
 
-if ($feature_babelfish_logo == 'y') {
-    require_once('lib/Babelfish.php');
-    $smarty->assign('babelfish_logo', Babelfish::logo($language));
-} else {
-    $smarty->assign('babelfish_logo', '');
+else {
+  $smarty->assign('babelfish_links', '');
+}
+
+if($feature_babelfish_logo == 'y') {
+  require_once('lib/Babelfish.php');
+  $smarty->assign('babelfish_logo', Babelfish::logo($language));
+}
+
+else {
+  $smarty->assign('babelfish_logo', '');
 }
 
 $smarty->assign('user_dbl', $user_dbl);
@@ -1686,13 +1758,13 @@ $smarty->assign('maxRecords', $maxRecords);
 
 // If we are processing a login then do not generate the challenge
 // if we are in any other case then yes.
-if (!strstr($_SERVER["REQUEST_URI"], 'tiki-login')) {
-    if ($feature_challenge == 'y') {
-        $chall = $userlib->generate_challenge();
+if(!strstr($_SERVER["REQUEST_URI"], 'tiki-login')) {
+  if($feature_challenge == 'y') {
+    $chall = $userlib->generate_challenge();
 
-        $_SESSION["challenge"] = $chall;
-        $smarty->assign('challenge', $chall);
-    }
+    $_SESSION["challenge"] = $chall;
+    $smarty->assign('challenge', $chall);
+  }
 }
 
 setDisplayMenu("nlmenu");
@@ -1722,26 +1794,31 @@ setDisplayMenu("layermenu");
 setDisplayMenu("shtmenu");
 setDisplayMenu("prjmenu");
 
-if ($user && $feature_usermenu == 'y') {
-    if (!isset($_SESSION['usermenu'])) {
-        include_once ('lib/usermenu/usermenulib.php');
+if($user && $feature_usermenu == 'y') {
+  if(!isset($_SESSION['usermenu'])) {
+    include_once('lib/usermenu/usermenulib.php');
 
-        $user_menus = $usermenulib->list_usermenus($user, 0, -1, 'position_asc', '');
-        $smarty->assign('usr_user_menus', $user_menus['data']);
-        $_SESSION['usermenu'] = $user_menus['data'];
-    } else {
-        $user_menus = $_SESSION['usermenu'];
+    $user_menus = $usermenulib->list_usermenus($user, 0, -1, 'position_asc', '');
+    $smarty->assign('usr_user_menus', $user_menus['data']);
+    $_SESSION['usermenu'] = $user_menus['data'];
+  }
 
-        $smarty->assign('usr_user_menus', $user_menus);
-    }
+  else {
+    $user_menus = $_SESSION['usermenu'];
+
+    $smarty->assign('usr_user_menus', $user_menus);
+  }
 }
 
 // We set empty wiki page name as default here if not set (before including Tiki modules)
-if (empty($_REQUEST['page'])) {
-	$page = '';
-} else {
-	$page = $_REQUEST['page'];
+if(empty($_REQUEST['page'])) {
+  $page = '';
 }
+
+else {
+  $page = $_REQUEST['page'];
+}
+
 $smarty->assign('page', $page);
 
 // Provide user's page to other scripts. Has to go here, otherwise the
@@ -1751,90 +1828,113 @@ $exist = $tikilib->page_exists($userPage);
 $smarty->assign("userPage", $userPage);
 $smarty->assign("userPage_exists", $exist);
 
-if ($feature_warn_on_edit == 'y') {
+if($feature_warn_on_edit == 'y') {
 
-    if (strstr($_SERVER['REQUEST_URI'], 'tiki-editpage')) {
-    	$current_page = 'tiki-editpage';
-    } elseif (strstr($_SERVER['REQUEST_URI'], 'tiki-index')) {
-    	$current_page = 'tiki-index';
-    } else {
-    	$current_page = NULL;
-    }
-    if ($current_page == 'tiki-editpage' || $current_page == 'tiki-index') {
-		// initiate all the variables
-        $smarty->assign('editpageconflict', 'n');
-        $editpageconflict = 'n';
-	    $smarty->assign('beingEdited', 'n');
-	    $beingedited = 'n';
-	    if (!empty($_REQUEST['page'])) {
-	        $chkpage = $_REQUEST['page'];
-	    } elseif ($current_page == 'tiki-index') {
-	    	$chkpage = $wikiHomePage;
-	    } else {
-	    	$chkpage = NULL;
-	    }
-	    if (!empty($chkpage) && ($chkpage != "sandbox" || $chkpage == "sandbox" && $tiki_p_admin == 'y')) {
-	        if ($current_page == 'tiki-index' && $tikilib->semaphore_is_set($chkpage, $warn_on_edit_time * 60)) {
-		        $smarty->assign('semUser', $tikilib->get_semaphore_user($chkpage));
-		        $smarty->assign('beingEdited', 'y');
-		        $beingedited = 'y';
-	        } elseif ($current_page == 'tiki-editpage' && isset($_REQUEST['cancel_edit'])) {
-	        	//Unlock the page when cancelling
-	        	if (!empty($_SESSION["edit_lock_$chkpage"])) {
-		        	$tikilib->semaphore_unset($chkpage, $_SESSION["edit_lock_$chkpage"]);
-	        	}
-	        } elseif ($current_page == 'tiki-editpage' && !isset($_REQUEST['save'])) {
-	        	//When tiki-editpage.php is loading, check to see if there is an editing conflict
-	        	if ($current_page == 'tiki-editpage' && $tikilib->semaphore_is_set($chkpage, $warn_on_edit_time * 60) && $tikilib->get_semaphore_user($chkpage) != $user) {
-		            $smarty->assign('editpageconflict', 'y');
-		            $editpageconflict = 'y';
-			} elseif ($tiki_p_edit == 'y') {
-	        		//Lock the page that is being edited
-		            $_SESSION["edit_lock_$chkpage"] = $tikilib->semaphore_set($chkpage);
-	        	}
-		        $smarty->assign('semUser', $tikilib->get_semaphore_user($chkpage));
-		        $smarty->assign('beingEdited', 'y');
-		        $beingedited = 'y';
-	        } elseif ($current_page == 'tiki-editpage' && isset($_REQUEST['save'])) {
-	        	//Unlock the page when saving
-	        	if (!empty($_SESSION["edit_lock_$chkpage"])) {
-		        	$tikilib->semaphore_unset($chkpage, $_SESSION["edit_lock_$chkpage"]);
-	        	}
-	        }
-	    }
+  if(strstr($_SERVER['REQUEST_URI'], 'tiki-editpage')) {
+    $current_page = 'tiki-editpage';
+  }
+
+  elseif(strstr($_SERVER['REQUEST_URI'], 'tiki-index')) {
+    $current_page = 'tiki-index';
+  }
+
+  else {
+    $current_page = NULL;
+  }
+
+  if($current_page == 'tiki-editpage' || $current_page == 'tiki-index') {
+    // initiate all the variables
+    $smarty->assign('editpageconflict', 'n');
+    $editpageconflict = 'n';
+    $smarty->assign('beingEdited', 'n');
+    $beingedited = 'n';
+
+    if(!empty($_REQUEST['page'])) {
+      $chkpage = $_REQUEST['page'];
     }
 
-} else {
-	$smarty->assign('beingEdited', 'n');
-	$smarty->assign('editpageconflict', 'n');
+    elseif($current_page == 'tiki-index') {
+      $chkpage = $wikiHomePage;
+    }
+
+    else {
+      $chkpage = NULL;
+    }
+
+    if(!empty($chkpage) && ($chkpage != "sandbox" || $chkpage == "sandbox" && $tiki_p_admin == 'y')) {
+      if($current_page == 'tiki-index' && $tikilib->semaphore_is_set($chkpage, $warn_on_edit_time * 60)) {
+        $smarty->assign('semUser', $tikilib->get_semaphore_user($chkpage));
+        $smarty->assign('beingEdited', 'y');
+        $beingedited = 'y';
+      }
+
+      elseif($current_page == 'tiki-editpage' && isset($_REQUEST['cancel_edit'])) {
+        //Unlock the page when cancelling
+        if(!empty($_SESSION["edit_lock_$chkpage"])) {
+          $tikilib->semaphore_unset($chkpage, $_SESSION["edit_lock_$chkpage"]);
+        }
+      }
+      elseif($current_page == 'tiki-editpage' && !isset($_REQUEST['save'])) {
+        //When tiki-editpage.php is loading, check to see if there is an editing conflict
+        if($current_page == 'tiki-editpage' && $tikilib->semaphore_is_set($chkpage, $warn_on_edit_time * 60) && $tikilib->get_semaphore_user($chkpage) != $user) {
+          $smarty->assign('editpageconflict', 'y');
+          $editpageconflict = 'y';
+        }
+
+        elseif($tiki_p_edit == 'y') {
+          //Lock the page that is being edited
+          $_SESSION["edit_lock_$chkpage"] = $tikilib->semaphore_set($chkpage);
+        }
+        $smarty->assign('semUser', $tikilib->get_semaphore_user($chkpage));
+        $smarty->assign('beingEdited', 'y');
+        $beingedited = 'y';
+      }
+      elseif($current_page == 'tiki-editpage' && isset($_REQUEST['save'])) {
+        //Unlock the page when saving
+        if(!empty($_SESSION["edit_lock_$chkpage"])) {
+          $tikilib->semaphore_unset($chkpage, $_SESSION["edit_lock_$chkpage"]);
+        }
+      }
+    }
+  }
+
+}
+
+else {
+  $smarty->assign('beingEdited', 'n');
+  $smarty->assign('editpageconflict', 'n');
 }
 
 $ownurl = $tikilib->httpPrefix(). $_SERVER["REQUEST_URI"];
 $parsed = @parse_url($_SERVER["REQUEST_URI"]);
 
-if (!isset($parsed["query"])) {
-    $parsed["query"] = '';
+if(!isset($parsed["query"])) {
+  $parsed["query"] = '';
 }
 
 parse_str($parsed["query"], $query);
 $father = $tikilib->httpPrefix(). $parsed["path"];
 
-if (count($query) > 0) {
-    $first = 1;
+if(count($query) > 0) {
+  $first = 1;
 
-    foreach ($query as $name => $val) {
-	if ($first) {
-	    $first = false;
+  foreach($query as $name => $val) {
+    if($first) {
+      $first = false;
 
-	    $father .= '?' . $name . '=' . $val;
-	} else {
-	    $father .= '&amp;' . $name . '=' . $val;
-	}
+      $father .= '?' . $name . '=' . $val;
     }
 
-    $father .= '&amp;';
-} else {
-    $father .= '?';
+    else {
+      $father .= '&amp;' . $name . '=' . $val;
+    }
+  }
+
+  $father .= '&amp;';
+}
+
+else {
+  $father .= '?';
 }
 
 
@@ -1844,66 +1944,66 @@ $smarty->assign('ownurl', $ownurl);
 // load lib configs
 /*
 if ($libdir = opendir('lib')) {
-	while (FALSE !== ($libname = readdir($libdir))) {
-		$configIncFile = 'lib/'.$libname.'/setup_inc.php';
-		if (is_dir( 'lib/'.$libname ) && file_exists( $configIncFile )) {
-			include_once( $configIncFile );
-		}
-	}
+  while (FALSE !== ($libname = readdir($libdir))) {
+    $configIncFile = 'lib/'.$libname.'/setup_inc.php';
+    if (is_dir( 'lib/'.$libname ) && file_exists( $configIncFile )) {
+      include_once( $configIncFile );
+    }
+  }
 }
 */
 $allowMsgs = 'n';
 
-if ($user) {
-    $allowMsgs = $tikilib->get_user_preference($user, 'allowMsgs', 'y');
+if($user) {
+  $allowMsgs = $tikilib->get_user_preference($user, 'allowMsgs', 'y');
 
-    $tasks_maxRecords = $tikilib->get_user_preference($user, 'tasks_maxRecords');
-    $smarty->assign('tasks_maxRecords', $tasks_maxRecords);
-    $smarty->assign('allowMsgs', $allowMsgs);
+  $tasks_maxRecords = $tikilib->get_user_preference($user, 'tasks_maxRecords');
+  $smarty->assign('tasks_maxRecords', $tasks_maxRecords);
+  $smarty->assign('allowMsgs', $allowMsgs);
 }
 
-if ($feature_live_support == 'y') {
-    $smarty->assign('user_is_operator', 'n');
+if($feature_live_support == 'y') {
+  $smarty->assign('user_is_operator', 'n');
 
-    if ($user) {
-        include_once ('lib/live_support/lsadminlib.php');
+  if($user) {
+    include_once('lib/live_support/lsadminlib.php');
 
-        if ($lsadminlib->is_operator($user)) {
-            $smarty->assign('user_is_operator', 'y');
-        }
+    if($lsadminlib->is_operator($user)) {
+      $smarty->assign('user_is_operator', 'y');
     }
+  }
 }
 
-if ($feature_referer_stats == 'y') {
-    // Referer tracking
-    if (isset($_SERVER['HTTP_REFERER'])) {
-        $pref = parse_url($_SERVER['HTTP_REFERER']);
+if($feature_referer_stats == 'y') {
+  // Referer tracking
+  if(isset($_SERVER['HTTP_REFERER'])) {
+    $pref = parse_url($_SERVER['HTTP_REFERER']);
 
-        if (isset($pref["host"]) && !strstr($_SERVER["SERVER_NAME"], $pref["host"])) {
-            $tikilib->register_referer($pref["host"]);
-        }
+    if(isset($pref["host"]) && !strstr($_SERVER["SERVER_NAME"], $pref["host"])) {
+      $tikilib->register_referer($pref["host"]);
     }
+  }
 }
 
 //Check for an update of dynamic vars
 if(isset($tiki_p_edit_dynvar) && $tiki_p_edit_dynvar == 'y') {
-    if(isset($_REQUEST['_dyn_update'])) {
-        foreach($_REQUEST as $name => $value) {
-            if(substr($name,0,4)=='dyn_' and $name!='_dyn_update') {
-                $tikilib->update_dynamic_variable(substr($name,4),$_REQUEST[$name]);
-            }
-        }
+  if(isset($_REQUEST['_dyn_update'])) {
+    foreach($_REQUEST as $name => $value) {
+      if(substr($name,0,4)=='dyn_' and $name!='_dyn_update') {
+        $tikilib->update_dynamic_variable(substr($name,4),$_REQUEST[$name]);
+      }
     }
+  }
 }
 
 
 // Stats
-if ($feature_stats == 'y') {
-    if ($count_admin_pvs == 'y' || $user != 'admin') {
-				if (!isset($section) or ($section != 'chat' and $section != 'livesupport')) {
-            $tikilib->add_pageview();
-        }
+if($feature_stats == 'y') {
+  if($count_admin_pvs == 'y' || $user != 'admin') {
+    if(!isset($section) or($section != 'chat' and $section != 'livesupport')) {
+      $tikilib->add_pageview();
     }
+  }
 }
 
 $smarty->assign('uses_tabs', 'n');
@@ -1919,39 +2019,48 @@ $user_preferences = array();
 // no compression at all
 $smarty->assign('gzip','Disabled');
 $smarty->assign('gzip_handler','none');
+
 // php compression enabled?
-if (ini_get('zlib.output_compression') == 1) {
-    $smarty->assign('gzip','Enabled');
-    $smarty->assign('gzip_handler','php');
+if(ini_get('zlib.output_compression') == 1) {
+  $smarty->assign('gzip','Enabled');
+  $smarty->assign('gzip_handler','php');
 // if not, check if tiki compression is enabled
-} elseif ($feature_obzip == 'y' && (empty($output_zip) || $output_zip != 'n')) {
-	// tiki compression is enabled, then let activate the handler
-	ob_start ("ob_gzhandler");
-	$smarty->assign('gzip_handler','tiki');
-	$smarty->assign('gzip','Enabled');
+}
+
+elseif($feature_obzip == 'y' && (empty($output_zip) || $output_zip != 'n')) {
+  // tiki compression is enabled, then let activate the handler
+  ob_start("ob_gzhandler");
+  $smarty->assign('gzip_handler','tiki');
+  $smarty->assign('gzip','Enabled');
 }
 
 //print("tiki-setup: before include debugger.php:".$tiki_timer->elapsed()."<br />");
 /* Include debugger class declaration. So use loggin facility in
  * php files become much easier :)
  */
-if ($feature_debug_console == 'y') {
-    include_once ('lib/debug/debugger.php');
+if($feature_debug_console == 'y') {
+  include_once('lib/debug/debugger.php');
 }
+
 //print("tiki-setup: after include debugger.php:".$tiki_timer->elapsed()."<br />");
 
 $smarty->assign_by_ref('num_queries',$num_queries);
 
 $favicon = $tikilib->get_preference('site_favicon','favicon.png');
 $favicon_type = $tikilib->get_preference('site_favicon_type','image/png');
-if (is_file("styles/$tikidomain/$favicon")) {
-	$smarty->assign('favicon',"styles/$tikidomain/$favicon");
-	$smarty->assign('favicon_type',"$favicon_type");
-} elseif (is_file("$favicon")) {
-	$smarty->assign('favicon',"$favicon");
-	$smarty->assign('favicon_type',"$favicon_type");
-} else {
-	$smarty->assign('favicon',false);
+
+if(is_file("styles/$tikidomain/$favicon")) {
+  $smarty->assign('favicon',"styles/$tikidomain/$favicon");
+  $smarty->assign('favicon_type',"$favicon_type");
+}
+
+elseif(is_file("$favicon")) {
+  $smarty->assign('favicon',"$favicon");
+  $smarty->assign('favicon_type',"$favicon_type");
+}
+
+else {
+  $smarty->assign('favicon',false);
 }
 
 
@@ -1959,23 +2068,24 @@ if (is_file("styles/$tikidomain/$favicon")) {
 /*
  * Check location for Tiki Integrator script and setup aux CSS file if needed by repository
  */
-if ($feature_integrator == 'y')
+if($feature_integrator == 'y')
 {
-    include_once('lib/integrator/integrator.php');
-    if ((strpos($_SERVER['REQUEST_URI'], 'tiki-integrator.php') != 0) && isset($_REQUEST['repID']))
-    {
-        // Create instance of integrator
-        $integrator = new TikiIntegrator($dbTiki);
-        $integrator_css_file = $integrator->get_rep_css($_REQUEST['repID']);
-        $smarty->assign('integrator_css_file', $integrator_css_file);
-    }
+  include_once('lib/integrator/integrator.php');
+
+  if((strpos($_SERVER['REQUEST_URI'], 'tiki-integrator.php') != 0) && isset($_REQUEST['repID']))
+  {
+    // Create instance of integrator
+    $integrator = new TikiIntegrator($dbTiki);
+    $integrator_css_file = $integrator->get_rep_css($_REQUEST['repID']);
+    $smarty->assign('integrator_css_file', $integrator_css_file);
+  }
 }
 
 /*
  * Register the search refresh function
  */
 
-if ($feature_search == 'y') {
+if($feature_search == 'y') {
   include_once("lib/search/refresh.php");
   register_shutdown_function("refresh_search_index");
 }
@@ -1983,32 +2093,43 @@ if ($feature_search == 'y') {
 /*
  * Whether to show comments zone on page load by default
  */
-if (isset($_REQUEST['comzone'])) {
-	$comzone=$_REQUEST['comzone'];
-	if ($comzone=='show') {
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-read_article') and $feature_article_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-poll_results') and $feature_poll_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-index') and $feature_wiki_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-view_faq') and $feature_faq_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-browse_gallery') and $feature_image_galleries_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-list_file_gallery') and $feature_file_galleries_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-view_blog') and $feature_blog_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-view_blog_post') and $feature_blogposts_comments=='y') $show_comzone='y';
-		if (strstr($_SERVER['REQUEST_URI'], 'tiki-map') and $feature_map_comments=='y') $show_comzone='y';
-		if ($show_comzone=='y') $smarty->assign('show_comzone', 'y');
-	}
+if(isset($_REQUEST['comzone'])) {
+  $comzone=$_REQUEST['comzone'];
+
+  if($comzone=='show') {
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-read_article') and $feature_article_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-poll_results') and $feature_poll_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-index') and $feature_wiki_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-view_faq') and $feature_faq_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-browse_gallery') and $feature_image_galleries_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-list_file_gallery') and $feature_file_galleries_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-view_blog') and $feature_blog_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-view_blog_post') and $feature_blogposts_comments=='y') $show_comzone='y';
+
+    if(strstr($_SERVER['REQUEST_URI'], 'tiki-map') and $feature_map_comments=='y') $show_comzone='y';
+
+    if($show_comzone=='y') $smarty->assign('show_comzone', 'y');
+  }
 }
 
 /* trick for use with doc/devtools/cvsup.sh */
-if (is_file('.lastup') and is_readable('.lastup')) {
-	$lastup = file('.lastup');
-	$smarty->assign('lastup',$lastup[0]);
+if(is_file('.lastup') and is_readable('.lastup')) {
+  $lastup = file('.lastup');
+  $smarty->assign('lastup',$lastup[0]);
 }
 
-if ($feature_wiki_discuss == 'y') {
-	$wiki_discussion_string = $smarty->fetchLang($tikilib->get_preference('language', 'en'), 'wiki-discussion.tpl');
-	$smarty->assign('wiki_discussion_string', $wiki_discussion_string);
+if($feature_wiki_discuss == 'y') {
+  $wiki_discussion_string = $smarty->fetchLang($tikilib->get_preference('language', 'en'), 'wiki-discussion.tpl');
+  $smarty->assign('wiki_discussion_string', $wiki_discussion_string);
 }
+
 // ------------------------------------------------------
 // setup initial breadcrumb
 $crumbs = array();
@@ -2017,48 +2138,57 @@ $smarty->assign_by_ref('crumbs', $crumbs);
 
 
 function getCookie($name, $section=null, $default=null) {
-	if (isset($feature_no_cookie) && $feature_no_cookie == 'y') {
-		if (isset($_SESSION['tiki_cookie_jar'])) {// if cookie jar doesn't work
-			if (isset($_SESSION['tiki_cookie_jar'][$name]))
-				return $_SESSION['tiki_cookie_jar'][$name];
-			else
-				return $default;
-		}
-	}
-	else if ($section){
-		if (isset($_COOKIE[$section])) {
-			if (preg_match("/@".$name."\:([^@;]*)/", $_COOKIE[$section], $matches))
-				return $matches[1];
-			else
-				return $default;
-		}
-		else
-			return $default;
-	}
-	else {
-		if (isset($_COOKIE[$name]))
-			return $_COOKIE[$name];
-		else
-			return $default;
-	}
+  if(isset($feature_no_cookie) && $feature_no_cookie == 'y') {
+    if(isset($_SESSION['tiki_cookie_jar'])) { // if cookie jar doesn't work
+      if(isset($_SESSION['tiki_cookie_jar'][$name]))
+        return $_SESSION['tiki_cookie_jar'][$name];
+
+      else
+        return $default;
+    }
+  }
+
+  else if($section) {
+    if(isset($_COOKIE[$section])) {
+      if(preg_match("/@".$name."\:([^@;]*)/", $_COOKIE[$section], $matches))
+        return $matches[1];
+
+      else
+        return $default;
+    }
+
+    else
+      return $default;
+  }
+
+  else {
+    if(isset($_COOKIE[$name]))
+      return $_COOKIE[$name];
+
+    else
+      return $default;
+  }
 }
+
 function setDisplayMenu($name) {
-	global $smarty;
-	if (getCookie($name, 'menu',
-			isset($_COOKIE['menu']) ? null : 'o') == 'o') {
-		$smarty->assign('mnu_'.$name, 'display:block;');
-		$smarty->assign('icn_'.$name, 'o');
-}
-	else
-		$smarty->assign('mnu_'.$name, 'display:none;');
+  global $smarty;
+
+  if(getCookie($name, 'menu',
+               isset($_COOKIE['menu']) ? null : 'o') == 'o') {
+    $smarty->assign('mnu_'.$name, 'display:block;');
+    $smarty->assign('icn_'.$name, 'o');
+  }
+
+  else
+    $smarty->assign('mnu_'.$name, 'display:none;');
 }
 
 /*
  * Some languages needs BiDi support. Add their code names here ...
  */
-if ($language == 'ar' || $language == 'he' || $language == 'fa') {
-	$feature_bidi='y';
-	$smarty->assign('feature_bidi', $feature_bidi);
+if($language == 'ar' || $language == 'he' || $language == 'fa') {
+  $feature_bidi='y';
+  $smarty->assign('feature_bidi', $feature_bidi);
 }
 
 
@@ -2076,6 +2206,6 @@ $smarty->assign('tiki_branch', $tiki_branch);
 $smarty->assign('tiki_star', $tiki_star);
 $smarty->assign('tiki_uses_cvs', $tiki_uses_cvs);
 
-// ESTUDIOLIVRE HACK BEGIN 
+// ESTUDIOLIVRE HACK BEGIN
 require_once("el-setup.php");
 // ESTUDIOLIVRE HACK END

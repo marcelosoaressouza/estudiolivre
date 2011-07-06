@@ -1,53 +1,59 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class GameLib extends TikiLib {
-	function GameLib($db) {
-		# this is probably uneeded now
-		if (!$db) {
-			die ("Invalid db object passed to GameLib constructor");
-		}
+  function GameLib($db) {
+# this is probably uneeded now
 
-		$this->db = $db;
-	}
+    if(!$db) {
+      die("Invalid db object passed to GameLib constructor");
+    }
 
-	function add_game_hit($game) {
-		global $count_admin_pvs;
+    $this->db = $db;
+  }
 
-		global $user;
+  function add_game_hit($game) {
+    global $count_admin_pvs;
 
-		if ($count_admin_pvs == 'y' || $user != 'admin') {
-			$cant = $this->getOne("select count(*) from `tiki_games` where `gameName`=?",array($game));
+    global $user;
 
-			if ($cant) {
-				$query = "update `tiki_games` set `hits` = `hits`+1 where `gameName`=?";
-				$bindvars=array($game);
-			} else {
-				$query = "insert into `tiki_games`(`gameName`,`hits`,`points`,`votes`) values(?,?,?,?)";
-				$bindvars=array($game,1,0,0);
-			}
+    if($count_admin_pvs == 'y' || $user != 'admin') {
+      $cant = $this->getOne("select count(*) from `tiki_games` where `gameName`=?",array($game));
 
-			$result = $this->query($query,$bindvars);
-		}
-	}
+      if($cant) {
+        $query = "update `tiki_games` set `hits` = `hits`+1 where `gameName`=?";
+        $bindvars=array($game);
+      }
 
-	function get_game_hits($game) {
-		$cant = $this->getOne("select count(*) from `tiki_games` where `gameName`=?",array($game));
+      else {
+        $query = "insert into `tiki_games`(`gameName`,`hits`,`points`,`votes`) values(?,?,?,?)";
+        $bindvars=array($game,1,0,0);
+      }
 
-		if ($cant) {
-			$hits = $this->getOne("select `hits` from `tiki_games` where `gameName`=?",array($game));
-		} else {
-			$hits = 0;
-		}
+      $result = $this->query($query,$bindvars);
+    }
+  }
 
-		return $hits;
-	}
+  function get_game_hits($game) {
+    $cant = $this->getOne("select count(*) from `tiki_games` where `gameName`=?",array($game));
+
+    if($cant) {
+      $hits = $this->getOne("select `hits` from `tiki_games` where `gameName`=?",array($game));
+    }
+
+    else {
+      $hits = 0;
+    }
+
+    return $hits;
+  }
 }
+
 global $dbTiki;
 $gamelib = new GameLib($dbTiki);
 

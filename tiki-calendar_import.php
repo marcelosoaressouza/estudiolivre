@@ -8,30 +8,31 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
-require_once ('lib/calendar/calendarlib.php');
+require_once('tiki-setup.php');
+require_once('lib/calendar/calendarlib.php');
 
-if ($feature_calendar != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_calendar");
-	$smarty->display("error.tpl");
-	die;
+if($feature_calendar != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_calendar");
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin_calendar != 'y') {
-	$smarty->assign('msg', tra("Access Denied").": feature_calendar");
-	$smarty->display("error.tpl");
-	die;
+if($tiki_p_admin_calendar != 'y') {
+  $smarty->assign('msg', tra("Access Denied").": feature_calendar");
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (isset($_REQUEST["import"]) && isset($_REQUEST["calendarId"]) && isset($_FILES["fileCSV"])) {
-	if ($calendarlib->importCSV($_FILES["fileCSV"]["name"], $_REQUEST["calendarId"]))
-		$smarty->assign('updated', "y");
+if(isset($_REQUEST["import"]) && isset($_REQUEST["calendarId"]) && isset($_FILES["fileCSV"])) {
+  if($calendarlib->importCSV($_FILES["fileCSV"]["name"], $_REQUEST["calendarId"]))
+    $smarty->assign('updated', "y");
 }
+
 $calendars = $calendarlib->list_calendars(); // no check perm as p_admin only
 $smarty->assign_by_ref('calendars', $calendars['data']);
 
 $section = 'calendar';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 
 // disallow robots to index page:
 $smarty->assign('metatag_robots', 'NOINDEX, NOFOLLOW');

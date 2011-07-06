@@ -1,7 +1,7 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -23,16 +23,21 @@ function smarty_function_var_dump($params, &$smarty)
   require_once('lib/debug/debugger.php');
   //
   $v = $params['var'];
-  if (strlen($v) != 0)
+
+  if(strlen($v) != 0)
   {
     $tmp = $smarty->get_template_vars();
-    if (is_array($tmp) && isset($tmp["$v"]))
+
+    if(is_array($tmp) && isset($tmp["$v"]))
       $debugger->msg("Smarty var_dump(".$v.') = '.print_r($tmp[$v], true));
+
     else
       $debugger->msg("Smarty var_dump(".$v."): Variable not found");
   }
+
   else
     $debugger->msg("Smarty var_dump: Parameter 'var' not specified");
+
   return '<!-- var_dump('.$v.') -->';
 }
 

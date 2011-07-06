@@ -14,7 +14,7 @@
  *
  * @category   Authentication
  * @package    Auth
- * @author     Stanislav Grozev <tacho@orbitel.bg> 
+ * @author     Stanislav Grozev <tacho@orbitel.bg>
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
@@ -47,41 +47,41 @@ require_once "PEAR.php";
  */
 class Auth_Container_vpopmail extends Auth_Container {
 
-    // {{{ Constructor
+  // {{{ Constructor
 
-    /**
-     * Constructor of the container class
-     *
-     * @return void
-     */
-    function Auth_Container_vpopmail()
-    {
-        if (!extension_loaded('vpopmail')) {
-            return PEAR::raiseError('Cannot use VPOPMail authentication, '
-                    .'VPOPMail extension not loaded!', 41, PEAR_ERROR_DIE);
-        }
+  /**
+   * Constructor of the container class
+   *
+   * @return void
+   */
+  function Auth_Container_vpopmail()
+  {
+    if(!extension_loaded('vpopmail')) {
+      return PEAR::raiseError('Cannot use VPOPMail authentication, '
+                              .'VPOPMail extension not loaded!', 41, PEAR_ERROR_DIE);
     }
+  }
 
-    // }}}
-    // {{{ fetchData()
+  // }}}
+  // {{{ fetchData()
 
-    /**
-     * Get user information from vpopmail
-     *
-     * @param   string Username - has to be valid email address
-     * @param   string Password
-     * @return  boolean
-     */
-    function fetchData($username, $password)
-    {
-        $userdata = array();
-        $userdata = preg_split("/@/", $username, 2);
-        $result = @vpopmail_auth_user($userdata[0], $userdata[1], $password);
+  /**
+   * Get user information from vpopmail
+   *
+   * @param   string Username - has to be valid email address
+   * @param   string Password
+   * @return  boolean
+   */
+  function fetchData($username, $password)
+  {
+    $userdata = array();
+    $userdata = preg_split("/@/", $username, 2);
+    $result = @vpopmail_auth_user($userdata[0], $userdata[1], $password);
 
-        return $result;
-    }
+    return $result;
+  }
 
-    // }}}
+  // }}}
 
 }
 ?>

@@ -6,9 +6,9 @@ include_once(GALAXIA_LIBRARY.'/src/API/BaseActivity.php');
 This class handles activities of type 'switch'
 */
 class SwitchActivity extends BaseActivity {
-	function SwitchActivity($db)
-	{
-	  $this->setDb($db);
-	}
+  function SwitchActivity($db)
+  {
+    $this->setDb($db);
+  }
 }
 ?>

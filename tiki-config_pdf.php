@@ -7,85 +7,92 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
-include_once ('lib/structures/structlib.php');
+require_once('tiki-setup.php');
+include_once('lib/structures/structlib.php');
 
 //if($feature_wiki != 'y') {
 //  die;
 //}
 
 //Permissions
-if ($tiki_p_view != 'y') {
-	$smarty->assign('msg', tra("Permission denied you cannot view this page"));
+if($tiki_p_view != 'y') {
+  $smarty->assign('msg', tra("Permission denied you cannot view this page"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 //feature
 $feature_wiki_pdf = $tikilib->get_preference('feature_wiki_pdf', 'n');
 
-if ($feature_wiki_pdf != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_wiki_pdf");
+if($feature_wiki_pdf != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_wiki_pdf");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 //defaults
-if (!isset($_REQUEST["font"])) {
-	$_REQUEST["font"] = "Helvetica";
+if(!isset($_REQUEST["font"])) {
+  $_REQUEST["font"] = "Helvetica";
 }
 
-if (!isset($_REQUEST["textheight"])) {
-	$_REQUEST["textheight"] = 10;
+if(!isset($_REQUEST["textheight"])) {
+  $_REQUEST["textheight"] = 10;
 }
 
-if (!isset($_REQUEST["h1height"])) {
-	$_REQUEST["h1height"] = 16;
+if(!isset($_REQUEST["h1height"])) {
+  $_REQUEST["h1height"] = 16;
 }
 
-if (!isset($_REQUEST["h2height"])) {
-	$_REQUEST["h2height"] = 14;
+if(!isset($_REQUEST["h2height"])) {
+  $_REQUEST["h2height"] = 14;
 }
 
-if (!isset($_REQUEST["h3height"])) {
-	$_REQUEST["h3height"] = 12;
+if(!isset($_REQUEST["h3height"])) {
+  $_REQUEST["h3height"] = 12;
 }
 
-if (!isset($_REQUEST["tbheight"])) {
-	$_REQUEST["tbheight"] = 14;
+if(!isset($_REQUEST["tbheight"])) {
+  $_REQUEST["tbheight"] = 14;
 }
 
-if (!isset($_REQUEST["imagescale"])) {
-	$_REQUEST["imagescale"] = 0.4;
+if(!isset($_REQUEST["imagescale"])) {
+  $_REQUEST["imagescale"] = 0.4;
 }
 
-if (!isset($_REQUEST["autobreak"])) {
-	$_REQUEST["autobreak"] = 'off';
+if(!isset($_REQUEST["autobreak"])) {
+  $_REQUEST["autobreak"] = 'off';
 }
 
-if (!isset($_REQUEST["convertpages"])) {
-	$convertpages = array();
+if(!isset($_REQUEST["convertpages"])) {
+  $convertpages = array();
 
-	if (isset($_REQUEST["page_ref_id"]) ) {
-		$struct = $structlib->get_subtree($_REQUEST["page_ref_id"]);
-		foreach($struct as $struct_page) {
-			// Handle dummy last entry
-			if ($struct_page["pos"] != '' && $struct_page["last"] == 1) continue;
-			$convertpages[] = $struct_page["pageName"];
-		}
-	}elseif (isset($_REQUEST["page"]) && $tikilib->page_exists($_REQUEST["page"])) {
-		$convertpages[] = $_REQUEST["page"];
-	}
-} else {
-	$convertpages = unserialize(urldecode($_REQUEST['convertpages']));
+  if(isset($_REQUEST["page_ref_id"])) {
+    $struct = $structlib->get_subtree($_REQUEST["page_ref_id"]);
+    foreach($struct as $struct_page) {
+      // Handle dummy last entry
+      if($struct_page["pos"] != '' && $struct_page["last"] == 1) continue;
+
+      $convertpages[] = $struct_page["pageName"];
+    }
+  }
+
+  elseif(isset($_REQUEST["page"]) && $tikilib->page_exists($_REQUEST["page"])) {
+    $convertpages[] = $_REQUEST["page"];
+  }
 }
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+else {
+  $convertpages = unserialize(urldecode($_REQUEST['convertpages']));
+}
+
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 // assign to smarty
@@ -100,27 +107,28 @@ $smarty->assign('autobreak', $_REQUEST["autobreak"]);
 $smarty->assign('find', $find);
 
 //add pages
-if (isset($_REQUEST["addpage"])) {
-	foreach (array_keys($_REQUEST["addpageName"])as $item) {
-		if (!in_array($_REQUEST["addpageName"]["$item"], $convertpages)) {
-			$convertpages[] = $_REQUEST["addpageName"]["$item"];
-		}
-	}
+if(isset($_REQUEST["addpage"])) {
+  foreach(array_keys($_REQUEST["addpageName"])as $item) {
+    if(!in_array($_REQUEST["addpageName"]["$item"], $convertpages)) {
+      $convertpages[] = $_REQUEST["addpageName"]["$item"];
+    }
+  }
 }
 
 //remove pages
-if (isset($_REQUEST["rempage"])) {
-	foreach (array_keys($_REQUEST["rempageName"])as $item) {
-		$key = array_search($_REQUEST["rempageName"]["$item"], $convertpages);
-		if ($key !== NULL) {
-			unset ($convertpages[$key]);
-		}
-	}
+if(isset($_REQUEST["rempage"])) {
+  foreach(array_keys($_REQUEST["rempageName"])as $item) {
+    $key = array_search($_REQUEST["rempageName"]["$item"], $convertpages);
+
+    if($key !== NULL) {
+      unset($convertpages[$key]);
+    }
+  }
 }
 
 //clear
-if (isset($_REQUEST["clearpages"])) {
-	$convertpages = array();
+if(isset($_REQUEST["clearpages"])) {
+  $convertpages = array();
 }
 
 $smarty->assign('convertpages', $convertpages);

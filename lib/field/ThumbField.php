@@ -4,25 +4,27 @@
 
 class ThumbField extends Field {
 
-    var $dbRep;
-    var $default = 'default.gif';
+  var $dbRep;
 
-    function ThumbField($field = 'thumb', $title = 'Foto', $dir = 'img/thumb', $fieldOpts = array()) {
-	$this->imgDir = preg_replace("/\/?$/","/",$dir);
+var $default = 'default.gif';
 
-	parent::Field($field, $title, $fieldOpts);
+  function ThumbField($field = 'thumb', $title = 'Foto', $dir = 'img/thumb', $fieldOpts = array()) {
+    $this->imgDir = preg_replace("/\/?$/","/",$dir);
+
+    parent::Field($field, $title, $fieldOpts);
+  }
+
+  function setValue($path) {
+    if(!file_exists($this->imgDir . $path)) {
+      $path = $this->default;
     }
 
-    function setValue($path) {
-	if (!file_exists($this->imgDir . $path)) {
-	    $path = $this->default;
-	}
-	parent::setValue($path);
-    }
+    parent::setValue($path);
+  }
 
-    function getValue() {
-	return $this->imgDir . parent::getValue();
-    }
+  function getValue() {
+    return $this->imgDir . parent::getValue();
+  }
 
 }
 

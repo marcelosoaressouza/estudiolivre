@@ -7,51 +7,58 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/hotwords/hotwordlib.php');
+include_once('lib/hotwords/hotwordlib.php');
 
-if ($feature_hotwords != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_hotwords");
+if($feature_hotwords != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_hotwords");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($user != 'admin') {
-	if ($tiki_p_admin != 'y') {
-		$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($user != 'admin') {
+  if($tiki_p_admin != 'y') {
+    $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-		$smarty->display("error.tpl");
-		die;
-	}
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
 // Process the form to add a user here
-if (isset($_REQUEST["add"])) {
-	check_ticket('admin-hotwords');
-	if(empty($_REQUEST["word"]) || empty($_REQUEST["url"])) {
-	        $smarty->assign('msg', tra("You have to provide a hotword and a URL"));
-		$smarty->display("error.tpl");
-		die;
-	}
-	$hotwordlib->add_hotword($_REQUEST["word"], $_REQUEST["url"]);
+if(isset($_REQUEST["add"])) {
+  check_ticket('admin-hotwords');
+
+  if(empty($_REQUEST["word"]) || empty($_REQUEST["url"])) {
+    $smarty->assign('msg', tra("You have to provide a hotword and a URL"));
+    $smarty->display("error.tpl");
+    die;
+  }
+
+  $hotwordlib->add_hotword($_REQUEST["word"], $_REQUEST["url"]);
 }
 
-if (isset($_REQUEST["remove"]) && !empty($_REQUEST["remove"])) {
+if(isset($_REQUEST["remove"]) && !empty($_REQUEST["remove"])) {
   $area = 'delhotword';
-  if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
     key_check($area);
-		$hotwordlib->remove_hotword($_REQUEST["remove"]);
-  } else {
+    $hotwordlib->remove_hotword($_REQUEST["remove"]);
+  }
+
+  else {
     key_get($area);
   }
 }
 
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'word_desc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'word_desc';
+}
+
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
 }
 
 $smarty->assign_by_ref('sort_mode', $sort_mode);
@@ -59,18 +66,22 @@ $smarty->assign_by_ref('sort_mode', $sort_mode);
 // If offset is set use it if not then use offset =0
 // use the maxRecords php variable to set the limit
 // if sortMode is not set then use lastModif_desc
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -80,17 +91,21 @@ $cant_pages = ceil($words["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($words["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($words["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 // Get users (list of users)

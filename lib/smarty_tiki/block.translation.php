@@ -22,21 +22,24 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 function smarty_block_translation($params, $content, &$smarty)
 {
-    if (isset($content)) {
-        $lang = $params['lang'];
-	if ($smarty->get_template_vars('language') == $lang) {
-	    return $content;
-	} else {
-	    return '';
-	}
+  if(isset($content)) {
+    $lang = $params['lang'];
+
+    if($smarty->get_template_vars('language') == $lang) {
+      return $content;
     }
+
+    else {
+      return '';
+    }
+  }
 }
 
 /* vim: set expandtab: */

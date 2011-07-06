@@ -5,9 +5,9 @@
 // Ela não pode extender DateField ? bgola
 class LastModifField extends Field {
 
-    function LastModifField($field = "lastModif", $title = "Última modificação", $fieldOpts = array()) {
-	parent::Field($field, $title, $fieldOpts);
-    }
+  function LastModifField($field = "lastModif", $title = "Última modificação", $fieldOpts = array()) {
+    parent::Field($field, $title, $fieldOpts);
+  }
 
 }
 

@@ -7,79 +7,92 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/backups/backupslib.php');
+include_once('lib/backups/backupslib.php');
 
 // Check for admin permission
-if ($tiki_p_admin != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
+
 $path = 'backups';
-if ($tikidomain) { $path.= "/$tikidomain"; }
 
-if (isset($_REQUEST["generate"])) {
-	check_ticket('backup');
-	$filename = md5($tikilib->genPass()). '.sql';
+if($tikidomain) {
+  $path.= "/$tikidomain";
+}
 
-	$backuplib->backup_database("$path/$filename");
+if(isset($_REQUEST["generate"])) {
+  check_ticket('backup');
+  $filename = md5($tikilib->genPass()). '.sql';
+
+  $backuplib->backup_database("$path/$filename");
 }
 
 $smarty->assign('restore', 'n');
 
-if (isset($_REQUEST["restore"])) {
-	check_ticket('backup');
-	$smarty->assign('restore', 'y');
+if(isset($_REQUEST["restore"])) {
+  check_ticket('backup');
+  $smarty->assign('restore', 'y');
 
-	$smarty->assign('restorefile', basename($_REQUEST["restore"]));
+  $smarty->assign('restorefile', basename($_REQUEST["restore"]));
 }
 
-if (isset($_REQUEST["rrestore"])) {
+if(isset($_REQUEST["rrestore"])) {
   $area = 'delbackup';
-  if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
     key_check($area);
-		$backuplib->restore_database("$path/" . basename($_REQUEST["rrestore"]));
-	} else {
-		key_get($area);
-	}
+    $backuplib->restore_database("$path/" . basename($_REQUEST["rrestore"]));
+  }
+
+  else {
+    key_get($area);
+  }
 }
 
-if (isset($_REQUEST["remove"])) {
+if(isset($_REQUEST["remove"])) {
   $area = 'delbackup';
-  if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
     key_check($area);
-		$filename = "$path/" . basename($_REQUEST["remove"]);
-		unlink ($filename);
-	} else {
-		key_get($area);
-	}
+    $filename = "$path/" . basename($_REQUEST["remove"]);
+    unlink($filename);
+  }
+
+  else {
+    key_get($area);
+  }
 }
 
-if (isset($_REQUEST["upload"])) {
-	check_ticket('backup');
-	if (isset($_FILES['userfile1']) && is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
-		$fp = fopen($_FILES['userfile1']['tmp_name'], "r");
+if(isset($_REQUEST["upload"])) {
+  check_ticket('backup');
 
-		$fw = fopen("$path/" . $_FILES['userfile1']['name'], "w");
+  if(isset($_FILES['userfile1']) && is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
+    $fp = fopen($_FILES['userfile1']['tmp_name'], "r");
 
-		while (!feof($fp)) {
-			$data = fread($fp, 4096);
+    $fw = fopen("$path/" . $_FILES['userfile1']['name'], "w");
 
-			fwrite($fw, $data);
-		}
+    while(!feof($fp)) {
+      $data = fread($fp, 4096);
 
-		fclose ($fp);
-		fclose ($fw);
-		unlink ($_FILES['userfile1']['tmp_name']);
-	} else {
-		$smarty->assign('msg', tra("Upload failed"));
+      fwrite($fw, $data);
+    }
 
-		$smarty->display("error.tpl");
-		die;
-	}
+    fclose($fp);
+    fclose($fw);
+    unlink($_FILES['userfile1']['tmp_name']);
+  }
+
+  else {
+    $smarty->assign('msg', tra("Upload failed"));
+
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
 // Get all the files listed in the backups directory
@@ -88,17 +101,17 @@ if (isset($_REQUEST["upload"])) {
 $backups = array();
 $h = opendir($path);
 
-while ($file = readdir($h)) {
-	if (strstr($file, "sql")) {
-		$row["filename"] = $file;
+while($file = readdir($h)) {
+  if(strstr($file, "sql")) {
+    $row["filename"] = $file;
 
-		$row["created"] = filemtime("$path/$file");
-		$row["size"] = filesize("$path/$file") / 1000000;
-		$backups[] = $row;
-	}
+    $row["created"] = filemtime("$path/$file");
+    $row["size"] = filesize("$path/$file") / 1000000;
+    $backups[] = $row;
+  }
 }
 
-closedir ($h);
+closedir($h);
 $smarty->assign_by_ref('backups', $backups);
 
 ask_ticket('backup');

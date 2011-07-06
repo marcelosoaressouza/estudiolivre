@@ -7,23 +7,24 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/structures/structlib.php');
-include_once ('lib/wiki/wikilib.php');
+include_once('lib/structures/structlib.php');
+include_once('lib/wiki/wikilib.php');
 
-if ($feature_wiki != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_wiki");
+if($feature_wiki != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_wiki");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $page_ref_id  = $_REQUEST['page_ref_id'];
-if (!isset($page_ref_id)) {
-	$smarty->assign('msg', tra("Page must be defined inside a structure to use this feature"));
-	$smarty->display("error.tpl");
-	die;
+
+if(!isset($page_ref_id)) {
+  $smarty->assign('msg', tra("Page must be defined inside a structure to use this feature"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 $smarty->assign('structure', 'y');
@@ -35,24 +36,26 @@ $smarty->assign('prev_info', $navigation_info["prev"]);
 $smarty->assign('home_info', $navigation_info["home"]);
 $smarty->assign('page_info', $page_info);
 
-if (!isset($_SESSION["thedate"])) {
-	$thedate = date("U");
-} else {
-	$thedate = $_SESSION["thedate"];
+if(!isset($_SESSION["thedate"])) {
+  $thedate = date("U");
+}
+
+else {
+  $thedate = $_SESSION["thedate"];
 }
 
 //$smarty->assign_by_ref('page', $_REQUEST["page"]);
 
-require_once ('tiki-pagesetup.php');
+require_once('tiki-pagesetup.php');
 
 $page = $page_info["pageName"];
 
 // Now check permissions to access this page
-if ($tiki_p_view != 'y') {
-	$smarty->assign('msg', tra("Permission denied you cannot view this page"));
+if($tiki_p_view != 'y') {
+  $smarty->assign('msg', tra("Permission denied you cannot view this page"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 // BreadCrumbNavigation here
@@ -60,33 +63,37 @@ if ($tiki_p_view != 'y') {
 // Remember to reverse the array when posting the array
 $anonpref = $tikilib->get_preference('userbreadCrumb', 4);
 
-if ($user) {
-	$userbreadCrumb = $tikilib->get_user_preference($user, 'userbreadCrumb', $anonpref);
-} else {
-	$userbreadCrumb = $anonpref;
+if($user) {
+  $userbreadCrumb = $tikilib->get_user_preference($user, 'userbreadCrumb', $anonpref);
 }
 
-if (!isset($_SESSION["breadCrumb"])) {
-	$_SESSION["breadCrumb"] = array();
+else {
+  $userbreadCrumb = $anonpref;
 }
 
-if (!in_array($page, $_SESSION["breadCrumb"])) {
-	if (count($_SESSION["breadCrumb"]) > $userbreadCrumb) {
-		array_shift ($_SESSION["breadCrumb"]);
-	}
+if(!isset($_SESSION["breadCrumb"])) {
+  $_SESSION["breadCrumb"] = array();
+}
 
-	array_push($_SESSION["breadCrumb"], $page);
-} else {
-	// If the page is in the array move to the last position
-	$pos = array_search($page, $_SESSION["breadCrumb"]);
+if(!in_array($page, $_SESSION["breadCrumb"])) {
+  if(count($_SESSION["breadCrumb"]) > $userbreadCrumb) {
+    array_shift($_SESSION["breadCrumb"]);
+  }
 
-	unset ($_SESSION["breadCrumb"][$pos]);
-	array_push($_SESSION["breadCrumb"], $page);
+  array_push($_SESSION["breadCrumb"], $page);
+}
+
+else {
+  // If the page is in the array move to the last position
+  $pos = array_search($page, $_SESSION["breadCrumb"]);
+
+  unset($_SESSION["breadCrumb"][$pos]);
+  array_push($_SESSION["breadCrumb"], $page);
 }
 
 // Now increment page hits since we are visiting this page
-if ($count_admin_pvs == 'y' || $user != 'admin') {
-	$tikilib->add_hit($page);
+if($count_admin_pvs == 'y' || $user != 'admin') {
+  $tikilib->add_hit($page);
 }
 
 // Get page data
@@ -95,34 +102,36 @@ $slide_data = $tikilib->parse_data($info["data"]);
 $smarty->assign('slide_data', $slide_data);
 
 // Verify lock status
-if ($info["flag"] == 'L') {
-	$smarty->assign('lock', true);
-} else {
-	$smarty->assign('lock', false);
+if($info["flag"] == 'L') {
+  $smarty->assign('lock', true);
+}
+
+else {
+  $smarty->assign('lock', false);
 }
 
 // If not locked and last version is user version then can undo
 $smarty->assign('canundo', 'n');
 
-if ($info["flag"] != 'L' && (($tiki_p_edit == 'y' && $info["user"] == $user) || ($tiki_p_remove == 'y'))) {
-	$smarty->assign('canundo', 'y');
+if($info["flag"] != 'L' && (($tiki_p_edit == 'y' && $info["user"] == $user) || ($tiki_p_remove == 'y'))) {
+  $smarty->assign('canundo', 'y');
 }
 
-if ($tiki_p_admin_wiki == 'y') {
-	$smarty->assign('canundo', 'y');
+if($tiki_p_admin_wiki == 'y') {
+  $smarty->assign('canundo', 'y');
 }
 
 //$smarty->assign_by_ref('lastModif',date("l d of F, Y  [H:i:s]",$info["lastModif"]));
 $smarty->assign_by_ref('lastModif', $info["lastModif"]);
 
-if (empty($info["user"])) {
-	$info["user"] = 'anonymous';
+if(empty($info["user"])) {
+  $info["user"] = 'anonymous';
 }
 
 $smarty->assign_by_ref('lastUser', $info["user"]);
 
 $section = 'wiki';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 
 $smarty->assign('wiki_extras', 'y');
 

@@ -4,7 +4,7 @@
 // using xajax version 0.2
 // http://xajaxproject.org
 
-require_once ("../../xajax.inc.php");
+require_once("../../xajax.inc.php");
 
 $xajax = new xajax("multiply.server.php");
 $xajax->registerFunction("multiply");

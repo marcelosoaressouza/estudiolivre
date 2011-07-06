@@ -10,47 +10,51 @@
 // First commit on cvs by damosoft aka damian
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/shoutbox/shoutboxlib.php');
+include_once('lib/shoutbox/shoutboxlib.php');
 
-if ($feature_shoutbox != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_shoutbox");
+if($feature_shoutbox != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_shoutbox");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($user != 'admin') {
-	if ($tiki_p_admin_shoutbox != 'y') {
-		$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($user != 'admin') {
+  if($tiki_p_admin_shoutbox != 'y') {
+    $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-		$smarty->display("error.tpl");
-		die;
-	}
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
 // Do the add bad word form here
 
-if (isset($_REQUEST["add"])) {
-	check_ticket('admin-shoutboxwords');
-	if(empty($_REQUEST["word"])) {
-	        $smarty->assign('msg', tra("You have to provide a word"));
-		$smarty->display("error.tpl");
-		die;
-	}
-	$shoutboxlib->add_bad_word($_REQUEST["word"]);
+if(isset($_REQUEST["add"])) {
+  check_ticket('admin-shoutboxwords');
+
+  if(empty($_REQUEST["word"])) {
+    $smarty->assign('msg', tra("You have to provide a word"));
+    $smarty->display("error.tpl");
+    die;
+  }
+
+  $shoutboxlib->add_bad_word($_REQUEST["word"]);
 }
 
-if (isset($_REQUEST["remove"]) && !empty($_REQUEST["remove"])) {
-	check_ticket('admin-shoutboxwords');
-	$shoutboxlib->remove_bad_word($_REQUEST["remove"]);
+if(isset($_REQUEST["remove"]) && !empty($_REQUEST["remove"])) {
+  check_ticket('admin-shoutboxwords');
+  $shoutboxlib->remove_bad_word($_REQUEST["remove"]);
 }
 
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'word_asc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'word_asc';
+}
+
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
 }
 
 $smarty->assign_by_ref('sort_mode', $sort_mode);
@@ -58,18 +62,22 @@ $smarty->assign_by_ref('sort_mode', $sort_mode);
 // If offset is set use it if not then use offset =0
 // use the maxRecords php variable to set the limit
 // if sortMode is not set then use lastModif_desc
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -79,17 +87,21 @@ $cant_pages = ceil($words["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($words["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($words["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 // Get users (list of users)

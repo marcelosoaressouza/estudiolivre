@@ -7,16 +7,16 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
 //check if feature is on
 if($feature_mailin != 'y') {
   $smarty->assign('msg', tra("This feature is disabled").": feature_mailin");
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 
-include_once ('tiki-mailin-code.php');
+include_once('tiki-mailin-code.php');
 
 $smarty->assign('content', $content);
 $smarty->assign('mid', 'tiki-mailin.tpl');

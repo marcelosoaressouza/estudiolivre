@@ -7,51 +7,53 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($feature_wiki_multiprint != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_wiki_multiprint");
+if($feature_wiki_multiprint != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_wiki_multiprint");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST["printpages"])) {
-	$smarty->assign('msg', tra("No pages indicated"));
+if(!isset($_REQUEST["printpages"])) {
+  $smarty->assign('msg', tra("No pages indicated"));
 
-	$smarty->display("error.tpl");
-	die;
-} else {
-	$printpages = unserialize(urldecode($_REQUEST["printpages"]));
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (isset($_REQUEST["print"])) {
-	check_ticket('multiprint');
-	// Create XMLRPC object
-	$pages = array();
+else {
+  $printpages = unserialize(urldecode($_REQUEST["printpages"]));
+}
 
-	foreach ($printpages as $page) {
+if(isset($_REQUEST["print"])) {
+  check_ticket('multiprint');
+  // Create XMLRPC object
+  $pages = array();
 
-		// If the page doesn't exist then display an error
-		if (!$tikilib->page_exists($page)) {
-			$smarty->assign('msg', tra("Page cannot be found"));
+  foreach($printpages as $page) {
 
-			$smarty->display("error.tpl");
-			die;
-		}
+    // If the page doesn't exist then display an error
+    if(!$tikilib->page_exists($page)) {
+      $smarty->assign('msg', tra("Page cannot be found"));
 
-		// Now check permissions to access this page
-		if (!$tikilib->user_has_perm_on_object($user, $page,'wiki page','tiki_p_view')) {
-			$smarty->assign('msg', tra("Permission denied you cannot view this page"));
+      $smarty->display("error.tpl");
+      die;
+    }
 
-			$smarty->display("error.tpl");
-			die;
-		}
+    // Now check permissions to access this page
+    if(!$tikilib->user_has_perm_on_object($user, $page,'wiki page','tiki_p_view')) {
+      $smarty->assign('msg', tra("Permission denied you cannot view this page"));
 
-		$page_info = $tikilib->get_page_info($page);
-		$page_info["parsed"] = $tikilib->parse_data($page_info["data"]);
-		$pages[] = $page_info;
-	}
+      $smarty->display("error.tpl");
+      die;
+    }
+
+    $page_info = $tikilib->get_page_info($page);
+    $page_info["parsed"] = $tikilib->parse_data($page_info["data"]);
+    $pages[] = $page_info;
+  }
 }
 
 $smarty->assign_by_ref('pages', $pages);

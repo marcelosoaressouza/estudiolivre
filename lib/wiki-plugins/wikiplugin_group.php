@@ -5,66 +5,72 @@
 // {GROUP(groups=>Admins|Developers)}wiki text{GROUP}
 
 function wikiplugin_group_help() {
-	$help = tra("Display wiki text if user is in one of listed groups").":\n";
-	$help.= "~np~<br />{GROUP(groups=>Admins|Developers)}wiki text{GROUP}<br />
-	{GROUP(notgroups=>Developers)}wiki text for other groups{GROUP}<br />	
-	{GROUP(groups=>Registered)}wiki text{ELSE}alternate text for other groups{GROUP}~/np~";
-	return $help;
+  $help = tra("Display wiki text if user is in one of listed groups").":\n";
+  $help.= "~np~<br />{GROUP(groups=>Admins|Developers)}wiki text{GROUP}<br />
+          {GROUP(notgroups=>Developers)}wiki text for other groups{GROUP}<br />
+          {GROUP(groups=>Registered)}wiki text{ELSE}alternate text for other groups{GROUP}~/np~";
+  return $help;
 }
 function wikiplugin_group($data, $params) {
-	global $user, $userlib;
-	$dataelse = '';
-	if (strpos($data,'{ELSE}')) {
-		$dataelse = substr($data,strpos($data,'{ELSE}')+6);
-		$data = substr($data,0,strpos($data,'{ELSE}'));
-	}
+  global $user, $userlib;
+  $dataelse = '';
 
-	if (!empty($params['groups'])) {
-		$groups = explode('|',$params['groups']);
-	}
-	if (!empty($params['notgroups'])) {
-		$notgroups = explode('|', $params['notgroups']);
-	}
-	if (empty($groups) && empty($notgroups)) {
-		return '';
-	}
+  if(strpos($data,'{ELSE}')) {
+    $dataelse = substr($data,strpos($data,'{ELSE}')+6);
+    $data = substr($data,0,strpos($data,'{ELSE}'));
+  }
 
-	$userGroups = $userlib->get_user_groups($user);
+  if(!empty($params['groups'])) {
+    $groups = explode('|',$params['groups']);
+  }
 
-	if (count($userGroups) > 1) { //take away the anonynous as everybody who is registered is anonynmous
-		foreach ($userGroups as $key=>$grp) {
-			if ($grp == 'Anonymous') {
-				$userGroups[$key] = '';
-				break;
-			}
-		}
-	}
+  if(!empty($params['notgroups'])) {
+    $notgroups = explode('|', $params['notgroups']);
+  }
 
-	if (!empty($groups)) {
-		$ok = false;
+  if(empty($groups) && empty($notgroups)) {
+    return '';
+  }
 
-		foreach ($userGroups as $grp) {
-		    if (in_array($grp, $groups)) {
-				$ok = true;
-				break;
-			}
-		}
-		if (!$ok)
-			return $dataelse;
-	}
-	if (!empty($notgroups)) {
-		$ok = true;
-		foreach ($userGroups as $grp) {
-		    if (in_array($grp, $notgroups)) {
-				$ok = false;
-				break;
-			}
-		}
-		if (!$ok)
-			return $dataelse;
-	}
-		
-	return $data;
+  $userGroups = $userlib->get_user_groups($user);
+
+  if(count($userGroups) > 1) {  //take away the anonynous as everybody who is registered is anonynmous
+    foreach($userGroups as $key=>$grp) {
+      if($grp == 'Anonymous') {
+        $userGroups[$key] = '';
+        break;
+      }
+    }
+  }
+
+  if(!empty($groups)) {
+    $ok = false;
+
+    foreach($userGroups as $grp) {
+      if(in_array($grp, $groups)) {
+        $ok = true;
+        break;
+      }
+    }
+
+    if(!$ok)
+      return $dataelse;
+  }
+
+  if(!empty($notgroups)) {
+    $ok = true;
+    foreach($userGroups as $grp) {
+      if(in_array($grp, $notgroups)) {
+        $ok = false;
+        break;
+      }
+    }
+
+    if(!$ok)
+      return $dataelse;
+  }
+
+  return $data;
 }
 
 ?>

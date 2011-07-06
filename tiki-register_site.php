@@ -2,11 +2,11 @@
 // Initialization
 require_once('tiki-setup.php');
 
-if ($tiki_p_admin != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 include_once('lib/directory/dirlib.php');
@@ -19,7 +19,7 @@ $tmp2 = isset($_SERVER["PHP_SELF"]) ? $_SERVER["PHP_SELF"] : "";
 $url = $tmp1.dirname($tmp2);
 
 $info = Array();
-$info["name"] = $tikilib->get_preference( "siteTitle", "" );
+$info["name"] = $tikilib->get_preference("siteTitle", "");
 $info["description"] = '';
 $info["url"] = $url;
 $info["country"] = 'None';
@@ -28,12 +28,14 @@ $smarty->assign_by_ref('info',$info);
 
 $countries=Array();
 $h=opendir("img/flags");
+
 while($file=readdir($h)) {
   if(is_file('img/flags/'.$file)) {
     $name=explode('.',$file);
     $countries[]=$name[0];
   }
 }
+
 closedir($h);
 $smarty->assign_by_ref('countries',$countries);
 

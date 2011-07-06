@@ -7,37 +7,37 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/minical/minicallib.php');
+include_once('lib/minical/minicallib.php');
 
-if ($feature_minical != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_minical");
+if($feature_minical != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_minical");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_minical != 'y') {
-	$smarty->assign('msg', tra("Permission denied"));
+if($tiki_p_minical != 'y') {
+  $smarty->assign('msg', tra("Permission denied"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!$user)
-	die;
+if(!$user)
+  die;
 
-if (!isset($_REQUEST["topicId"])) {
-	die;
+if(!isset($_REQUEST["topicId"])) {
+  die;
 }
 
 $info = $minicallib->minical_get_topic($user, $_REQUEST["topicId"]);
 $type = &$info["filetype"];
 $file = &$info["filename"];
 $content = &$info["data"];
-header ("Content-type: $type");
-header ("Content-Disposition: inline; filename=$file");
+header("Content-type: $type");
+header("Content-Disposition: inline; filename=$file");
 echo "$content";
 
 ?>

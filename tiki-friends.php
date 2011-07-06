@@ -17,79 +17,89 @@ if($feature_friends != 'y') {
 }
 
 // TODO: all messages should be translated to receiver language, not sender.
-if (isset($_REQUEST['request_friendship'])) {
-    $friend = $_REQUEST['request_friendship'];
-    
-    if ($userlib->user_exists($friend)) {
-	if (!$tikilib->verify_friendship($friend,$user)) {
-	    $userlib->request_friendship($user,$friend);
-	    $lg = $tikilib->get_user_preference($friend, "language", $language);
-	    $smarty->assign('msg',sprintf(tra("Friendship request sent to %s"), $friend));
-	    $foo = parse_url($_SERVER["REQUEST_URI"]);
-	    $machine = $tikilib->httpPrefix(). $foo["path"];
-	    $smarty->assign('server_name',$machine);
-	    $messulib->post_message($friend, $user, $friend, '', 
-				    $smarty->fetchLang($lg,'mail/new_friend_invitation_subject.tpl'),
-				    $smarty->fetchLang($lg,'mail/new_friend_invitation.tpl'),
-				    3);
+if(isset($_REQUEST['request_friendship'])) {
+  $friend = $_REQUEST['request_friendship'];
 
-	} else {
-	    $smarty->assign('msg',sprintf(tra("You're already friend of %s"), $_REQUEST['request_friendship']));
-	    $smarty->display("error.tpl");
-	    die;
-	}
-    } else {
-	$smarty->assign('msg',tra("Invalid username"));
-	    $smarty->display("error.tpl");
-	    die;
+  if($userlib->user_exists($friend)) {
+    if(!$tikilib->verify_friendship($friend,$user)) {
+      $userlib->request_friendship($user,$friend);
+      $lg = $tikilib->get_user_preference($friend, "language", $language);
+      $smarty->assign('msg',sprintf(tra("Friendship request sent to %s"), $friend));
+      $foo = parse_url($_SERVER["REQUEST_URI"]);
+      $machine = $tikilib->httpPrefix(). $foo["path"];
+      $smarty->assign('server_name',$machine);
+      $messulib->post_message($friend, $user, $friend, '',
+                              $smarty->fetchLang($lg,'mail/new_friend_invitation_subject.tpl'),
+                              $smarty->fetchLang($lg,'mail/new_friend_invitation.tpl'),
+                              3);
+
     }
 
-} elseif (isset($_REQUEST['accept'])) {
-    $friend = $_REQUEST['accept'];
-    $userlib->accept_friendship($user,$friend);
-    $lg = $tikilib->get_user_preference($friend, "language", $language);
-    $smarty->assign('msg', sprintf(tra('Accepted friendship request from %s'),$friend));
+    else {
+      $smarty->assign('msg',sprintf(tra("You're already friend of %s"), $_REQUEST['request_friendship']));
+      $smarty->display("error.tpl");
+      die;
+    }
+  }
 
-    $messulib->post_message($friend, $user, $friend, '',
-			    tra("I have accepted your friendship request!", $lg),
-			    '', // Do we need a message?
-			    3);
+  else {
+    $smarty->assign('msg',tra("Invalid username"));
+    $smarty->display("error.tpl");
+    die;
+  }
+
+}
+
+elseif(isset($_REQUEST['accept'])) {
+  $friend = $_REQUEST['accept'];
+  $userlib->accept_friendship($user,$friend);
+  $lg = $tikilib->get_user_preference($friend, "language", $language);
+  $smarty->assign('msg', sprintf(tra('Accepted friendship request from %s'),$friend));
+
+  $messulib->post_message($friend, $user, $friend, '',
+                          tra("I have accepted your friendship request!", $lg),
+                          '', // Do we need a message?
+                          3);
 
 
-} elseif (isset($_REQUEST['refuse'])) {
-    $friend = $_REQUEST['refuse'];
-    $userlib->refuse_friendship($user, $friend);
-    $lg = $tikilib->get_user_preference($friend, "language", $language);
-    $smarty->assign('msg', sprintf(tra('Refused friendship request from %s'),$friend));
+}
+elseif(isset($_REQUEST['refuse'])) {
+  $friend = $_REQUEST['refuse'];
+  $userlib->refuse_friendship($user, $friend);
+  $lg = $tikilib->get_user_preference($friend, "language", $language);
+  $smarty->assign('msg', sprintf(tra('Refused friendship request from %s'),$friend));
 
-    // Should we send a message, or that would intimidate refusing friendships?
-    // TODO: make it optional
-    $messulib->post_message($friend, $user, $friend, '',
-			    tra("I have refused your friendship request!", $lg),
-			    '',
-			    3);
+  // Should we send a message, or that would intimidate refusing friendships?
+  // TODO: make it optional
+  $messulib->post_message($friend, $user, $friend, '',
+                          tra("I have refused your friendship request!", $lg),
+                          '',
+                          3);
 
 
-} elseif (isset($_REQUEST['break'])) { 
-    $friend = $_REQUEST['break'];
-    $userlib->break_friendship($user, $friend);
-    $lg = $tikilib->get_user_preference($friend, "language", $language);
-    $smarty->assign('msg', sprintf(tra('Broke friendship with %s'),$friend));
-    
-    // Should we send a message, or that would intimidate user?
-    // TODO: make it optional
-    $messulib->post_message($friend, $user, $friend, '',
-			    tra('I have broken our friendship!', $lg),
-			    '',
-			    3);
+}
+elseif(isset($_REQUEST['break'])) {
+  $friend = $_REQUEST['break'];
+  $userlib->break_friendship($user, $friend);
+  $lg = $tikilib->get_user_preference($friend, "language", $language);
+  $smarty->assign('msg', sprintf(tra('Broke friendship with %s'),$friend));
+
+  // Should we send a message, or that would intimidate user?
+  // TODO: make it optional
+  $messulib->post_message($friend, $user, $friend, '',
+                          tra('I have broken our friendship!', $lg),
+                          '',
+                          3);
 
 }
 
 if(!isset($_REQUEST["sort_mode"])) {
   $sort_mode = $user_list_order;
-} else {
+}
+
+else {
   $sort_mode = $_REQUEST["sort_mode"];
-} 
+}
 
 $smarty->assign_by_ref('sort_mode',$sort_mode);
 
@@ -98,16 +108,22 @@ $smarty->assign_by_ref('sort_mode',$sort_mode);
 // if sortMode is not set then use lastModif_desc
 if(!isset($_REQUEST["offset"])) {
   $offset = 0;
-} else {
-  $offset = $_REQUEST["offset"]; 
 }
+
+else {
+  $offset = $_REQUEST["offset"];
+}
+
 $smarty->assign_by_ref('offset',$offset);
 
 if(isset($_REQUEST["find"])) {
-  $find = $_REQUEST["find"];  
-} else {
-  $find = ''; 
+  $find = $_REQUEST["find"];
 }
+
+else {
+  $find = '';
+}
+
 $smarty->assign('find',$find);
 
 $smarty->assign('pending_requests',$userlib->list_pending_friendship_requests($user));
@@ -122,13 +138,18 @@ $smarty->assign('actual_page',1+($offset/$maxRecords));
 
 if($listpages["cant"] > ($offset + $maxRecords)) {
   $smarty->assign('next_offset',$offset + $maxRecords);
-} else {
-  $smarty->assign('next_offset',-1); 
 }
+
+else {
+  $smarty->assign('next_offset',-1);
+}
+
 // If offset is > 0 then prev_offset
 if($offset>0) {
   $smarty->assign('prev_offset',$offset - $maxRecords);
-} else {
+}
+
+else {
   $smarty->assign('prev_offset',-1);
 }
 

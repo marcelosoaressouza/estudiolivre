@@ -1,7 +1,7 @@
 <?
 
 class TextField extends Field {
-    var $dbRep = "text";
+  var $dbRep = "text";
 }
 
 ?>

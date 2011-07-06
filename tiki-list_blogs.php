@@ -7,33 +7,33 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/blogs/bloglib.php');
+include_once('lib/blogs/bloglib.php');
 
-if ($feature_categories == 'y') {
-	include_once ('lib/categories/categlib.php');
+if($feature_categories == 'y') {
+  include_once('lib/categories/categlib.php');
 }
 
-if ($feature_blogs != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_blogs");
+if($feature_blogs != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_blogs");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_read_blog != 'y') {
-	$smarty->assign('msg', tra("Permission denied you can not view this section"));
+if($tiki_p_read_blog != 'y') {
+  $smarty->assign('msg', tra("Permission denied you can not view this section"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 /*
 if($feature_listPages != 'y') {
   $smarty->assign('msg',tra("This feature is disabled"));
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 */
 
@@ -42,26 +42,30 @@ if($feature_listPages != 'y') {
 if($tiki_p_view != 'y') {
   $smarty->assign('msg',tra("Permission denied you cannot view pages"));
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 */
-if (isset($_REQUEST["remove"])) {
+if(isset($_REQUEST["remove"])) {
 
-	// Check if it is the owner
-	$data = $tikilib->get_blog($_REQUEST["remove"]);
+  // Check if it is the owner
+  $data = $tikilib->get_blog($_REQUEST["remove"]);
 
-	if ($data["user"] != $user) {
-		if ($tiki_p_blog_admin != 'y') {
-			$smarty->assign('msg', tra("Permission denied you cannot remove this blog"));
-			$smarty->display("error.tpl");
-			die;
-		}
-	}
+  if($data["user"] != $user) {
+    if($tiki_p_blog_admin != 'y') {
+      $smarty->assign('msg', tra("Permission denied you cannot remove this blog"));
+      $smarty->display("error.tpl");
+      die;
+    }
+  }
+
   $area = 'delblog';
-  if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
     key_check($area);
-		$bloglib->remove_blog($_REQUEST["remove"]);
-  } else {
+    $bloglib->remove_blog($_REQUEST["remove"]);
+  }
+
+  else {
     key_get($area);
   }
 
@@ -71,10 +75,12 @@ if (isset($_REQUEST["remove"])) {
 // for the information as the number of
 // days to get in the log 1,3,4,etc
 // it will default to 1 recovering information for today
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = $blog_list_order;
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = $blog_list_order;
+}
+
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
 }
 
 $smarty->assign_by_ref('sort_mode', $sort_mode);
@@ -82,18 +88,22 @@ $smarty->assign_by_ref('sort_mode', $sort_mode);
 // If offset is set use it if not then use offset =0
 // use the maxRecords php variable to set the limit
 // if sortMode is not set then use lastModif_desc
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -102,33 +112,40 @@ $smarty->assign('find', $find);
 $listpages = $tikilib->list_blogs($offset, $maxRecords, $sort_mode, $find);
 
 $temp_max = count($listpages["data"]);
-for ($i = 0; $i < $temp_max; $i++) {
-	if ($userlib->object_has_one_permission($listpages["data"][$i]["blogId"], 'blog')) {
-		$listpages["data"][$i]["individual"] = 'y';
 
-		// blogs that user cannot read are not displayed at all
-		$listpages["data"][$i]["individual_tiki_p_read_blog"] = 'y';
+for($i = 0; $i < $temp_max; $i++) {
+  if($userlib->object_has_one_permission($listpages["data"][$i]["blogId"], 'blog')) {
+    $listpages["data"][$i]["individual"] = 'y';
 
-		if ($userlib->object_has_permission($user, $listpages["data"][$i]["blogId"], 'blog', 'tiki_p_blog_post')) {
-			$listpages["data"][$i]["individual_tiki_p_blog_post"] = 'y';
-		} else {
-			$listpages["data"][$i]["individual_tiki_p_blog_post"] = 'n';
-		}
+    // blogs that user cannot read are not displayed at all
+    $listpages["data"][$i]["individual_tiki_p_read_blog"] = 'y';
 
-		if ($userlib->object_has_permission($user, $listpages["data"][$i]["blogId"], 'blog', 'tiki_p_create_blogs')) {
-			$listpages["data"][$i]["individual_tiki_p_create_blogs"] = 'y';
-		} else {
-			$listpages["data"][$i]["individual_tiki_p_create_blogs"] = 'n';
-		}
+    if($userlib->object_has_permission($user, $listpages["data"][$i]["blogId"], 'blog', 'tiki_p_blog_post')) {
+      $listpages["data"][$i]["individual_tiki_p_blog_post"] = 'y';
+    }
 
-		if ($tiki_p_admin == 'y' || $userlib->object_has_permission($user, $listpages["data"][$i]["blogId"], 'blog', 'tiki_p_blog_admin'))
-			{
-			$listpages["data"][$i]["individual_tiki_p_create_blogs"] = 'y';
-			$listpages["data"][$i]["individual_tiki_p_blog_post"] = 'y';
-		}
-	} else {
-		$listpages["data"][$i]["individual"] = 'n';
-	}
+    else {
+      $listpages["data"][$i]["individual_tiki_p_blog_post"] = 'n';
+    }
+
+    if($userlib->object_has_permission($user, $listpages["data"][$i]["blogId"], 'blog', 'tiki_p_create_blogs')) {
+      $listpages["data"][$i]["individual_tiki_p_create_blogs"] = 'y';
+    }
+
+    else {
+      $listpages["data"][$i]["individual_tiki_p_create_blogs"] = 'n';
+    }
+
+    if($tiki_p_admin == 'y' || $userlib->object_has_permission($user, $listpages["data"][$i]["blogId"], 'blog', 'tiki_p_blog_admin'))
+    {
+      $listpages["data"][$i]["individual_tiki_p_create_blogs"] = 'y';
+      $listpages["data"][$i]["individual_tiki_p_blog_post"] = 'y';
+    }
+  }
+
+  else {
+    $listpages["data"][$i]["individual"] = 'n';
+  }
 }
 
 // If there're more records then assign next_offset
@@ -136,29 +153,34 @@ $cant_pages = ceil($listpages["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($listpages["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($listpages["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('listpages', $listpages["data"]);
 //print_r($listpages["data"]);
 $section = 'blogs';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 
-if ($feature_mobile =='y' && isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'mobile') {
-	include_once ("lib/hawhaw/hawtikilib.php");
+if($feature_mobile =='y' && isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'mobile') {
+  include_once("lib/hawhaw/hawtikilib.php");
 
-	HAWTIKI_list_blogs($listpages, $tiki_p_read_blog);
+  HAWTIKI_list_blogs($listpages, $tiki_p_read_blog);
 }
+
 ask_ticket('list-blogs');
 
 // Display the template

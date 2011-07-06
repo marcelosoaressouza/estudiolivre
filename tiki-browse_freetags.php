@@ -11,64 +11,75 @@
 //
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/freetag/freetaglib.php');
+include_once('lib/freetag/freetaglib.php');
 
-if ($feature_freetags != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_freetags");
+if($feature_freetags != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_freetags");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_view_freetags != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
-	$smarty->display("error.tpl");
-	die;
+if($tiki_p_view_freetags != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (!isset($_REQUEST['tag'])) {
-	$tag = $freetaglib->get_tag_suggestion('', 1);
-	if ($tag) {
-		header("Location: tiki-browse_freetags.php?tag=$tag[0]");
-	} else {
-		$smarty->assign('msg', tra("Nothing tagged yet").'.');
-		$smarty->display("error.tpl");
-		die;
-	}
+if(!isset($_REQUEST['tag'])) {
+  $tag = $freetaglib->get_tag_suggestion('', 1);
+
+  if($tag) {
+    header("Location: tiki-browse_freetags.php?tag=$tag[0]");
+  }
+
+  else {
+    $smarty->assign('msg', tra("Nothing tagged yet").'.');
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'name_asc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'name_asc';
+}
+
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
 }
 
 $smarty->assign_by_ref('sort_mode', $sort_mode);
 
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (!isset($_REQUEST["type"])) {
-	$type = '';
-} else {
-	$type = $_REQUEST["type"];
+if(!isset($_REQUEST["type"])) {
+  $type = '';
+}
+
+else {
+  $type = $_REQUEST["type"];
 }
 
 $smarty->assign('type', $type);
 
-if (isset($_REQUEST["user_only"]) && $_REQUEST["user_only"] == 'on') {
-    $view_user = $user;
-    $smarty->assign('user_only', 'on');
-} else {
-    $view_user = '';
-    $smarty->assign('user_only', 'off');
+if(isset($_REQUEST["user_only"]) && $_REQUEST["user_only"] == 'on') {
+  $view_user = $user;
+  $smarty->assign('user_only', 'on');
+}
+
+else {
+  $view_user = '';
+  $smarty->assign('user_only', 'off');
 }
 
 $smarty->assign('tag', $_REQUEST['tag']);
@@ -82,17 +93,21 @@ $cant_pages = ceil($objects["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($objects["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($objects["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $base_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -100,7 +115,7 @@ $base_url = preg_replace('/\/tiki-browse_freetags.php.+$/','',$base_url);
 $smarty->assign('base_url',$base_url);
 
 $section = 'freetags';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 ask_ticket('browse-freetags');
 
 // Display the template

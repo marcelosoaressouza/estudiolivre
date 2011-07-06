@@ -7,7 +7,7 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -22,25 +22,34 @@ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
 // the template has to {include file="tiki-pagination.tpl"}
 // see tiki-view_tracker.php and tpl for a working example
 
-if (isset($cant) and $cant) {
-	if (!isset($offset)) $offset = 0;
-	if (!isset($max) || $max == 0)
-		$max = isset($maxRecords)? $maxRecords: 10;
-	$smarty->assign_by_ref('offset', $offset);
-	$smarty->assign_by_ref('maxRecords', $maxRecords);
-	$smarty->assign_by_ref('max', $max);
-	$cant_pages = ceil($cant / $max);
-	$smarty->assign_by_ref('cant_pages', $cant_pages);
-	$smarty->assign('actual_page', 1 + ($offset / $max));
-	if ($cant > ($offset + $max)) {
-		$smarty->assign('next_offset', $offset + $max);
-	} else {
-		$smarty->assign('next_offset', -1);
-	}
-	if ($offset > 0) {
-		$smarty->assign('prev_offset', $offset - $max);
-	} else {
-		$smarty->assign('prev_offset', -1);
-	}
+if(isset($cant) and $cant) {
+  if(!isset($offset)) $offset = 0;
+
+  if(!isset($max) || $max == 0)
+    $max = isset($maxRecords)? $maxRecords: 10;
+
+  $smarty->assign_by_ref('offset', $offset);
+  $smarty->assign_by_ref('maxRecords', $maxRecords);
+  $smarty->assign_by_ref('max', $max);
+  $cant_pages = ceil($cant / $max);
+  $smarty->assign_by_ref('cant_pages', $cant_pages);
+  $smarty->assign('actual_page', 1 + ($offset / $max));
+
+  if($cant > ($offset + $max)) {
+    $smarty->assign('next_offset', $offset + $max);
+  }
+
+  else {
+    $smarty->assign('next_offset', -1);
+  }
+
+  if($offset > 0) {
+    $smarty->assign('prev_offset', $offset - $max);
+  }
+
+  else {
+    $smarty->assign('prev_offset', -1);
+  }
 }
+
 ?>

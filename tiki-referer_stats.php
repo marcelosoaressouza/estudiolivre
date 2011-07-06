@@ -7,59 +7,68 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/refererstats/refererlib.php');
+include_once('lib/refererstats/refererlib.php');
 
-if ($feature_referer_stats != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_referer_stats");
+if($feature_referer_stats != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_referer_stats");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_view_referer_stats != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_view_referer_stats != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if (isset($_REQUEST["clear"])) {
+if(isset($_REQUEST["clear"])) {
   $area = 'delrefstats';
-  if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
     key_check($area);
-		$refererlib->clear_referer_stats();
-  } else {
+    $refererlib->clear_referer_stats();
+  }
+
+  else {
     key_get($area);
   }
 }
 
 /*
 if($tiki_p_take_quiz != 'y') {
-	$smarty->assign('msg',tra("You do not have permission to use this feature"));
-	$smarty->display("error.tpl");
-	die;
+  $smarty->assign('msg',tra("You do not have permission to use this feature"));
+  $smarty->display("error.tpl");
+  die;
 }
 */
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'hits_desc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'hits_desc';
 }
 
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
+}
+
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -71,17 +80,21 @@ $cant_pages = ceil($channels["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($channels["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($channels["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('channels', $channels["data"]);

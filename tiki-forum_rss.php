@@ -7,26 +7,27 @@
 
 require_once('tiki-setup.php');
 require_once('lib/tikilib.php');
-require_once ('lib/rss/rsslib.php');
+require_once('lib/rss/rsslib.php');
 
-if ($rss_forum != 'y') {
-        $errmsg=tra("rss feed disabled");
-        require_once ('tiki-rss_error.php');
+if($rss_forum != 'y') {
+  $errmsg=tra("rss feed disabled");
+  require_once('tiki-rss_error.php');
 }
 
-if ($tiki_p_forum_read != 'y' or !$tikilib->user_has_perm_on_object($user,$_REQUEST['forumId'],'forum','tiki_p_forum_read')) {
-        $errmsg=tra("Permission denied you cannot view this section");
-        require_once ('tiki-rss_error.php');
+if($tiki_p_forum_read != 'y' or !$tikilib->user_has_perm_on_object($user,$_REQUEST['forumId'],'forum','tiki_p_forum_read')) {
+  $errmsg=tra("Permission denied you cannot view this section");
+  require_once('tiki-rss_error.php');
 }
 
 if(!isset($_REQUEST["forumId"])) {
-        $errmsg=tra("No forumId specified");
-        require_once ('tiki-rss_error.php');
+  $errmsg=tra("No forumId specified");
+  require_once('tiki-rss_error.php');
 }
 
 require_once('lib/commentslib.php');
-if (!isset($commentslib)) {
-	$commentslib = new Comments($dbTiki);
+
+if(!isset($commentslib)) {
+  $commentslib = new Comments($dbTiki);
 }
 
 $feed = "forum";
@@ -34,26 +35,30 @@ $id = "forumId";
 $uniqueid = "$feed.$id=".$_REQUEST["$id"];
 $output = $rsslib->get_from_cache($uniqueid);
 
-if ($output["data"]=="EMPTY") {
-	$tmp = $commentslib->get_forum($_REQUEST["forumId"]);
-	$title = tra("Tiki RSS feed for forum: ").$tmp["name"];
-	$desc = $tmp["description"];
-	$now = date("U");
-	$param = "threadId";
-	$descId = "data";
-	$dateId = "commentDate";
-	$authorId = "userName";
-	$titleId = "title";
-	$readrepl = "tiki-view_forum_thread.php?$id=%s&comments_parentId=%s";
+if($output["data"]=="EMPTY") {
+  $tmp = $commentslib->get_forum($_REQUEST["forumId"]);
+  $title = tra("Tiki RSS feed for forum: ").$tmp["name"];
+  $desc = $tmp["description"];
+  $now = date("U");
+  $param = "threadId";
+  $descId = "data";
+  $dateId = "commentDate";
+  $authorId = "userName";
+  $titleId = "title";
+  $readrepl = "tiki-view_forum_thread.php?$id=%s&comments_parentId=%s";
 
-	$tmp = $tikilib->get_preference('title_rss_'.$feed, '');
-	if ($tmp<>'') $title = $tmp;
-	$tmp = $tikilib->get_preference('desc_rss_'.$feed, '');
-	if ($desc<>'') $desc = $tmp;
+  $tmp = $tikilib->get_preference('title_rss_'.$feed, '');
 
-	$changes = $tikilib->list_forum_topics($_REQUEST["$id"],0, $max_rss_forum, $dateId.'_desc', '');
-	$output = $rsslib->generate_feed($feed, $uniqueid, '', $changes, $readrepl, $param, $id, $title, $titleId, $desc, $descId, $dateId, $authorId);
+  if($tmp<>'') $title = $tmp;
+
+  $tmp = $tikilib->get_preference('desc_rss_'.$feed, '');
+
+  if($desc<>'') $desc = $tmp;
+
+  $changes = $tikilib->list_forum_topics($_REQUEST["$id"],0, $max_rss_forum, $dateId.'_desc', '');
+  $output = $rsslib->generate_feed($feed, $uniqueid, '', $changes, $readrepl, $param, $id, $title, $titleId, $desc, $descId, $dateId, $authorId);
 }
+
 header("Content-type: ".$output["content-type"]);
 print $output["data"];
 

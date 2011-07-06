@@ -10,95 +10,104 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class Text_Diff_Renderer_character extends Tiki_Text_Diff_Renderer {
-    var $orig;
-    var $final;
+  var $orig;
+  var $final;
 
-    function Text_Diff_Renderer_character($context_lines = 0)
-    {
-        $this->_leading_context_lines = $context_lines;
-        $this->_trailing_context_lines = $context_lines;
-        $this->orig = "";
-        $this->final = "";
-    }
+  function Text_Diff_Renderer_character($context_lines = 0)
+  {
+    $this->_leading_context_lines = $context_lines;
+    $this->_trailing_context_lines = $context_lines;
+    $this->orig = "";
+    $this->final = "";
+  }
 
-    function _startDiff()
-    {
-    }
+  function _startDiff()
+  {
+  }
 
-    function _endDiff()
-    {
-        return array($this->orig, $this->final);
-    }
+  function _endDiff()
+  {
+    return array($this->orig, $this->final);
+  }
 
-    function _blockHeader($xbeg, $xlen, $ybeg, $ylen)
-    {
-    }
+  function _blockHeader($xbeg, $xlen, $ybeg, $ylen)
+  {
+  }
 
-    function _startBlock($header)
-    {
-        echo $header;
-    }
+  function _startBlock($header)
+  {
+    echo $header;
+  }
 
-    function _endBlock()
-    {
-    }
+  function _endBlock()
+  {
+  }
 
-    function _lines($type, $lines, $prefix = '')
-    {
-    	if ($type == 'context') {
-	        foreach ($lines as $line) {
-			$this->orig .= $line;
-			$this->final .= $line;
-	        }
-    	} elseif ($type == 'added' || $type == 'change-added') {
-	        $l = "";
-	        foreach ($lines as $line) {
-			$l .= $line;
-		 }
-	        if (!empty($l))
-	            $this->final .= '<span class="diffchar">'.$l."</span>";
-    	} elseif ($type == 'deleted' || $type == 'change-deleted') {
-	        $l = "";
-	        foreach ($lines as $line)
-			$l .= $line;
-	        if (!empty($l))
-	            $this->orig .= '<span class="diffchar">'.$l."</span>";
+  function _lines($type, $lines, $prefix = '')
+  {
+    if($type == 'context') {
+      foreach($lines as $line) {
+        $this->orig .= $line;
+        $this->final .= $line;
       }
     }
 
-    function _context($lines)
-    {
-        $this->_lines('context', $lines);
+    elseif($type == 'added' || $type == 'change-added') {
+      $l = "";
+      foreach($lines as $line) {
+        $l .= $line;
+      }
+
+      if(!empty($l))
+        $this->final .= '<span class="diffchar">'.$l."</span>";
+    }
+    elseif($type == 'deleted' || $type == 'change-deleted') {
+      $l = "";
+      foreach($lines as $line)
+      $l .= $line;
+
+      if(!empty($l))
+        $this->orig .= '<span class="diffchar">'.$l."</span>";
+    }
+  }
+
+  function _context($lines)
+  {
+    $this->_lines('context', $lines);
+  }
+
+  function _added($lines, $changemode = FALSE)
+  {
+    if($changemode) {
+      $this->_lines('change-added', $lines, '+');
     }
 
-    function _added($lines, $changemode = FALSE)
-    {
-        if ($changemode) {
-        	$this->_lines('change-added', $lines, '+');
-        } else {
-        	$this->_lines('added', $lines, '+');
-        }
+    else {
+      $this->_lines('added', $lines, '+');
+    }
+  }
+
+  function _deleted($lines, $changemode = FALSE)
+  {
+    if($changemode) {
+      $this->_lines('change-deleted', $lines, '-');
     }
 
-    function _deleted($lines, $changemode = FALSE)
-    {
-        if ($changemode) {
-        	$this->_lines('change-deleted', $lines, '-');
-        } else {
-	        $this->_lines('deleted', $lines, '-');
-        }
+    else {
+      $this->_lines('deleted', $lines, '-');
     }
+  }
 
-    function _changed($orig, $final)
-    {
-        $this->_deleted($orig, TRUE);
-        $this->_added($final, TRUE);
-    }
+  function _changed($orig, $final)
+  {
+    $this->_deleted($orig, TRUE);
+    $this->_added($final, TRUE);
+  }
 
 }

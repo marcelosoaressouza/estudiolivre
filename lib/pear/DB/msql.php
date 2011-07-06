@@ -26,203 +26,226 @@ require_once 'DB/common.php';
 
 class DB_msql extends DB_common
 {
-    // {{{ properties
+  // {{{ properties
 
-    var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
+  var $connection;
+  var $phptype, $dbsyntax;
+  var $prepare_tokens = array();
+  var $prepare_types = array();
 
-    // }}}
-    // {{{ constructor
+  // }}}
+  // {{{ constructor
 
-    function DB_msql()
-    {
-        $this->DB_common();
-        $this->phptype = 'msql';
-        $this->dbsyntax = 'msql';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => false,
-            'limit' => 'emulate'
-        );
+  function DB_msql()
+  {
+    $this->DB_common();
+    $this->phptype = 'msql';
+    $this->dbsyntax = 'msql';
+    $this->features = array(
+                        'prepare' => false,
+                        'pconnect' => true,
+                        'transactions' => false,
+                        'limit' => 'emulate'
+                      );
+  }
+
+  // }}}
+  // {{{ connect()
+
+  function connect($dsninfo, $persistent = false)
+  {
+    if(!DB::assertExtension('msql'))
+      return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
+
+    $this->dsn = $dsninfo;
+    $user = $dsninfo['username'];
+    $pw = $dsninfo['password'];
+    $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
+
+    $connect_function = $persistent ? 'msql_pconnect' : 'msql_connect';
+
+    if($dbhost && $user && $pw) {
+      $conn = $connect_function($dbhost, $user, $pw);
     }
 
-    // }}}
-    // {{{ connect()
-
-    function connect($dsninfo, $persistent = false)
-    {
-        if (!DB::assertExtension('msql'))
-            return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
-
-        $this->dsn = $dsninfo;
-        $user = $dsninfo['username'];
-        $pw = $dsninfo['password'];
-        $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-
-        $connect_function = $persistent ? 'msql_pconnect' : 'msql_connect';
-
-        if ($dbhost && $user && $pw) {
-            $conn = $connect_function($dbhost, $user, $pw);
-        } elseif ($dbhost && $user) {
-            $conn = $connect_function($dbhost,$user);
-        } else {
-            $conn = $connect_function($dbhost);
-        }
-        if (!$conn) {
-            $this->raiseError(DB_ERROR_CONNECT_FAILED);
-        }
-        if (!@msql_select_db($dsninfo['database'], $conn)){
-            return $this->raiseError(DB_ERROR_NODBSELECTED);
-        }
-        $this->connection = $conn;
-        return DB_OK;
+    elseif($dbhost && $user) {
+      $conn = $connect_function($dbhost,$user);
     }
 
-    // }}}
-    // {{{ disconnect()
-
-    function disconnect()
-    {
-        $ret = @msql_close($this->connection);
-        $this->connection = null;
-        return $ret;
+    else {
+      $conn = $connect_function($dbhost);
     }
 
-    // }}}
-    // {{{ simpleQuery()
-
-    function simpleQuery($query)
-    {
-        $this->last_query = $query;
-        $query = $this->modifyQuery($query);
-        $result = @msql_query($query, $this->connection);
-        if (!$result) {
-            return $this->raiseError();
-        }
-        // Determine which queries that should return data, and which
-        // should return an error code only.
-        return DB::isManip($query) ? DB_OK : $result;
+    if(!$conn) {
+      $this->raiseError(DB_ERROR_CONNECT_FAILED);
     }
 
-
-    // }}}
-    // {{{ nextResult()
-
-    /**
-     * Move the internal msql result pointer to the next available result
-     *
-     * @param a valid fbsql result resource
-     *
-     * @access public
-     *
-     * @return true if a result is available otherwise return false
-     */
-    function nextResult($result)
-    {
-        return false;
+    if(!@msql_select_db($dsninfo['database'], $conn)) {
+      return $this->raiseError(DB_ERROR_NODBSELECTED);
     }
 
-    // }}}
-    // {{{ fetchInto()
+    $this->connection = $conn;
+    return DB_OK;
+  }
 
-    function fetchInto($result, &$ar, $fetchmode, $rownum=null)
-    {
-        if ($rownum !== null) {
-            if (!@msql_data_seek($result, $rownum)) {
-                return null;
-            }
-        }
-        if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $ar = @msql_fetch_array($result, MSQL_ASSOC);
-        } else {
-            $ar = @msql_fetch_row($result);
-        }
-        if (!$ar) {
-            if ($error = msql_error()) {
-                return $this->raiseError($error);
-            } else {
-                return null;
-            }
-        }
-        return DB_OK;
+  // }}}
+  // {{{ disconnect()
+
+  function disconnect()
+  {
+    $ret = @msql_close($this->connection);
+    $this->connection = null;
+    return $ret;
+  }
+
+  // }}}
+  // {{{ simpleQuery()
+
+  function simpleQuery($query)
+  {
+    $this->last_query = $query;
+    $query = $this->modifyQuery($query);
+    $result = @msql_query($query, $this->connection);
+
+    if(!$result) {
+      return $this->raiseError();
     }
 
-    // }}}
-    // {{{ freeResult()
+    // Determine which queries that should return data, and which
+    // should return an error code only.
+    return DB::isManip($query) ? DB_OK : $result;
+  }
 
-    function freeResult($result)
-    {
-        if (is_resource($result)) {
-            return @msql_free_result($result);
-        }
-        if (!isset($this->prepare_tokens[$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[$result]);
-        unset($this->prepare_types[$result]);
-        return true;
+
+  // }}}
+  // {{{ nextResult()
+
+  /**
+   * Move the internal msql result pointer to the next available result
+   *
+   * @param a valid fbsql result resource
+   *
+   * @access public
+   *
+   * @return true if a result is available otherwise return false
+   */
+  function nextResult($result)
+  {
+    return false;
+  }
+
+  // }}}
+  // {{{ fetchInto()
+
+  function fetchInto($result, &$ar, $fetchmode, $rownum=null)
+  {
+    if($rownum !== null) {
+      if(!@msql_data_seek($result, $rownum)) {
+        return null;
+      }
     }
 
-    // }}}
-    // {{{ numCols()
-
-    function numCols($result)
-    {
-        $cols = @msql_num_fields($result);
-        if (!$cols) {
-            return $this->raiseError();
-        }
-        return $cols;
+    if($fetchmode & DB_FETCHMODE_ASSOC) {
+      $ar = @msql_fetch_array($result, MSQL_ASSOC);
     }
 
-    // }}}
-    // {{{ numRows()
-
-    function numRows($result)
-    {
-        $rows = @msql_num_rows($result);
-        if (!$rows) {
-            return $this->raiseError();
-        }
-        return $rows;
+    else {
+      $ar = @msql_fetch_row($result);
     }
 
-    // }}}
-    // {{{ affected()
+    if(!$ar) {
+      if($error = msql_error()) {
+        return $this->raiseError($error);
+      }
 
-    /**
-     * Gets the number of rows affected by a query.
-     *
-     * @return number of rows affected by the last query
-     */
-
-    function affectedRows()
-    {
-        return @msql_affected_rows($this->connection);
+      else {
+        return null;
+      }
     }
 
-    // }}}
-    // {{{ getSpecialQuery()
+    return DB_OK;
+  }
 
-    /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
-    function getSpecialQuery($type)
-    {
-        switch ($type) {
-            case 'tables':
-            default:
-                return null;
-        }
-        return $sql;
+  // }}}
+  // {{{ freeResult()
+
+  function freeResult($result)
+  {
+    if(is_resource($result)) {
+      return @msql_free_result($result);
     }
 
-    // }}}
+    if(!isset($this->prepare_tokens[$result])) {
+      return false;
+    }
+
+    unset($this->prepare_tokens[$result]);
+    unset($this->prepare_types[$result]);
+    return true;
+  }
+
+  // }}}
+  // {{{ numCols()
+
+  function numCols($result)
+  {
+    $cols = @msql_num_fields($result);
+
+    if(!$cols) {
+      return $this->raiseError();
+    }
+
+    return $cols;
+  }
+
+  // }}}
+  // {{{ numRows()
+
+  function numRows($result)
+  {
+    $rows = @msql_num_rows($result);
+
+    if(!$rows) {
+      return $this->raiseError();
+    }
+
+    return $rows;
+  }
+
+  // }}}
+  // {{{ affected()
+
+  /**
+   * Gets the number of rows affected by a query.
+   *
+   * @return number of rows affected by the last query
+   */
+
+  function affectedRows()
+  {
+    return @msql_affected_rows($this->connection);
+  }
+
+  // }}}
+  // {{{ getSpecialQuery()
+
+  /**
+  * Returns the query needed to get some backend info
+  * @param string $type What kind of info you want to retrieve
+  * @return string The SQL query string
+  */
+  function getSpecialQuery($type)
+  {
+    switch($type) {
+    case 'tables':
+    default:
+      return null;
+    }
+
+    return $sql;
+  }
+
+  // }}}
 
 }
 ?>

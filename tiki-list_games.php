@@ -30,18 +30,18 @@ require_once('tiki-setup.php');
 
 include_once('lib/games/gamelib.php');
 
-if ($feature_games != 'y') {
-    $smarty->assign('msg', tra("This feature is disabled").": feature_games");
+if($feature_games != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_games");
 
-    $smarty->display("error.tpl");
-    die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_play_games != 'y') {
-    $smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_play_games != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-    $smarty->display("error.tpl");
-    die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 
@@ -50,31 +50,33 @@ if ($tiki_p_play_games != 'y') {
 $games = array();
 $h = opendir("games/thumbs");
 
-while ($file = readdir($h)) {
-    $game = array();
+while($file = readdir($h)) {
+  $game = array();
 
-    // LeChuckdaPirate added "is_file" so folders don't be taken as games...
-    if (is_file("games/thumbs/$file") && $file != '.' && $file != '..' && !ereg('\.txt$',$file)
-        && $file != 'index.php' && $file != 'README' ) {
+  // LeChuckdaPirate added "is_file" so folders don't be taken as games...
+  if(is_file("games/thumbs/$file") && $file != '.' && $file != '..' && !ereg('\.txt$',$file)
+      && $file != 'index.php' && $file != 'README') {
 
-        if (is_file("games/thumbs/$file" . '.txt')) {
-            $data = file_get_contents("games/thumbs/$file" . '.txt');
-            $desc = nl2br($data);
-        } else {
-            $desc = '';
-        }
-
-        $game["hits"] = $gamelib->get_game_hits($file);
-        $game["desc"] = $desc;
-        $game["game"] = $file;
-        $games[$file] = $game;
+    if(is_file("games/thumbs/$file" . '.txt')) {
+      $data = file_get_contents("games/thumbs/$file" . '.txt');
+      $desc = nl2br($data);
     }
+
+    else {
+      $desc = '';
+    }
+
+    $game["hits"] = $gamelib->get_game_hits($file);
+    $game["desc"] = $desc;
+    $game["game"] = $file;
+    $games[$file] = $game;
+  }
 }
 
 closedir($h);
 
 function compare($ar1, $ar2) {
-    return $ar2["hits"] - $ar1["hits"];
+  return $ar2["hits"] - $ar1["hits"];
 }
 
 uasort($games, 'compare');
@@ -90,107 +92,113 @@ $smarty->assign('play', 'n');
 if(!isset($_REQUEST["game"]) && isset($_SESSION["currentgame"])) unset($_SESSION["currentgame"]);
 
 if(isset($_REQUEST["game"])) {
- $game = basename( $_REQUEST["game"] );
- if (!isset($_SESSION["currentgame"]) || !in_array($game,$_SESSION["currentgame"]) ) {
-     $gamelib->add_game_hit($game);
-     $_SESSION["currentgame"][] = $game;
- }
- $parts=explode('.',$game);
- $source='games/flash/'.$parts[0].'.'.$parts[1];
- if (is_file($source))
- {
-   $smarty->assign('source',$source);
-   $smarty->assign('play','y');
- }
+  $game = basename($_REQUEST["game"]);
+
+  if(!isset($_SESSION["currentgame"]) || !in_array($game,$_SESSION["currentgame"])) {
+    $gamelib->add_game_hit($game);
+    $_SESSION["currentgame"][] = $game;
+  }
+
+  $parts=explode('.',$game);
+  $source='games/flash/'.$parts[0].'.'.$parts[1];
+
+  if(is_file($source))
+  {
+    $smarty->assign('source',$source);
+    $smarty->assign('play','y');
+  }
 }
 
 
 // 3. Upload games //
 $smarty->assign('uploadform', 'n');
 
-if (isset($_REQUEST["uploadform"]) && $tiki_p_admin_games == 'y') {
-    $smarty->assign('uploadform', 'y');
+if(isset($_REQUEST["uploadform"]) && $tiki_p_admin_games == 'y') {
+  $smarty->assign('uploadform', 'y');
 }
 
-if (isset($_POST["upload"]) && $tiki_p_admin_games == 'y') {
-    check_ticket('list-games');
-    if (isset($_FILES['flashfile']) && is_uploaded_file($_FILES['flashfile']['tmp_name'])
-        && isset($_FILES['imagefile']) && is_uploaded_file($_FILES['imagefile']['tmp_name'])) {
-        $name1 = basename ($_FILES['flashfile']['name']);
+if(isset($_POST["upload"]) && $tiki_p_admin_games == 'y') {
+  check_ticket('list-games');
 
-        $name2 = basename ($_FILES['imagefile']['name']);
-        $parts = explode('.', $name2);
-        $namec = $parts[0].'.'.$parts[1];
+  if(isset($_FILES['flashfile']) && is_uploaded_file($_FILES['flashfile']['tmp_name'])
+      && isset($_FILES['imagefile']) && is_uploaded_file($_FILES['imagefile']['tmp_name'])) {
+    $name1 = basename($_FILES['flashfile']['name']);
 
-        if (!ereg("\.(swf|dcr)$", $name1)) {
-            $smarty->assign(
-                'msg', tra("The game file must have .swf or .dcr extension"));
+    $name2 = basename($_FILES['imagefile']['name']);
+    $parts = explode('.', $name2);
+    $namec = $parts[0].'.'.$parts[1];
 
-            $smarty->display("error.tpl");
-            die;
-        }
+    if(!ereg("\.(swf|dcr)$", $name1)) {
+      $smarty->assign(
+        'msg', tra("The game file must have .swf or .dcr extension"));
 
-        if (!$namec || $namec != $name1 || !isset($parts[2]) || !in_array($parts[2], array('gif','png','jpg'))) {
-            $smarty->assign(
-                'msg', tra("The thumbnail name must be"). " $name1.gif, $name1.jpg " . tra("or"). " $name1.png");
+      $smarty->display("error.tpl");
+      die;
+    }
 
-            $smarty->display("error.tpl");
-            die;
-        }
+    if(!$namec || $namec != $name1 || !isset($parts[2]) || !in_array($parts[2], array('gif','png','jpg'))) {
+      $smarty->assign(
+        'msg', tra("The thumbnail name must be"). " $name1.gif, $name1.jpg " . tra("or"). " $name1.png");
 
-        @$fp = fopen($_FILES['flashfile']['tmp_name'], "rb");
-        $name = basename($_FILES['flashfile']['name']);
-        @$fw = fopen("games/flash/$name", "wb");
+      $smarty->display("error.tpl");
+      die;
+    }
 
-        if ($fp && $fw) {
-            while (!feof($fp)) {
-                $data = fread($fp, 8192);
+    @$fp = fopen($_FILES['flashfile']['tmp_name'], "rb");
+    $name = basename($_FILES['flashfile']['name']);
+    @$fw = fopen("games/flash/$name", "wb");
 
-                fwrite($fw, $data);
-            }
+    if($fp && $fw) {
+      while(!feof($fp)) {
+        $data = fread($fp, 8192);
 
-            fclose($fp);
-            fclose($fw);
-            unlink($_FILES['flashfile']['tmp_name']);
-        }
+        fwrite($fw, $data);
+      }
 
-        @$fp = fopen($_FILES['imagefile']['tmp_name'], "rb");
-        $name = basename($_FILES['imagefile']['name']);
-        @$fw = fopen("games/thumbs/$name", "wb");
+      fclose($fp);
+      fclose($fw);
+      unlink($_FILES['flashfile']['tmp_name']);
+    }
 
-        if ($fp && $fw) {
-            while (!feof($fp)) {
-                $data = fread($fp, 8192);
+    @$fp = fopen($_FILES['imagefile']['tmp_name'], "rb");
+    $name = basename($_FILES['imagefile']['name']);
+    @$fw = fopen("games/thumbs/$name", "wb");
 
-                fwrite($fw, $data);
-            }
+    if($fp && $fw) {
+      while(!feof($fp)) {
+        $data = fread($fp, 8192);
 
-            fclose($fp);
-            fclose($fw);
-            unlink($_FILES['imagefile']['tmp_name']);
-        }
+        fwrite($fw, $data);
+      }
 
-        @$fw = fopen("games/thumbs/$name" . ".txt", "wb");
+      fclose($fp);
+      fclose($fw);
+      unlink($_FILES['imagefile']['tmp_name']);
+    }
 
-        if ($fw) {
-            fwrite($fw, nl2br($_POST['description']));
-            fclose($fw);
-        }
+    @$fw = fopen("games/thumbs/$name" . ".txt", "wb");
 
-        $game["hits"] = $gamelib->get_game_hits($name2);
-        $game["desc"] = $_POST['description'];
-        $game["game"] = $name2;
-        $games[$name2] = $game;
+    if($fw) {
+      fwrite($fw, nl2br($_POST['description']));
+      fclose($fw);
+    }
+
+    $game["hits"] = $gamelib->get_game_hits($name2);
+    $game["desc"] = $_POST['description'];
+    $game["game"] = $name2;
+    $games[$name2] = $game;
 
     // if all needed files are not uploaded
-    } else {
+  }
 
-        $smarty->assign(
-            'msg', tra("Please supply both files"));
+  else {
 
-        $smarty->display("error.tpl");
-        die;
-    }
+    $smarty->assign(
+      'msg', tra("Please supply both files"));
+
+    $smarty->display("error.tpl");
+    die;
+  }
 
 }
 
@@ -198,61 +206,66 @@ if (isset($_POST["upload"]) && $tiki_p_admin_games == 'y') {
 // 4. Edit them //
 $smarty->assign('editgame', 'n');
 
-if (isset($_REQUEST["edit"]) && $tiki_p_admin_games == 'y') {
-    $file = basename( $_REQUEST["edit"] );
+if(isset($_REQUEST["edit"]) && $tiki_p_admin_games == 'y') {
+  $file = basename($_REQUEST["edit"]);
 
-    if (array_key_exists($file, $games)) {
+  if(array_key_exists($file, $games)) {
 
-        $smarty->assign('editgame', 'y');
-        $smarty->assign('editable', $file);
+    $smarty->assign('editgame', 'y');
+    $smarty->assign('editable', $file);
 
-        $descfile = "games/thumbs/$file". '.txt';
-        $data = '';
+    $descfile = "games/thumbs/$file". '.txt';
+    $data = '';
 
-        if (is_file($descfile))
-            $data = file_get_contents("games/thumbs/$file" . '.txt');
+    if(is_file($descfile))
+      $data = file_get_contents("games/thumbs/$file" . '.txt');
 
-        $smarty->assign('data', $data);
-    }
+    $smarty->assign('data', $data);
+  }
 }
 
-if (isset($_POST["save"]) && $tiki_p_admin_games == 'y') {
-    check_ticket('list-games');
-    $file = basename( $_POST["editable"] );
+if(isset($_POST["save"]) && $tiki_p_admin_games == 'y') {
+  check_ticket('list-games');
+  $file = basename($_POST["editable"]);
 
-    if (array_key_exists($file, $games)) {
+  if(array_key_exists($file, $games)) {
     @$fp = fopen("games/thumbs/$file" . '.txt', "wb");
 
-    if ($fp) {
-        fwrite($fp, $_POST["description"]);
+    if($fp) {
+      fwrite($fp, $_POST["description"]);
 
-        fclose($fp);
+      fclose($fp);
     }
+
     $games[$file]['desc'] = nl2br($_POST["description"]);
-    }
+  }
 }
 
 // 5. Delete //
-if (isset($_REQUEST["remove"]) && $tiki_p_admin_games == 'y') {
-	// security issue - remove slashes to avoid traversing in parent directory
-	$game = basename( $_REQUEST["remove"] );
-	if (array_key_exists($game, $games)) {
-		$area = 'delgame';
-		if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
-			key_check($area);
-			$parts = explode('.', $game);
-    	$parts = array_slice($parts,0,3);
-			$source = 'games/flash/'.$parts[0].'.'.$parts[1];
-			$gamefile = 'games/thumbs/'.implode('.',$parts);
-			$desc = 'games/thumbs/'.implode('.',$parts).'.txt';
-			unlink($source);
-			unlink($desc);
-			unlink($gamefile);
-			unset($games[$game]);
-		} else {
-			key_get($area);
-		}
-	}
+if(isset($_REQUEST["remove"]) && $tiki_p_admin_games == 'y') {
+  // security issue - remove slashes to avoid traversing in parent directory
+  $game = basename($_REQUEST["remove"]);
+
+  if(array_key_exists($game, $games)) {
+    $area = 'delgame';
+
+    if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+      key_check($area);
+      $parts = explode('.', $game);
+      $parts = array_slice($parts,0,3);
+      $source = 'games/flash/'.$parts[0].'.'.$parts[1];
+      $gamefile = 'games/thumbs/'.implode('.',$parts);
+      $desc = 'games/thumbs/'.implode('.',$parts).'.txt';
+      unlink($source);
+      unlink($desc);
+      unlink($gamefile);
+      unset($games[$game]);
+    }
+
+    else {
+      key_get($area);
+    }
+  }
 }
 
 $section = 'games';

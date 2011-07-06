@@ -7,57 +7,61 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/rankings/ranklib.php');
+include_once('lib/rankings/ranklib.php');
 
-if ($feature_articles != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_articles");
+if($feature_articles != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_articles");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($feature_cms_rankings != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_cms_rankings");
+if($feature_cms_rankings != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_cms_rankings");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_read_article != 'y') {
-	$smarty->assign('msg', tra("Permission denied you cannot view this section"));
+if($tiki_p_read_article != 'y') {
+  $smarty->assign('msg', tra("Permission denied you cannot view this section"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $allrankings = array(
-	array(
-	'name' => tra('Top articles'),
-	'value' => 'cms_ranking_top_articles'
-),
-	array(
-	'name' => tra('Top authors'),
-	'value' => 'cms_ranking_top_authors'
-)
-);
+                 array(
+                   'name' => tra('Top articles'),
+                   'value' => 'cms_ranking_top_articles'
+                 ),
+                 array(
+                   'name' => tra('Top authors'),
+                   'value' => 'cms_ranking_top_authors'
+                 )
+               );
 
 $smarty->assign('allrankings', $allrankings);
 
-if (!isset($_REQUEST["which"])) {
-	$which = 'cms_ranking_top_articles';
-} else {
-	$which = $_REQUEST["which"];
+if(!isset($_REQUEST["which"])) {
+  $which = 'cms_ranking_top_articles';
+}
+
+else {
+  $which = $_REQUEST["which"];
 }
 
 $smarty->assign('which', $which);
 
 // Get the page from the request var or default it to HomePage
-if (!isset($_REQUEST["limit"])) {
-	$limit = 10;
-} else {
-	$limit = $_REQUEST["limit"];
+if(!isset($_REQUEST["limit"])) {
+  $limit = 10;
+}
+
+else {
+  $limit = $_REQUEST["limit"];
 }
 
 $smarty->assign_by_ref('limit', $limit);
@@ -78,7 +82,7 @@ $rankings[] = $rank;
 $smarty->assign_by_ref('rankings', $rankings);
 $smarty->assign('rpage', 'tiki-cms_rankings.php');
 $section = 'cms';
-include_once ('tiki-section_options.php');
+include_once('tiki-section_options.php');
 
 ask_ticket('cms_rankings');
 

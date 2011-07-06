@@ -7,7 +7,7 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
 //ini_set('include_path','.;pear/');
 //include('foobar.php');
@@ -25,11 +25,11 @@ print_r($h);
 $b = $nntp->getBody(1);
 print_r($b);
 */
-if ($feature_custom_home != 'y') {
-	$smarty->assign('msg', tra("This feature has been disabled"));
+if($feature_custom_home != 'y') {
+  $smarty->assign('msg', tra("This feature has been disabled"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 // Display the template

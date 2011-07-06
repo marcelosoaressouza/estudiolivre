@@ -7,23 +7,27 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/messu/messulib.php');
-include_once ('lib/userprefs/scrambleEmail.php');
-include_once ('lib/userprefs/userprefslib.php');
+include_once('lib/messu/messulib.php');
+include_once('lib/userprefs/scrambleEmail.php');
+include_once('lib/userprefs/userprefslib.php');
 
-if (isset($_REQUEST['view_user'])) {
-	$userwatch = $_REQUEST['view_user'];
-} else {
-	if ($user) {
-		$userwatch = $user;
-	} else {
-		$smarty->assign('msg', tra("You are not logged in and no user indicated"));
+if(isset($_REQUEST['view_user'])) {
+  $userwatch = $_REQUEST['view_user'];
+}
 
-		$smarty->display("error.tpl");
-		die;
-	}
+else {
+  if($user) {
+    $userwatch = $user;
+  }
+
+  else {
+    $smarty->assign('msg', tra("You are not logged in and no user indicated"));
+
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
 $smarty->assign('userwatch', $userwatch);
@@ -32,64 +36,66 @@ $smarty->assign('userwatch', $userwatch);
 $customfields = array();
 $customfields = $userprefslib->get_userprefs('CustomFields');
 
-foreach ($customfields as $custpref=>$prefvalue ) {
-	$customfields[$custpref]['value'] = $tikilib->get_user_preference($userwatch, $customfields[$custpref]['prefName'], $customfields[$custpref]['value']);
+foreach($customfields as $custpref=>$prefvalue) {
+  $customfields[$custpref]['value'] = $tikilib->get_user_preference($userwatch, $customfields[$custpref]['prefName'], $customfields[$custpref]['value']);
 }
 
 $smarty->assign_by_ref('customfields', $customfields);
 
-if ($feature_friends == 'y') {
-     $smarty->assign('friend', $tikilib->verify_friendship($userwatch, $user));
+if($feature_friends == 'y') {
+  $smarty->assign('friend', $tikilib->verify_friendship($userwatch, $user));
 }
 
-if (!$userlib->user_exists($userwatch)) {
-	$smarty->assign('msg', tra("Unknown user"));
+if(!$userlib->user_exists($userwatch)) {
+  $smarty->assign('msg', tra("Unknown user"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin != 'y') {
-	$user_information = $tikilib->get_user_preference($userwatch, 'user_information', 'public');
+if($tiki_p_admin != 'y') {
+  $user_information = $tikilib->get_user_preference($userwatch, 'user_information', 'public');
 
-	if ($user_information == 'private') {
-		$smarty->assign('msg', tra("The user has chosen to make his information private"));
-		$smarty->display("error.tpl");
-		die;
-	}
+  if($user_information == 'private') {
+    $smarty->assign('msg', tra("The user has chosen to make his information private"));
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
 $smarty->assign('mid', 'tiki-user_information.tpl');
 
-if ($user) {
-	$smarty->assign('sent', 0);
+if($user) {
+  $smarty->assign('sent', 0);
 
-	if (isset($_REQUEST['send'])) {
-		check_ticket('user-information');
-		$smarty->assign('sent', 1);
+  if(isset($_REQUEST['send'])) {
+    check_ticket('user-information');
+    $smarty->assign('sent', 1);
 
-		$message = '';
+    $message = '';
 
-		// Validation:
-		// must have a subject or body non-empty (or both)
-		if (empty($_REQUEST['subject']) && empty($_REQUEST['body'])) {
-			$smarty->assign('message', tra('ERROR: Either the subject or body must be non-empty'));
+    // Validation:
+    // must have a subject or body non-empty (or both)
+    if(empty($_REQUEST['subject']) && empty($_REQUEST['body'])) {
+      $smarty->assign('message', tra('ERROR: Either the subject or body must be non-empty'));
 
-			$smarty->display("tiki.tpl");
-			die;
-		}
+      $smarty->display("tiki.tpl");
+      die;
+    }
 
-		$message = tra('Message sent to'). ':' . $userwatch . '<br />';
-		$messulib->post_message($userwatch, $user, $_REQUEST['to'],
-			'', $_REQUEST['subject'], $_REQUEST['body'], $_REQUEST['priority']);
+    $message = tra('Message sent to'). ':' . $userwatch . '<br />';
+    $messulib->post_message($userwatch, $user, $_REQUEST['to'],
+                            '', $_REQUEST['subject'], $_REQUEST['body'], $_REQUEST['priority']);
 
-		$smarty->assign('message', $message);
-	}
+    $smarty->assign('message', $message);
+  }
 }
-if ($feature_score == 'y' and isset($user) and $user != $userwatch) {
-	$tikilib->score_event($user, 'profile_see');
-	$tikilib->score_event($userwatch, 'profile_is_seen');
+
+if($feature_score == 'y' and isset($user) and $user != $userwatch) {
+  $tikilib->score_event($user, 'profile_see');
+  $tikilib->score_event($userwatch, 'profile_is_seen');
 }
+
 global $site_style;
 
 $smarty->assign('priority',3);
@@ -124,9 +130,11 @@ $smarty->assign_by_ref('display_timezone', $display_timezone);
 
 $userinfo = $userlib->get_user_info($userwatch);
 $email_isPublic = $tikilib->get_user_preference($userwatch, 'email is public', 'n');
-if ($email_isPublic != 'n') {
-	$userinfo['email'] = scrambleEmail($userinfo['email'], $email_isPublic);
+
+if($email_isPublic != 'n') {
+  $userinfo['email'] = scrambleEmail($userinfo['email'], $email_isPublic);
 }
+
 $smarty->assign_by_ref('userinfo', $userinfo);
 $smarty->assign_by_ref('email_isPublic',$email_isPublic);
 $userPage = $feature_wiki_userpage_prefix.$userinfo['login'];

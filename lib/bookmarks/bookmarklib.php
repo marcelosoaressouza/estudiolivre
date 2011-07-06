@@ -1,183 +1,189 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class BookmarkLib extends TikiLib {
-	function BookmarkLib($db) {
-		# this is probably uneeded now
-		if (!$db) {
-			die ("Invalid db object passed to BookmarkLib constructor");
-		}
+  function BookmarkLib($db) {
+# this is probably uneeded now
 
-		$this->db = $db;
-	}
+    if(!$db) {
+      die("Invalid db object passed to BookmarkLib constructor");
+    }
 
-	function get_folder_path($folderId, $user) {
-		$path = '';
+    $this->db = $db;
+  }
 
-		$info = $this->get_folder($folderId, $user);
-		$path = '<a class="link" href=tiki-user_bookmarks.php?parentId="' . $info["folderId"] . '">' . $info["name"] . '</a>';
+  function get_folder_path($folderId, $user) {
+    $path = '';
 
-		while ($info["parentId"] != 0) {
-			$info = $this->get_folder($info["parentId"], $user);
+    $info = $this->get_folder($folderId, $user);
+    $path = '<a class="link" href=tiki-user_bookmarks.php?parentId="' . $info["folderId"] . '">' . $info["name"] . '</a>';
 
-			$path
-				= $path = '<a class="link" href=tiki-user_bookmarks.php?parentId="' . $info["folderId"] . '">' . $info["name"] . '</a>' . '>' . $path;
-		}
+    while($info["parentId"] != 0) {
+      $info = $this->get_folder($info["parentId"], $user);
 
-		return $path;
-	}
+      $path
+        = $path = '<a class="link" href=tiki-user_bookmarks.php?parentId="' . $info["folderId"] . '">' . $info["name"] . '</a>' . '>' . $path;
+    }
 
-	function get_folder($folderId, $user) {
-		$query = "select * from `tiki_user_bookmarks_folders` where `folderId`=? and `user`=?";
+    return $path;
+  }
 
-		$result = $this->query($query,array($folderId,$user));
+  function get_folder($folderId, $user) {
+    $query = "select * from `tiki_user_bookmarks_folders` where `folderId`=? and `user`=?";
 
-		if (!$result->numRows())
-			return false;
+    $result = $this->query($query,array($folderId,$user));
 
-		$res = $result->fetchRow();
-		return $res;
-	}
+    if(!$result->numRows())
+      return false;
 
-	function get_url($urlId) {
-		$query = "select * from `tiki_user_bookmarks_urls` where `urlId`=?";
+    $res = $result->fetchRow();
+    return $res;
+  }
 
-		$result = $this->query($query,array($urlId));
+  function get_url($urlId) {
+    $query = "select * from `tiki_user_bookmarks_urls` where `urlId`=?";
 
-		if (!$result->numRows())
-			return false;
+    $result = $this->query($query,array($urlId));
 
-		$res = $result->fetchRow();
-		return $res;
-	}
+    if(!$result->numRows())
+      return false;
 
-	function remove_url($urlId, $user) {
-		$query = "delete from `tiki_user_bookmarks_urls` where `urlId`=? and user=?";
+    $res = $result->fetchRow();
+    return $res;
+  }
 
-		$result = $this->query($query,array($urlId,$user));
-		return true;
-	}
+  function remove_url($urlId, $user) {
+    $query = "delete from `tiki_user_bookmarks_urls` where `urlId`=? and user=?";
 
-	function remove_folder($folderId, $user) {
-		// Delete the category
-		$query = "delete from `tiki_user_bookmarks_folders` where `folderId`=? and `user`=?";
+    $result = $this->query($query,array($urlId,$user));
+    return true;
+  }
 
-		$result = $this->query($query,array($folderId,$user));
-		// Remove objects for this category
-		$query = "delete from `tiki_user_bookmarks_urls` where `folderId`=? and `user`=?";
-		$result = $this->query($query,array($folderId,$user));
-		// SUbfolders
-		$query = "select `folderId` from `tiki_user_bookmarks_folders` where `parentId`=? and `user`=?";
-		$result = $this->query($query,array($folderId,$user));
+  function remove_folder($folderId, $user) {
+    // Delete the category
+    $query = "delete from `tiki_user_bookmarks_folders` where `folderId`=? and `user`=?";
 
-		while ($res = $result->fetchRow()) {
-			// Recursively remove the subcategory
-			$this->remove_folder($res["folderId"], $user);
-		}
+    $result = $this->query($query,array($folderId,$user));
+    // Remove objects for this category
+    $query = "delete from `tiki_user_bookmarks_urls` where `folderId`=? and `user`=?";
+    $result = $this->query($query,array($folderId,$user));
+    // SUbfolders
+    $query = "select `folderId` from `tiki_user_bookmarks_folders` where `parentId`=? and `user`=?";
+    $result = $this->query($query,array($folderId,$user));
 
-		return true;
-	}
+    while($res = $result->fetchRow()) {
+      // Recursively remove the subcategory
+      $this->remove_folder($res["folderId"], $user);
+    }
 
-	function update_folder($folderId, $name, $user) {
+    return true;
+  }
 
-		$query = "update `tiki_user_bookmarks_folders` set `name`=? where `folderId`=? and `user`=?";
-		$result = $this->query($query,array($name,$folderId,$user));
-	}
+  function update_folder($folderId, $name, $user) {
 
-	function add_folder($parentId, $name, $user) {
-		// Don't allow empty/blank folder names.
-		if (empty($name))
-			return false;
+    $query = "update `tiki_user_bookmarks_folders` set `name`=? where `folderId`=? and `user`=?";
+    $result = $this->query($query,array($name,$folderId,$user));
+  }
 
-		$query = "insert into `tiki_user_bookmarks_folders`(`name`,`parentId`,`user`) values(?,?,?)";
-		$result = $this->query($query,array($name,$parentId,$user));
-	}
+  function add_folder($parentId, $name, $user) {
+    // Don't allow empty/blank folder names.
+    if(empty($name))
+      return false;
 
-	function replace_url($urlId, $folderId, $name, $url, $user) {
-		$now = date("U");
+    $query = "insert into `tiki_user_bookmarks_folders`(`name`,`parentId`,`user`) values(?,?,?)";
+    $result = $this->query($query,array($name,$parentId,$user));
+  }
 
-		if ($urlId) {
-			$query = "update `tiki_user_bookmarks_urls` set `user`=?,`lastUpdated`=?,`folderId`=?,`name`=?,`url`=? where `urlId`=?";
-			$bindvars=array($user,(int) $now,$folderId,$name,$url,$urlId);
-		} else {
-			$query = " insert into `tiki_user_bookmarks_urls`(`name`,`url`,`data`,`lastUpdated`,`folderId`,`user`)
-      values(?,?,?,?,?,?)";
-      			$bindvars=array($name,$url,'',(int) $now,$folderId,$user);
-		}
+  function replace_url($urlId, $folderId, $name, $url, $user) {
+    $now = date("U");
 
-		$result = $this->query($query,$bindvars);
-		$id = $this->getOne("select max(`urlId`) from `tiki_user_bookmarks_urls` where `url`=? and `lastUpdated`=?",array($url,(int) $now));
-		return $id;
-	}
+    if($urlId) {
+      $query = "update `tiki_user_bookmarks_urls` set `user`=?,`lastUpdated`=?,`folderId`=?,`name`=?,`url`=? where `urlId`=?";
+      $bindvars=array($user,(int) $now,$folderId,$name,$url,$urlId);
+    }
 
-	function refresh_url($urlId) {
-		$info = $this->get_url($urlId);
+    else {
+      $query = " insert into `tiki_user_bookmarks_urls`(`name`,`url`,`data`,`lastUpdated`,`folderId`,`user`)
+               values(?,?,?,?,?,?)";
+      $bindvars=array($name,$url,'',(int) $now,$folderId,$user);
+    }
 
-		if (strstr($info["url"], 'tiki-') || strstr($info["url"], 'messu-'))
-			return false;
+    $result = $this->query($query,$bindvars);
+    $id = $this->getOne("select max(`urlId`) from `tiki_user_bookmarks_urls` where `url`=? and `lastUpdated`=?",array($url,(int) $now));
+    return $id;
+  }
 
-		$data=@$this->httprequest($info["url"]);
+  function refresh_url($urlId) {
+    $info = $this->get_url($urlId);
 
-		if (!$data)
-			return;
+    if(strstr($info["url"], 'tiki-') || strstr($info["url"], 'messu-'))
+      return false;
 
-		$now = date("U");
-		$query = "update `tiki_user_bookmarks_urls` set `lastUpdated`=?, `data`=? where `urlId`=?";
-		$result = $this->query($query,array((int) $now,$data,$urlId));
-		return true;
-	}
+    $data=@$this->httprequest($info["url"]);
 
-	function list_folder($folderId, $offset, $maxRecords, $sort_mode = 'name_asc', $find, $user) {
+    if(!$data)
+      return;
 
-		if ($find) {
-			$findesc = '%' . $find . '%';
+    $now = date("U");
+    $query = "update `tiki_user_bookmarks_urls` set `lastUpdated`=?, `data`=? where `urlId`=?";
+    $result = $this->query($query,array((int) $now,$data,$urlId));
+    return true;
+  }
 
-			$mid = " and `name` like ? or `url` like ?";
-			$bindvars=array($folderId,$user,$findesc,$findesc);
-		} else {
-			$mid = "";
-			$bindvars=array($folderId,$user);
-		}
+  function list_folder($folderId, $offset, $maxRecords, $sort_mode = 'name_asc', $find, $user) {
 
-		$query = "select * from `tiki_user_bookmarks_urls` where `folderId`=? and `user`=? $mid order by ".$this->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `tiki_user_bookmarks_urls` where `folderId`=? and user=? $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
-		$ret = array();
+    if($find) {
+      $findesc = '%' . $find . '%';
 
-		while ($res = $result->fetchRow()) {
-			$res["datalen"] = strlen($res["data"]);
+      $mid = " and `name` like ? or `url` like ?";
+      $bindvars=array($folderId,$user,$findesc,$findesc);
+    }
 
-			$ret[] = $res;
-		}
+    else {
+      $mid = "";
+      $bindvars=array($folderId,$user);
+    }
 
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
+    $query = "select * from `tiki_user_bookmarks_urls` where `folderId`=? and `user`=? $mid order by ".$this->convert_sortmode($sort_mode);
+    $query_cant = "select count(*) from `tiki_user_bookmarks_urls` where `folderId`=? and user=? $mid";
+    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $cant = $this->getOne($query_cant,$bindvars);
+    $ret = array();
 
-	function get_child_folders($folderId, $user) {
-		$ret = array();
+    while($res = $result->fetchRow()) {
+      $res["datalen"] = strlen($res["data"]);
 
-		$query = "select * from `tiki_user_bookmarks_folders` where `parentId`=? and `user`=?";
-		$result = $this->query($query,array($folderId,$user));
+      $ret[] = $res;
+    }
 
-		while ($res = $result->fetchRow()) {
-			$cant = $this->getOne("select count(*) from `tiki_user_bookmarks_urls` where `folderId`=?",array($res["folderId"]));
+    $retval = array();
+    $retval["data"] = $ret;
+    $retval["cant"] = $cant;
+    return $retval;
+  }
 
-			$res["urls"] = $cant;
-			$ret[] = $res;
-		}
+  function get_child_folders($folderId, $user) {
+    $ret = array();
 
-		return $ret;
-	}
+    $query = "select * from `tiki_user_bookmarks_folders` where `parentId`=? and `user`=?";
+    $result = $this->query($query,array($folderId,$user));
+
+    while($res = $result->fetchRow()) {
+      $cant = $this->getOne("select count(*) from `tiki_user_bookmarks_urls` where `folderId`=?",array($res["folderId"]));
+
+      $res["urls"] = $cant;
+      $ret[] = $res;
+    }
+
+    return $ret;
+  }
 }
+
 global $dbTiki;
 $bookmarklib = new BookmarkLib($dbTiki);
 

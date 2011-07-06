@@ -7,28 +7,28 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-if ($lang_use_db != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": lang_use_db");
+if($lang_use_db != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": lang_use_db");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_edit_languages != 'y') {
-	$smarty->assign('msg', tra("Permission denied to use this feature"));
+if($tiki_p_edit_languages != 'y') {
+  $smarty->assign('msg', tra("Permission denied to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $query = "select `lang` from `tiki_languages`";
 $result = $tikilib->query($query,array());
 $languages = array();
 
-while ($res = $result->fetchRow()) {
-	$languages[] = $res["lang"];
+while($res = $result->fetchRow()) {
+  $languages[] = $res["lang"];
 }
 
 // Lookup translated names for the languages
@@ -41,54 +41,55 @@ $languages_files = $tikilib->list_languages();
 $smarty->assign_by_ref('languages_files', $languages_files);
 
 // Save Variables
-if (isset($_REQUEST["imp_language"])) {
-	$imp_language = preg_replace('/\.\./','',$_REQUEST['imp_language']);
+if(isset($_REQUEST["imp_language"])) {
+  $imp_language = preg_replace('/\.\./','',$_REQUEST['imp_language']);
 
-	$smarty->assign('imp_language', $imp_language);
+  $smarty->assign('imp_language', $imp_language);
 }
 
-if (isset($_REQUEST["exp_language"])) {
-	$exp_language = $_REQUEST["exp_language"];
+if(isset($_REQUEST["exp_language"])) {
+  $exp_language = $_REQUEST["exp_language"];
 
-	$smarty->assign('exp_language', $exp_language);
+  $smarty->assign('exp_language', $exp_language);
 }
 
 // Import
-if (isset($_REQUEST["import"])) {
-	check_ticket('import-lang');
+if(isset($_REQUEST["import"])) {
+  check_ticket('import-lang');
 
-	include_once ('lang/' . $imp_language . '/language.php');
+  include_once('lang/' . $imp_language . '/language.php');
 
-	$impmsg = "Included lang/" . $imp_language . "/language.php";
-	$query = "insert into `tiki_languages` values (?,?)";
-	$result = $tikilib->query($query, array($imp_language,''), -1, -1, false);
+  $impmsg = "Included lang/" . $imp_language . "/language.php";
+  $query = "insert into `tiki_languages` values (?,?)";
+  $result = $tikilib->query($query, array($imp_language,''), -1, -1, false);
 
-	while (list($key, $val) = each($lang)) {
-		$query = "insert into `tiki_language` values (?,?,?)";
-		$result = $tikilib->query($query, array($key,$imp_language,$val), -1, -1, false);
-	}
+  while(list($key, $val) = each($lang)) {
+    $query = "insert into `tiki_language` values (?,?,?)";
+    $result = $tikilib->query($query, array($key,$imp_language,$val), -1, -1, false);
+  }
 
-	$smarty->assign('impmsg', $impmsg);
+  $smarty->assign('impmsg', $impmsg);
 }
 
 // Export
-if (isset($_REQUEST["export"])) {
-	check_ticket('import-lang');
-	$query = "select `source`, `tran` from `tiki_language` where `lang`=?";
-	$result = $tikilib->query($query,array($exp_language));
-	$data = "<?php\n\$lang=Array(\n";
+if(isset($_REQUEST["export"])) {
+  check_ticket('import-lang');
+  $query = "select `source`, `tran` from `tiki_language` where `lang`=?";
+  $result = $tikilib->query($query,array($exp_language));
+  $data = "<?php\n\$lang=Array(\n";
 
-	while ($res = $result->fetchRow()) {
-		$data = $data . "\"" . $res["source"] . "\" => \"" . $res["tran"] . "\",\n";
-	}
+  while($res = $result->fetchRow()) {
+    $data = $data . "\"" . $res["source"] . "\" => \"" . $res["tran"] . "\",\n";
+  }
 
-	$data = $data . ");\n?>";
-	header ("Content-type: application/unknown");
-	header ("Content-Disposition: inline; filename=language.php");
-	echo $data;
-	exit (0);
-	$smarty->assign('expmsg', $expmsg);
+  $data = $data . ");\n?>";
+  header("Content-type: application/unknown");
+  header("Content-Disposition: inline; filename=language.php");
+  echo $data;
+  exit(0);
+  $smarty->assign('expmsg', $expmsg);
 }
+
 ask_ticket('import-lang');
 
 // disallow robots to index page:

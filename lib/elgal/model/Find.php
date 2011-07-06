@@ -6,14 +6,14 @@
  */
 
 class Find {
-	var $keys = array();
-	
-	function Find($aKeys) {
-		foreach ($aKeys as $key) {
-			$this->keys[] = $key;
-		}
-		return $this;
-	}
+  var $keys = array();
+
+  function Find($aKeys) {
+    foreach($aKeys as $key) {
+      $this->keys[] = $key;
+    }
+    return $this;
+  }
 }
 
 ?>

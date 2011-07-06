@@ -1,81 +1,83 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 class FlinksLib extends TikiLib {
-	function FlinksLib($db) {
-		# this is probably uneeded now
-		if (!$db) {
-			die ("Invalid db object passed to FlinksLib constructor");
-		}
+  function FlinksLib($db) {
+# this is probably uneeded now
 
-		$this->db = $db;
-	}
+    if(!$db) {
+      die("Invalid db object passed to FlinksLib constructor");
+    }
 
-	function add_featured_link($url, $title, $description = '', $position = 0, $type = 'f') {
-		$query = "delete from `tiki_featured_links` where `url`=?";
-		$result = $this->query($query,array($url),-1,-1,false);
-		$query = "insert into `tiki_featured_links`(`url`,`title`,`description`,`position`,`hits`,`type`) values(?,?,?,?,?,?)";
-		$result = $this->query($query,array($url,$title,$description,$position,0,$type));
-	}
+    $this->db = $db;
+  }
 
-	function remove_featured_link($url) {
-		$query = "delete from `tiki_featured_links` where `url`=?";
+  function add_featured_link($url, $title, $description = '', $position = 0, $type = 'f') {
+    $query = "delete from `tiki_featured_links` where `url`=?";
+    $result = $this->query($query,array($url),-1,-1,false);
+    $query = "insert into `tiki_featured_links`(`url`,`title`,`description`,`position`,`hits`,`type`) values(?,?,?,?,?,?)";
+    $result = $this->query($query,array($url,$title,$description,$position,0,$type));
+  }
 
-		$result = $this->query($query,array($url));
-	}
+  function remove_featured_link($url) {
+    $query = "delete from `tiki_featured_links` where `url`=?";
 
-	function update_featured_link($url, $title, $description, $position = 0, $type = 'f') {
-		$query = "update `tiki_featured_links` set `title`=?, `type`=?, `description`=?, `position`=? where `url`='$url'";
+    $result = $this->query($query,array($url));
+  }
 
-		$result = $this->query($query,array($title,$type,$description,$position,$url));
-	}
+  function update_featured_link($url, $title, $description, $position = 0, $type = 'f') {
+    $query = "update `tiki_featured_links` set `title`=?, `type`=?, `description`=?, `position`=? where `url`='$url'";
 
-	function add_featured_link_hit($url) {
-		global $count_admin_pvs;
+    $result = $this->query($query,array($title,$type,$description,$position,$url));
+  }
 
-		global $user;
+  function add_featured_link_hit($url) {
+    global $count_admin_pvs;
 
-		if ($count_admin_pvs == 'y' || $user != 'admin') {
-			$query = "update `tiki_featured_links` set `hits` = `hits` + 1 where `url` = ?";
+    global $user;
 
-			$result = $this->query($query,array($url));
-		}
-	}
+    if($count_admin_pvs == 'y' || $user != 'admin') {
+      $query = "update `tiki_featured_links` set `hits` = `hits` + 1 where `url` = ?";
 
-	function get_featured_link($url) {
-		$query = "select * from `tiki_featured_links` where `url`=?";
+      $result = $this->query($query,array($url));
+    }
+  }
 
-		$result = $this->query($query,array($url));
+  function get_featured_link($url) {
+    $query = "select * from `tiki_featured_links` where `url`=?";
 
-		if (!$result->numRows())
-			return false;
+    $result = $this->query($query,array($url));
 
-		$res = $result->fetchRow();
-		return $res;
-	}
+    if(!$result->numRows())
+      return false;
 
-	function generate_featured_links_positions() {
-		$query = "select `url` from `tiki_featured_links` order by `hits` desc";
+    $res = $result->fetchRow();
+    return $res;
+  }
 
-		$result = $this->query($query,array());
-		$position = 1;
+  function generate_featured_links_positions() {
+    $query = "select `url` from `tiki_featured_links` order by `hits` desc";
 
-		while ($res = $result->fetchRow()) {
-			$url = $res["url"];
+    $result = $this->query($query,array());
+    $position = 1;
 
-			$query2 = "update `tiki_featured_links` set `position`=? where `url`=?";
-			$result2 = $this->query($query2,array($position,$url));
-			$position++;
-		}
+    while($res = $result->fetchRow()) {
+      $url = $res["url"];
 
-		return true;
-	}
+      $query2 = "update `tiki_featured_links` set `position`=? where `url`=?";
+      $result2 = $this->query($query2,array($position,$url));
+      $position++;
+    }
+
+    return true;
+  }
 }
+
 global $dbTiki;
 $flinkslib = new FlinksLib($dbTiki);
 

@@ -36,7 +36,7 @@
 // Usefull mode when preparing a translation for distribution.
 
 // http://www.neonchart.com/get_strings.php?nohelp&nosections
-// Prepare all languages for release 
+// Prepare all languages for release
 
 
 $lang=Array(
@@ -5443,6 +5443,6 @@ $lang=Array(
 // ### end of possibly untranslated words
 // ###
 
-"DATE-of" => "of",
-"###end###"=>"###end###");
+        "DATE-of" => "of",
+        "###end###"=>"###end###");
 ?>

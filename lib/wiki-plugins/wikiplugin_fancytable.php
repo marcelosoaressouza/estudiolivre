@@ -16,78 +16,85 @@
 // row 2 column 1 ~|~ row 2 column 2 ~|~ row 2 column 3
 // {FANCYTABLE}
 function wikiplugin_fancytable_help() {
-	return tra("Displays the data using the Tikiwiki odd/even table style").":<br />~np~{FANCYTABLE(head=>,headclass=>)}".tra("cells")."{FANCYTABLE}~/np~ - ''".tra("heads and cells separated by ~|~")."''";
+  return tra("Displays the data using the Tikiwiki odd/even table style").":<br />~np~{FANCYTABLE(head=>,headclass=>)}".tra("cells")."{FANCYTABLE}~/np~ - ''".tra("heads and cells separated by ~|~")."''";
 }
 
 function wikiplugin_fancytable($data, $params) {
-	global $tikilib;
+  global $tikilib;
 
-	// Start the table
-	$wret = "<table class=\"normal\">";
+  // Start the table
+  $wret = "<table class=\"normal\">";
 
-	$tdend = "</td>";
-	$trbeg = "<tr>";
-	$trend = "</tr>";
+  $tdend = "</td>";
+  $trbeg = "<tr>";
+  $trend = "</tr>";
 
-	// Parse the parameters
-	extract ($params,EXTR_SKIP);
+  // Parse the parameters
+  extract($params,EXTR_SKIP);
 
-	if (isset($headclass)) {
-		if (strpos($headclass,'"')) $headclass = str_replace('"',"'",$class);
-		$tdhdr = "<td class=\"heading $headclass\">";
-	} else {
-		$tdhdr = "<td class=\"heading\">";
-	}
+  if(isset($headclass)) {
+    if(strpos($headclass,'"')) $headclass = str_replace('"',"'",$class);
 
-	if (isset($head)) {
-		$parts = explode("~|~", $head);
+    $tdhdr = "<td class=\"heading $headclass\">";
+  }
 
-		$row = "";
+  else {
+    $tdhdr = "<td class=\"heading\">";
+  }
 
-		foreach ($parts as $column) {
-			$row .= $tdhdr . $column . $tdend;
-		}
+  if(isset($head)) {
+    $parts = explode("~|~", $head);
 
-		$wret .= $trbeg . $row . $trend;
-	}
+    $row = "";
 
-	// Each line of the data is a row, the first line is the header
-	$row_is_odd = true;
-	$lines = split("\n", $data);
+    foreach($parts as $column) {
+      $row .= $tdhdr . $column . $tdend;
+    }
 
-	foreach ($lines as $line) {
-		$line = trim($line);
+    $wret .= $trbeg . $row . $trend;
+  }
 
-		if (strlen($line) > 0) {
-			if ($row_is_odd) {
-				$tdbeg = "<td class=\"odd\">";
+  // Each line of the data is a row, the first line is the header
+  $row_is_odd = true;
+  $lines = split("\n", $data);
 
-				$row_is_odd = false;
-			} else {
-				$tdbeg = "<td class=\"even\">";
+  foreach($lines as $line) {
+    $line = trim($line);
 
-				$row_is_odd = true;
-			}
+    if(strlen($line) > 0) {
+      if($row_is_odd) {
+        $tdbeg = "<td class=\"odd\">";
 
-			$parts = explode("~|~", $line);
-			$row = "";
+        $row_is_odd = false;
+      }
 
-			foreach ($parts as $column) {
-				if (strcmp(trim($column), "~blank~") == 0) {
-					$row .= $tdbeg . "&nbsp;" . $tdend;
-				} else {
-					$row .= $tdbeg . $column . $tdend;
-				}
-			}
+      else {
+        $tdbeg = "<td class=\"even\">";
 
-			$wret .= $trbeg . $row . $trend;
-		}
-	}
+        $row_is_odd = true;
+      }
 
-	// End the table
-	$wret .= "</table>";
+      $parts = explode("~|~", $line);
+      $row = "";
 
-	return $wret;
+      foreach($parts as $column) {
+        if(strcmp(trim($column), "~blank~") == 0) {
+          $row .= $tdbeg . "&nbsp;" . $tdend;
+        }
+
+        else {
+          $row .= $tdbeg . $column . $tdend;
+        }
+      }
+
+      $wret .= $trbeg . $row . $trend;
+    }
+  }
+
+  // End the table
+  $wret .= "</table>";
+
+  return $wret;
 }
 
 ?>

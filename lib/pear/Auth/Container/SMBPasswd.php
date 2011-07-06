@@ -14,7 +14,7 @@
  *
  * @category   Authentication
  * @package    Auth
- * @author     Michael Bretterklieber <michael@bretterklieber.com> 
+ * @author     Michael Bretterklieber <michael@bretterklieber.com>
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
@@ -63,115 +63,121 @@ require_once "PEAR.php";
 class Auth_Container_SMBPasswd extends Auth_Container
 {
 
-    // {{{ properties
+  // {{{ properties
 
-    /**
-     * File_SMBPasswd object
-     * @var object
-     */
-    var $pwfile;
+  /**
+   * File_SMBPasswd object
+   * @var object
+   */
+  var $pwfile;
 
-    // }}}
+  // }}}
 
-    // {{{ Auth_Container_SMBPasswd() [constructor]
+  // {{{ Auth_Container_SMBPasswd() [constructor]
 
-    /**
-     * Constructor of the container class
-     *
-     * @param  $filename   string filename for a passwd type file
-     * @return object Returns an error object if something went wrong
-     */
-    function Auth_Container_SMBPasswd($filename)
-    {
-        $this->pwfile = new File_SMBPasswd($filename,0);
+  /**
+   * Constructor of the container class
+   *
+   * @param  $filename   string filename for a passwd type file
+   * @return object Returns an error object if something went wrong
+   */
+  function Auth_Container_SMBPasswd($filename)
+  {
+    $this->pwfile = new File_SMBPasswd($filename,0);
 
-        if (!$this->pwfile->load()) {
-            PEAR::raiseError("Error while reading file contents.", 41, PEAR_ERROR_DIE);
-            return;
-        }
-
+    if(!$this->pwfile->load()) {
+      PEAR::raiseError("Error while reading file contents.", 41, PEAR_ERROR_DIE);
+      return;
     }
 
-    // }}}
-    // {{{ fetchData()
+  }
 
-    /**
-     * Get user information from pwfile
-     *
-     * @param   string Username
-     * @param   string Password
-     * @return  boolean
-     */
-    function fetchData($username, $password)
-    {
-        return $this->pwfile->verifyAccount($username, $password);
+  // }}}
+  // {{{ fetchData()
+
+  /**
+   * Get user information from pwfile
+   *
+   * @param   string Username
+   * @param   string Password
+   * @return  boolean
+   */
+  function fetchData($username, $password)
+  {
+    return $this->pwfile->verifyAccount($username, $password);
+  }
+
+  // }}}
+  // {{{ listUsers()
+
+  function listUsers()
+  {
+    return $this->pwfile->getAccounts();
+  }
+
+  // }}}
+  // {{{ addUser()
+
+  /**
+   * Add a new user to the storage container
+   *
+   * @param string Username
+   * @param string Password
+   * @param array  Additional information
+   *
+   * @return boolean
+   */
+  function addUser($username, $password, $additional = '')
+  {
+    $res = $this->pwfile->addUser($user, $additional['userid'], $pass);
+
+    if($res === true) {
+      return $this->pwfile->save();
     }
 
-    // }}}
-    // {{{ listUsers()
-    
-    function listUsers()
-    {
-        return $this->pwfile->getAccounts();
+    return $res;
+  }
+
+  // }}}
+  // {{{ removeUser()
+
+  /**
+   * Remove user from the storage container
+   *
+   * @param string Username
+   */
+  function removeUser($username)
+  {
+    $res = $this->pwfile->delUser($username);
+
+    if($res === true) {
+      return $this->pwfile->save();
     }
 
-    // }}}
-    // {{{ addUser()
+    return $res;
+  }
 
-    /**
-     * Add a new user to the storage container
-     *
-     * @param string Username
-     * @param string Password
-     * @param array  Additional information
-     *
-     * @return boolean
-     */
-    function addUser($username, $password, $additional = '')
-    {
-        $res = $this->pwfile->addUser($user, $additional['userid'], $pass);
-        if ($res === true) {
-            return $this->pwfile->save();
-        }
-        return $res;
+  // }}}
+  // {{{ changePassword()
+
+  /**
+   * Change password for user in the storage container
+   *
+   * @param string Username
+   * @param string The new password
+   */
+  function changePassword($username, $password)
+  {
+    $res = $this->pwfile->modUser($username, '', $password);
+
+    if($res === true) {
+      return $this->pwfile->save();
     }
 
-    // }}}
-    // {{{ removeUser()
+    return $res;
+  }
 
-    /**
-     * Remove user from the storage container
-     *
-     * @param string Username
-     */
-    function removeUser($username)
-    {
-        $res = $this->pwfile->delUser($username);
-        if ($res === true) {
-            return $this->pwfile->save();
-        }
-        return $res;
-    }
-
-    // }}}
-    // {{{ changePassword()
-
-    /**
-     * Change password for user in the storage container
-     *
-     * @param string Username
-     * @param string The new password 
-     */
-    function changePassword($username, $password)
-    {
-         $res = $this->pwfile->modUser($username, '', $password);
-         if ($res === true) {
-             return $this->pwfile->save();
-         }
-         return $res;
-    }
-
-    // }}}
+  // }}}
 
 }
 ?>

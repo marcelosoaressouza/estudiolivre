@@ -4,7 +4,7 @@
 // using xajax version 0.2
 // http://xajaxproject.org
 
-require_once ("../../xajax.inc.php");
+require_once("../../xajax.inc.php");
 
 session_start();
 

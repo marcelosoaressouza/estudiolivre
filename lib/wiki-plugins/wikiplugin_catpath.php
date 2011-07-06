@@ -2,79 +2,81 @@
 /* $Header: /cvsroot/tikiwiki/tiki/lib/wiki-plugins/wikiplugin_catpath.php,v 1.4.12.3 2007/03/02 13:57:21 luciash Exp $
  *
  * Tikiwiki CATPATH plugin.
- * 
+ *
  * Syntax:
- * 
+ *
  * {CATPATH(
- *          divider=>string	#string that separates the categories, defaults to '>'
- *          top=>yes|no		#to display the TOP category or not, defaults to 'no'
+ *          divider=>string #string that separates the categories, defaults to '>'
+ *          top=>yes|no   #to display the TOP category or not, defaults to 'no'
  *         )}
  * {CATPATH}
- * 
+ *
   */
 function wikiplugin_catpath_help() {
-	return tra("Insert the full category path for each category that this wiki page belongs to").":<br />~np~{CATPATH(divider=>,top=>yes|no)}{CATPATH}~/np~";
+  return tra("Insert the full category path for each category that this wiki page belongs to").":<br />~np~{CATPATH(divider=>,top=>yes|no)}{CATPATH}~/np~";
 }
 
 function wikiplugin_catpath($data, $params) {
-	global $dbTiki;
+  global $dbTiki;
 
-	global $smarty;
-	global $tikilib;
-	global $feature_categories;
-	global $categlib;
+  global $smarty;
+  global $tikilib;
+  global $feature_categories;
+  global $categlib;
 
-	if (!is_object($categlib)) {
-		require_once ("lib/categories/categlib.php");
-	}
+  if(!is_object($categlib)) {
+    require_once("lib/categories/categlib.php");
+  }
 
-	if ($feature_categories != 'y') {
-		return "<span class='warn'>" . tra("Categories are disabled"). "</span>";
-	}
+  if($feature_categories != 'y') {
+    return "<span class='warn'>" . tra("Categories are disabled"). "</span>";
+  }
 
-	extract ($params,EXTR_SKIP);
+  extract($params,EXTR_SKIP);
 
-	// default divider is '>'
-	if (!(isset($divider))) {
-		$divider = '>';
-	}
+  // default divider is '>'
+  if(!(isset($divider))) {
+    $divider = '>';
+  }
 
-	// default setting for top is 'no'
-	if (!(isset($top))) {
-		$top = 'no';
-	} elseif ($top != 'y' and $top != 'yes' and $top != 'n' and $top != 'no') {
-		$top = 'no';
-	}
+  // default setting for top is 'no'
+  if(!(isset($top))) {
+    $top = 'no';
+  }
 
-	$objId = urldecode($_REQUEST['page']);
+  elseif($top != 'y' and $top != 'yes' and $top != 'n' and $top != 'no') {
+    $top = 'no';
+  }
 
-	$cats = $categlib->get_object_categories('wiki page', $objId);
+  $objId = urldecode($_REQUEST['page']);
 
-	$catpath = '';
+  $cats = $categlib->get_object_categories('wiki page', $objId);
 
-	foreach ($cats as $categId) {
-		$catpath .= '<span class="categpath">';
+  $catpath = '';
 
-		// Display TOP on each line if wanted
-		if ($top == 'yes' or $top == 'y') {
-			$catpath .= '<a class="categpath" href="tiki-browse_categories.php?parentId=0">TOP</a> ' . $divider . ' ';
-		}
+  foreach($cats as $categId) {
+    $catpath .= '<span class="categpath">';
 
-		$path = '';
-		$info = $categlib->get_category($categId);
-		$path
-			= '<a class="categpath" href="tiki-browse_categories.php?parentId=' . $info["categId"] . '">' . $info["name"] . '</a>';
+    // Display TOP on each line if wanted
+    if($top == 'yes' or $top == 'y') {
+      $catpath .= '<a class="categpath" href="tiki-browse_categories.php?parentId=0">TOP</a> ' . $divider . ' ';
+    }
 
-		while ($info["parentId"] != 0) {
-			$info = $categlib->get_category($info["parentId"]);
+    $path = '';
+    $info = $categlib->get_category($categId);
+    $path
+      = '<a class="categpath" href="tiki-browse_categories.php?parentId=' . $info["categId"] . '">' . $info["name"] . '</a>';
 
-			$path = '<a class="categpath" href="tiki-browse_categories.php?parentId=' . $info["categId"] . '">' . $info["name"] . '</a> ' . $divider . ' ' . $path;
-		}
+    while($info["parentId"] != 0) {
+      $info = $categlib->get_category($info["parentId"]);
 
-		$catpath .= $path . '</span><br />';
-	}
+      $path = '<a class="categpath" href="tiki-browse_categories.php?parentId=' . $info["categId"] . '">' . $info["name"] . '</a> ' . $divider . ' ' . $path;
+    }
 
-	return $catpath;
+    $catpath .= $path . '</span><br />';
+  }
+
+  return $catpath;
 }
 
 ?>

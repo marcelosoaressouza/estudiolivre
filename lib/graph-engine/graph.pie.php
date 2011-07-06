@@ -1,7 +1,7 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -10,87 +10,89 @@ require_once 'graph-engine/core.php';
 
 class PieChartGraphic extends Graphic // {{{1
 {
-	var $pie_data;
+  var $pie_data;
 
-	function PieChartGraphic() // {{{2
-	{
-		Graphic::Graphic();
-		$this->pie_data = array();
-	}
+  function PieChartGraphic() // {{{2
+  {
+    Graphic::Graphic();
+    $this->pie_data = array();
+  }
 
-	function getRequiredSeries() // {{{2
-	{
-		return array(
-			'label' => false,
-			'value' => true,
-			'color' => false,
-			'style' => false
-		);
-	}
+  function getRequiredSeries() // {{{2
+  {
+    return array(
+             'label' => false,
+             'value' => true,
+             'color' => false,
+             'style' => false
+           );
+  }
 
-	function _handleData( $data ) // {{{2
-	{
-		$elements = count( $data['value'] );
+  function _handleData($data)   // {{{2
+  {
+    $elements = count($data['value']);
 
-		if( !isset( $data['color'] ) )
-		{
-			$data['color'] = array();
-			for( $i = 0; $elements > $i; ++$i )
-				$data['color'][] = $this->_getColor();
-		}
+    if(!isset($data['color']))
+    {
+      $data['color'] = array();
 
-		if( !isset( $data['style'] ) )
-			for( $i = 0; $elements > $i; ++$i )
-				$data['style'][] = 'FillStroke-' . $data['color'][$i];
+      for($i = 0; $elements > $i; ++$i)
+        $data['color'][] = $this->_getColor();
+    }
 
-		if( isset( $data['label'] ) )
-			foreach( $data['label'] as $key => $label )
-				$this->addLegend( $data['color'][$key], $label );
+    if(!isset($data['style']))
+      for($i = 0; $elements > $i; ++$i)
+        $data['style'][] = 'FillStroke-' . $data['color'][$i];
 
-		$total = array_sum( $data['value'] );
-		foreach( $data['value'] as $key => $value )
-			if( is_numeric( $value ) )
-				$this->pie_data[] = array( $data['style'][$key], $value / $total * 360 );
+    if(isset($data['label']))
+      foreach($data['label'] as $key => $label)
+      $this->addLegend($data['color'][$key], $label);
 
-		return true;
-	}
+    $total = array_sum($data['value']);
+    foreach($data['value'] as $key => $value)
 
-	function _drawContent( &$renderer ) // {{{2
-	{
-		$layout = $this->_layout();
-		$centerX = $layout['pie-center-x'];
-		$centerY = $layout['pie-center-y'];
-		$radius = $layout['pie-radius'];
+    if(is_numeric($value))
+      $this->pie_data[] = array($data['style'][$key], $value / $total * 360);
 
-		$base = 0;
+    return true;
+  }
 
-		foreach( $this->pie_data as $info )
-		{
-			list( $style, $degree ) = $info;
-			$renderer->drawPie(
-				$centerX,
-				$centerY,
-				$radius,
-				$base,
-				$base + $degree,
-				$renderer->getStyle( $style ) );
+  function _drawContent(&$renderer)   // {{{2
+  {
+    $layout = $this->_layout();
+    $centerX = $layout['pie-center-x'];
+    $centerY = $layout['pie-center-y'];
+    $radius = $layout['pie-radius'];
 
-			$base += $degree;
-		}
-	}
+    $base = 0;
 
-	function _drawLegendBox( &$renderer, $color ) // {{{2
-	{
-		$renderer->drawRectangle( 0, 0, 1, 1, $renderer->getStyle( "FillStroke-$color" ) );
-	}
+    foreach($this->pie_data as $info)
+    {
+      list($style, $degree) = $info;
+      $renderer->drawPie(
+        $centerX,
+        $centerY,
+        $radius,
+        $base,
+        $base + $degree,
+        $renderer->getStyle($style));
 
-	function _default() // {{{2
-	{
-		return array_merge( parent::_default(), array(
-			'pie-center-x' => 0.5,
-			'pie-center-y' => 0.5,
-			'pie-radius' => 0.4
-		) );
-	}
+      $base += $degree;
+    }
+  }
+
+  function _drawLegendBox(&$renderer, $color)   // {{{2
+  {
+    $renderer->drawRectangle(0, 0, 1, 1, $renderer->getStyle("FillStroke-$color"));
+  }
+
+  function _default() // {{{2
+  {
+    return array_merge(parent::_default(), array(
+                         'pie-center-x' => 0.5,
+                         'pie-center-y' => 0.5,
+                         'pie-radius' => 0.4
+                       ));
+  }
 } // }}}1
 ?>

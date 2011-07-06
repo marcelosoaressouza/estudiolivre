@@ -7,23 +7,23 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/themecontrol/tcontrol.php');
-include_once ('lib/categories/categlib.php');
+include_once('lib/themecontrol/tcontrol.php');
+include_once('lib/categories/categlib.php');
 
-if ($feature_theme_control != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_theme_control");
+if($feature_theme_control != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_theme_control");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin != 'y') {
-	$smarty->assign('msg', tra("You do not have permission to use this feature"));
+if($tiki_p_admin != 'y') {
+  $smarty->assign('msg', tra("You do not have permission to use this feature"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $categories = $categlib->get_all_categories();
@@ -32,45 +32,53 @@ $smarty->assign('categories', $categories);
 $list_styles = $tikilib->list_styles();
 $smarty->assign_by_ref('styles',$list_styles);
 
-if (isset($_REQUEST['assigcat'])) {
-	if (isset($_REQUEST['categId'])) {
-		check_ticket('theme-control');
-		$tcontrollib->tc_assign_category($_REQUEST['categId'], $_REQUEST['theme']);
-	} else {
-		$smarty->assign('msg', tra("Please create a category first"));
+if(isset($_REQUEST['assigcat'])) {
+  if(isset($_REQUEST['categId'])) {
+    check_ticket('theme-control');
+    $tcontrollib->tc_assign_category($_REQUEST['categId'], $_REQUEST['theme']);
+  }
 
-		$smarty->display("error.tpl");
-		die;
-	}
+  else {
+    $smarty->assign('msg', tra("Please create a category first"));
+
+    $smarty->display("error.tpl");
+    die;
+  }
 }
 
-if (isset($_REQUEST["delete"])) {
-	if (isset($_REQUEST["categ"])) {
-		check_ticket('theme-control');
-		foreach (array_keys($_REQUEST["categ"])as $cat) {
-			$tcontrollib->tc_remove_cat($cat);
-		}
-	}
+if(isset($_REQUEST["delete"])) {
+  if(isset($_REQUEST["categ"])) {
+    check_ticket('theme-control');
+    foreach(array_keys($_REQUEST["categ"])as $cat) {
+      $tcontrollib->tc_remove_cat($cat);
+    }
+  }
 }
 
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'name_asc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'name_asc';
 }
 
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
+}
+
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
 }
 
 $smarty->assign_by_ref('offset', $offset);
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign('find', $find);
@@ -82,17 +90,21 @@ $cant_pages = ceil($channels["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($channels["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($channels["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
+}
+
+else {
+  $smarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('channels', $channels["data"]);

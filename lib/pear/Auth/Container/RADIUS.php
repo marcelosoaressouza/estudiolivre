@@ -14,7 +14,7 @@
  *
  * @category   Authentication
  * @package    Auth
- * @author     Michael Bretterklieber <michael@bretterklieber.com> 
+ * @author     Michael Bretterklieber <michael@bretterklieber.com>
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
@@ -48,133 +48,140 @@ require_once "Auth/RADIUS.php";
 class Auth_Container_RADIUS extends Auth_Container
 {
 
-    // {{{ properties
+  // {{{ properties
 
-    /**
-     * Contains a RADIUS object
-     * @var object
-     */
-    var $radius;
-    
-    /**
-     * Contains the authentication type
-     * @var string
-     */
-    var $authtype;    
+  /**
+   * Contains a RADIUS object
+   * @var object
+   */
+  var $radius;
 
-    // }}}
-    // {{{ Auth_Container_RADIUS() [constructor]
+  /**
+   * Contains the authentication type
+   * @var string
+   */
+  var $authtype;
 
-    /**
-     * Constructor of the container class.
-     *
-     * $options can have these keys:
-     * 'servers'    an array containing an array: servername, port,
-     *              sharedsecret, timeout, maxtries
-     * 'configfile' The filename of the configuration file
-     * 'authtype'   The type of authentication, one of: PAP, CHAP_MD5,
-     *              MSCHAPv1, MSCHAPv2, default is PAP
-     *
-     * @param  $options associative array
-     * @return object Returns an error object if something went wrong
-     */
-    function Auth_Container_RADIUS($options)
-    {
-        $this->authtype = 'PAP';
-        if (isset($options['authtype'])) {
-            $this->authtype = $options['authtype'];
-        }
-        $classname = 'Auth_RADIUS_' . $this->authtype;
-        if (!class_exists($classname)) {
-            PEAR::raiseError("Unknown Authtype, please use one of: "
-                    ."PAP, CHAP_MD5, MSCHAPv1, MSCHAPv2!", 41, PEAR_ERROR_DIE);
-        }
-        
-        $this->radius = new $classname;
+  // }}}
+  // {{{ Auth_Container_RADIUS() [constructor]
 
-        if (isset($options['configfile'])) {
-            $this->radius->setConfigfile($options['configfile']);
-        }
+  /**
+   * Constructor of the container class.
+   *
+   * $options can have these keys:
+   * 'servers'    an array containing an array: servername, port,
+   *              sharedsecret, timeout, maxtries
+   * 'configfile' The filename of the configuration file
+   * 'authtype'   The type of authentication, one of: PAP, CHAP_MD5,
+   *              MSCHAPv1, MSCHAPv2, default is PAP
+   *
+   * @param  $options associative array
+   * @return object Returns an error object if something went wrong
+   */
+  function Auth_Container_RADIUS($options)
+  {
+    $this->authtype = 'PAP';
 
-        $servers = $options['servers'];
-        if (is_array($servers)) {
-            foreach ($servers as $server) {
-                $servername     = $server[0];
-                $port           = isset($server[1]) ? $server[1] : 0;
-                $sharedsecret   = isset($server[2]) ? $server[2] : 'testing123';
-                $timeout        = isset($server[3]) ? $server[3] : 3;
-                $maxtries       = isset($server[4]) ? $server[4] : 3;
-                $this->radius->addServer($servername, $port, $sharedsecret, $timeout, $maxtries);
-            }
-        }
-        
-        if (!$this->radius->start()) {
-            PEAR::raiseError($this->radius->getError(), 41, PEAR_ERROR_DIE);
-        }
+    if(isset($options['authtype'])) {
+      $this->authtype = $options['authtype'];
     }
 
-    // }}}
-    // {{{ fetchData()
+    $classname = 'Auth_RADIUS_' . $this->authtype;
 
-    /**
-     * Authenticate
-     *
-     * @param  string Username
-     * @param  string Password
-     * @return bool   true on success, false on reject
-     */
-    function fetchData($username, $password, $challenge = null)
-    {
-        switch($this->authtype) {
-        case 'CHAP_MD5':
-        case 'MSCHAPv1':
-            if (isset($challenge)) {
-                $this->radius->challenge = $challenge;
-                $this->radius->chapid    = 1;
-                $this->radius->response  = pack('H*', $password);
-            } else {
-                require_once 'Crypt/CHAP.php';
-                $classname = 'Crypt_' . $this->authtype;
-                $crpt = new $classname;
-                $crpt->password = $password;
-                $this->radius->challenge = $crpt->challenge;
-                $this->radius->chapid    = $crpt->chapid;
-                $this->radius->response  = $crpt->challengeResponse();
-                break;
-            }
+    if(!class_exists($classname)) {
+      PEAR::raiseError("Unknown Authtype, please use one of: "
+                       ."PAP, CHAP_MD5, MSCHAPv1, MSCHAPv2!", 41, PEAR_ERROR_DIE);
+    }
 
-        case 'MSCHAPv2':
-            require_once 'Crypt/CHAP.php';
-            $crpt = new Crypt_MSCHAPv2;
-            $crpt->username = $username;
-            $crpt->password = $password;
-            $this->radius->challenge     = $crpt->authChallenge;
-            $this->radius->peerChallenge = $crpt->peerChallenge;
-            $this->radius->chapid        = $crpt->chapid;
-            $this->radius->response      = $crpt->challengeResponse();
-            break;
+    $this->radius = new $classname;
 
-        default:
-            $this->radius->password = $password;
-            break;
-        }
+    if(isset($options['configfile'])) {
+      $this->radius->setConfigfile($options['configfile']);
+    }
 
-        $this->radius->username = $username;
+    $servers = $options['servers'];
 
-        $this->radius->putAuthAttributes();
-        $result = $this->radius->send();
-        if (PEAR::isError($result)) {
-            return false;
-        }
+    if(is_array($servers)) {
+      foreach($servers as $server) {
+        $servername     = $server[0];
+        $port           = isset($server[1]) ? $server[1] : 0;
+        $sharedsecret   = isset($server[2]) ? $server[2] : 'testing123';
+        $timeout        = isset($server[3]) ? $server[3] : 3;
+        $maxtries       = isset($server[4]) ? $server[4] : 3;
+        $this->radius->addServer($servername, $port, $sharedsecret, $timeout, $maxtries);
+      }
+    }
 
-        $this->radius->getAttributes();
+    if(!$this->radius->start()) {
+      PEAR::raiseError($this->radius->getError(), 41, PEAR_ERROR_DIE);
+    }
+  }
+
+  // }}}
+  // {{{ fetchData()
+
+  /**
+   * Authenticate
+   *
+   * @param  string Username
+   * @param  string Password
+   * @return bool   true on success, false on reject
+   */
+  function fetchData($username, $password, $challenge = null)
+  {
+    switch($this->authtype) {
+    case 'CHAP_MD5':
+    case 'MSCHAPv1':
+      if(isset($challenge)) {
+        $this->radius->challenge = $challenge;
+        $this->radius->chapid    = 1;
+        $this->radius->response  = pack('H*', $password);
+      }
+
+      else {
+        require_once 'Crypt/CHAP.php';
+        $classname = 'Crypt_' . $this->authtype;
+        $crpt = new $classname;
+        $crpt->password = $password;
+        $this->radius->challenge = $crpt->challenge;
+        $this->radius->chapid    = $crpt->chapid;
+        $this->radius->response  = $crpt->challengeResponse();
+        break;
+      }
+
+    case 'MSCHAPv2':
+      require_once 'Crypt/CHAP.php';
+      $crpt = new Crypt_MSCHAPv2;
+      $crpt->username = $username;
+      $crpt->password = $password;
+      $this->radius->challenge     = $crpt->authChallenge;
+      $this->radius->peerChallenge = $crpt->peerChallenge;
+      $this->radius->chapid        = $crpt->chapid;
+      $this->radius->response      = $crpt->challengeResponse();
+      break;
+
+    default:
+      $this->radius->password = $password;
+      break;
+    }
+
+    $this->radius->username = $username;
+
+    $this->radius->putAuthAttributes();
+    $result = $this->radius->send();
+
+    if(PEAR::isError($result)) {
+      return false;
+    }
+
+    $this->radius->getAttributes();
 //      just for debugging
 //      $this->radius->dumpAttributes();
 
-        return $result;
-    }
+    return $result;
+  }
 
-    // }}}
+  // }}}
 
 }
 ?>

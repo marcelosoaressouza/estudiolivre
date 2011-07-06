@@ -8,26 +8,26 @@
 
 // Initialization
 $output_zip = 'n';
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-include_once ('lib/commentslib.php');
+include_once('lib/commentslib.php');
 
 // roysinn: shouldn't need attach permission for download . . .
 //if ($tiki_p_forum_attach != 'y') {
-//	die;
+//  die;
 //}
 
-if (!isset($_REQUEST["attId"])) {
-	die;
+if(!isset($_REQUEST["attId"])) {
+  die;
 }
 
 $commentslib = new Comments($dbTiki);
 $info = $commentslib->get_thread_attachment($_REQUEST["attId"]);
 
-if ($tiki_p_forum_read != 'y' or !$tikilib->user_has_perm_on_object($user,$info["forumId"],'forum','tiki_p_forum_read')) {
-		$smarty->assign('msg',tra("Permission denied you cannot view this page"));
-	    $smarty->display("error.tpl");
-		die;
+if($tiki_p_forum_read != 'y' or !$tikilib->user_has_perm_on_object($user,$info["forumId"],'forum','tiki_p_forum_read')) {
+  $smarty->assign('msg',tra("Permission denied you cannot view this page"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 $type = &$info["filetype"];
@@ -35,18 +35,20 @@ $file = &$info["filename"];
 $content = &$info["data"];
 
 session_write_close();
-header ("Content-type: $type");
-header ("Content-Disposition: inline; filename=\"$file\"");
+header("Content-type: $type");
+header("Content-Disposition: inline; filename=\"$file\"");
 
 // Added Damian March04 request of Akira123
-header ("Expires: 0");
-header ("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-header ("Pragma: Public");
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Pragma: Public");
 
-if ($info["dir"]) {
-	readfile ($info["dir"] . $info["path"]);
-} else {
-	echo "$content";
+if($info["dir"]) {
+  readfile($info["dir"] . $info["path"]);
+}
+
+else {
+  echo "$content";
 }
 
 ?>

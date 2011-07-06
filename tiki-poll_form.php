@@ -7,34 +7,35 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-require_once ('tiki-setup.php');
+require_once('tiki-setup.php');
 
-require_once ('lib/tikilib.php'); # httpScheme()
-include_once ('lib/polls/polllib.php');
+require_once('lib/tikilib.php');
+# httpScheme()
+include_once('lib/polls/polllib.php');
 
-if (!isset($polllib)) {
-	$polllib = new PollLib($dbTiki);
+if(!isset($polllib)) {
+  $polllib = new PollLib($dbTiki);
 }
 
-if ($feature_polls != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_polls");
+if($feature_polls != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_polls");
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 // Now check permissions to access this page
 if($tiki_p_vote_poll != 'y') {
   $smarty->assign('msg',tra("Permission denied you cannot view this page"));
   $smarty->display("error.tpl");
-  die;  
+  die;
 }
 
-if (!isset($_REQUEST["pollId"])) {
-	$smarty->assign('msg', tra("No poll indicated"));
+if(!isset($_REQUEST["pollId"])) {
+  $smarty->assign('msg', tra("No poll indicated"));
 
-	$smarty->display("error.tpl");
-	die;
+  $smarty->display("error.tpl");
+  die;
 }
 
 $poll_info = $polllib->get_poll($_REQUEST["pollId"]);

@@ -22,12 +22,12 @@
 // ##################################################################################
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
-if (defined("_class_rss_parser_is_included")) {
+if(defined("_class_rss_parser_is_included")) {
   return;
   // do nothing since the class is already included
 }
@@ -71,56 +71,62 @@ class RSS_parser {
   function rss_parse($rss) {
     $base=$rss;
     $input = fopen($base,"r");
+
     if(!$input) {
       return false;
     }
+
     $rdf=new Rdf_parser();
-    $rdf->rdf_parser_create( NULL );
-    $rdf->rdf_set_user_data( $statements );
+    $rdf->rdf_parser_create(NULL);
+    $rdf->rdf_set_user_data($statements);
     // Here we'd have to use a rdf_set_object and then call the object method if set...
     $rdf->rdf_set_user_data($this);
-    $rdf->rdf_set_statement_handler( "my_statement_handler" );
-    $rdf->rdf_set_warning_handler("my_warning_handler" );
-    $rdf->rdf_set_base($base );
+    $rdf->rdf_set_statement_handler("my_statement_handler");
+    $rdf->rdf_set_warning_handler("my_warning_handler");
+    $rdf->rdf_set_base($base);
     $done=false;
+
     while(!$done) {
-      $buf = fread( $input, 512 );
+      $buf = fread($input, 512);
       $done = feof($input);
-      if ( ! $rdf->rdf_parse( $buf, strlen($buf), feof($input) ) )
+
+      if(! $rdf->rdf_parse($buf, strlen($buf), feof($input)))
       {
         printf(
-    "**** ERROR **** : %s at line %s",
-    print( xml_get_error_code( $rdf->rdf_get_xml_parser() ) ),
-    print( xml_get_current_line_number($rdf->rdf_get_xml_parser() ) ) );
-    return false;
+          "**** ERROR **** : %s at line %s",
+          print(xml_get_error_code($rdf->rdf_get_xml_parser())),
+          print(xml_get_current_line_number($rdf->rdf_get_xml_parser())));
+        return false;
       }
     }
+
     /* close file. */
-    fclose( $input );
+    fclose($input);
     $rdf->rdf_parser_free();
     return true;
   }
 
   function rss_parse_data($data) {
-  
+
     $rdf=new Rdf_parser();
-    $rdf->rdf_parser_create( NULL );
-    $rdf->rdf_set_user_data( $statements );
+    $rdf->rdf_parser_create(NULL);
+    $rdf->rdf_set_user_data($statements);
     // Here we'd have to use a rdf_set_object and then call the object method if set...
     $rdf->rdf_set_user_data($this);
-    $rdf->rdf_set_statement_handler( "my_statement_handler" );
-    $rdf->rdf_set_warning_handler("my_warning_handler" );
+    $rdf->rdf_set_statement_handler("my_statement_handler");
+    $rdf->rdf_set_warning_handler("my_warning_handler");
     $rdf->rdf_set_base('');
     $done=false;
-    
-      if ( ! $rdf->rdf_parse( $data, strlen($data), true ) )
-      {
-        printf(
-    "**** ERROR **** : %s at line %s",
-    print( xml_get_error_code( $rdf->rdf_get_xml_parser() ) ),
-    print( xml_get_current_line_number($rdf->rdf_get_xml_parser() ) ) );
-    return false;
-      }
+
+    if(! $rdf->rdf_parse($data, strlen($data), true))
+    {
+      printf(
+        "**** ERROR **** : %s at line %s",
+        print(xml_get_error_code($rdf->rdf_get_xml_parser())),
+        print(xml_get_current_line_number($rdf->rdf_get_xml_parser())));
+      return false;
+    }
+
     $rdf->rdf_parser_free();
     return true;
   }
@@ -129,71 +135,71 @@ class RSS_parser {
 
 /* handlers */
 function my_statement_handler(
-    &$user_data,
-    $subject_type,
-    $subject,
-    $predicate,
-    $ordinal,
-    $object_type,
-    $object,
-    $xml_lang )
+  &$user_data,
+  $subject_type,
+  $subject,
+  $predicate,
+  $ordinal,
+  $object_type,
+  $object,
+  $xml_lang)
 {
-    //$statements = $user_data;
+  //$statements = $user_data;
 
-        // If we found the channel then set up the channel uri
-        if( ($predicate=="http://www.w3.org/1999/02/22-rdf-syntax-ns#type") && ($object=="http://purl.org/rss/1.0/channel") && ($subject_type != RDF_SUBJECT_TYPE_ANONYMOUS)) {
-          $user_data->channel_subject=$subject;
-        }
+  // If we found the channel then set up the channel uri
+  if(($predicate=="http://www.w3.org/1999/02/22-rdf-syntax-ns#type") && ($object=="http://purl.org/rss/1.0/channel") && ($subject_type != RDF_SUBJECT_TYPE_ANONYMOUS)) {
+    $user_data->channel_subject=$subject;
+  }
 
-        // If we found an RSS property of the channel then add it to the array of channel info
-        if ( $subject==$user_data->channel_subject && strstr($predicate,"http://purl.org/rss/1.0/")) {
-          $props=explode("/",$predicate);
-          $prop=array_pop($props);
-          $user_data->channel_properties[$prop]=$object;
-        }
+  // If we found an RSS property of the channel then add it to the array of channel info
+  if($subject==$user_data->channel_subject && strstr($predicate,"http://purl.org/rss/1.0/")) {
+    $props=explode("/",$predicate);
+    $prop=array_pop($props);
+    $user_data->channel_properties[$prop]=$object;
+  }
 
-        // If we found a member of the Seq resource add it to the items array
-        if(isset($user_data->items_subject) && $subject == $user_data->items_subject && $subject_type == RDF_SUBJECT_TYPE_ANONYMOUS) {
-          $user_data->items[$ordinal]=$object;
-          $user_data->item_properties[$object]=Array();
+  // If we found a member of the Seq resource add it to the items array
+  if(isset($user_data->items_subject) && $subject == $user_data->items_subject && $subject_type == RDF_SUBJECT_TYPE_ANONYMOUS) {
+    $user_data->items[$ordinal]=$object;
+    $user_data->item_properties[$object]=Array();
 
-        }
+  }
 
-        // If we found the seq element then we know the anonymous id that the Seq resource will have
-        if( ($predicate=="http://www.w3.org/1999/02/22-rdf-syntax-ns#type") && ($object=="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq")) {
-          // Report the channel first
-          $user_data->items_subject=$subject;
-          // Save the subject as the subject that will list all the items that we'll be described later
-        }
+  // If we found the seq element then we know the anonymous id that the Seq resource will have
+  if(($predicate=="http://www.w3.org/1999/02/22-rdf-syntax-ns#type") && ($object=="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq")) {
+    // Report the channel first
+    $user_data->items_subject=$subject;
+    // Save the subject as the subject that will list all the items that we'll be described later
+  }
 
-        // If we found a resource in the list of items then add the property to the array of properties
-        // if it is a RSS property
-        // If we had an unreported item then call the handler for the item
-        if(in_array($subject,$user_data->items) && strstr($predicate,"http://purl.org/rss/1.0/")) {
-          $props=explode("/",$predicate);
-          $prop=array_pop($props);
-          $user_data->item_properties[$subject][$prop]=$object;
-        }
+  // If we found a resource in the list of items then add the property to the array of properties
+  // if it is a RSS property
+  // If we had an unreported item then call the handler for the item
+  if(in_array($subject,$user_data->items) && strstr($predicate,"http://purl.org/rss/1.0/")) {
+    $props=explode("/",$predicate);
+    $prop=array_pop($props);
+    $user_data->item_properties[$subject][$prop]=$object;
+  }
 
-        // If we found the textinput element of the channel
-        if(isset($user_data->channel_properties["image"]) && $subject == $user_data->channel_properties["image"] && strstr($predicate, "http://purl.org/rss/1.0/")) {
-          $props=explode("/",$predicate);
-          $prop=array_pop($props);
-          $user_data->channel_image[$prop]=$object;
-        }
+  // If we found the textinput element of the channel
+  if(isset($user_data->channel_properties["image"]) && $subject == $user_data->channel_properties["image"] && strstr($predicate, "http://purl.org/rss/1.0/")) {
+    $props=explode("/",$predicate);
+    $prop=array_pop($props);
+    $user_data->channel_image[$prop]=$object;
+  }
 
-        // If we found the image element of the the channel
-        if(isset($user_data->channel_properties["textinput"]) && $subject == $user_data->channel_properties["textinput"] && strstr($predicate, "http://purl.org/rss/1.0/")) {
-          $props=explode("/",$predicate);
-          $prop=array_pop($props);
-          $user_data->channel_textinput[$prop]=$object;
-        }
+  // If we found the image element of the the channel
+  if(isset($user_data->channel_properties["textinput"]) && $subject == $user_data->channel_properties["textinput"] && strstr($predicate, "http://purl.org/rss/1.0/")) {
+    $props=explode("/",$predicate);
+    $prop=array_pop($props);
+    $user_data->channel_textinput[$prop]=$object;
+  }
 
 }
 
-function my_warning_handler($warning )
+function my_warning_handler($warning)
 {
-    printf( "**** WARNING **** : %s<br />", $warning );
+  printf("**** WARNING **** : %s<br />", $warning);
 }
 
 ?>

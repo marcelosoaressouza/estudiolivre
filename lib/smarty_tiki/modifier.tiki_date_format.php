@@ -1,7 +1,7 @@
 <?php
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
@@ -20,25 +20,27 @@ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
 require_once $smarty->_get_plugin_filepath('shared','make_timestamp');
 function smarty_modifier_tiki_date_format($string, $format = "%b %e, %Y", $default_date=null, $tra_format=null)
 {
-	global $tikilib, $user;
-	$dc =& $tikilib->get_date_converter($user);
-	
-	$disptime = $dc->getDisplayDateFromServerDate($string);
+  global $tikilib, $user;
+  $dc =& $tikilib->get_date_converter($user);
 
-	global $language;
-	if ($tikilib->get_preference("language", "en") != $language && $tra_format) {
-		$format = $tra_format;
-	}
-	
-	if ($tikilib->get_display_offset($user)) {
-		$format = preg_replace("/[ ]?%Z/","",$format);
-	}
-	else {
-		$format = preg_replace("/%Z/","UTC",$format);
-	}
-	
-	$date = new Date($disptime);
-	return $date->format($format);
+  $disptime = $dc->getDisplayDateFromServerDate($string);
+
+  global $language;
+
+  if($tikilib->get_preference("language", "en") != $language && $tra_format) {
+    $format = $tra_format;
+  }
+
+  if($tikilib->get_display_offset($user)) {
+    $format = preg_replace("/[ ]?%Z/","",$format);
+  }
+
+  else {
+    $format = preg_replace("/%Z/","UTC",$format);
+  }
+
+  $date = new Date($disptime);
+  return $date->format($format);
 }
 
 /* vim: set expandtab: */

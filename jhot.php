@@ -7,64 +7,75 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 # $Header: /cvsroot/tikiwiki/tiki/jhot.php,v 1.8.2.10 2007/03/02 12:23:28 luciash Exp $
-include_once ('tiki-setup.php');
+include_once('tiki-setup.php');
 
-include_once ('lib/drawings/drawlib.php');
+include_once('lib/drawings/drawlib.php');
 
-if (($tiki_p_admin_drawings != 'y') && ($tiki_p_edit_drawings != 'y') && ($feature_drawings != 'y')) {
-        die;
+if(($tiki_p_admin_drawings != 'y') && ($tiki_p_edit_drawings != 'y') && ($feature_drawings != 'y')) {
+  die;
 }
-if (isset($_FILES['filepath']) && is_uploaded_file($_FILES['filepath']['tmp_name'])) {
-	$size = $_FILES['filepath']['size'];
 
-	$name = $_FILES['filepath']['name'];
-	$type = $_FILES['filepath']['type'];
+if(isset($_FILES['filepath']) && is_uploaded_file($_FILES['filepath']['tmp_name'])) {
+  $size = $_FILES['filepath']['size'];
 
-	$pos = strpos($name, 'img/wiki/');
-	$name = substr($name, $pos);
+  $name = $_FILES['filepath']['name'];
+  $type = $_FILES['filepath']['type'];
 
-	if ($tikidomain) {
-		$absolute_name = str_replace("img/wiki/$tikidomain/", '', $name);
-	} else {
-		$absolute_name = str_replace("img/wiki/", '', $name);
-	}
-	$absolute_name = str_replace('.gif', '', $absolute_name);
-	$absolute_name = str_replace('.pad_xml', '', $absolute_name);
+  $pos = strpos($name, 'img/wiki/');
+  $name = substr($name, $pos);
 
-	$now = date("U");
+  if($tikidomain) {
+    $absolute_name = str_replace("img/wiki/$tikidomain/", '', $name);
+  }
 
-	if (substr($name,-4,4) == '.gif') {
-		$hash = $absolute_name . md5(uniqid('.')). '.gif';
-	} elseif (substr($name,-8,8) == '.pad_xml') {
-		$hash = $absolute_name . md5(uniqid('.')). '.pad_xml';
-	} else {
-		die();
-	}
+  else {
+    $absolute_name = str_replace("img/wiki/", '', $name);
+  }
 
-	if (strstr($name, '.pad_xml')) {
-		$drawlib->update_drawing($absolute_name, $hash, $user);
-	} else {
-		$drawlib->set_drawing_gif($absolute_name, $hash);
-	}
+  $absolute_name = str_replace('.gif', '', $absolute_name);
+  $absolute_name = str_replace('.pad_xml', '', $absolute_name);
 
-	if ($tikidomain) {
-		$hash = "$tikidomain/$hash";
-		$name = "$tikidomain/$name";
-	}
-	@$fw = fopen("img/wiki/$hash", "wb");
-	@$fw2 = fopen("img/wiki/$name", "wb");
-	@$fp = fopen($_FILES['filepath']['tmp_name'], "rb");
+  $now = date("U");
 
-	while (!feof($fp)) {
-		$data = fread($fp, 8192 * 16);
+  if(substr($name,-4,4) == '.gif') {
+    $hash = $absolute_name . md5(uniqid('.')). '.gif';
+  }
 
-		fwrite($fw, $data);
-		fwrite($fw2, $data);
-	}
+  elseif(substr($name,-8,8) == '.pad_xml') {
+    $hash = $absolute_name . md5(uniqid('.')). '.pad_xml';
+  }
 
-	fclose ($fp);
-	fclose ($fw);
-	fclose ($fw2);
+  else {
+    die();
+  }
+
+  if(strstr($name, '.pad_xml')) {
+    $drawlib->update_drawing($absolute_name, $hash, $user);
+  }
+
+  else {
+    $drawlib->set_drawing_gif($absolute_name, $hash);
+  }
+
+  if($tikidomain) {
+    $hash = "$tikidomain/$hash";
+    $name = "$tikidomain/$name";
+  }
+
+  @$fw = fopen("img/wiki/$hash", "wb");
+  @$fw2 = fopen("img/wiki/$name", "wb");
+  @$fp = fopen($_FILES['filepath']['tmp_name'], "rb");
+
+  while(!feof($fp)) {
+    $data = fread($fp, 8192 * 16);
+
+    fwrite($fw, $data);
+    fwrite($fw2, $data);
+  }
+
+  fclose($fp);
+  fclose($fw);
+  fclose($fw2);
 }
 
 ?>

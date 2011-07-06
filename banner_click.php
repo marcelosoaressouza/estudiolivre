@@ -7,23 +7,23 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
-include_once ('tiki-setup.php');
+include_once('tiki-setup.php');
 
-if ($feature_banners != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_banners");
-	$smarty->display("error.tpl");
-	die;
+if($feature_banners != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_banners");
+  $smarty->display("error.tpl");
+  die;
 }
 
 
-include_once ('lib/banners/bannerlib.php');
+include_once('lib/banners/bannerlib.php');
 
-if (!isset($bannerlib)) {
-	$bannerlib = new BannerLib($dbTiki);
+if(!isset($bannerlib)) {
+  $bannerlib = new BannerLib($dbTiki);
 }
 
 $bannerlib->add_click($_REQUEST["id"]);
 $url = urldecode($_REQUEST["url"]);
-header ("location: $url");
+header("location: $url");
 
 ?>

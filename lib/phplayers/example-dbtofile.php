@@ -1,5 +1,6 @@
 <pre>
-<?php print basename(__FILE__); ?> - output the Menu Structure Format obtained querying the DB
+<?php print basename(__FILE__);
+?> - output the Menu Structure Format obtained querying the DB
 
 <?php
 require_once 'PEAR.php';

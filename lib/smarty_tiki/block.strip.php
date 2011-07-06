@@ -20,21 +20,21 @@
  */
 
 //this script may only be included - so its better to die if called directly.
-if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
 function smarty_block_strip($params, $content, &$smarty)
 {
-	/* Reformat data between 'strip' and '/strip' tags, removing spaces, tabs and newlines. */
-	$_strip_search = array(
-		"![\t ]+$|^[\t ]+!m", // remove leading/trailing space chars
-		'%[\r\n]+%m'); // remove CRs and newlines
-	$_strip_replace = array(
-		'',
-		'');
-	return preg_replace($_strip_search, $_strip_replace, $content);
+  /* Reformat data between 'strip' and '/strip' tags, removing spaces, tabs and newlines. */
+  $_strip_search = array(
+                     "![\t ]+$|^[\t ]+!m", // remove leading/trailing space chars
+                     '%[\r\n]+%m'); // remove CRs and newlines
+  $_strip_replace = array(
+                      '',
+                      '');
+  return preg_replace($_strip_search, $_strip_replace, $content);
 }
 
 /* vim: set expandtab: */

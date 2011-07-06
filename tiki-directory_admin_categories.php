@@ -11,30 +11,32 @@ require_once('tiki-setup.php');
 
 include_once('lib/directory/dirlib.php');
 
-if ($feature_directory != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_directory");
-	$smarty->display("error.tpl");
-	die;
+if($feature_directory != 'y') {
+  $smarty->assign('msg', tra("This feature is disabled").": feature_directory");
+  $smarty->display("error.tpl");
+  die;
 }
 
-if ($tiki_p_admin_directory_cats != 'y') {
-	$smarty->assign('msg', tra("Permission denied"));
-	$smarty->display("error.tpl");
-	die;
+if($tiki_p_admin_directory_cats != 'y') {
+  $smarty->assign('msg', tra("Permission denied"));
+  $smarty->display("error.tpl");
+  die;
 }
 
 // If no parent category then the parent category is 0
-if (!isset($_REQUEST["parent"]))
-	$_REQUEST["parent"] = 0;
+if(!isset($_REQUEST["parent"]))
+  $_REQUEST["parent"] = 0;
 
 $smarty->assign('parent', $_REQUEST["parent"]);
 
-if ($_REQUEST["parent"] == 0) {
-	$parent_name = 'Top';
-} else {
-	$parent_info = $dirlib->dir_get_category($_REQUEST['parent']);
+if($_REQUEST["parent"] == 0) {
+  $parent_name = 'Top';
+}
 
-	$parent_name = $parent_info['name'];
+else {
+  $parent_info = $dirlib->dir_get_category($_REQUEST['parent']);
+
+  $parent_name = $parent_info['name'];
 }
 
 $smarty->assign('parent_name', $parent_name);
@@ -44,86 +46,100 @@ $path = $dirlib->dir_get_category_path_admin($_REQUEST["parent"]);
 $smarty->assign_by_ref('path', $path);
 
 // If no category is being edited set it to zero
-if (!isset($_REQUEST["categId"]))
-	$_REQUEST["categId"] = 0;
+if(!isset($_REQUEST["categId"]))
+  $_REQUEST["categId"] = 0;
 
 $smarty->assign('categId', $_REQUEST["categId"]);
 
 // If we are editing an existing category then get the category information
 // If not initialize the information to zero
-if ($_REQUEST["categId"]) {
-	$info = $dirlib->dir_get_category($_REQUEST["categId"]);
-} else {
-	$info = array();
+if($_REQUEST["categId"]) {
+  $info = $dirlib->dir_get_category($_REQUEST["categId"]);
+}
 
-	$info["name"] = '';
-	$info["childrenType"] = 'c';
-	$info["viewableChildren"] = 3;
-	$info["allowSites"] = 'y';
-	$info["showCount"] = 'y';
-	$info["editorGroup"] = 'admin';
+else {
+  $info = array();
+
+  $info["name"] = '';
+  $info["childrenType"] = 'c';
+  $info["viewableChildren"] = 3;
+  $info["allowSites"] = 'y';
+  $info["showCount"] = 'y';
+  $info["editorGroup"] = 'admin';
 }
 
 $smarty->assign_by_ref('info', $info);
 
 // Remove a category
-if (isset($_REQUEST["remove"])) {
+if(isset($_REQUEST["remove"])) {
   $area = 'deldircateg';
-  if ($feature_ticketlib2 != 'y' or (isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
+
+  if($feature_ticketlib2 != 'y' or(isset($_POST['daconfirm']) and isset($_SESSION["ticket_$area"]))) {
     key_check($area);
-		$dirlib->dir_remove_category($_REQUEST["remove"]);
-  } else {
+    $dirlib->dir_remove_category($_REQUEST["remove"]);
+  }
+
+  else {
     key_get($area);
   }
 }
 
 // Replace (add or edit) a category
-if (isset($_REQUEST["save"])) {
-	check_ticket('dir-add-categ');
-	if (isset($_REQUEST["allowSites"]) && $_REQUEST["allowSites"] == 'on')
-		$_REQUEST["allowSites"] = 'y';
-	else
-		$_REQUEST["allowSites"] = 'n';
+if(isset($_REQUEST["save"])) {
+  check_ticket('dir-add-categ');
 
-	if (isset($_REQUEST["showCount"]) && $_REQUEST["showCount"] == 'on')
-		$_REQUEST["showCount"] = 'y';
-	else
-		$_REQUEST["showCount"] = 'n';
+  if(isset($_REQUEST["allowSites"]) && $_REQUEST["allowSites"] == 'on')
+    $_REQUEST["allowSites"] = 'y';
 
-	$categId = $dirlib->dir_replace_category($_REQUEST["parent"], $_REQUEST["categId"], $_REQUEST["name"], $_REQUEST["description"],
-		$_REQUEST["childrenType"], $_REQUEST["viewableChildren"], $_REQUEST["allowSites"], $_REQUEST["showCount"],
-		$_REQUEST["editorGroup"]);
+  else
+    $_REQUEST["allowSites"] = 'n';
 
-	$cat_type = 'directory';
-	$cat_objid = $categId;
-	$cat_desc = substr($_REQUEST['description'], 0, 200);
-	$cat_name = $_REQUEST['name'];
-	$cat_href = 'tiki-directory_browse.php?parent=' . $cat_objid;
-	include_once("categorize.php");
+  if(isset($_REQUEST["showCount"]) && $_REQUEST["showCount"] == 'on')
+    $_REQUEST["showCount"] = 'y';
 
-	if ($_REQUEST["categId"]) {
-		$info = $dirlib->dir_get_category($_REQUEST["categId"]);
-	}
+  else
+    $_REQUEST["showCount"] = 'n';
+
+  $categId = $dirlib->dir_replace_category($_REQUEST["parent"], $_REQUEST["categId"], $_REQUEST["name"], $_REQUEST["description"],
+             $_REQUEST["childrenType"], $_REQUEST["viewableChildren"], $_REQUEST["allowSites"], $_REQUEST["showCount"],
+             $_REQUEST["editorGroup"]);
+
+  $cat_type = 'directory';
+  $cat_objid = $categId;
+  $cat_desc = substr($_REQUEST['description'], 0, 200);
+  $cat_name = $_REQUEST['name'];
+  $cat_href = 'tiki-directory_browse.php?parent=' . $cat_objid;
+  include_once("categorize.php");
+
+  if($_REQUEST["categId"]) {
+    $info = $dirlib->dir_get_category($_REQUEST["categId"]);
+  }
 }
 
 // Listing: categories in the parent category
 // Pagination resolution
-if (!isset($_REQUEST["sort_mode"])) {
-	$sort_mode = 'name_asc';
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
+if(!isset($_REQUEST["sort_mode"])) {
+  $sort_mode = 'name_asc';
 }
 
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
+else {
+  $sort_mode = $_REQUEST["sort_mode"];
 }
 
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
+if(!isset($_REQUEST["offset"])) {
+  $offset = 0;
+}
+
+else {
+  $offset = $_REQUEST["offset"];
+}
+
+if(isset($_REQUEST["find"])) {
+  $find = $_REQUEST["find"];
+}
+
+else {
+  $find = '';
 }
 
 $smarty->assign_by_ref('offset', $offset);
@@ -135,16 +151,20 @@ $cant_pages = ceil($items["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($items["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
-} else {
-	$smarty->assign('next_offset', -1);
+if($items["cant"] > ($offset + $maxRecords)) {
+  $smarty->assign('next_offset', $offset + $maxRecords);
 }
 
-if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
-} else {
-	$smarty->assign('prev_offset', -1);
+else {
+  $smarty->assign('next_offset', -1);
+}
+
+if($offset > 0) {
+  $smarty->assign('prev_offset', $offset - $maxRecords);
+}
+
+else {
+  $smarty->assign('prev_offset', -1);
 }
 
 $smarty->assign_by_ref('items', $items["data"]);
