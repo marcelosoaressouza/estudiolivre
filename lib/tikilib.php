@@ -5034,7 +5034,7 @@ function get_user_preference($user, $name, $default = '') {
       }
     }
 
-    $result = split($splitter, $repl_string);
+    $result = preg_split("/".$splitter."/", $repl_string);
 
     if($matches)
     {
@@ -5124,7 +5124,7 @@ function get_user_preference($user, $name, $default = '') {
 
   // split string into a list of
   function split_tag($string) {
-    $_splts = split('&quot;', $string);
+    $_splts = preg_split('/&quot;/', $string);
     $inside = FALSE;
     $cleanup= TRUE;  // @todo: make this an option for other code
     $parts = array();
@@ -5151,7 +5151,7 @@ function get_user_preference($user, $name, $default = '') {
       }
 
       else {          //
-        $_spl = split(" ", $i);
+        $_spl = preg_split("/ /", $i);
         foreach($_spl as $j) {
           $parts[$index++] = $j;
         }
@@ -6379,7 +6379,7 @@ function get_user_preference($user, $name, $default = '') {
               // create stable anchors for all headers
               // use header but replace non-word character sequences
               // with one underscore (for XHTML 1.0 compliance)
-              $thisid=ereg_replace("[^a-zA-Z0-9]+","_",substr($line,$hdrlevel+$addremove));
+              $thisid=preg_replace("/[^a-zA-Z0-9]+/", "_", substr($line,$hdrlevel+$addremove));
               $anchor="<a name='$thisid'></a>";
 
               // Is any {maketoc} present on page?
@@ -7286,7 +7286,7 @@ function get_user_preference($user, $name, $default = '') {
       $h = opendir("styles/");
 
       while($file = readdir($h)) {
-        if(ereg("\.css$", $file)) {
+        if(preg_match("/\.css$/", $file)) {
           $sty[$file] = 1;
         }
       }

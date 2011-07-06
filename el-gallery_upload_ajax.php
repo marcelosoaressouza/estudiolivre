@@ -1,5 +1,4 @@
 <?php
-// migrado 2.0!
 require_once("dumb_progress_meter.php");
 require_once("el-gallery_file_edit_ajax.php");
 
@@ -182,8 +181,7 @@ function _publish_arquivo() {
   $objResponse = new xajaxResponse();
   
   if($arquivo->publish()) {
-    // $objResponse->addRedirect("el-gallery_view.php?arquivoId=" . $arquivo->id);
-    $objResponse->addRedirect("el-gallery_home.php");
+    $objResponse->addRedirect("el-gallery_view.php?arquivoId=" . $arquivo->id);
   }
   else {
     $objResponse->addAlert("Não foi possível publicar o arquivo");
@@ -192,7 +190,7 @@ function _publish_arquivo() {
   return $objResponse;
 }
 
-//$ajaxlib->setPermission('check_publish', $userHasPermOnFile && $arquivoId);
+// [Debugando] $ajaxlib->setPermission('check_publish', $userHasPermOnFile && $arquivoId);
 $ajaxlib->registerFunction('check_publish');
 function check_publish($showDisclaimer = true, $dontShowAgain = false) {
   global $user, $userlib, $arquivo, $isIE;

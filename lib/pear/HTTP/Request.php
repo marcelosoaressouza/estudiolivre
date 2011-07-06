@@ -184,7 +184,7 @@ class HTTP_Request {
   {
     $this->setURL($url);
 
-    $this->_sock           = &new Net_Socket();
+    $this->_sock           = new Net_Socket();
     $this->_method         =  HTTP_REQUEST_METHOD_GET;
     $this->_http           =  HTTP_REQUEST_HTTP_VER_1_1;
     $this->_requestHeaders = array();
@@ -284,7 +284,7 @@ class HTTP_Request {
   */
   function setURL($url)
   {
-    $this->_url = &new Net_URL($url);
+    $this->_url = new Net_URL($url);
 
     // If port is 80 and protocol is https, assume port 443 is to be used
     // This does mean you can't send an https request to port 80 without
@@ -511,7 +511,7 @@ class HTTP_Request {
 
       // Absolute URL
       if(preg_match('/^https?:\/\//i', $redirect)) {
-        $this->_url = &new Net_URL($redirect);
+        $this->_url = new Net_URL($redirect);
 
         // Absolute path
       }
@@ -675,7 +675,7 @@ class HTTP_Request {
   */
   function readResponse()
   {
-    $this->_response = &new HTTP_Response($this->_sock);
+    $this->_response = new HTTP_Response($this->_sock);
   }
 }
 

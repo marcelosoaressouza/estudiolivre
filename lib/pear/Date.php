@@ -144,7 +144,7 @@ class Date
   {
     switch($format) {
     case DATE_FORMAT_ISO:
-      if(ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})",$date,$regs)) {
+      if(preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
         $this->year   = $regs[1];
         $this->month  = $regs[2];
         $this->day    = $regs[3];

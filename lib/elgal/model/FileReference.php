@@ -62,12 +62,12 @@ class FileReference extends PersistentObject {
   }
 
   function getClassName($lcName) {
-    $classes = array("audiofile" => "AudioFile",
-                     "videofile" => "VideoFile",
-                     "imagefile" => "ImageFile",
-                     "textfile" => "TextFile",
-                     "plainfile" => "PlainFile",
-                     "zipfile" => "ZipFile");
+    $classes = array("AudioFile" => "AudioFile",
+                     "VideoFile" => "VideoFile",
+                     "ImageFile" => "ImageFile",
+                     "TextFile" => "TextFile",
+                     "PlainFile" => "PlainFile",
+                     "ZipFile" => "ZipFile");
     return $classes[$lcName];
   }
 

@@ -240,7 +240,7 @@ class MultilingualLib extends TikiLib {
   /* @brief : return the root language ex: en-uk returns en
    */
   function rootLang($lang) {
-    return ereg_replace("(.*)-(.*)", "\\1", $lang);
+    return preg_replace("/(.*)-(.*)/", "\\1", $lang);
   }
 
   /* @brief : fitler a list of object to have only one objet in the set of translations with the best language

@@ -1,3 +1,9 @@
 templates_c
 templates_c/*
 templates_c/**/*
+files
+files/*
+files/**/*
+repo
+repo/*
+repo/**/*

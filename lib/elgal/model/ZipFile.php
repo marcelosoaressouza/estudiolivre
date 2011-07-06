@@ -96,7 +96,7 @@ class ZipFile extends FileReference {
                             'tmp_name' => $fileName);
             $fileClass = FileReference::getSubClass($fileName, $this->baseDir . $fileName);
             require_once($fileClass . ".php");
-            $files[] =& new $fileClass($fields);
+            $files[] = new $fileClass($fields);
           }
 
           else {

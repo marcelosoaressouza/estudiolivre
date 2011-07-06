@@ -23,7 +23,7 @@ function smarty_function_css($params, &$smarty) {
 
   if($params['extra']) {
     $extras = $params['extra'];
-    $extras = split(",",$extras);
+    $extras = preg_split("/,/", $extras);
   }
 
   if(!$params['only']) {
@@ -33,7 +33,7 @@ function smarty_function_css($params, &$smarty) {
 
   else {
     $extras = $params['only'];
-    $extras = split(",",$extras);
+    $extras = preg_split("/,/",$extras);
   }
 
   if($extras) {
