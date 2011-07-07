@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="mascaraAvatar.svg"
+   sodipodi:docbase="/home/uira/culturadigital/estudiolivre/src/styles/estudiolivre"
+   inkscape:version="0.41+0.42pre1"
+   sodipodi:version="0.32"
+   id="svg4761"
+   height="50.000000px"
+   width="60.000000px">
+  <defs
+     id="defs4763" />
+  <sodipodi:namedview
+     inkscape:window-y="50"
+     inkscape:window-x="0"
+     inkscape:window-height="513"
+     inkscape:window-width="796"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:current-layer="layer1"
+     inkscape:cy="17.454545"
+     inkscape:cx="32.000000"
+     inkscape:zoom="5.5000000"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata4766">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1"
+     id="layer1">
+    <path
+       style="fill:#ffffff;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:0.87500000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dashoffset:0.0000000;stroke-opacity:0.90076333"
+       id="path4409"
+       d="M 60.000000,50.000000 L 60.000000,-1.0000000e-05 L 4.0000000e-07,-1.0000000e-05 L 4.0000000e-07,50.000000 L 60.000000,50.000000 z M 55.498400,49.090920 L 4.5016004,49.090920 C 2.4809004,49.090920 0.84720040,47.168360 0.84720040,44.786950 L 0.84720040,5.2130700 C 0.84720040,2.8316600 2.4809004,0.90910000 4.5016004,0.90910000 L 55.498400,0.90910000 C 57.519100,0.90910000 59.140100,2.8316600 59.140100,5.2130700 L 59.140100,44.786950 C 59.140100,47.168340 57.519100,49.090920 55.498400,49.090920 z " />
+  </g>
+</svg>
