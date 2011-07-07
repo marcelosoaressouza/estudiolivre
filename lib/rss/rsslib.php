@@ -416,8 +416,8 @@ class RSSLib extends TikiLib {
         else $item->author = $data["$authorId"];
       }
 
-      if($data["enclosure"]) {
-        $item->enclosure = $data["enclosure"];
+      if($data["Enclosure"]) {
+        $item->enclosure = $data["Enclosure"];
       }
 
       $rss->addItem($item);
