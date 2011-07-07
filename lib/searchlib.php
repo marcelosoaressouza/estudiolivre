@@ -232,7 +232,7 @@ class SearchLib extends TikiLib {
     else if($words) {
       $sqlFields .= ', -1 AS relevance';
 
-      $vwords = split(' ', $words);
+      $vwords = preg_split('/ /', $words);
       foreach($vwords as $aword) {
         //$aword = $this->db->quote('[[:<:]]' . strtoupper($aword) . '[[:>:]]');
         $aword = preg_replace('/([\*\.\?\^\$\+\(\]\|])/', '\\\\\1', $aword);

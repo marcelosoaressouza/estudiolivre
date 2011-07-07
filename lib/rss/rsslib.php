@@ -416,7 +416,7 @@ class RSSLib extends TikiLib {
         else $item->author = $data["$authorId"];
       }
 
-      if($data["Enclosure"]) {
+      if(isSet($data["Enclosure"])) {
         $item->enclosure = $data["Enclosure"];
       }
 

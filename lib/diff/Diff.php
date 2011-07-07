@@ -42,11 +42,11 @@ class Text_Diff {
     array_walk($to_lines, array($this, '_trimNewlines'));
 
     if(extension_loaded('xdiff')) {
-      $engine = &new Text_Diff_Engine_xdiff();
+      $engine = new Text_Diff_Engine_xdiff();
     }
 
     else {
-      $engine = &new Text_Diff_Engine_native();
+      $engine = new Text_Diff_Engine_native();
     }
 
     $this->_edits = $engine->diff($from_lines, $to_lines);
@@ -297,15 +297,15 @@ class Text_Diff_Engine_xdiff {
     foreach($diff as $line) {
       switch($line[0]) {
       case ' ':
-        $edits[] = &new Text_Diff_Op_copy(array(substr($line, 1)));
+        $edits[] = new Text_Diff_Op_copy(array(substr($line, 1)));
         break;
 
       case '+':
-        $edits[] = &new Text_Diff_Op_add(array(substr($line, 1)));
+        $edits[] = new Text_Diff_Op_add(array(substr($line, 1)));
         break;
 
       case '-':
-        $edits[] = &new Text_Diff_Op_delete(array(substr($line, 1)));
+        $edits[] = new Text_Diff_Op_delete(array(substr($line, 1)));
         break;
       }
     }
@@ -426,7 +426,7 @@ class Text_Diff_Engine_native {
       }
 
       if($copy) {
-        $edits[] = &new Text_Diff_Op_copy($copy);
+        $edits[] = new Text_Diff_Op_copy($copy);
       }
 
       // Find deletes & adds.
@@ -447,10 +447,10 @@ class Text_Diff_Engine_native {
       }
 
       elseif($delete) {
-        $edits[] = &new Text_Diff_Op_delete($delete);
+        $edits[] = new Text_Diff_Op_delete($delete);
       }
       elseif($add) {
-        $edits[] = &new Text_Diff_Op_add($add);
+        $edits[] = new Text_Diff_Op_add($add);
       }
     }
 
@@ -530,6 +530,9 @@ class Text_Diff_Engine_native {
             break;
           }
         }
+
+	assert_options(ASSERT_ACTIVE, 1);
+	assert_options(ASSERT_WARNING, 0);
 
         while(list($junk, $y) = each($matches)) {
           if($y > $this->seq[$k - 1]) {

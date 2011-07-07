@@ -58,7 +58,7 @@ if(isset($_REQUEST['tipo'])) {
 }
 
 if(isset($_REQUEST['type']) && $_REQUEST['type']) {
-  $type = split(',', $_REQUEST['type']);
+  $type = preg_split('/,/', $_REQUEST['type']);
   $title .= " (" . $_REQUEST['type'] . ")";
 }
 

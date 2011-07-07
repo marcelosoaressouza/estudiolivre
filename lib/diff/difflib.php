@@ -89,8 +89,8 @@ class Tiki_Text_Diff_Renderer extends Text_Diff_Renderer {
 }
 
 function diff2($page1, $page2, $type='sidediff') {
-  $page1 = split("\n", $page1);
-  $page2 = split("\n", $page2);
+  $page1 = preg_split("/\n/", $page1);
+  $page2 = preg_split("/\n/", $page2);
   $z = new Text_Diff($page1, $page2);
 
   if($z->isEmpty()) {

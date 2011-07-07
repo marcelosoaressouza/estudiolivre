@@ -158,7 +158,7 @@ class Net_POP3 {
     $this->_maildrop  =  array();
     $this->_timeout   =  3;
     $this->_state     =  NET_POP3_STATE_DISCONNECTED;
-    $this->_socket    =& new Net_Socket();
+    $this->_socket    = new Net_Socket();
 
     /*
     * Include the Auth_SASL package.  If the package is not available,
