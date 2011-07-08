@@ -41,11 +41,11 @@ function wikiplugin_acervo($data, $params) {
   }
 
   if(!isset($params['sort_mode'])) {
-    $objects = $freetaglib->get_objects_with_tag_combo(split(",",$params['tag']), 'gallery');
+    $objects = $freetaglib->get_objects_with_tag_combo(preg_split("/,/",$params['tag']), 'gallery');
   }
 
   else {
-    $objects = $freetaglib->get_objects_with_tag_combo(split(",",$params['tag']), 'gallery', '', 0, -1, $params['sort_mode']);
+    $objects = $freetaglib->get_objects_with_tag_combo(preg_split("/,/",$params['tag']), 'gallery', '', 0, -1, $params['sort_mode']);
   }
 
   foreach($objects['data'] as $object) {

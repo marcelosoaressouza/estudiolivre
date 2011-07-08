@@ -18,7 +18,7 @@
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    CVS: $Id: SOAP.php,v 1.1.2.2 2006/10/22 04:16:38 cfreeze Exp $
+ * @version    CVS: $Id: SOAP.php 237449 2007-06-12 03:11:27Z aashley $
  * @link       http://pear.php.net/package/Auth
  * @since      File available since Release 1.2.0
  */
@@ -83,156 +83,147 @@ require_once 'SOAP/Client.php';
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    Release: @package_version@  File: $Revision: 1.1.2.2 $
+ * @version    Release: @package_version@  File: $Revision: 237449 $
  * @link       http://pear.php.net/package/Auth
  * @since      Class available since Release 1.2.0
  */
 class Auth_Container_SOAP extends Auth_Container
 {
 
-  // {{{ properties
+    // {{{ properties
 
-  /**
-   * Required options for the class
-   * @var array
-   * @access private
-   */
-  var $_requiredOptions = array(
-                            'endpoint',
-                            'namespace',
-                            'method',
-                            'encoding',
-                            'usernamefield',
-                            'passwordfield',
-                          );
+    /**
+     * Required options for the class
+     * @var array
+     * @access private
+     */
+    var $_requiredOptions = array(
+            'endpoint',
+            'namespace',
+            'method',
+            'encoding',
+            'usernamefield',
+            'passwordfield',
+            );
 
-  /**
-   * Options for the class
-   * @var array
-   * @access private
-   */
-  var $_options = array();
+    /**
+     * Options for the class
+     * @var array
+     * @access private
+     */
+    var $_options = array();
 
-  /**
-   * Optional SOAP features
-   * @var array
-   * @access private
-   */
-  var $_features = array();
+    /**
+     * Optional SOAP features
+     * @var array
+     * @access private
+     */
+    var $_features = array();
 
-  /**
-   * The SOAP response
-   * @var array
-   * @access public
-   */
-  var $soapResponse = array();
+    /**
+     * The SOAP response
+     * @var array
+     * @access public
+     */
+     var $soapResponse = array();
 
-  /**
-   * The SOAP client
-   * @var mixed
-   * @access public
-   */
-  var $soapClient = null;
+    /**
+     * The SOAP client
+     * @var mixed
+     * @access public
+     */
+     var $soapClient = null;
 
-  // }}}
-  // {{{ Auth_Container_SOAP() [constructor]
+    // }}}
+    // {{{ Auth_Container_SOAP() [constructor]
 
-  /**
-   * Constructor of the container class
-   *
-   * @param  $options, associative array with endpoint, namespace, method,
-   *                   usernamefield, passwordfield and optional features
-   */
-  function Auth_Container_SOAP($options)
-  {
-    $this->_options = $options;
-
-    if(!isset($this->_options['matchpasswords'])) {
-      $this->_options['matchpasswords'] = true;
+    /**
+     * Constructor of the container class
+     *
+     * @param  $options, associative array with endpoint, namespace, method,
+     *                   usernamefield, passwordfield and optional features
+     */
+    function Auth_Container_SOAP($options)
+    {
+        $this->_options = $options;
+        if (!isset($this->_options['matchpasswords'])) {
+            $this->_options['matchpasswords'] = true;
+        }
+        if (!empty($this->_options['_features'])) {
+            $this->_features = $this->_options['_features'];
+            unset($this->_options['_features']);
+        }
     }
 
-    if(!empty($this->_options['_features'])) {
-      $this->_features = $this->_options['_features'];
-      unset($this->_options['_features']);
-    }
-  }
+    // }}}
+    // {{{ fetchData()
 
-  // }}}
-  // {{{ fetchData()
-
-  /**
-   * Fetch data from SOAP service
-   *
-   * Requests the SOAP service for the given username/password
-   * combination.
-   *
-   * @param  string Username
-   * @param  string Password
-   * @return mixed Returns the SOAP response or false if something went wrong
-   */
-  function fetchData($username, $password)
-  {
-    // check if all required options are set
-    if(array_intersect($this->_requiredOptions, array_keys($this->_options)) != $this->_requiredOptions) {
-      return false;
-    }
-
-    else {
-      // create a SOAP client and set encoding
-      $this->soapClient = new SOAP_Client($this->_options['endpoint']);
-      $this->soapClient->setEncoding($this->_options['encoding']);
-    }
-
-    // set the trace option if requested
-    if(isset($this->_options['trace'])) {
-      $this->soapClient->__options['trace'] = true;
-    }
-
-    // set the timeout option if requested
-    if(isset($this->_options['timeout'])) {
-      $this->soapClient->__options['timeout'] = $this->_options['timeout'];
-    }
-
-    // assign username and password fields
-    $usernameField = new SOAP_Value($this->_options['usernamefield'],'string', $username);
-    $passwordField = new SOAP_Value($this->_options['passwordfield'],'string', $password);
-    $SOAPParams = array($usernameField, $passwordField);
-
-    // assign optional features
-    foreach($this->_features as $fieldName => $fieldValue) {
-      $SOAPParams[] = new SOAP_Value($fieldName, 'string', $fieldValue);
-    }
-
-    // make SOAP call
-    $this->soapResponse = $this->soapClient->call(
-                            $this->_options['method'],
-                            $SOAPParams,
-                            array('namespace' => $this->_options['namespace'])
-                          );
-
-    if(!PEAR::isError($this->soapResponse)) {
-      if($this->_options['matchpasswords']) {
-        // check if passwords match
-        if($password == $this->soapResponse-> {$this->_options['passwordfield']}) {
-          return true;
+    /**
+     * Fetch data from SOAP service
+     *
+     * Requests the SOAP service for the given username/password
+     * combination.
+     *
+     * @param  string Username
+     * @param  string Password
+     * @return mixed Returns the SOAP response or false if something went wrong
+     */
+    function fetchData($username, $password)
+    {
+        $this->log('Auth_Container_SOAP::fetchData() called.', AUTH_LOG_DEBUG);
+        // check if all required options are set
+        if (array_intersect($this->_requiredOptions, array_keys($this->_options)) != $this->_requiredOptions) {
+            return false;
+        } else {
+            // create a SOAP client and set encoding
+            $this->soapClient = new SOAP_Client($this->_options['endpoint']);
+            $this->soapClient->setEncoding($this->_options['encoding']);
         }
 
-        else {
-          return false;
+        // set the trace option if requested
+        if (isset($this->_options['trace'])) {
+            $this->soapClient->__options['trace'] = true;
         }
-      }
 
-      else {
-        return true;
-      }
+        // set the timeout option if requested
+        if (isset($this->_options['timeout'])) {
+            $this->soapClient->__options['timeout'] = $this->_options['timeout'];
+        }
+
+        // assign username and password fields
+        $usernameField = new SOAP_Value($this->_options['usernamefield'],'string', $username);
+        $passwordField = new SOAP_Value($this->_options['passwordfield'],'string', $password);
+        $SOAPParams = array($usernameField, $passwordField);
+
+        // assign optional features
+        foreach ($this->_features as $fieldName => $fieldValue) {
+            $SOAPParams[] = new SOAP_Value($fieldName, 'string', $fieldValue);
+        }
+
+        // make SOAP call
+        $this->soapResponse = $this->soapClient->call(
+                $this->_options['method'],
+                $SOAPParams,
+                array('namespace' => $this->_options['namespace'])
+                );
+
+        if (!PEAR::isError($this->soapResponse)) {
+            if ($this->_options['matchpasswords']) {
+                // check if passwords match
+                if ($password == $this->soapResponse->{$this->_options['passwordfield']}) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
-    else {
-      return false;
-    }
-  }
-
-  // }}}
+    // }}}
 
 }
 ?>

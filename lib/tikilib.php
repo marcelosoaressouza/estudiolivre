@@ -73,7 +73,7 @@ class TikiLib extends TikiDB {
     }
 
     include_once('lib/pear/HTTP/Request.php');
-    $req = &new HTTP_Request($url, $aSettingsRequest);
+    $req = new HTTP_Request($url, $aSettingsRequest);
     $data="";
 
     // (cdx) return false when can't connect
@@ -5122,7 +5122,7 @@ function get_user_preference($user, $name, $default = '') {
   }
 
 
-  // split string into a list of
+  // preg_split string into a list of
   function split_tag($string) {
     $_splts = preg_split('/&quot;/', $string);
     $inside = FALSE;
@@ -6936,7 +6936,7 @@ function get_user_preference($user, $name, $default = '') {
     if(!$date_converter) {
       $display_offset = $this->get_display_offset($_user);
 
-      $date_converter = &new TikiDate($display_offset);
+      $date_converter = new TikiDate($display_offset);
     }
 
     return $date_converter;
@@ -7040,7 +7040,7 @@ function get_user_preference($user, $name, $default = '') {
     $rv .= date('T', $timestamp);
     $rv .= " =date('T')\n";
 
-    $date = &new Date($timestamp);
+    $date = new Date($timestamp);
 
 # Calling new Date() changes the timezone of the $timestamp var!
 # so we only change the timezone to UTC if the original TZ wasn't UTC

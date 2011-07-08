@@ -20,7 +20,7 @@
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    CVS: $Id: POP3.php,v 1.1.2.2 2006/10/22 04:16:38 cfreeze Exp $
+ * @version    CVS: $Id: POP3.php 237449 2007-06-12 03:11:27Z aashley $
  * @link       http://pear.php.net/package/Auth
  * @since      File available since Release 1.2.0
  */
@@ -48,104 +48,98 @@ require_once 'Net/POP3.php';
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    Release: @package_version@  File: $Revision: 1.1.2.2 $
+ * @version    Release: @package_version@  File: $Revision: 237449 $
  * @link       http://pear.php.net/package/Auth
  * @since      Class available since Release 1.2.0
  */
 class Auth_Container_POP3 extends Auth_Container
 {
 
-  // {{{ properties
+    // {{{ properties
 
-  /**
-   * POP3 Server
-   * @var string
-   */
-  var $server='localhost';
+    /**
+     * POP3 Server
+     * @var string
+     */
+    var $server='localhost';
 
-  /**
-   * POP3 Server port
-   * @var string
-   */
-  var $port='110';
+    /**
+     * POP3 Server port
+     * @var string
+     */
+    var $port='110';
 
-  /**
-   * POP3 Authentication method
-   *
-   * Prefered POP3 authentication method. Acceptable values:
-   *      Boolean TRUE    - Use Net_POP3's autodetection
-   *      String 'DIGEST-MD5','CRAM-MD5','LOGIN','PLAIN','APOP','USER'
-   *                      - Attempt this authentication style first
-   *                        then fallback to autodetection.
-   * @var mixed
-   */
-  var $method=true;
+    /**
+     * POP3 Authentication method
+     *
+     * Prefered POP3 authentication method. Acceptable values:
+     *      Boolean TRUE    - Use Net_POP3's autodetection
+     *      String 'DIGEST-MD5','CRAM-MD5','LOGIN','PLAIN','APOP','USER'
+     *                      - Attempt this authentication style first
+     *                        then fallback to autodetection.
+     * @var mixed
+     */
+    var $method=true;
 
-  // }}}
-  // {{{ Auth_Container_POP3() [constructor]
+    // }}}
+    // {{{ Auth_Container_POP3() [constructor]
 
-  /**
-   * Constructor of the container class
-   *
-   * @param  $server string server or server:port combination
-   * @return object Returns an error object if something went wrong
-   */
-  function Auth_Container_POP3($server=null)
-  {
-    if(isset($server)) {
-      if(is_array($server)) {
-        if(isset($server['host'])) {
-          $this->server = $server['host'];
+    /**
+     * Constructor of the container class
+     *
+     * @param  $server string server or server:port combination
+     * @return object Returns an error object if something went wrong
+     */
+    function Auth_Container_POP3($server=null)
+    {
+        if (isset($server) && !is_null($server)) {
+            if (is_array($server)) {
+                if (isset($server['host'])) {
+                    $this->server = $server['host'];
+                }
+                if (isset($server['port'])) {
+                    $this->port = $server['port'];
+                }
+                if (isset($server['method'])) {
+                    $this->method = $server['method'];
+                }
+            } else {
+                if (strstr($server, ':')) {
+                    $serverparts = explode(':', trim($server));
+                    $this->server = $serverparts[0];
+                    $this->port = $serverparts[1];
+                } else {
+                    $this->server = $server;
+                }
+            }
         }
-
-        if(isset($server['port'])) {
-          $this->port = $server['port'];
-        }
-
-        if(isset($server['method'])) {
-          $this->method = $server['method'];
-        }
-      }
-
-      else {
-        if(strstr($server, ':')) {
-          $serverparts = explode(':', trim($server));
-          $this->server = $serverparts[0];
-          $this->port = $serverparts[1];
-        }
-
-        else {
-          $this->server = $server;
-        }
-      }
-    }
-  }
-
-  // }}}
-  // {{{ fetchData()
-
-  /**
-   * Try to login to the POP3 server
-   *
-   * @param   string Username
-   * @param   string Password
-   * @return  boolean
-   */
-  function fetchData($username, $password)
-  {
-    $pop3 =& new Net_POP3();
-    $res = $pop3->connect($this->server, $this->port, $this->method);
-
-    if(!$res) {
-      return $res;
     }
 
-    $result = $pop3->login($username, $password);
-    $pop3->disconnect();
-    return $result;
-  }
+    // }}}
+    // {{{ fetchData()
 
-  // }}}
+    /**
+     * Try to login to the POP3 server
+     *
+     * @param   string Username
+     * @param   string Password
+     * @return  boolean
+     */
+    function fetchData($username, $password)
+    {
+        $this->log('Auth_Container_POP3::fetchData() called.', AUTH_LOG_DEBUG);
+        $pop3 =& new Net_POP3();
+        $res = $pop3->connect($this->server, $this->port, $this->method);
+        if (!$res) {
+            $this->log('Connection to POP3 server failed.', AUTH_LOG_DEBUG);
+            return $res;
+        }
+        $result = $pop3->login($username, $password);
+        $pop3->disconnect();
+        return $result;
+    }
+
+    // }}}
 
 }
 ?>

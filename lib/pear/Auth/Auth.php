@@ -17,7 +17,7 @@
  * @author     Martin Jansen <mj@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    CVS: $Id: Auth.php,v 1.1.16.3 2006/10/22 04:16:38 cfreeze Exp $
+ * @version    CVS: $Id: Auth.php 208437 2006-03-02 06:53:08Z aashley $
  * @link       http://pear.php.net/package/Auth
  * @deprecated File deprecated since Release 1.2.0
  */

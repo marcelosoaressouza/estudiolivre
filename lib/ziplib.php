@@ -683,8 +683,8 @@ function QuotedPrintableEncode($string) {
     $string = substr($string, strlen($match[0]));
   }
 
-  // Split line.
-  // This splits the line (preferably after white-space) into lines
+  // preg_Split line.
+  // This preg_splits the line (preferably after white-space) into lines
   // which are no longer than 76 chars (after adding trailing '=' for
   // soft line break, but before adding \r\n.)
   return preg_replace('/(?=.{77})(.{10,74}[ \t]|.{71,73}[^=][^=])/s', "\\1=\r\n", $quoted);
@@ -778,7 +778,7 @@ function MimeifyPageRevision($page) {
   $out = MimeContentTypeHeader('application', 'x-tikiwiki', $params);
   $out .= sprintf("Content-Transfer-Encoding: %s\r\n", 'binary');
   $out .= "\r\n";
-  $lines = split("\n", $page["data"]);
+  $lines = preg_split("/\n/", $page["data"]);
 
   foreach($lines as $line) {
     // This is a dirty hack to allow saving binary text files. See above.

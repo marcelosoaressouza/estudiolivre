@@ -18,7 +18,7 @@
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    CVS: $Id: IMAP.php,v 1.1.2.2 2006/10/22 04:16:38 cfreeze Exp $
+ * @version    CVS: $Id: IMAP.php 237449 2007-06-12 03:11:27Z aashley $
  * @link       http://pear.php.net/package/Auth
  * @since      File available since Release 1.2.0
  */
@@ -77,138 +77,134 @@ require_once "PEAR.php";
  * @author     Adam Ashley <aashley@php.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    Release: @package_version@  File: $Revision: 1.1.2.2 $
+ * @version    Release: @package_version@  File: $Revision: 237449 $
  * @link       http://pear.php.net/package/Auth
  * @since      Class available since Release 1.2.0
  */
 class Auth_Container_IMAP extends Auth_Container
 {
 
-  // {{{ properties
+    // {{{ properties
 
-  /**
-   * Options for the class
-   * @var array
-   */
-  var $options = array();
+    /**
+     * Options for the class
+     * @var array
+     */
+    var $options = array();
 
-  // }}}
-  // {{{ Auth_Container_IMAP() [constructor]
+    // }}}
+    // {{{ Auth_Container_IMAP() [constructor]
 
-  /**
-   * Constructor of the container class
-   *
-   * @param  $params  associative array with host, port, baseDSN, checkServer
-   *                  and userattr key
-   * @return object Returns an error object if something went wrong
-   * @todo Use PEAR Net_IMAP if IMAP extension not loaded
-   */
-  function Auth_Container_IMAP($params)
-  {
-    if(!extension_loaded('imap')) {
-      return PEAR::raiseError('Cannot use IMAP authentication, '
-                              .'IMAP extension not loaded!', 41, PEAR_ERROR_DIE);
+    /**
+     * Constructor of the container class
+     *
+     * @param  $params  associative array with host, port, baseDSN, checkServer
+     *                  and userattr key
+     * @return object Returns an error object if something went wrong
+     * @todo Use PEAR Net_IMAP if IMAP extension not loaded
+     */
+    function Auth_Container_IMAP($params)
+    {
+        if (!extension_loaded('imap')) {
+            return PEAR::raiseError('Cannot use IMAP authentication, '
+                    .'IMAP extension not loaded!', 41, PEAR_ERROR_DIE);
+        }
+        $this->_setDefaults();
+
+        // set parameters (if any)
+        if (is_array($params)) {
+            $this->_parseOptions($params);
+        }
+
+        if ($this->options['checkServer']) {
+            $this->_checkServer($this->options['timeout']);
+        }
+        return true;
     }
 
-    $this->_setDefaults();
+    // }}}
+    // {{{ _setDefaults()
 
-    // set parameters (if any)
-    if(is_array($params)) {
-      $this->_parseOptions($params);
+    /**
+     * Set some default options
+     *
+     * @access private
+     */
+    function _setDefaults()
+    {
+        $this->options['host'] = 'localhost';
+        $this->options['port'] = 143;
+        $this->options['baseDSN'] = '';
+        $this->options['checkServer'] = true;
+        $this->options['timeout'] = 20;
     }
 
-    if($this->options['checkServer']) {
-      $this->_checkServer($this->options['timeout']);
+    // }}}
+    // {{{ _checkServer()
+
+    /**
+     * Check if the given server and port are reachable
+     *
+     * @access private
+     */
+    function _checkServer() {
+        $this->log('Auth_Container_IMAP::_checkServer() called.', AUTH_LOG_DEBUG);
+        $fp = @fsockopen ($this->options['host'], $this->options['port'],
+                          $errno, $errstr, $this->options['timeout']);
+        if (is_resource($fp)) {
+            @fclose($fp);
+        } else {
+            $message = "Error connecting to IMAP server "
+                . $this->options['host']
+                . ":" . $this->options['port'];
+            return PEAR::raiseError($message, 41);
+        }
     }
 
-    return true;
-  }
+    // }}}
+    // {{{ _parseOptions()
 
-  // }}}
-  // {{{ _setDefaults()
-
-  /**
-   * Set some default options
-   *
-   * @access private
-   */
-  function _setDefaults()
-  {
-    $this->options['host'] = 'localhost';
-    $this->options['port'] = 143;
-    $this->options['baseDSN'] = '';
-    $this->options['checkServer'] = true;
-    $this->options['timeout'] = 20;
-  }
-
-  // }}}
-  // {{{ _checkServer()
-
-  /**
-   * Check if the given server and port are reachable
-   *
-   * @access private
-   */
-  function _checkServer() {
-    $fp = @fsockopen($this->options['host'], $this->options['port'],
-                     $errno, $errstr, $this->options['timeout']);
-
-    if(is_resource($fp)) {
-      @fclose($fp);
+    /**
+     * Parse options passed to the container class
+     *
+     * @access private
+     * @param  array
+     */
+    function _parseOptions($array)
+    {
+        foreach ($array as $key => $value) {
+            $this->options[$key] = $value;
+        }
     }
 
-    else {
-      $message = "Error connecting to IMAP server "
-                 . $this->options['host']
-                 . ":" . $this->options['port'];
-      return PEAR::raiseError($message, 41);
-    }
-  }
+    // }}}
+    // {{{ fetchData()
 
-  // }}}
-  // {{{ _parseOptions()
-
-  /**
-   * Parse options passed to the container class
-   *
-   * @access private
-   * @param  array
-   */
-  function _parseOptions($array)
-  {
-    foreach($array as $key => $value) {
-      $this->options[$key] = $value;
-    }
-  }
-
-  // }}}
-  // {{{ fetchData()
-
-  /**
-   * Try to open a IMAP stream using $username / $password
-   *
-   * @param  string Username
-   * @param  string Password
-   * @return boolean
-   */
-  function fetchData($username, $password)
-  {
-    $dsn = '{'.$this->options['host'].':'.$this->options['port'].$this->options['baseDSN'].'}';
-    $conn = @imap_open($dsn, $username, $password, OP_HALFOPEN);
-
-    if(is_resource($conn)) {
-      $this->activeUser = $username;
-      @imap_close($conn);
-      return true;
+    /**
+     * Try to open a IMAP stream using $username / $password
+     *
+     * @param  string Username
+     * @param  string Password
+     * @return boolean
+     */
+    function fetchData($username, $password)
+    {
+        $this->log('Auth_Container_IMAP::fetchData() called.', AUTH_LOG_DEBUG);
+        $dsn = '{'.$this->options['host'].':'.$this->options['port'].$this->options['baseDSN'].'}';
+        $conn = @imap_open ($dsn, $username, $password, OP_HALFOPEN);
+        if (is_resource($conn)) {
+            $this->log('Successfully connected to IMAP server.', AUTH_LOG_DEBUG);
+            $this->activeUser = $username;
+            @imap_close($conn);
+            return true;
+        } else {
+            $this->log('Connection to IMAP server failed.', AUTH_LOG_DEBUG);
+            $this->activeUser = '';
+            return false;
+        }
     }
 
-    else {
-      $this->activeUser = '';
-      return false;
-    }
-  }
-
-  // }}}
+    // }}}
 
 }
 ?>

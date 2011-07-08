@@ -40,7 +40,7 @@ class Tiki_Text_Diff_Renderer extends Text_Diff_Renderer {
           else {
             if($ntrail) {
               $context = array_slice($edit->orig, 0, $ntrail);
-              $block[] = &new Text_Diff_Op_copy($context);
+              $block[] = new Text_Diff_Op_copy($context);
             }
 
             $this->_block($x0, $ntrail + $xi - $x0,
@@ -62,7 +62,7 @@ class Tiki_Text_Diff_Renderer extends Text_Diff_Renderer {
           $block = array();
 
           if($context) {
-            $block[] = &new Text_Diff_Op_copy($context);
+            $block[] = new Text_Diff_Op_copy($context);
           }
         }
 

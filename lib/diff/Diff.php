@@ -65,7 +65,7 @@ class Text_Diff {
    *
    * Example:
    * <code>
-   * $diff = &new Text_Diff($lines1, $lines2);
+   * $diff = new Text_Diff($lines1, $lines2);
    * $rev = $diff->reverse();
    * </code>
    *
@@ -443,7 +443,7 @@ class Text_Diff_Engine_native {
       }
 
       if($delete && $add) {
-        $edits[] = &new Text_Diff_Op_change($delete, $add);
+        $edits[] = new Text_Diff_Op_change($delete, $add);
       }
 
       elseif($delete) {
@@ -844,7 +844,7 @@ class Text_Diff_Op_copy extends Text_Diff_Op {
 
   function &reverse()
   {
-    return $reverse = &new Text_Diff_Op_copy($this->final, $this->orig);
+    return $reverse = new Text_Diff_Op_copy($this->final, $this->orig);
   }
 
 }
@@ -864,7 +864,7 @@ class Text_Diff_Op_delete extends Text_Diff_Op {
 
   function &reverse()
   {
-    return $reverse = &new Text_Diff_Op_add($this->orig);
+    return $reverse = new Text_Diff_Op_add($this->orig);
   }
 
 }
@@ -884,7 +884,7 @@ class Text_Diff_Op_add extends Text_Diff_Op {
 
   function &reverse()
   {
-    return $reverse = &new Text_Diff_Op_delete($this->final);
+    return $reverse = new Text_Diff_Op_delete($this->final);
   }
 
 }
@@ -904,7 +904,7 @@ class Text_Diff_Op_change extends Text_Diff_Op {
 
   function &reverse()
   {
-    return $reverse = &new Text_Diff_Op_change($this->final, $this->orig);
+    return $reverse = new Text_Diff_Op_change($this->final, $this->orig);
   }
 
 }
