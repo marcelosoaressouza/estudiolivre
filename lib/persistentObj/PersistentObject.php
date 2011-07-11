@@ -442,8 +442,7 @@ class PersistentObject extends PersistentObjectStructure {
     $result = $this->query("select * from $tables $conditions", array($this->id));
 
     if($row = $result->fetchRow()) $this->_populateObject($row);
-
-    else trigger_error("Incorrect parameters, id $this->id doesn't exist in $this->table", E_USER_ERROR);
+// [Debugando]    else trigger_error("Incorrect parameters, id $this->id doesn't exist in $this->table", E_USER_ERROR);
 
     if(!$referenced) {
       $this->_getParent();

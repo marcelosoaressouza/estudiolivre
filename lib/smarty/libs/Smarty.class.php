@@ -1090,7 +1090,7 @@ class Smarty
      */
     function trigger_error($error_msg, $error_type = E_USER_WARNING)
     {
-        trigger_error("Smarty error: $error_msg", $error_type);
+          trigger_error("Smarty error:". $error_msg, $error_type);
     }
 
 
