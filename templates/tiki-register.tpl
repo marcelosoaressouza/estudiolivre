@@ -1,4 +1,4 @@
-<h2>{tr}Register as a new user{/tr}</h2>
+<center><h2>{tr}Register as a new user{/tr}</h2></center>
 <br />
 {if $showmsg eq 'y'}
 {$msg}
@@ -18,6 +18,8 @@
 <br />
 {/if}
 <form action="tiki-register.php" method="post"> <br />
+<fieldset>
+<br/>
 <table class="normal">
 <tr><td class="formcolor">{tr}Username{/tr}:</td><td class="formcolor"><input type="text" name="name" /></td></tr>
 {if $useRegisterPasscode eq 'y'}
@@ -44,13 +46,25 @@
     </tr>
 {/section}
 
-<tr><td  class="formcolor">&nbsp;</td><td class="formcolor"><input type="submit" name="register" value="{tr}register{/tr}" /></td></tr>
+<tr>
+  <td  class="formcolor">&nbsp;</td>
+  <td class="formcolor">
+    <div class="clr"></div>
+    <div id="QapTcha"></div>
+    <br/>
+    <input type="submit" name="register" value="{tr}register{/tr}" />
+  </td>
+</tr>
 
 </table>
+</fieldset>
 </form>
 <br />
-<table class="normal">
-<tr><td class="formcolor"><a class="link" href="javascript:genPass('genepass','pass1','pass2');">{tr}Generate a password{/tr}</a></td>
-<td class="formcolor"><input id='genepass' type="text" /></td></tr>
-</table>
+<!--
+  <table class="normal">
+    <tr><td class="formcolor"><a class="link" href="javascript:genPass('genepass','pass1','pass2');">{tr}Generate a password{/tr}</a></td>
+    <td class="formcolor"><input id='genepass' type="text" /></td></tr>
+  </table>
+-->
 {/if}
+

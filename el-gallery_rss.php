@@ -83,7 +83,7 @@ if(!isset($_REQUEST['tag']) && isset($_REQUEST['tags'])) {
 $files = array();
 
 if(isset($_REQUEST['tag']) && $_REQUEST['tag']) {
-  $tagArray = split(",", $_REQUEST['tag']);
+  $tagArray = preg_split("/,/", $_REQUEST['tag']);
   $title .= " - Tags: " . $_REQUEST['tag'];
 
   $objects = $freetaglib->get_objects_with_tag_combo($tagArray, 'gallery', $userName);
