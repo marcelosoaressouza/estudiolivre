@@ -216,13 +216,15 @@ $smarty->display("tiki.tpl");
 
 <!-- Begin QapTcha and jQuery files -->
 <link rel="stylesheet" href="js/Qaptcha/jquery/QapTcha.jquery.css" type="text/css" />
-<script type="text/javascript" src="js/Qaptcha/jquery/jquery.js"></script>
-<script type="text/javascript" src="js/Qaptcha/jquery/jquery-ui.js"></script>
-<script type="text/javascript" src="js/Qaptcha/jquery/jquery.ui.touch.js"></script>
-<script type="text/javascript" src="js/Qaptcha/jquery/QapTcha.jquery.js"></script>
+                            <script type="text/javascript" src="js/Qaptcha/jquery/jquery.js"></script>
+                                <script type="text/javascript" src="js/Qaptcha/jquery/jquery-ui.js"></script>
+                                    <script type="text/javascript" src="js/Qaptcha/jquery/jquery.ui.touch.js"></script>
+                                        <script type="text/javascript" src="js/Qaptcha/jquery/QapTcha.jquery.js"></script>
 
-<script type="text/javascript">
-  $(document).ready(function(){ $('#QapTcha').QapTcha(); });
+                                            <script type="text/javascript">
+$(document).ready(function() {
+  $('#QapTcha').QapTcha();
+});
 </script>
 
 

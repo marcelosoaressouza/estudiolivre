@@ -1,3 +1,4 @@
+<!--
 {if $change_theme ne 'n' or $user eq ''}
 	{*assign var=stn value=$styleName|replace:".css":""*}
 	{tikimodule title="{tr}Change{/tr} {tr}Style{/tr}" name="switch_theme" flip=$module_params.flip decorations=$module_params.decorations}
@@ -13,3 +14,4 @@
 		{/section}
 	{/tikimodule}
 {/if}
+-->

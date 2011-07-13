@@ -92,7 +92,7 @@
 	</div>
   {elseif $category eq "gallery"}
   {*********ACERVO********}
-    <a href="el-gallery_home.php"><img src="styles/{$style|replace:".css":""}/img/logoAcervo.png"></a>
+    <a href="acervo"><img src="styles/{$style|replace:".css":""}/img/logoAcervo.png"></a>
 	<div id="localMenu">
 	<ul>
     {if $current_location eq "el-gallery_upload.php"}      

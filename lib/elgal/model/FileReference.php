@@ -92,6 +92,8 @@ class FileReference extends PersistentObject {
 
   function parseFileName() {
     preg_match("/(.+)\..+$/", $this->fileName, $match);
+    $match = str_replace(array(".", "_"), " ", $match);
+
     return $match[1];
   }
 

@@ -94,7 +94,8 @@ if(isset($_REQUEST['all'])) $display = 'block';
 <html><head><style>
 pre { padding : 10px; border: 1px solid #666666; background-color: #efefef; }
 .dir { font-weight :
-       bold; background-color:
+       bold;
+       background-color:
 #ffffff; cursor : pointer; }
        .box { padding : 10px; border : 1px solid #999999; background-color: #f6f6f6; display : <?php echo $display ?>; }
        .file { font-weight :
@@ -126,6 +127,7 @@ pre { padding : 10px; border: 1px solid #666666; background-color: #efefef; }
                                                                      <a href="<?php echo $logfile; ?>">raw report</a>
                                                                          <pre>
                                                                          <?php
+
 if(isset($_POST['action'])) {
 $files = $dirs = array();
   collect('.');

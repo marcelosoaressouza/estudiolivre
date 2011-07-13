@@ -56,7 +56,8 @@ function create_file($tipo, $fileName, $formNum) {
     $objResponse->addAppend('ajax-gUpMoreOptionsContent', 'innerHTML', $content);
     $objResponse->addScript(_extractScripts($content));
   }
-  
+
+
   return $objResponse;
 }
 
@@ -179,14 +180,15 @@ function set_arquivo_licenca($r1, $r2, $r3, $padrao = false) {
 function _publish_arquivo() {
   global $arquivo;
   $objResponse = new xajaxResponse();
-  
+
   if($arquivo->publish()) {
     $objResponse->addRedirect("el-gallery_view.php?arquivoId=" . $arquivo->id);
   }
+
   else {
     $objResponse->addAlert("Não foi possível publicar o arquivo");
   }
-  
+
   return $objResponse;
 }
 
@@ -195,8 +197,8 @@ $ajaxlib->registerFunction('check_publish');
 function check_publish($showDisclaimer = true, $dontShowAgain = false) {
   global $user, $userlib, $arquivo, $isIE;
   $objResponse = new xajaxResponse();
-  $arquivo->user = $user;  
- 
+  $arquivo->user = $user;
+
   if($errorList = $arquivo->checkPublish()) {
     $errorMsgs = '';
     foreach($errorList as $field => $error) {
@@ -216,7 +218,7 @@ function check_publish($showDisclaimer = true, $dontShowAgain = false) {
 
   else {
 
-      if(!$showDisclaimer || $userlib->get_user_preference($user, 'el_disclaimer_seen', false)) {
+    if(!$showDisclaimer || $userlib->get_user_preference($user, 'el_disclaimer_seen', false)) {
       if($dontShowAgain) {
         global $userlib, $user;
         $userlib->set_user_preference($user, "el_disclaimer_seen", true);
@@ -225,6 +227,7 @@ function check_publish($showDisclaimer = true, $dontShowAgain = false) {
       return _publish_arquivo();
 
     }
+
     else {
       $objResponse->addScript("showLightbox('ajax-el-publish')");
     }
