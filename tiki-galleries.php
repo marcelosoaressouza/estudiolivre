@@ -289,7 +289,7 @@ if(isset($_REQUEST["edit"])) {
 
   if(isset($_REQUEST["scaleSize"])) {
     if(strstr($_REQUEST["scaleSize"],',')) {
-      $sc = split(',',$_REQUEST["scaleSize"]);
+      $sc = preg_split('/,/',$_REQUEST["scaleSize"]);
       foreach($sc as $thisc) {
         $thisc = trim($thisc);
 

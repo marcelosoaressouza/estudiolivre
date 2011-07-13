@@ -129,7 +129,7 @@ else {
 }
 
 $letters = 'a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u-v-w-x-y-z';
-$letters = split('-', $letters);
+$letters = preg_split('/-/', $letters);
 $smarty->assign('letters', $letters);
 
 // If offset is > 0 then prev_offset

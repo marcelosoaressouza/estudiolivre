@@ -127,7 +127,7 @@ else {
   $smarty->assign('exact_match', 'n');
 }
 
-$smarty->assign('initials', split(' ','a b c d e f g h i j k l m n o p q r s t u v w x y z'));
+$smarty->assign('initials', preg_split('/ /','a b c d e f g h i j k l m n o p q r s t u v w x y z'));
 
 // Get a list of last changes to the Wiki database
 $listpages = $tikilib->list_pages($offset, $maxRecords, $sort_mode, $find, $initial, $exact_match, false, true, false, $filter);

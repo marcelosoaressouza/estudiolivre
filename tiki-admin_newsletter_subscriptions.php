@@ -121,7 +121,7 @@ if(isset($_REQUEST["add"]) && isset($_REQUEST["email"]) && $_REQUEST["email"] !=
   check_ticket('admin-nl-subsriptions');
 
   if(strpos($_REQUEST["email"],',')) {
-    $emails = split(',',$_REQUEST["email"]);
+    $emails = preg_split('/,/',$_REQUEST["email"]);
     foreach($emails as $e) {
       if($userlib->user_exists(trim($e))) {
         $nllib->newsletter_subscribe($_REQUEST["nlId"], trim($e), "y", $confirmEmail, $addEmail);

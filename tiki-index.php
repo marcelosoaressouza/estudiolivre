@@ -434,7 +434,7 @@ if(isset($_REQUEST["undo"])) {
 }
 
 if($wiki_uses_slides == 'y') {
-  $slides = split("-=[^=]+=-",$info["data"]);
+  $slides = preg_split("/-=[^=]+=-/",$info["data"]);
 
   if(count($slides)>1) {
     $smarty->assign('show_slideshow','y');

@@ -653,7 +653,7 @@ if(isset($_REQUEST["templateId"]) && $_REQUEST["templateId"] > 0 && !isset($_REQ
 }
 
 if(isset($_REQUEST["categId"]) && $_REQUEST["categId"] > 0) {
-  $categs = split("\+",$_REQUEST["categId"]);
+  $categs = preg_split("/\+/",$_REQUEST["categId"]);
   $smarty->assign('categIds',$categs);
   $smarty->assign('categIdstr',$_REQUEST["categId"]);
 }
@@ -807,9 +807,9 @@ function parse_output(&$obj, &$parts,$i) {
     case 'application/x-tikiwiki':
       $aux["body"] = $obj['body'];
       $ccc=$obj['header']["content-type"];
-      $items = split(';',$ccc);
+      $items = preg_split('/;/',$ccc);
       foreach($items as $item) {
-        $portions = split('=',$item);
+        $portions = preg_split('/=/',$item);
 
         if(isset($portions[0])&&isset($portions[1])) {
           $aux[trim($portions[0])]=trim($portions[1]);

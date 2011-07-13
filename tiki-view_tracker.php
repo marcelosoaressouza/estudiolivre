@@ -205,11 +205,11 @@ $status_types = array();
 $status_raw = $trklib->status_types();
 
 if(isset($_REQUEST['status'])) {
-  $sts = preg_split('//', $_REQUEST['status'], -1, PREG_SPLIT_NO_EMPTY);
+  $sts = preg_split('/', $_REQUEST['status'], -1, PREG_SPLIT_NO_EMPTY);
 }
 
 elseif(isset($tracker_info["defaultStatus"])) {
-  $sts = preg_split('//', $tracker_info["defaultStatus"], -1, PREG_SPLIT_NO_EMPTY);
+  $sts = preg_split('/', $tracker_info["defaultStatus"], -1, PREG_SPLIT_NO_EMPTY);
   $_REQUEST['status'] = $tracker_info["defaultStatus"];
 }
 
@@ -285,7 +285,7 @@ for($i = 0; $i < $temp_max; $i++) {
     $listfields[$fid]['type'] = $xfields["data"][$i]["type"];
     $listfields[$fid]['name'] = $xfields["data"][$i]["name"];
     $listfields[$fid]['options'] = $xfields["data"][$i]["options"];
-    $listfields[$fid]['options_array'] = split(',',$xfields["data"][$i]["options"]);
+    $listfields[$fid]['options_array'] = preg_split('/,/',$xfields["data"][$i]["options"]);
     $listfields[$fid]['isMain'] = $xfields["data"][$i]["isMain"];
     $listfields[$fid]['isTblVisible'] = $xfields["data"][$i]["isTblVisible"];
     $listfields[$fid]['isHidden'] = $xfields["data"][$i]["isHidden"];
@@ -731,7 +731,7 @@ else {
   $sort_mode = $_REQUEST["sort_mode"];
 }
 
-$sorts = split('_',$sort_mode);
+$sorts = preg_split('/_/',$sort_mode);
 
 if(is_array($sorts) and isset($sorts[1]) and isset($listfields["{$sorts[1]}"]['type']) and($listfields["{$sorts[1]}"]['type'] == 'n' or $listfields["{$sorts[1]}"]['type'] == 'q')) {
   $numsort = true;
@@ -767,7 +767,7 @@ else {
 }
 
 $smarty->assign('initial', $initial);
-$smarty->assign('initials', split(' ','a b c d e f g h i j k l m n o p q r s t u v w x y z'));
+$smarty->assign('initials', preg_split('/ /','a b c d e f g h i j k l m n o p q r s t u v w x y z'));
 
 if(empty($_REQUEST['initialFieldId'])) {
   $_REQUEST['initialFieldId'] = $trklib->get_initial_field($listfields, $sort_mode);
@@ -840,7 +840,7 @@ if(isset($_REQUEST["rateitemId"])) $rate_itemId = $_REQUEST["rateitemId"];
 if(isset($tracker_info['useRatings']) and $tracker_info['useRatings'] == 'y'
     and $user and isset($_REQUEST['rateitemId']) and isset($_REQUEST["rate_$trackerId"])
     and isset($_REQUEST['fieldId']) and isset($_REQUEST["trackerId"])
-    and in_array($_REQUEST["rate_$trackerId"],split(',',$tracker_info['ratingOptions']))) {
+    and in_array($_REQUEST["rate_$trackerId"],preg_split('/,/',$tracker_info['ratingOptions']))) {
   if($_REQUEST["rate_$trackerId"] == 'NULL') $_REQUEST["rate_$trackerId"] = NULL;
 
   $trklib->replace_rating($trackerId,$rate_itemId,$_REQUEST['fieldId'],$user,$_REQUEST["rate_$trackerId"]);

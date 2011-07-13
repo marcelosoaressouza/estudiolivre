@@ -49,8 +49,8 @@ $output = Mail_mimeDecode::decode($params);
 $part = $output->parts[$_REQUEST["getpart"]];
 $type = $part->headers["content-type"];
 $content = $part->body;
-$names = split(';', $part->headers["content-disposition"]);
-$names = split('=', $names[1]);
+$names = preg_split('/;/', $part->headers["content-disposition"]);
+$names = preg_split('/=/', $names[1]);
 $file = $names[1];
 
 header("Content-type: $type");

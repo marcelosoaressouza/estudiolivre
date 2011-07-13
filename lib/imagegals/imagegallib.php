@@ -423,7 +423,10 @@ class ImageGalsLib extends TikiLib {
       case 'image/jpeg':
       case 'image/pjpeg':
       case 'image/jpg':
-        return ($this->gdinfo["JPG Support"]);
+	if (isSet($this->gdinfo["JPG Support"]))
+	        return ($this->gdinfo["JPG Support"]);
+	else
+		return ($this->gdinfo["JPEG Support"]);
 
         break;
 

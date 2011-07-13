@@ -25,7 +25,7 @@ if($feature_categories == 'y') {
   $smarty->assign('cat_categorize', 'n');
 
   if(isset($_REQUEST['import']) and isset($_REQUEST['categories'])) {
-    $_REQUEST["cat_categories"] = split(',',$_REQUEST['categories']);
+    $_REQUEST["cat_categories"] = preg_split('/,/',$_REQUEST['categories']);
     $_REQUEST["cat_categorize"] = 'on';
   }
 

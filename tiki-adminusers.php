@@ -373,7 +373,7 @@ else {
 }
 
 $smarty->assign('initial', $initial);
-$smarty->assign('initials', split(' ','a b c d e f g h i j k l m n o p q r s t u v w x y z'));
+$smarty->assign('initials', preg_split('/ /','a b c d e f g h i j k l m n o p q r s t u v w x y z'));
 
 if(isset($_REQUEST["find"])) {
   $find = $_REQUEST["find"];

@@ -1698,7 +1698,7 @@ elseif(!empty($saveLanguage) && $feature_userPreferences != 'y' && $change_langu
   $smarty->assign('language', $language);
 }
 
-$stlstl = split("-|\.", $style);
+$stlstl = preg_split("/-|\./", $style);
 $style_base = $stlstl[0];
 
 if($lang_use_db != 'y') {

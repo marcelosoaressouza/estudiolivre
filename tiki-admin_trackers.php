@@ -346,7 +346,7 @@ if(isset($_REQUEST["save"])) {
 
   if(isset($_REQUEST['ui'])) {
     if(!is_array($_REQUEST['ui'])) {
-      $_REQUEST['ui'] = split(',',$_REQUEST['ui']);
+      $_REQUEST['ui'] = preg_split('/,/',$_REQUEST['ui']);
     }
 
     $showlist = array();
@@ -457,7 +457,7 @@ if($_REQUEST["trackerId"]) {
   $fields = $trklib->list_tracker_fields($_REQUEST["trackerId"], 0, -1, 'position_asc', '');
 }
 
-$dstatus = preg_split('//', $info['defaultStatus'], -1, PREG_SPLIT_NO_EMPTY);
+$dstatus = preg_split('/', $info['defaultStatus'], -1, PREG_SPLIT_NO_EMPTY);
 foreach($dstatus as $ds) {
   $info["defaultStatusList"][$ds] = true;
 }
@@ -502,18 +502,18 @@ $outatt = array();
 $info["orderPopup"] = '';
 
 if(strstr($info["orderAttachments"],'|')) {
-  $part = split("\|",$info["orderAttachments"]);
+  $part = preg_split("/\|/",$info["orderAttachments"]);
   $info["orderAttachments"] = $part[0];
   $info["orderPopup"] = $part[1];
 }
 
 $i = 1;
-foreach(split(',',$info["orderAttachments"]) as $it) {
+foreach(preg_split('/,/',$info["orderAttachments"]) as $it) {
   $outatt["$it"] = $i;
   $i++;
 }
 $i = -1;
-foreach(split(',',$info["orderPopup"]) as $it) {
+foreach(preg_split('/,/',$info["orderPopup"]) as $it) {
   $outatt["$it"] = $i;
   $i--;
 }

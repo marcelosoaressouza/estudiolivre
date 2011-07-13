@@ -1064,7 +1064,7 @@ if($tracker_info["useAttachments"] == 'y') {
     $attextra = 'y';
   }
 
-  $attfields = split(',',strtok($tracker_info["orderAttachments"],'|'));
+  $attfields = preg_split('/,/',strtok($tracker_info["orderAttachments"],'|'));
   $atts = $trklib->list_item_attachments($_REQUEST["itemId"], 0, -1, 'comment_asc', '');
   $smarty->assign('atts', $atts["data"]);
   $smarty->assign('attCount', $atts["cant"]);

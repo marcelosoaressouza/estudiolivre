@@ -43,9 +43,9 @@ function parse_output(&$obj, &$parts, $i) {
     switch ($ctype) {
     case 'text/plain':
       if (isset($obj->disposition)AND $obj->disposition == 'attachment') {
-        $names = split(';', $obj->headers["content-disposition"]);
+        $names = preg_split('/;/', $obj->headers["content-disposition"]);
 
-        $names = split('=', $names[1]);
+        $names = preg_split('/=/', $names[1]);
         $aux['name'] = $names[1];
         $aux['content-type'] = $obj->headers["content-type"];
         $aux['part'] = $i;
@@ -63,9 +63,9 @@ function parse_output(&$obj, &$parts, $i) {
 
     case 'text/html':
       if (isset($obj->disposition)AND $obj->disposition == 'attachment') {
-        $names = split(';', $obj->headers["content-disposition"]);
+        $names = preg_split('/;/', $obj->headers["content-disposition"]);
 
-        $names = split('=', $names[1]);
+        $names = preg_split('/=/', $names[1]);
         $aux['name'] = $names[1];
         $aux['content-type'] = $obj->headers["content-type"];
         $aux['part'] = $i;
@@ -81,9 +81,9 @@ function parse_output(&$obj, &$parts, $i) {
 
       break;
     default:
-      $names = split(';', $obj->headers["content-disposition"]);
+      $names = preg_split('/;/', $obj->headers["content-disposition"]);
 
-      $names = split('=', $names[1]);
+      $names = preg_split('/=/', $names[1]);
       $aux['name'] = $names[1];
       $aux['content-type'] = $obj->headers["content-type"];
       $aux['part'] = $i;
@@ -234,7 +234,7 @@ if($_REQUEST["locSection"] == 'read') {
   $to_addresses = $output['header']["from"];
 
   // Get email addresses from the "from" portion
-  $to_addresses = split(',', $to_addresses);
+  $to_addresses = preg_split('/,/', $to_addresses);
 
   $temp_max = count($to_addresses);
 
@@ -257,7 +257,7 @@ if($_REQUEST["locSection"] == 'read') {
       $cc_addresses .= ",";
 
     $cc_addresses .= $output['header']["to"];
-    $cc_addresses = split(',', $cc_addresses);
+    $cc_addresses = preg_split('/,/', $cc_addresses);
 
     $temp_max = count($cc_addresses);
 
@@ -702,7 +702,7 @@ if($_REQUEST["locSection"] == 'compose') {
       $mail->setText($_REQUEST["body"]);
     }
 
-    $to_array_1 = split('[, ;]', $_REQUEST["to"]);
+    $to_array_1 = preg_split('/[, ;]/', $_REQUEST["to"]);
     $to_array = array();
 
     foreach($to_array_1 as $to_1) {
@@ -979,7 +979,7 @@ if($_REQUEST["locSection"] == 'contacts') {
   }
 
   $letters = 'a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u-v-w-x-y-z';
-  $letters = split('-', $letters);
+  $letters = preg_split('/-/', $letters);
   $smarty->assign('letters', $letters);
 
   // If offset is > 0 then prev_offset
