@@ -10,6 +10,7 @@
 require_once('tiki-setup.php');
 
 include_once("lib/imagegals/imagegallib.php");
+require_once("lib/categories/categlib.php");
 
 if($feature_galleries != 'y') {
   $smarty->assign('msg', tra("This feature is disabled").": feature_galleries");

@@ -52,11 +52,11 @@ function smarty_function_math($params, &$smarty)
         if ($key != "equation" && $key != "format" && $key != "assign") {
             // make sure value is not empty
             if (strlen($val)==0) {
-                $smarty->trigger_error("math: parameter $key is empty");
+// [Debugando]               $smarty->trigger_error("math: parameter $key is empty");
                 return;
             }
             if (!is_numeric($val)) {
-                $smarty->trigger_error("math: parameter $key: is not numeric");
+// [Debugando]                $smarty->trigger_error("math: parameter $key: is not numeric");
                 return;
             }
             $equation = preg_replace("/\b$key\b/", " \$params['$key'] ", $equation);

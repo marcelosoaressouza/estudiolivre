@@ -23,7 +23,7 @@ $smarty->assign('userbreadCrumb',$userbreadCrumb);
 require_once("el-breadcrumbs.php");
 
 //verificando versão do ie
-ereg('MSIE ([0-9]\.[0-9])',$_SERVER['HTTP_USER_AGENT'],$reg);
+preg_match('/MSIE ([0-9]\.[0-9])/',$_SERVER['HTTP_USER_AGENT'],$reg);
 
 if(!isset($reg[1]))
   $isIE = false;

@@ -13,7 +13,7 @@ function tra($content, $lg='') {
       global $lang;
 
       if($lg != "") {
-        if(is_file("lang/$lg/language.php")) {
+        if(is_file($_SERVER['DOCUMENT_ROOT'] ."/lang/$lg/language.php")) {
           $l = $lg;
         }
 
@@ -22,7 +22,7 @@ function tra($content, $lg='') {
         }
       }
 
-      elseif(is_file("lang/$language/language.php")) {
+      elseif(is_file($_SERVER['DOCUMENT_ROOT'] ."/lang/$language/language.php")) {
         $l = $language;
       }
 
@@ -31,14 +31,14 @@ function tra($content, $lg='') {
       }
 
       if($l) {
-        include_once("lang/$l/language.php");
+        include_once($_SERVER['DOCUMENT_ROOT'] ."/lang/$l/language.php");
 
-        if(is_file("lang/$l/custom.php")) {
-          include_once("lang/$l/custom.php");
+        if(is_file($_SERVER['DOCUMENT_ROOT'] ."/lang/$l/custom.php")) {
+          include_once($_SERVER['DOCUMENT_ROOT'] ."/lang/$l/custom.php");
         }
 
-        if(file_exists("lang/$l/el-additional_strings.php")) {
-          include_once("lang/$l/el-additional_strings.php");
+        if(file_exists($_SERVER['DOCUMENT_ROOT'] ."/lang/$l/el-additional_strings.php")) {
+          include_once($_SERVER['DOCUMENT_ROOT'] ."/lang/$l/el-additional_strings.php");
         }
       }
 
