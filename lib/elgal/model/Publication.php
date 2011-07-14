@@ -241,7 +241,12 @@ class Publication extends PersistentObject {
     parent::delete();
 
     if($this->thumbnail)
-      unlink($this->fileDir() . $this->thumbnail);
+    {
+      if (file_exists($this->fileDir() . $this->thumbnail))
+      {
+        unlink($this->fileDir() . $this->thumbnail);
+      }
+    }
 
     if($this->allFile)
       unlink($this->allFile);
