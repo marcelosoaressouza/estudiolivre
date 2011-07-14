@@ -1,5 +1,4 @@
 <?php
-// migrado pra 2.0!
 global $userHasPermOnFile, $arquivoId;
 
 $ajaxlib->setPermission('save_field', $userHasPermOnFile && $arquivoId);

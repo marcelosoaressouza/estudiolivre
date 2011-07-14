@@ -1,6 +1,4 @@
 <?php
-
-// esse arquivo salva o upload dos thumbnails
 require_once("tiki-setup.php");
 require_once("lib/filegals/filegallib.php");
 include_once("el-gallery_set_publication.php");

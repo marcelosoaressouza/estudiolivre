@@ -1,11 +1,4 @@
 <?php
-/*
- * Created on 31/05/2006
- *
- * by nano
- * migrado pra 2.0!
- */
-
 global $el_p_vote, $arquivoId;
 
 $ajaxlib->setPermission('vota', $el_p_vote && $arquivoId);

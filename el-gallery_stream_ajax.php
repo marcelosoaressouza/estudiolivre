@@ -1,5 +1,4 @@
 <?php
-// migrado pra 2.0!
 global $el_p_view;
 
 $ajaxlib->setPermission('streamFile', $el_p_view == 'y');

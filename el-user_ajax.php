@@ -1,5 +1,4 @@
 <?php
-// migrado pro 2.0!
 require_once("dumb_progress_meter.php");
 
 $ajaxlib->registerFunction('upload_info');

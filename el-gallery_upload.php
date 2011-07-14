@@ -1,6 +1,5 @@
 <?php
 
-// migrado pra 2.0!!
 if(!isset($_POST['xajax']) || $_POST['xajax'] != 'upload_info') {
   require_once("tiki-setup.php");
   require_once("lib/persistentObj/PersistentObjectController.php");

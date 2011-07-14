@@ -1,5 +1,4 @@
 <?php
-// migrado pra 2.0!
 global $user;
 
 $ajaxlib->setPermission('get_license', $user);

@@ -1,10 +1,4 @@
 <?php
-/*
- * Created on May 5, 2007
- *
- * by: nano
- */
-
 require_once("lib/persistentObj/PersistentObjectController.php");
 
 global $userHasPermOnFile, $arquivoId, $arquivo, $el_p_admin_gallery;

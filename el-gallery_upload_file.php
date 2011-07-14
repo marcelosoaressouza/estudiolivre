@@ -1,6 +1,4 @@
 <?php
-
-// esse arquivo salva o upload
 require_once("tiki-setup.php");
 
 include_once("el-gallery_set_publication.php");

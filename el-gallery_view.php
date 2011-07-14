@@ -1,5 +1,4 @@
 <?php
-// migrado pra 2.0!
 require_once("tiki-setup.php");
 include_once("el-gallery_set_publication.php");
 require_once("el-gallery_file_edit_ajax.php");
@@ -38,7 +37,18 @@ elseif(isset($arquivo->mainFile)) $key = $arquivo->mainFile;
 
 if(isset($key)) {
   $smarty->assign('viewFile', $key);
-  $arquivo->filereferences[$key]->hitStream();
+
+  if(isSet($arquivo->filereferences[$key]))
+  {
+    $arquivo->filereferences[$key]->hitStream();
+  }
+
+  else
+  {
+    $smarty->assign('msg',tra('Arquivo inexistente!'));
+    $smarty->display('error.tpl');
+    exit;
+  }
 }
 
 $smarty->assign('arquivoId',$arquivoId);

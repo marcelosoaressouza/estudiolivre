@@ -1,5 +1,4 @@
 <?php
-// migrado pra 2.0!
 require_once("tiki-setup.php");
 require_once("lib/persistentObj/PersistentObjectController.php");
 require_once("el-gallery_ajax.php");

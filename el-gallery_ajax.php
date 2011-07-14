@@ -1,5 +1,4 @@
 <?php
-// migrado pra 2.0!
 require_once("lib/persistentObj/PersistentObjectController.php");
 
 global $el_p_view;
