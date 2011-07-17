@@ -66,7 +66,6 @@ if($userHasPermOnFile) {
 
 $smarty->assign('dontAskDelete', $tikilib->get_user_preference($user, 'el_dont_check_delete', 0));
 
-
 $smarty->assign('mid','el-gallery_view.tpl');
 $smarty->display('tiki.tpl');
 

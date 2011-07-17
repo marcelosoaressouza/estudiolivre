@@ -146,7 +146,7 @@ class Smarty_Tikiwiki extends Smarty {
         include_once("lang/$language/el-additional_strings.php");
     }
 
-    return ereg_replace("^[ \t]*", "", $res);
+    return preg_replace("/^[ \t]*/", "", $res);
   }
   function is_cached($_smarty_tpl_file, $_smarty_cache_id = null, $_smarty_compile_id = null) {
     global $language, $style, $style_base, $tikidomain;

@@ -6548,7 +6548,9 @@ function get_user_preference($user, $name, $default = '') {
           $repl .= '<li class="rssitem"><a target="_blank" href="' . $items[$j]["link"] . '" class="rsslink">' . $items[$j]["title"] . '</a>';
 
           if(isset($items[$j]["pubDate"]) && $items[$j]["pubDate"] <> '') {
-            $repl .= ' <span class="rssdate">('.$items[$j]["pubDate"].')</span>';
+            setlocale(LC_TIME, 'ptb', 'pt_BR', 'portuguese-brazil', 'bra', 'brazil', 'pt_BR.utf-8', 'pt_BR.iso-8859-1','br');
+            $pubDate = ucfirst(gmstrftime("%A, %d de %B de %Y, %H:%M:%S", strtotime($items[$j]["pubDate"])));
+            $repl .= ' <span class="rssdate">('.utf8_encode($pubDate).')</span>';
           }
 
           $repl .= '</li>';
