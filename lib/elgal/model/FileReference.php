@@ -94,7 +94,7 @@ class FileReference extends PersistentObject {
     preg_match("/(.+)\..+$/", $this->fileName, $match);
     $match = str_replace(array(".", "_"), " ", $match);
 
-    return $match[1];
+    return ucfirst($match[1]);
   }
 
   function fullPath() {

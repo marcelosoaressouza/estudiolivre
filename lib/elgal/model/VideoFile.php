@@ -80,12 +80,14 @@ class VideoFile extends FileReference {
 
     $thumbName = 'thumb_' . preg_replace("/^.*\//", "", $this->fileName);
     $thumbName = preg_replace('/\.(.+?)$/', '.gif', $thumbName);
+
+/*
     $gif = new ffmpeg_animated_gif($this->baseDir . $thumbName, $width, $height, 1, 0);
 
     for($i=1; $i <= $frameTotal; $i+=$rate) {
       $gif->addFrame($movie->getFrame($i));
     }
-
+*/
     return $this->update(array('thumbnail' => $thumbName));
 
   }

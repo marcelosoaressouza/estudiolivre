@@ -6549,7 +6549,7 @@ function get_user_preference($user, $name, $default = '') {
 
           if(isset($items[$j]["pubDate"]) && $items[$j]["pubDate"] <> '') {
             setlocale(LC_TIME, 'ptb', 'pt_BR', 'portuguese-brazil', 'bra', 'brazil', 'pt_BR.utf-8', 'pt_BR.iso-8859-1','br');
-            $pubDate = ucfirst(gmstrftime("%A, %d de %B de %Y, %H:%M:%S", strtotime($items[$j]["pubDate"])));
+            $pubDate = ucfirst(gmstrftime("%a, %d de %b de %Y, %Hh%M", strtotime($items[$j]["pubDate"])-7200));
             $repl .= ' <span class="rssdate">('.utf8_encode($pubDate).')</span>';
           }
 
