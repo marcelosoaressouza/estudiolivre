@@ -96,13 +96,13 @@
 			<script>uploadI++;</script>
 		{/foreach}
 	</span>
-<!--	
+	
 	<div class="pointer flippers" onClick="xajax_newUploadForm(uploadI)">
 		{tooltip text="Clique para adiocionar mais um arquivo nesta publicação"}
 			{tr}mais um arquivo...{/tr}
 		{/tooltip}	
 	</div>
--->
+
 </div>
 	
 <div id="js-desc">

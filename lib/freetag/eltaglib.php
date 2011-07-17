@@ -42,9 +42,15 @@ class ElTagLib extends FreetagLib {
     while($row = $result->fetchRow()) {
       $tag = $row['tag'];
 
-      if(!isset($index[$tag]) && !preg_match("/$tag/",$exclude)) {
-        $tags[] = $tag;
-        $index[$tag] = 1;
+//      preg_replace("/\//", " ", $tag);
+
+      if(!isset($index[$tag]))
+      {
+        if (!preg_match("/".$tag."/", $exclude))
+        {
+          $tags[] = $tag;
+          $index[$tag] = 1;
+        }
       }
     }
 

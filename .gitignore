@@ -7,3 +7,7 @@ files/**/*
 repo
 repo/*
 repo/**/*
+apc.php
+phpmyadmin
+phpmyadmin/*
+phpmyadmin/**/*
