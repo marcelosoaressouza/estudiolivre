@@ -86,7 +86,12 @@ class FileReference extends PersistentObject {
       unlink($this->fullPath());
 
       if($this->thumbnail)
-        unlink($this->baseDir . $this->thumbnail);
+      {
+	if (file_exists($this->baseDir . $this->thumbnail))
+	{
+        	unlink($this->baseDir . $this->thumbnail);
+	}
+      }
     }
   }
 
