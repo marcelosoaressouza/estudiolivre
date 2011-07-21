@@ -45,9 +45,12 @@
 
 #tracker h1, #users h1, #forum h1, #blogs h1, #listLastChanges h1, #blogHead h1, #viewForum h1, #live h1 {
 	text-align:center;
-	background-color:#eee/*f9f9f9*/;
-	/*border:1px solid gray;*/
+	vertical-align: middle;
+	background-color:#eee;
 	-moz-border-radius:10px 10px 10px 10px;
+	padding-top: 5px;
+	padding-bottom: 8px;
+	border:1px solid;
 }
 
 #tracker h5, #users h5, #blogs h5, #listLastChanges h5, #viewForum h5 {

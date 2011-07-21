@@ -11,3 +11,6 @@ apc.php
 phpmyadmin
 phpmyadmin/*
 phpmyadmin/**/*
+temp/cache
+temp/cache/*
+temp/cache/**/*

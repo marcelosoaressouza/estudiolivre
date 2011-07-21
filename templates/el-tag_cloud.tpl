@@ -15,7 +15,7 @@
 		<div id="tagOptions" style="display: none;">
 			<form method="get" action="el-tag_cloud.php">
 				Usuário: <br>
-				<input name="tagsForUser" value="" class="input" type="text"><br>
+				<input name="tagsForUser" size="16" value="" class="input" type="text"><br>
 			    <input value="buscar" type="submit">
 		    </form>
 		</div>

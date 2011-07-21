@@ -30,7 +30,7 @@
   {/if}
 </div>
 </td>
-<td style="text-align:center;">
+<td style="text-align:right;">
 {if $user and $feature_user_watches eq 'y'}
 	{if $user_watching_forum eq 'n'}
 		<a href="tiki-view_forum.php?forumId={$forumId}&amp;watch_event=forum_post_topic&amp;watch_object={$forumId}&amp;watch_action=add" title='{tr}monitor this forum{/tr}'><img border='0' alt='{tr}monitor this forum{/tr}' src='img/icons/icon_watch.png' /></a>
@@ -232,7 +232,7 @@ a moderator approves it.{/tr}</small>
 	<input type="image" name="delsel" src="img/icons/topic_delete.gif" border='0' alt='{tr}delete{/tr}' title='{tr}delete selected topics{/tr}' />
 	<input type="image" name="splitsel" src="img/icons/topic_split.gif" border='0' alt='{tr}merge{/tr}' title='{tr}merge selected topics{/tr}' />
 	</td>
-	<td style="text-align:center;" class="odd" colspan="10">
+	<td style="text-align:right;" class="odd" colspan="10">
 	{if $reported > 0}
 	<small><a class="link" href="tiki-forums_reported.php?forumId={$forumId}">{tr}reported messages:{/tr}{$reported}</a></small><br />
 	{/if}
@@ -341,7 +341,7 @@ a moderator approves it.{/tr}</small>
   {/if}
   </td>
   
-  <td style="text-align:center;" nowrap="nowrap">
+  <td style="text-align:right;" nowrap="nowrap">
   {if count($comments_coms[ix].attachments) or $tiki_p_admin_forum eq 'y'}
   {if count($comments_coms[ix].attachments)}
   	<img src='img/icons/attachment.gif' alt='attachments' />
@@ -364,13 +364,13 @@ a moderator approves it.{/tr}</small>
   </tr></table>
   </td>
   {if $forum_info.topics_list_replies eq 'y'}
-  	<td style="text-align:center;" class="{cycle advance=false}">{$comments_coms[ix].replies}</td>
+  	<td style="text-align:right;" class="{cycle advance=false}">{$comments_coms[ix].replies}</td>
   {/if}
   {if $forum_info.topics_list_reads eq 'y'}
-  	<td style="text-align:center;" class="{cycle advance=false}">{$comments_coms[ix].hits}</td>
+  	<td style="text-align:right;" class="{cycle advance=false}">{$comments_coms[ix].hits}</td>
   {/if}
   {if $forum_info.topics_list_pts eq 'y'}
-  	<td style="text-align:center;" class="{cycle advance=false}">{$comments_coms[ix].average|string_format:"%.2f"}</td>
+  	<td style="text-align:right;" class="{cycle advance=false}">{$comments_coms[ix].average|string_format:"%.2f"}</td>
   {/if}
   {if $forum_info.topics_list_lastpost eq 'y'}
   	  <td class="{cycle advance=false}">{$comments_coms[ix].lastPost|tiki_short_datetime} {* date_format:"%b %d [%H:%M]" *}
@@ -460,7 +460,7 @@ a moderator approves it.{/tr}</small>
     </select>
 </form>
 </td>
-<td style="text-align:center;">
+<td style="text-align:right;">
 {if $feature_forum_quickjump eq 'y'}
 <form id='quick' method="post" action="tiki-view_forum.php">
 <small>{tr}Jump to forum{/tr}:</small>

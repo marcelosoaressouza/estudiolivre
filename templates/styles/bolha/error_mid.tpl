@@ -1,4 +1,6 @@
-<br>
+<br/><br/>
+<center>
+<h1>{tr}Error{/tr}</h1>
 {if ($errortype eq "404")}
 	{if $likepages}
     	{tr}Perhaps you were looking for:{/tr}
@@ -13,7 +15,7 @@
 	{/if}
         
 {else}
-	{$msg}
+	<div class="warning"> {$msg} </div>
 	<br /><br />
 {/if}
 	
@@ -21,5 +23,5 @@
 	<a href="tiki-editpage.php?page={$page}" class="linkmenu">{tr}Create this page{/tr}</a>
 	{tr}(page will be orphaned){/tr}<br /><br/>
 {/if}
-<a href="javascript:history.back()" class="linkmenu">{tr}Go back{/tr}</a><br /><br />
-<a href="{$tikiIndex}" class="linkmenu">{tr}Return to home page{/tr}</a>
+<a href="/" class="linkmenu">{tr}Return to home page{/tr}</a>
+</center>

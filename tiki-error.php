@@ -17,13 +17,6 @@ $type='';
 
 if(isset($feature_usability) && $feature_usability == 'y') {
   if(!isset($_REQUEST["error"])) {
-    /*
-        if ( !empty($_REQUEST['page'])) {
-          $page = $_REQUEST['page'];
-          $_REQUEST["error"] = tra("Page") . " '".$page."' ".tra("cannot be found");
-          $type="404";
-        } else
-    */
     if(($_SERVER["REQUEST_URI"] && !(preg_match('/tiki-error.php/',$_SERVER["REQUEST_URI"])))) {
       $page = $_SERVER["REQUEST_URI"];
       $page = substr($page,strrpos($page,'/')+1);

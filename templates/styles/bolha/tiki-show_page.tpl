@@ -14,11 +14,11 @@
 				{/if}
 			{/if}
 		{/if}
-		
+<!--		
 		{if $wiki_feature_3d eq 'y'}
 			{tooltip name="show-page-representacao-3d" text="Representação <b>tridimensional</b> do wiki"}<a {*title="{tr}3d browser{/tr}"*} href="javascript:wiki3d_open('{$page|escape}',{$wiki_3d_width}, {$wiki_3d_height})"><img src="styles/{$style|replace:".css":""}/img/iWiki3dWiki.png"></a>{/tooltip}
 		{/if}
-		
+-->		
 		{tooltip name="show-page-abrir-impressao" text="Abrir versão para <b>impressão</b>"}<a {*title="{tr}print{/tr}"*} href="tiki-print.php?page={$page|escape:"url"}"><img src="styles/{$style|replace:".css":""}/img/iWikiPrint.png" alt="{tr}print{/tr}" /></a>{/tooltip}
 		
 		{if $feature_wiki_pdf eq 'y'}

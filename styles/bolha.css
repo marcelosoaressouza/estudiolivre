@@ -66,6 +66,7 @@ span.hiddenPointer {
 }
 
 .even, .odd, #even, #odd {
+  line-height: 1.5em;
   text-align: center;
 }
 
@@ -73,5 +74,32 @@ span.hiddenPointer {
 #modulewho_is_there, modulemessages_unread_messages, #moduleadmin_menu {
   text-align: center;
   line-height: 1.4em;
+}
 
+.warning {
+  font-size:16px;
+  font-weight: bold;
+  color: #BF0000;
+}
+
+.formcolor {
+  font-size:14px;
+  font-weight: bold;
+
+}
+
+#register_form{
+ border: 0px;
+ 
+}
+
+.thin {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  min-height: 250px;
+  max-width: 200px;
+}
+
+.tableUser {
 }

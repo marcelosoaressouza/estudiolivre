@@ -1,9 +1,8 @@
-{* $Header: /cvsroot/tikiwiki/tiki/templates/tiki-adminusers.tpl,v 1.56.2.55 2007/12/10 08:39:27 kerrnel22 Exp $ *}
 {popup_init src="lib/overlib.js"}
+<h1>
+<a href="tiki-adminusers.php" class="pagetitle">{tr}Admin users{/tr}</a>
 
-<h1><a href="tiki-adminusers.php" class="pagetitle">{tr}Admin users{/tr}</a>
-
-      {if $feature_help eq 'y'}
+{if $feature_help eq 'y'}
 <a href="{$helpurl}Users+Management" target="tikihelp" class="tikihelp" title="{tr}admin users{/tr}">
 <img src="img/icons/help.gif" border="0" height="16" width="16" alt='{tr}help{/tr}' /></a>{/if}
 
@@ -12,10 +11,13 @@
 <img src="img/icons/info.gif" border="0" width="16" height="16" alt='{tr}edit{/tr}' /></a>{/if}
 </h1>
 
+<!--
 {if $tiki_p_admin eq 'y'} {* only full admins can manage groups, not tiki_p_admin_users *}
 <span class="button2"><a href="tiki-admingroups.php" class="linkbut">{tr}Admin groups{/tr}</a></span>
 {/if}
-<span class="button2"><a href="tiki-adminusers.php" class="linkbut">{tr}Admin users{/tr}</a></span>
+-->
+<!-- <span class="button2"><a href="tiki-adminusers.php" class="linkbut">{tr}Admin users{/tr}</a></span> -->
+
 {if $userinfo.userId}
 <span class="button2"><a href="tiki-adminusers.php?add=1" class="linkbut">{tr}Add a new user{/tr}</a></span>
 {/if}
@@ -27,13 +29,14 @@
 {if $tikifeedback}
 <br /><div class="simplebox {if $tikifeedback[n].num > 0} highlight{/if}">{section name=n loop=$tikifeedback}{$tikifeedback[n].mes}<br />{/section}</div>
 {/if}
+
 <br />
 {if $added != "" or $discarded != ""}
 <div class="simplebox">
 <h2>{tr}Batch Upload Results{/tr}</h2>
 {tr}Added users{/tr}: {$added}
 {if $discarded != ""}
-- {tr}Rejected users{/tr}: {$discarded}<br /><br />
+- {tr}Rejected users{/tr}: {$discarded}<br /><br/>
 <table class="normal">
 <tr><td class="heading">{tr}Username{/tr}</td><td class="heading">{tr}Reason{/tr}</td></tr>
 {section name=reject loop=$discardlist}
@@ -68,6 +71,7 @@
 {cycle name=content values="1,2,3,4" print=false advance=false reset=true}
 {* ---------------------- tab with list -------------------- *}
 <div id="content{cycle name=content assign=focustab}{$focustab}" class="tabcontent"{if $feature_tabs eq 'y'} style="display:{if $focustab eq $cookietab}block{else}none{/if};"{/if}>
+<center>
 <h2>{tr}Users{/tr}</h2>
 
 <form method="get" action="tiki-adminusers.php">
@@ -80,7 +84,7 @@
 <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" /></td>
 </tr></table>
 </form>
-
+<br/><br/>
 {if $cant_pages > 1}
 <div align="center">
 {section name=ini loop=$initials}
@@ -95,34 +99,38 @@ class="prevnext">{$initials[ini]}</a> .
 class="prevnext">{tr}All{/tr}</a>
 </div>
 {/if}
-
+<br/><br/>
 <form name="checkform" method="post" action="{$smarty.server.PHP_SELF}{if $group_management_mode ne  'y' and $set_default_groups_mode ne 'y'}#multiple{/if}">
-<table class="normal">
-<tr>
+<table class="tableUser">
+<tr class="trUser">
 <td class="heading auto">&nbsp;</td>
-<td class="heading">&nbsp;</td>
-<td class="heading">&nbsp;</td>
 <td class="heading"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'login_desc'}login_asc{else}login_desc{/if}">{tr}Name{/tr}</a></td>
 <td class="heading"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'email_desc'}email_asc{else}email_desc{/if}">{tr}Email{/tr}</a></td>
-<td class="heading">{tr}Real Name{/tr}</td>
+<!-- <td class="heading">{tr}Real Name{/tr}</td> -->
 <td class="heading"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'currentLogin_desc'}currentLogin_asc{else}currentLogin_desc{/if}">{tr}Last login{/tr}</a></td>
 <td class="heading">&nbsp;</td>
-<td class="heading">{tr}Groups{/tr}</td>
+<td class="heading">&nbsp;</td>
+<td class="heading">&nbsp;</td>
+<!-- <td class="heading">{tr}Groups{/tr}</td> -->
 <td class="heading">&nbsp;</td>
 </tr>
 {cycle print=false values="even,odd"}
 {section name=user loop=$users}
 <tr class="{cycle}">
 <td class="thin"><input type="checkbox" name="checked[]" value="{$users[user].user}" {if $users[user].checked eq 'y'}checked="checked" {/if}/></td>
+
+<td class="thin"><a class="link" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={$sort_mode}&amp;user={$users[user].userId}{if feature_tabs ne 'y'}#2{/if}" title="{tr}edit account settings{/tr}">{$users[user].user}</a></td>
+<td class="thin">{$users[user].email}</td>
+<!-- <td class="thin">{$users[user].realName}</td> -->
+<td class="thin">{if $users[user].currentLogin eq ''}{tr}Never{/tr} <i>({$users[user].age|duration_short})</i>{else}{$users[user].currentLogin|dbg|tiki_long_datetime}{/if}</td>
+
 <td class="thin"><a class="link" href="tiki-user_preferences.php?view_user={$users[user].user}" title="{tr}Change user preferences{/tr}: {$users[user].user}"><img border="0" alt="{tr}Change user preferences{/tr}: {$users[user].user}" src="img/icons/config.gif" /></a></td>
 <td class="thin"><a class="link" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={$sort_mode}&amp;user={$users[user].userId}{if feature_tabs ne 'y'}#2{/if}"  
 title="{tr}edit account settings{/tr}: {$users[user].user}"><img border="0" alt="{tr}edit account settings{/tr}: {$users[user].user}" src="img/icons/edit.gif" /></a></td>
-<td><a class="link" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={$sort_mode}&amp;user={$users[user].userId}{if feature_tabs ne 'y'}#2{/if}" title="{tr}edit account settings{/tr}">{$users[user].user}</a></td>
-<td>{$users[user].email}</td>
-<td>{$users[user].realName}</td>
-<td>{if $users[user].currentLogin eq ''}{tr}Never{/tr} <i>({$users[user].age|duration_short})</i>{else}{$users[user].currentLogin|dbg|tiki_long_datetime}{/if}</td>
+
 <td class="thin"><a class="link" href="tiki-assignuser.php?assign_user={$users[user].user|escape:url}" title="{tr}Assign Group{/tr}"><img border="0" alt="{tr}Assign Group{/tr}" src="img/icons/key.gif" /></a></td>
-<td>
+<!--
+<td class="thin">
 {foreach from=$users[user].groups key=grs item=what}
 {if $grs != "Anonymous"}
 {if $what eq 'included'}<i>{/if}<a class="link" href="tiki-admingroups.php?group={$grs|escape:"url"}" title={if $what eq 'included'}"{tr}edit included group{/tr}"{else}"{tr}edit{/tr}"{/if}>{$grs}</a>{if $what eq 'included'}</i>{/if}
@@ -130,8 +138,9 @@ title="{tr}edit account settings{/tr}: {$users[user].user}"><img border="0" alt=
 {if $grs eq $users[user].default_group} {tr}default{/tr}{/if}<br />
 {/if}
 {/foreach}
+-->
 <td  class="thin">{if $users[user].user ne 'admin'}<a class="link" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={$sort_mode}&amp;action=delete&amp;user={$users[user].user|escape:url}"
-title="{tr}delete{/tr}"><img src="img/icons2/delete.gif" border="0" height="16" width="16" alt='{tr}delete{/tr}' /></a>{/if}
+title="{tr}delete{/tr}"><img src="img/icons2/delete.gif" border="0" alt='{tr}delete{/tr}' /></a>{/if}
 </td>
 </tr>
 {/section}

@@ -1,4 +1,7 @@
-<center><h2>{tr}Register as a new user{/tr}</h2></center>
+<br/><br/>
+<center>
+<h1>{tr}Register as a new user{/tr}</h1>
+</center>
 <br />
 {if $showmsg eq 'y'}
 {$msg}
@@ -17,24 +20,25 @@
 <img src="tiki-random_num_img.php" alt='{tr}Random Image{/tr}'/>
 <br />
 {/if}
+<center>
 <form action="tiki-register.php" method="post"> <br />
-<fieldset>
+<fieldset id="register_form">
 <br/>
 <table class="normal">
-<tr><td class="formcolor">{tr}Username{/tr}:</td><td class="formcolor"><input type="text" name="name" /></td></tr>
+<tr><td class="formcolor">{tr}username{/tr}:</td><td class="formcolor"><input size="16" type="text" name="name" /></td></tr>
 {if $useRegisterPasscode eq 'y'}
-<tr><td class="formcolor">{tr}Passcode to register (not your user password){/tr}:</td><td class="formcolor"><input type="password" name="passcode" /></td></tr>
+<tr><td class="formcolor">{tr}Passcode to register (not your user password){/tr}:</td><td class="formcolor"><input type="password" name="passcode"/></td></tr>
 {/if}
 {if $rnd_num_reg eq 'y'}
 <tr><td class="formcolor">{tr}Registration code{/tr}:</td>
 <td class="formcolor"><input type="text" maxlength="8" size="8" name="regcode" /></td></tr>
 {/if}
 
-<tr><td class="formcolor">{tr}Password{/tr}:</td><td class="formcolor"><input id='pass1' type="password" name="pass" /></td></tr>
+<tr><td class="formcolor">{tr}Password{/tr}:</td><td class="formcolor"><input size="12" id='pass1' type="password" name="pass" /></td></tr>
 
-<tr><td class="formcolor">{tr}Repeat password{/tr}:</td><td class="formcolor"><input id='pass2' type="password" name="passAgain" /></td></tr>
+<tr><td class="formcolor">{tr}Repeat password{/tr}:</td><td class="formcolor"><input size="12" id='pass2' type="password" name="passAgain" /></td></tr>
 
-<tr><td class="formcolor">{tr}Email{/tr}:</td><td class="formcolor"><input type="text" name="email" />
+<tr><td class="formcolor">{tr}Email{/tr}:</td><td class="formcolor"><input size="30" type="text" name="email" />
 {if $validateUsers eq 'y' and $validateEmail ne 'y'}<br />{tr}A valid email is mandatory to register{/tr}.<br /><br />
 {tr}NOTE: Make sure to whitelist this domain to prevent<br />registration emails being canned by your spam filter!{/tr}
 {/if}</td></tr>
@@ -59,7 +63,8 @@
 </table>
 </fieldset>
 </form>
-<br />
+</center>
+<br/>
 <!--
   <table class="normal">
     <tr><td class="formcolor"><a class="link" href="javascript:genPass('genepass','pass1','pass2');">{tr}Generate a password{/tr}</a></td>

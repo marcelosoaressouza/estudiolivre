@@ -1,5 +1,8 @@
-<h1>{tr}I forgot my password{/tr}</h1>
+<br/><br/>
+<center>
 
+<h1>{tr}I forgot my password{/tr}</h1>
+<br/>
 {if $showmsg ne 'n'}
   {if $showmsg eq 'e'}<span class="warn">{/if}
   {$msg|escape:'html'}
@@ -19,7 +22,6 @@
   </table>
   </form>
 {/if}
-{tr}Important: Username & password are CaSe SenSitiVe{/tr}
-
-<br /><br />
-<a href="{$tikiIndex}" class="link">{tr}Return to HomePage{/tr}</a>
+<br/><br/>
+<div class="warning">{tr}Important: Username & password are CaSe SenSitiVe{/tr}</div>
+</center>

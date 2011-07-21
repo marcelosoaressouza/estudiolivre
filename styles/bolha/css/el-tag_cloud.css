@@ -6,6 +6,17 @@
 	text-align:center;
 	background-color:#f9f9f9;
 	border:1px solid gray;	
+
+        text-align:center;
+        vertical-align: middle;
+        background-color:#eee;
+        -moz-border-radius:10px 10px 10px 10px;
+        padding-top: 5px;
+        padding-bottom: 8px;
+        border:1px solid;
+
+
+
 }
 
 #tagCloud h5 {

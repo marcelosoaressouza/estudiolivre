@@ -24,7 +24,9 @@
     &nbsp;|&nbsp;
   {/if}
   {if $rss_forum eq 'y'}
-	<a href="tiki-forum_rss.php?forumId={$forumId}">rss</a>
+	<a href="tiki-forum_rss.php?forumId={$forumId}">
+	<img title="Fonte RSS" alt="Fonte RSS" src="styles/estudiolivre/iRss.png">
+	</a>
   {/if}
 </h5>
 
@@ -206,7 +208,7 @@ a moderator approves it.{/tr}</small>
   </td>
   {/if}	
   <td style="text-align:center;" class="{cycle advance=false}">
-  {if $comments_coms[ix].type eq 'n'}<img src="img/icons/folder{$newtopic}.gif" alt="{tr}normal{/tr}" />{/if}
+  {if $comments_coms[ix].type eq 'n'}<img src="img/icons/folder{$newtopic}.gif" alt="{tr}Normal{/tr}" />{/if}
   {if $comments_coms[ix].type eq 'a'}<img src="img/icons/folder_announce{$newtopic}.gif" alt="{tr}announce{/tr}" />{/if}
   {if $comments_coms[ix].type eq 'h'}<img src="img/icons/folder_hot{$newtopic}.gif" alt="{tr}hot{/tr}" />{/if}
   {if $comments_coms[ix].type eq 's'}<img src="img/icons/folder_sticky{$newtopic}.gif" alt="{tr}sticky{/tr}" />{/if}
@@ -230,7 +232,7 @@ a moderator approves it.{/tr}</small>
   {/if}
   </td>
   
-  <td style="text-align:right;" nowrap="nowrap">
+  <td style="text-align:center;" nowrap="nowrap">
   {if count($comments_coms[ix].attachments) or $tiki_p_admin_forum eq 'y'}
   {if count($comments_coms[ix].attachments)}
   	<img src='img/icons/attachment.gif' alt='attachments' />
@@ -253,10 +255,10 @@ a moderator approves it.{/tr}</small>
   </tr></table>
   </td>
   {if $forum_info.topics_list_replies eq 'y'}
-  	<td style="text-align:right;" class="{cycle advance=false}">{$comments_coms[ix].replies}</td>
+  	<td style="text-align:center;" class="{cycle advance=false}">{$comments_coms[ix].replies}</td>
   {/if}
   {if $forum_info.topics_list_reads eq 'y'}
-  	<td style="text-align:right;" class="{cycle advance=false}">{$comments_coms[ix].hits}</td>
+  	<td style="text-align:center;" class="{cycle advance=false}">{$comments_coms[ix].hits}</td>
   {/if}
   {if $forum_info.topics_list_lastpost eq 'y'}
   	  <td class="{cycle advance=false}">{$comments_coms[ix].lastPost|tiki_short_datetime} {*date_format:"%b %d [%H:%M]" *}
@@ -290,7 +292,7 @@ a moderator approves it.{/tr}</small>
 		<input type="image" name="delsel" src="img/icons/topic_delete.gif" border='0' alt='{tr}delete{/tr}' title='{tr}delete selected topics{/tr}' />
 		<input type="image" name="splitsel" src="img/icons/topic_split.gif" border='0' alt='{tr}merge{/tr}' title='{tr}merge selected topics{/tr}' />
 		</td>
-		<td style="text-align:right;" class="odd" colspan="10">
+		<td style="text-align:center;" class="odd" colspan="10">
 		{if $reported > 0}
 		<small><a class="link" href="tiki-forums_reported.php?forumId={$forumId}">{tr}reported messages:{/tr}{$reported}</a></small><br />
 		{/if}
@@ -404,7 +406,7 @@ a moderator approves it.{/tr}</small>
     </select>
 </form>
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
 {if $feature_forum_quickjump eq 'y'}
 <form id='quick' method="post" action="tiki-view_forum.php">
 <small>{tr}Jump to forum{/tr}:</small>

@@ -13,7 +13,7 @@
 		<div id="lastChangesOptions" style="display:none">
 			<form method="get" action="tiki-lastchanges.php">
 				{tr}Modificações com texto{/tr}: <br/>
-				{tooltip text="Dica: não escreva nada se quiser listar <b>todas</b> as modificções"}<input name="find" value="" type="text" class="input">{/tooltip}<br>
+				{tooltip text="Dica: não escreva nada se quiser listar <b>todas</b> as modificções"}<input name="find" value="" type="text" class="input" size="16">{/tooltip}<br>
 			    {tr}<b>Ou</b> nos últimos{/tr}: {tooltip text="Dica: coloque <b>0</b> para buscar em todos os dias"}<input name="days" value="0" size="2" type="text" class="input">{/tooltip} {tr}dias{/tr}<br>
 			    <input value="buscar" name="search" type="submit">
 			    <input name="sort_mode" value="lastModif_desc" type="hidden">
