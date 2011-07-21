@@ -10,7 +10,7 @@
 	left:10px;
 	float:left;
 	z-index:3;
-height:39px;
+	height:39px;
 }
 
 /*os links do menu do site geral*/
@@ -21,7 +21,7 @@ height:39px;
 
 #topMenu {
 	height:22px;
-	padding:0px 5px 0px 5px;
+	padding:3px 5px 3px 5px;
 	border-top:1px solid #c1dfeb;
 	border-bottom:1px solid #c1dfeb;
 	background-color:#fff/*f6fafc*/;
@@ -110,6 +110,7 @@ height:39px;
 }
 
 #searchField, #searchFieldResults {
+	
 	height:15px;
 	width:160px;
 	background-color:white;
@@ -117,9 +118,13 @@ height:39px;
 	top:-5px;
 	margin:0px;
 	padding:0px;
-	font-size:10px;
+	font-size:11px;
 	border-left:1px solid #bebebe;
 	border-top:1px solid #bebebe;
 	border-bottom:1px solid #bebebe;
 	border-right:0px;
+}
+
+#searchBox {
+  margin-top: 4px;
 }

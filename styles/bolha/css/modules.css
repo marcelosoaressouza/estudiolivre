@@ -1,3 +1,12 @@
+#TArrowswitch_lang, #TArrowlast_modif_pages, #TArrowadmin_menu, #TArrowel_gallery, 
+#TArrowwho_is_there, #TArrowuser_blogs, #TArrowmessages_unread_messages {
+  padding-left: 4px;
+}
+
+.closeButton {
+  padding-left: 4px;
+}
+
 .modCenterContent {
 	text-align:center;
 }
@@ -43,13 +52,15 @@
 }
 
 .userMenu H1 {
-	-moz-border-radius:10px 10px 2px 2px;
+	-moz-border-radius:8px 8px 0px 0px;
 	background-color:#e5e5e5;
 	color:#aaa;
 	font-size:12px;
 	font-weight:bolder;
-	margin:0 -5px 0px -5px;
-	padding-right:2px;
+	margin:0px -5px 0px -5px;
+	min-height: 16px;
+	padding-top: 2px;
+	padding-right:8px;
 }
 
 /*mod-el_msgs.tpl*/

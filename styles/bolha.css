@@ -1,17 +1,14 @@
-/* tags gerais */
-HTML {
-	/*background-image:url(estudiolivre/bgGradientBlue.png);*/
+html {
 	background-repeat:repeat-x;
-	/*height:99.3%;*/
 	height:100%;
 	padding:0;
 }
 
-BODY {
+body {
 	min-height:100%;
 	margin: 0;
 	padding: 0;
-	font-family: arial,verdana,helvetica,lucida,sans-serif; /*BitStream Vera Sans, Verdana;*/
+	font-family: arial,verdana,helvetica,lucida,sans-serif;
 	font-size:12px;
 	background-image:url(./bolha/img/bgShadow.png);
 	background-repeat:repeat-y;
@@ -62,3 +59,19 @@ span.hiddenPointer {
 
 .c {clear:both;}
 
+.heading {
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 75px;
+}
+
+.even, .odd, #even, #odd {
+  text-align: center;
+}
+
+#modulelast_modif_pages, #moduleswitch_lang, #modulebreadcrumb,
+#modulewho_is_there, modulemessages_unread_messages, #moduleadmin_menu {
+  text-align: center;
+  line-height: 1.4em;
+
+}
