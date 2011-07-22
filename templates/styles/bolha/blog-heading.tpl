@@ -18,8 +18,9 @@
 				{assign var=bimgCurrent value="Left"}
 				{assign var=bimgChange value="Down"}	
 			{/if}
+				<br/>
 				<div class="pointer" id="descFlipper" onclick="javascript:flip('moduleblogDescCont');toggleImage(document.getElementById('TArrowBlogDesc'),'iArrowGrey{$bimgChange}.png');storeState('blogDescCont');">
-			        {tr}Description{/tr}<img id="TArrowBlogDesc"  src="styles/{$style|replace:".css":""}/img/iArrowGrey{$bimgCurrent}.png">
+			        {tr}Description{/tr} <img id="TArrowBlogDesc"  src="styles/{$style|replace:".css":""}/img/iArrowGrey{$bimgCurrent}.png">
 				</div>
 			<div id="moduleblogDescCont" style="display:{$bdisplay}">
 				{$description}

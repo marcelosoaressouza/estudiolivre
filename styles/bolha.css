@@ -103,3 +103,13 @@ span.hiddenPointer {
 
 .tableUser {
 }
+
+.filters {
+  width: 260px;
+  height: 30px;
+}
+
+#browseFreeTags {
+  margin-right: 10px;
+  margin-left: 10px;
+}

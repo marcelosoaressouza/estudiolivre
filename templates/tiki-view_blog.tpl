@@ -12,10 +12,12 @@
 {tr}Find:{/tr} <input type="text" name="find" value="{$find|regex_replace:"/\"/":"'"}" /> <input type="submit" name="search" value="{tr}find{/tr}" />
 </form>
 </td><td>
+
 <!--
 	{tr}Sort posts by:{/tr}
 	<a class="bloglink" href="tiki-view_blog.php?blogId={$blogId}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'created_desc'}created_asc{else}created_desc{/if}">{tr}Date{/tr}</a>
--->	
+-->
+	
 </td></tr></table>
 </div>
 {/if}
