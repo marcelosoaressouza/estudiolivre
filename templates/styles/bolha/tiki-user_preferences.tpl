@@ -17,8 +17,7 @@
 	{/if}
 	
 	{if $feature_view_tpl eq 'y'}
-		<a href="tiki-edit_templates.php?template=tiki-user_preferences.tpl" target="tikihelp" class="tikihelp" title="{tr}View tpl{/tr}: {tr}UserPreferences tpl{/tr}">
-		<img src="img/icons/info.gif" border="0" width="16" height="16" alt='{tr}edit template{/tr}' /></a>
+		<a href="tiki-edit_templates.php?template=tiki-user_preferences.tpl" target="tikihelp" class="tikihelp" title="{tr}View tpl{/tr}: {tr}UserPreferences tpl{/tr}"></a>
 	{/if}
 	{if $userwatch eq $user or $userwatch eq ""}
 		{include file=tiki-mytiki_bar.tpl}
@@ -163,7 +162,7 @@
     {/section}
         </select>
 		{if $feature_editcss eq 'y' and $tiki_p_create_css eq 'y'}
-			<br/><a href="tiki-edit_css.php" class="link" title="{tr}Edit CSS{/tr}">{tr}Edit CSS{/tr}</a>
+<!--			<br/><a href="tiki-edit_css.php" class="link" title="{tr}Edit CSS{/tr}">{tr}Edit CSS{/tr}</a> -->
 		{/if}
 				</td></tr>
   {/if}
@@ -171,8 +170,7 @@
   <tr><td  class="form">{tr}Language{/tr}:</td></tr>
   <tr>
   <td colspan=2 class="form">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <select name="language">
+    <select name="language">
     {section name=ix loop=$languages}
       {if count($available_languages) == 0 || in_array($languages[ix].value, $available_languages)}
         <option value="{$languages[ix].value|escape}"
@@ -183,7 +181,7 @@
     {/section}
         </select></td></tr>
   {/if}      
-  <tr><td class="form">{tr}Number of visited pages to remember{/tr}:</td><td class="form">
+  <tr><td class="form"><br/>{tr}Number of visited pages to remember{/tr}:</td><td class="form">
   <select name="userbreadCrumb">
   <option value="1" {if $userbreadCrumb eq 1}selected="selected"{/if}>1</option>
   <option value="2" {if $userbreadCrumb eq 2}selected="selected"{/if}>2</option>

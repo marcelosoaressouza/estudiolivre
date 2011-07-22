@@ -1,4 +1,4 @@
-html {
+tablehtml {
 	background-repeat:repeat-x;
 	height:100%;
 	padding:0;
@@ -59,12 +59,6 @@ span.hiddenPointer {
 
 .c {clear:both;}
 
-.heading {
-  text-transform: capitalize;
-  text-align: center;
-  min-width: 75px;
-}
-
 .even, .odd, #even, #odd {
   line-height: 1.5em;
   text-align: center;
@@ -102,7 +96,24 @@ span.hiddenPointer {
 }
 
 .tableUser {
+  width: 95%;
 }
+
+.headingUser {
+  font-weight: bold;
+  text-transform: capitalize;
+  text-align: center;
+  width: 75px;
+  boder:1px solid;
+}
+
+.heading {
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 75px;
+  boder:1px solid;
+}
+
 
 .filters {
   width: 260px;
@@ -112,4 +123,21 @@ span.hiddenPointer {
 #browseFreeTags {
   margin-right: 10px;
   margin-left: 10px;
+}
+
+.button {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-right: 2px;
+        margin-left: 2px;
+        font-size:14px;
+	font-weight: bold;
+        border:1px solid;
+        background-color: #fff;
+	padding: 1px 4px 1px 4px;
+}
+
+
+.normal_modules {
+  max-width: 100%;
 }

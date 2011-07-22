@@ -1,4 +1,5 @@
 {popup_init src="lib/overlib.js"}
+<center>
 <h1>
 <a href="tiki-adminusers.php" class="pagetitle">{tr}Admin users{/tr}</a>
 
@@ -7,10 +8,9 @@
 <img src="img/icons/help.gif" border="0" height="16" width="16" alt='{tr}help{/tr}' /></a>{/if}
 
 {if $feature_view_tpl eq 'y'}
-<a href="tiki-edit_templates.php?template=tiki-adminusers.tpl" target="tikihelp" class="tikihelp" title="{tr}View template{/tr}: {tr}admin users template{/tr}">
-<img src="img/icons/info.gif" border="0" width="16" height="16" alt='{tr}edit{/tr}' /></a>{/if}
+<a href="tiki-edit_templates.php?template=tiki-adminusers.tpl" target="tikihelp" class="tikihelp" title="{tr}View template{/tr}: {tr}admin users template{/tr}"></a>{/if}
 </h1>
-
+</center>
 <!--
 {if $tiki_p_admin eq 'y'} {* only full admins can manage groups, not tiki_p_admin_users *}
 <span class="button2"><a href="tiki-admingroups.php" class="linkbut">{tr}Admin groups{/tr}</a></span>
@@ -19,7 +19,7 @@
 <!-- <span class="button2"><a href="tiki-adminusers.php" class="linkbut">{tr}Admin users{/tr}</a></span> -->
 
 {if $userinfo.userId}
-<span class="button2"><a href="tiki-adminusers.php?add=1" class="linkbut">{tr}Add a new user{/tr}</a></span>
+<!-- <span class="button2"><a href="tiki-adminusers.php?add=1" class="linkbut">{tr}Add a new user{/tr}</a></span> -->
 {/if}
 
 {if $feature_intertiki eq 'y' and !empty($feature_intertiki_mymaster)}
@@ -30,7 +30,6 @@
 <br /><div class="simplebox {if $tikifeedback[n].num > 0} highlight{/if}">{section name=n loop=$tikifeedback}{$tikifeedback[n].mes}<br />{/section}</div>
 {/if}
 
-<br />
 {if $added != "" or $discarded != ""}
 <div class="simplebox">
 <h2>{tr}Batch Upload Results{/tr}</h2>
@@ -38,7 +37,7 @@
 {if $discarded != ""}
 - {tr}Rejected users{/tr}: {$discarded}<br /><br/>
 <table class="normal">
-<tr><td class="heading">{tr}Username{/tr}</td><td class="heading">{tr}Reason{/tr}</td></tr>
+<tr><td class="headingUser">{tr}Username{/tr}</td><td class="headingUser">{tr}Reason{/tr}</td></tr>
 {section name=reject loop=$discardlist}
 <tr><td class="odd">{$discardlist[reject].login}</td><td class="odd">{$discardlist[reject].reason}</td></tr>
 {/section}
@@ -53,21 +52,18 @@
 </div>
 {/if}
 
-<br /><br />
-
 {if $feature_tabs eq 'y'}
 {cycle name=tabs values="1,2,3,4" print=false advance=false reset=true}
 <div id="page-bar">
-<span id="tab{cycle name=tabs advance=false assign=tabi}{$tabi}" class="tabmark" style="border-color:{if $cookietab eq $tabi}black{else}white{/if};"><a href="javascript:tikitabs({cycle name=tabs},3);">{tr}Users{/tr}</a></span>
+<!-- <span id="tab{cycle name=tabs advance=false assign=tabi}{$tabi}" class="tabmark" style="border-color:{if $cookietab eq $tabi}black{else}white{/if};"><a href="javascript:tikitabs({cycle name=tabs},3);">{tr}Users{/tr}</a></span> -->
 {if $userinfo.userId}
-<span id="tab{cycle name=tabs advance=false assign=tabi}{$tabi}" class="tabmark" style="border-color:{if $cookietab eq $tabi}black{else}white{/if};"><a href="javascript:tikitabs({cycle name=tabs},3);">{tr}Edit user{/tr} <i>{$userinfo.login}</i></a></span>
+<!-- <center><h2><span id="tab{cycle name=tabs advance=false assign=tabi}{$tabi}" class="tabmark" style="border-color:{if $cookietab eq $tabi}black{else}white{/if};"><a href="javascript:tikitabs({cycle name=tabs},3);">{tr}Edit user{/tr} <i>{$userinfo.login}</i></a></span></h2></center> -->
 {else}
-<span id="tab{cycle name=tabs advance=false assign=tabi}{$tabi}" class="tabmark" style="border-color:{if $cookietab eq $tabi}black{else}white{/if};"><a href="javascript:tikitabs({cycle name=tabs},3);">{tr}Add a new user{/tr}</a></span>
+<!-- <center><span id="tab{cycle name=tabs advance=false assign=tabi}{$tabi}" class="tabmark" style="border-color:{if $cookietab eq $tabi}black{else}white{/if};"><a href="javascript:tikitabs({cycle name=tabs},3);"><div class="warning">{tr}Add a new user{/tr}</div></a></span></center> -->
 {/if}
 </span>
 </div>
 {/if}
-
 {cycle name=content values="1,2,3,4" print=false advance=false reset=true}
 {* ---------------------- tab with list -------------------- *}
 <div id="content{cycle name=content assign=focustab}{$focustab}" class="tabcontent"{if $feature_tabs eq 'y'} style="display:{if $focustab eq $cookietab}block{else}none{/if};"{/if}>
@@ -78,7 +74,7 @@
 <table class="findtable"><tr>
 <td>{tr}Find{/tr}</td>
 <td><input type="text" name="find" value="{$find|escape}" /></td>
-<td><input type="submit" value="{tr}find{/tr}" name="search" /></td>
+<td><input type="submit" class="button" value="{tr}find{/tr}" name="search" /></td>
 <td>{tr}Number of displayed rows{/tr}</td>
 <td><input type="text" size="4" name="numrows" value="{$numrows|escape}" />
 <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" /></td>
@@ -103,16 +99,16 @@ class="prevnext">{tr}All{/tr}</a>
 <form name="checkform" method="post" action="{$smarty.server.PHP_SELF}{if $group_management_mode ne  'y' and $set_default_groups_mode ne 'y'}#multiple{/if}">
 <table class="tableUser">
 <tr class="trUser">
-<td class="heading auto">&nbsp;</td>
-<td class="heading"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'login_desc'}login_asc{else}login_desc{/if}">{tr}Name{/tr}</a></td>
-<td class="heading"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'email_desc'}email_asc{else}email_desc{/if}">{tr}Email{/tr}</a></td>
-<!-- <td class="heading">{tr}Real Name{/tr}</td> -->
-<td class="heading"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'currentLogin_desc'}currentLogin_asc{else}currentLogin_desc{/if}">{tr}Last login{/tr}</a></td>
-<td class="heading">&nbsp;</td>
-<td class="heading">&nbsp;</td>
-<td class="heading">&nbsp;</td>
-<!-- <td class="heading">{tr}Groups{/tr}</td> -->
-<td class="heading">&nbsp;</td>
+<td class="headingUser auto">&nbsp;</td>
+<td class="headingUser"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'login_desc'}login_asc{else}login_desc{/if}">{tr}Name{/tr}</a></td>
+<td class="headingUser"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'email_desc'}email_asc{else}email_desc{/if}">{tr}Email{/tr}</a></td>
+<!-- <td class="headingUser">{tr}Real Name{/tr}</td> -->
+<td class="headingUser"><a class="tableheading" href="tiki-adminusers.php?offset={$offset}&amp;numrows={$numrows}&amp;sort_mode={if $sort_mode eq 'currentLogin_desc'}currentLogin_asc{else}currentLogin_desc{/if}">{tr}Last login{/tr}</a></td>
+<td class="headingUser">&nbsp;</td>
+<td class="headingUser">&nbsp;</td>
+<td class="headingUser">&nbsp;</td>
+<!-- <td class="headingUser">{tr}Groups{/tr}</td> -->
+<td class="headingUser">&nbsp;</td>
 </tr>
 {cycle print=false values="even,odd"}
 {section name=user loop=$users}
@@ -165,7 +161,7 @@ title="{tr}delete{/tr}"><img src="img/icons2/delete.gif" border="0" alt='{tr}del
     <option value="assign_groups" >{tr}manage group assignments{/tr}</option>
     <option value="set_default_groups">{tr}set default groups{/tr}</option>
   </select>
-  <input type="submit" value="{tr}ok{/tr}" />
+  <input type="submit" class="button" value="{tr}ok{/tr}" />
   {elseif $group_management_mode eq 'y'}
   <select name="group_management">
   	<option value="add">{tr}Assign selected to{/tr}</option>
@@ -224,21 +220,21 @@ title="{tr}delete{/tr}"><img src="img/icons2/delete.gif" border="0" alt='{tr}del
 <a name="2" ></a>
 <div id="content{cycle name=content assign=focustab}{$focustab}" class="tabcontent"{if $feature_tabs eq 'y'} style="display:{if $focustab eq $cookietab}block{else}none{/if};"{/if}>
 {if $userinfo.userId}
-<h2>{tr}Edit user{/tr}: {$userinfo.login}</h2>
-<a class="linkbut" href="tiki-assignuser.php?assign_user={$userinfo.login|escape:url}">{tr}assign to groups{/tr}: {$userinfo.login}</a>
+<center><h2>{tr}Edit user{/tr}: {$userinfo.login}</h2></center><br/>
+<!-- <a class="linkbut" href="tiki-assignuser.php?assign_user={$userinfo.login|escape:url}">{tr}assign to groups{/tr}: {$userinfo.login}</a> -->
 {else}
 <h2>{tr}Add a new user{/tr}</h2>
 {/if}
 <form action="tiki-adminusers.php" method="post" enctype="multipart/form-data">
 <table class="normal">
-<tr class="formcolor"><td>{tr}User{/tr}:</td><td><input type="text" name="name"  value="{$userinfo.login|escape}" /><br />
+<tr class="formcolor"><td>{tr}User{/tr}:</td><td><input type="text" name="name"  disabled value="{$userinfo.login|escape}" /><br />
 
 {if $userinfo.login eq 'admin'}
 <div class="highlight">
 {tr}Warning: Are you sure you want to rename the "admin" user? It's better to add a new user and to assign this new user to the "Admins" group{/tr}<br />
 </div>
 {/if}
-
+<!--
 {if $userinfo.userId}
   {if $feature_intertiki_server eq 'y'}
     <i>{tr}Warning: changing the username will require the user to change his password and will mess with slave intertiki sites that use this one as master{/tr}</i>
@@ -246,6 +242,7 @@ title="{tr}delete{/tr}"><img src="img/icons2/delete.gif" border="0" alt='{tr}del
     <i>{tr}Warning: changing the username will require the user to change his password{/tr}</i>
   {/if}
 {/if}
+-->
 </td></tr>
 <tr class="formcolor"><td>{tr}Pass{/tr}:</td><td><input type="password" name="pass" id="pass" /></td></tr>
 <tr class="formcolor"><td>{tr}Again{/tr}:</td><td><input type="password" name="pass2" id="pass2" /></td></tr>
@@ -254,14 +251,15 @@ title="{tr}delete{/tr}"><img src="img/icons2/delete.gif" border="0" alt='{tr}del
 {if $userinfo.userId != 0}
 <tr class="formcolor"><td>{tr}Created{/tr}:</td><td>{$userinfo.created|tiki_long_datetime}</td></tr>
 <tr class="formcolor"><td>{tr}Registration{/tr}:</td><td>{if $userinfo.registrationDate}{$userinfo.registrationDate|tiki_long_datetime}{/if}</td></tr>
-<tr class="formcolor"><td>{tr}Last login{/tr}:</td><td>{if $userinfo.lastLogin}{$userinfo.lastLogin|tiki_long_datetime}{/if}</td></tr>
+<!-- <tr class="formcolor"><td>{tr}Last login{/tr}:</td><td>{if $userinfo.lastLogin}{$userinfo.lastLogin|tiki_long_datetime}{/if}</td></tr> -->
 {/if}
 {if $userinfo.userId}
 
 <tr class="formcolor"><td>&nbsp;</td><td>
 <input type="hidden" name="user" value="{$userinfo.userId|escape}" />
 <input type="hidden" name="edituser" value="1" />
-<input type="submit" name="submit" value="{tr}Save{/tr}" />
+<br/>
+<input type="submit" name="submit" class="button" value="{tr}Save{/tr}" />
 
 {else}
 <tr class="formcolor"><td>&nbsp;</td><td>

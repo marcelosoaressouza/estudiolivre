@@ -1,3 +1,4 @@
+<center>
 <h1><a href="tiki-admin_links.php" class="pagetitle">{tr}Featured links{/tr}</a>
   
       {if $feature_help eq 'y'}
@@ -6,12 +7,14 @@
 
       {if $feature_view_tpl eq 'y'}
 <a href="tiki-edit_templates.php?template=tiki-admin_links.tpl" target="tikihelp" class="tikihelp" title="{tr}View template{/tr}: {tr}admin featured links template{/tr}">
-<img src="img/icons/info.gif" border="0" width="16" height="16" alt='{tr}Edit template{/tr}' /></a>{/if}</h1>
+</a>{/if}</h1>
 
+<!--
 <div class="rbox" name="tip">
 <div class="rbox-title" name="tip">{tr}Tip{/tr}</div>  
 <div class="rbox-data" name="tip">{tr}To use these links, you must assign the featured_links <a class="rbox-link" href="tiki-admin_modules.php"> module</a>.{/tr}</div>
 </div>
+-->
 <br />
 
 
@@ -26,7 +29,7 @@
 <td class="heading">{tr}type{/tr}</td>
 <td class="heading">{tr}action{/tr}</td>
 </tr>
-{cycle values="odd,even" print=false}
+{cycle  print=false}
 {section name=user loop=$links}
 <tr>
 <td class="{cycle advance=false}">{$links[user].url}</td>
@@ -36,7 +39,7 @@
 <td class="{cycle advance=false}">{$links[user].type}</td>
 <td class="{cycle}">
  <a title="{tr}delete{/tr}" class="link" href="tiki-admin_links.php?remove={$links[user].url|escape:"url"}"><img border="0" alt="{tr}remove{/tr}" src="img/icons2/delete.gif" /></a>
- <a title="{tr}edit{/tr}" class="link" href="tiki-admin_links.php?editurl={$links[user].url|escape:"url"}"><img src="img/icons/edit.gif" border="0" width="20" height="16"  alt='{tr}edit{/tr}' /></a>
+ <a title="{tr}edit{/tr}" class="link" href="tiki-admin_links.php?editurl={$links[user].url|escape:"url"}"><img src="img/icons/edit.gif" border="0"  alt='{tr}edit{/tr}' /></a>
 </td>
 </tr>
 {sectionelse}
@@ -70,6 +73,7 @@
 <option value="n" {if $type eq 'n'}selected="selected"{/if}>{tr}open new window{/tr}</option>
 </select>
 </td></tr>
-<tr class="formcolor"><td>&nbsp;</td><td><input type="submit" name="add" value="{tr}save{/tr}" /></td></tr>
+<tr class="formcolor"><td>&nbsp;</td><td><input type="submit" class="button" name="add" value="{tr}save{/tr}" /></td></tr>
 </table>
 </form>
+</center>

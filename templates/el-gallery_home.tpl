@@ -27,6 +27,7 @@
 			<img class="pointer" onclick="flip('modulegHomeWikiToggle');toggleImage(this,'{$imgChange}.png');storeState('gHomeWikiToggle')" src="styles/{$style|replace:".css":""}/img/{$imgCurrent}.png">
 		{/tooltip}
 	</span>
+
 	<div id="modulegHomeWikiToggle" style="display:{$display};">
 		{$destak}
 	</div>

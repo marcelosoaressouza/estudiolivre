@@ -1,6 +1,6 @@
 {* $Header: /cvsroot/tikiwiki/tiki/templates/tiki-admingroups.tpl,v 1.52.2.32 2007/09/03 19:49:27 sylvieg Exp $ *}
 {popup_init src="lib/overlib.js"}
-
+<center>
 <h1><a class="pagetitle" href="tiki-admingroups.php">{tr}Admin groups{/tr}</a>
 {if $feature_help eq 'y'}
 <a href="{$helpurl}Permissions+Settings" target="tikihelp" class="tikihelp" title="{tr}admin groups{/tr}">
@@ -9,7 +9,7 @@
 
 {if $feature_view_tpl eq 'y'}
 <a href="tiki-edit_templates.php?template=tiki-admingroups.tpl" target="tikihelp" class="tikihelp" title="{tr}View tpl{/tr}: {tr}admin groups template{/tr}">
-<img src="img/icons/info.gif" border="0" width="16" height="16" alt='{tr}edit template{/tr}' />{/if}
+{/if}
 {if $feature_view_tpl eq 'y'}</a>{/if}</h1>
 
 <span class="button2"><a href="tiki-admingroups.php" class="linkbut">{tr}Admin groups{/tr}</a></span>
@@ -44,7 +44,7 @@
 <table class="findtable"><tr>
 <td><label for="groups_find">{tr}Find{/tr}</label></td>
 <td><input type="text" name="find" id="groups_find" value="{$find|escape}" /></td>
-<td><input type="submit" value="{tr}find{/tr}" name="search" /></td>
+<td><input type="submit" class="button" value="{tr}find{/tr}" name="search" /></td>
 <td>{tr}Number of displayed rows{/tr}</td>
 <td><input type="text" size="4" name="numrows" value="{$numrows|escape}" />
 <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" /></td>
@@ -232,3 +232,4 @@ To use a relative link, use ex.: <i>http:tiki-forums.php</i>
 </div>
 {/if}
 {/if}
+</center>

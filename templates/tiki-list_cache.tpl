@@ -1,3 +1,4 @@
+<center>
 <h1><a href="tiki-list_cache.php" class="pagetitle">{tr}Cache{/tr}</a>
   
       {if $feature_help eq 'y'}
@@ -6,19 +7,21 @@
 
       {if $feature_view_tpl eq 'y'}
 <a href="tiki-edit_templates.php?template=tiki-list_cache.tpl" target="tikihelp" class="tikihelp" title="{tr}View tpl{/tr}: {tr}admin cache tpl{/tr}">
-<img src="img/icons/info.gif" border="0" height="16" width="16" alt='{tr}edit tpl{/tr}' /></a>{/if}</h1>
+</a>
+{/if}</h1>
 
 <table class="findtable">
-<tr><td class="findtitle">{tr}Find{/tr}</td>
+<tr><td class="findtitle"></td>
    <td class="findtitle">
    <form method="get" action="tiki-list_cache.php">
-     <input type="text" name="find" value="{$find|escape}" />
-     <input type="submit" value="{tr}find{/tr}" name="search" />
+     <input type="text" name="find" value="{$find|escape}" size="32"/>
+     <input type="submit" class="button" value="{tr}find{/tr}" name="search" />
      <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
    </form>
    </td>
 </tr>
 </table>
+<br/><br/>
 <div  align="center">
 <table class="normal">
 <tr>
@@ -39,11 +42,15 @@
 </tr>
 {/if}
 {sectionelse}
+
 <tr><td class="odd" colspan="3">
+<br/>
+
 {tr}No records found{/tr}
 </td></tr>
 {/section}
 </table>
+<br/>
 <div class="mini">
 {if $prev_offset >= 0}
 [<a class="prevnext" href="tiki-list_cache.php?find={$find}&amp;offset={$prev_offset}&amp;sort_mode={$sort_mode}">{tr}prev{/tr}</a>]&nbsp;
@@ -62,3 +69,4 @@
 {/if}
 </div>
 </div>
+</center>

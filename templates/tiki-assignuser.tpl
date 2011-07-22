@@ -1,5 +1,6 @@
 {* $Header: /cvsroot/tikiwiki/tiki/templates/tiki-assignuser.tpl,v 1.16.2.15 2007/08/06 15:09:38 sylvieg Exp $ *}
 
+<center>
 <h1><a href="tiki-assignuser.php?assign_user={$assign_user|escape:url}" class="pagetitle">{tr}Assign user{/tr} {$assign_user} {tr}to groups{/tr}</a></h1>
 
 {if $tiki_p_admin eq 'y'} {* only full admins can manage groups, not tiki_p_admin_users *}
@@ -95,3 +96,4 @@
 
 </div>
 </div>
+</center>

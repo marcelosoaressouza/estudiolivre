@@ -12,7 +12,7 @@
 <input type="hidden" name="name" value="{$login}"/>
 <input type="hidden" name="pass" value="{$password}"/>
 <input type="hidden" name="novalidation" value="yes"/>
-<input type="submit" name="register" value="{tr}register{/tr}" />
+<input type="submit" name="register" class="button" value="{tr}register{/tr}" />
 </form>
 {else}
 {if $rnd_num_reg eq 'y'}
@@ -56,7 +56,7 @@
     <div class="clr"></div>
     <div id="QapTcha"></div>
     <br/>
-    <input type="submit" name="register" value="{tr}register{/tr}" />
+    <input type="submit" name="register" class="button" value="{tr}register{/tr}" />
   </td>
 </tr>
 

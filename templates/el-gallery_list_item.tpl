@@ -59,10 +59,11 @@
 		</h4>
 		
 		<h3>
-			{if strlen($arquivo->description) > 150}
-				{$arquivo->description|truncate:150:"":true}
+			{if strlen($arquivo->description) > 256}
+				{$arquivo->description|truncate:256:"":true}...
 				<a href="el-gallery_view.php?arquivoId={$arquivo->id}">
-					({tr}ler mais{/tr}...)
+				<br/>
+					<b>({tr}leia mais{/tr}...)</b>
 				</a>
 			{elseif $arquivo->description}
 				{$arquivo->description}

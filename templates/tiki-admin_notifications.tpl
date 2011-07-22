@@ -1,3 +1,4 @@
+<center>
 <h1><a class="pagetitle" href="tiki-admin_notifications.php">{tr}EMail notifications{/tr}</a>
 
       {if $feature_help eq 'y'}
@@ -6,7 +7,7 @@
 
       {if $feature_view_tpl eq 'y'}
 <a href="tiki-edit_templates.php?template=tiki-admin_notifications.tpl" target="tikihelp" class="tikihelp" title="{tr}View tpl{/tr}: {tr}admin notifications template{/tr}">
-<img src="img/icons/info.gif" border="0" width="16" height="16" alt='{tr}edit{/tr}' /></a>{/if}</h1>
+</a>{/if}</h1>
 
 {if empty($sender_email)}
 <div class="highlight">{tr}You need to set <a href="tiki-admin.php?page=general">Sender Email</a>{/tr}</div>
@@ -36,7 +37,7 @@
     </td>
 </tr> 
 <tr><td class="formcolor">&nbsp;</td>
-    <td class="formcolor"><input type="submit" name="add" value="{tr}add{/tr}" /></td>
+    <td class="formcolor"><input type="submit" class="button" name="add" value="{tr}add{/tr}" /></td>
 </tr>    
 </form>
 </table>
@@ -47,7 +48,7 @@
    <td class="findtable">
    <form method="get" action="tiki-admin_notifications.php">
      <input type="text" name="find" value="{$find|escape}" />
-     <input type="submit" value="{tr}find{/tr}" name="search" />
+     <input type="submit" class="button" value="{tr}find{/tr}" name="search" />
      <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
    </form>
    </td>
@@ -92,3 +93,4 @@
 {/section}
 {/if}
 </div>
+</center>

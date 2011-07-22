@@ -1,5 +1,5 @@
 {* $Header: /cvsroot/tikiwiki/tiki/templates/tiki-admin_modules.tpl,v 1.28.2.27 2007/09/01 22:35:12 marclaporte Exp $ *}
-
+<center>
 <h1><a class="pagetitle" href="tiki-admin_modules.php">{tr}Admin Modules{/tr}</a>
 {* the help link info *}
   
@@ -11,8 +11,7 @@
 
       {if $feature_view_tpl eq 'y'}
 <a href="tiki-edit_templates.php?template=tiki-admin_modules.tpl" target="tikihelp" class="tikihelp" title="{tr}View template{/tr}: {tr}admin modules template{/tr}">
-<img src="img/icons/info.gif" border="0" width="16" height="16" alt='{tr}edit{/tr}' /></a>{/if}</h1>
-
+</a>{/if}</h1>
 
 <p>
 <a class="linkbut" href="#assign">{tr}assign module{/tr}</a>
@@ -33,7 +32,7 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 {/tr}
 </div>
 <h2>{tr}User Modules{/tr}</h2>
-<table class="normal">
+<table class="normal_modules">
 <tr>
 <td class="heading">{tr}name{/tr}</td>
 <td class="heading">{tr}title{/tr}</td>
@@ -67,7 +66,7 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 {$preview_data}
 {/if}
 <form method="post" action="tiki-admin_modules.php#assign">
-<table class="normal">
+<table class="normal_modules">
 <tr><td class="formcolor">{tr}Module Name{/tr}</td><td class="formcolor">
 <select name="assign_name">
 {section name=ix loop=$all_modules}
@@ -109,13 +108,13 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 </select>
 </td></tr>
 {/if}
-<tr><td class="formcolor">&nbsp;</td><td class="formcolor"><input type="submit" name="preview" value="{tr}preview{/tr}"><input type="submit" name="assign" value="{tr}assign{/tr}"></td></tr>
+<tr><td class="formcolor">&nbsp;</td><td class="formcolor"><input type="submit" class="button" name="preview" value="{tr}preview{/tr}"><input type="submit" class="button" name="assign" value="{tr}assign{/tr}"></td></tr>
 </table>
 </form>
 <br />
 <h2>{tr}Assigned Modules{/tr}</h2>
 <a name="leftmod"></a>
-<table class="normal">
+<table class="normal_modules">
 <caption>{tr}Left Modules{/tr}</caption>
 <tr>
 <td class="heading">{tr}name{/tr}</td>
@@ -157,7 +156,7 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 <br />
 <br />
 <a name="rightmod"></a>
-<table class="normal">
+<table class="normal_modules">
 <caption>{tr}Right Modules{/tr}</caption>
 <tr>
 <td class="heading">{tr}name{/tr}</td>
@@ -199,12 +198,15 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 </table>
 <br />
 
+<!--
 <a name="editcreate"></a>
 {if $um_name eq ''}
 <h2>{tr}Create new user module{/tr}</h2>
 {else}
 <h2>{tr}Edit this user module:{/tr} {$um_name}</h2>
 {/if}
+
+<div class="module_box">
 
 <div class="rbox" name="tip">
 <div class="rbox-title" name="tip">{tr}Tip{/tr}</div>  
@@ -213,7 +215,7 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 </div>
 <br />
 
-<table class="normal"><tr><td valign="top" class="odd">
+<table class="normal_modules"><tr><td valign="top" class="odd">
 
 {* 2007-08-10  Marc Laporte: Removing WYSIWYG module editor because 1- It is not reliable/well implemented (both Firefox & Internet Explorer give quirky results as of 1.9.8   2- htmlarea (the WYSIWYG editor) is no longer supported  3- Tiki community is migrating towards FCK Editor 4- It should have been done before!. 
 	{if $wysiwyg eq 'n'}
@@ -247,7 +249,7 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 
 </td></tr>
 <tr><td class="form">{tr}Must be wiki parsed{/tr}</td><td class="form"><input type="checkbox" name="um_parse" value="y" {if $um_parse eq "y"}checked="checked"{/if}/></td></tr>
-<tr><td>&nbsp;</td><td><input type="submit" name="um_update" value="{tr}create/edit{/tr}" /></td></tr>
+<tr><td>&nbsp;</td><td><input type="submit" class="button" name="um_update" value="{tr}create/edit{/tr}" /></td></tr>
 </table>
 </form>
 </td><td valign="top" class="even">
@@ -415,4 +417,7 @@ from <a href="tiki-admin.php?page=module">Admin->Modules</a>
 {/if}
 
 </table>
+-->
 </td></tr></table>
+</div>
+<center>

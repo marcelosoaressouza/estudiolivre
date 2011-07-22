@@ -1,4 +1,5 @@
 {* $Header: /cvsroot/tikiwiki/tiki/templates/tiki-admin_hotwords.tpl,v 1.18.2.15 2007/04/19 11:50:00 sylvieg Exp $ *}
+<center>
 <h1><a class="pagetitle" href="tiki-admin_hotwords.php">{tr}Admin Hotwords{/tr}</a>
   
       {if $feature_help eq 'y'}
@@ -17,7 +18,7 @@
 <table class="normal">
 <tr><td class="formcolor">{tr}Word{/tr}</td><td class="formcolor"><input type="text" name="word" /></td></tr>
 <tr><td class="formcolor">{tr}URL{/tr}</td><td class="formcolor"><input type="text" name="url" /></td></tr>
-<tr><td class="formcolor">&nbsp;</td><td class="formcolor"><input type="submit" name="add" value="{tr}Add{/tr}" /></td></tr>
+<tr><td class="formcolor">&nbsp;</td><td class="formcolor"><input type="submit" class="button" name="add" value="{tr}Add{/tr}" /></td></tr>
 </table>
 </form>
 
@@ -28,7 +29,7 @@
    <td class="findtable">
    <form method="get" action="tiki-admin_hotwords.php">
      <input type="text" name="find" value="{$find|escape}" />
-     <input type="submit" value="{tr}find{/tr}" name="search" />
+     <input type="submit" class="button" value="{tr}find{/tr}" name="search" />
      <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
    </form>
    </td>
@@ -73,3 +74,4 @@ title="{tr}delete{/tr}"><img src="img/icons2/delete.gif" border="0" height="16" 
 {/section}
 {/if}
 </div>
+</center>

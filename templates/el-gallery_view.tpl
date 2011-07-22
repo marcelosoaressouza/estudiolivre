@@ -88,9 +88,11 @@
 	{if $permission}
 		{tooltip text="Clique para editar as <b>tags</b> desse arquivo"}<img class="pointer" src="styles/{$style|replace:".css":""}/img/iTagEdit.png" onClick="editaCampo('tags')">{/tooltip}
 	{/if}
+	<center>
 	<div id="show-tags">
 		{include file="el-gallery_tags.tpl"}
 	</div>
+	</center>
 	
 	{if $permission}
 		<input id="input-tags" value="{$arquivo->tagString}" onBlur="xajax_save_field('tags', this.value)" style="display:none;">

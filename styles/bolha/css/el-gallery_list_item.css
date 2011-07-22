@@ -49,24 +49,27 @@
 }
 
 .listItem .listInfo {
-	padding-left:101px;
-	/*width:400px;*/
+	padding-left:100px;
+	padding-right: 10px;
 	margin-left:20px;
 }
 
 
 .listItem .listInfo h3{
-	font-family:Trebuchet MS;
+	text-align: justify;
+	font-family: Trebuchet MS;
 	font-size:12pt;
 	font-weight:normal;
-	font-style:italic;
+/*	font-style:italic; */
 	margin-top:0.5em;
-	margin-bottom:0.2em;
+	margin-bottom: 0.5em;
+	margin-right: 1.0em;
+	line-height: 1.5em;
 }
 
 .listItem .listInfo h4 {
-display:table;
-width:100%;
+	display:table;
+	width:100%;
 	margin:0;
 	margin-top:10px;
 	font-size:8pt;
