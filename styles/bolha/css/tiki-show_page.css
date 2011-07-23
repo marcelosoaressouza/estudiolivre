@@ -1,3 +1,7 @@
+#wikitext {
+	max-width: 100%;
+}
+
 p.editdate {
 	float:right;
 	border-top:1px solid #ececec;
@@ -62,9 +66,13 @@ p.editdate {
 
 /* classe usada para o que estiver entre '-=' e '=-', tipo '-=titulo=-'*/
 .titlebar {
+	padding: 9px;
+	min-height: 15px;
+	max-width: 100%;
 	padding-left:10px;
-	margin: 0 auto;
+	margin: 10px auto;
 	margin-bottom:20px;
+
 	font-size:24px;
 	font-variant: small-caps;
 	text-align:center;
@@ -74,8 +82,8 @@ p.editdate {
 
 .titlebar:first-letter {
     text-transform: uppercase;
-   	font-size:28px;
-   	font-weight:bold;
+    font-size:28px;
+    font-weight:bold;
 }
 
 #wikitext A.wikinew {

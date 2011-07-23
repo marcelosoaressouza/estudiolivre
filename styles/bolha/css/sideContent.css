@@ -13,12 +13,13 @@
 }
 
 #localMenu ul {
-	text-align:left;
+	text-align: center;
 	list-style-type:none;
 	font-weight:bold;
 }
 
 #localMenu li.selectedAcervo, li.selectedAudio, li.selectedGraf, li.selectedVideo {
+	text-align: center;
 	color:white;
 	background-color:#91cd6d;
 	-moz-border-radius:8px 8px 8px 8px;

@@ -90,7 +90,7 @@ if(isset($_REQUEST['tag']) && $_REQUEST['tag']) {
   foreach($objects['data'] as $object) {
     $arquivo = PersistentObjectFactory::createObject("Publication", (int)$object['itemId']);
 
-    if (isSet($arquivo->type))
+    if(isSet($arquivo->type))
     {
       if(in_array($arquivo->type, $type))
         $files[] = $arquivo;
