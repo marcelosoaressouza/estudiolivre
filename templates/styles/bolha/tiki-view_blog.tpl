@@ -25,15 +25,16 @@
 	{/section}
 	<br />
 
+	{if $cant_pages >= 1}
 	<div class="paginacao">
 		{if $prev_offset >= 0}
 			<a class="prevnext" href="tiki-view_blog.php?find={$find}&amp;blogId={$blogId}&amp;offset={$prev_offset}&amp;sort_mode={$sort_mode}">
 				<img src="styles/{$style|replace:".css":""}/img/iArrowGreyLeft.png">
 			</a>
 		{/if}
-		
+
 		{tr}Page{/tr} {$actual_page} {tr}de{/tr} {$cant_pages}
-		
+
 		{if $next_offset >= 0}
 			<a class="prevnext" href="tiki-view_blog.php?find={$find}&amp;blogId={$blogId}&amp;offset={$next_offset}&amp;sort_mode={$sort_mode}">
 				<img src="styles/{$style|replace:".css":""}/img/iArrowGreyRight.png">
@@ -48,6 +49,8 @@
 			{/section}
 		{/if}
 	</div>
+	{/if}
+
 	{* isso aqui só confunde tudo... (vou tirar e ver no que dá!)
 	<hr>
 	{if $feature_blog_comments == 'y'

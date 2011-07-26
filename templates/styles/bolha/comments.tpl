@@ -1,3 +1,5 @@
+<br/>
+<center>
 {css extra=list}
 {if $forum_mode eq 'y'}
     <tr>
@@ -38,7 +40,7 @@
 					</tr>
 					<tr>
 						<td class="odd">
-							<input type="submit" name="delsel" value="{tr}delete selected{/tr}" />
+							<input type="submit" name="delsel" class="button" value="{tr}delete selected{/tr}" />
 						</td>
 					</tr>
 					<tr>
@@ -51,7 +53,7 @@
 									{/if}
 								{/section}
 							</select>
-							<input type="submit" name="movesel" value="{tr}move{/tr}" />
+							<input type="submit" class="button" name="movesel" value="{tr}move{/tr}" />
 						</td>
 						<td style="text-align:right;" class="odd">
 							{if $reported > 0}
@@ -115,7 +117,7 @@
 				    </td>
 	
 				    <td class="heading">
-				    	<input type="submit" name="comments_setOptions" value="{tr}set{/tr}" />
+				    	<input type="submit" class="button" name="comments_setOptions" value="{tr}set{/tr}" />
 				    </td>
 				    <td class="heading" style="text-align: center; vertical-align: middle">
 				    	<a class="link" href="{$comments_complete_father}comments_threshold={$comments_threshold}&amp;comments_offset={$comments_offset}{$comments_sort_mode_param}&amp;comments_maxComments={$comments_maxComments}&amp;comments_style={$comments_style}&amp;comments_parentId=0">
@@ -185,3 +187,4 @@
 {else}
     </div>
 {/if}
+</center>

@@ -107,10 +107,10 @@
 		{if $postId > 0}
 		<br/>
 			{tr}Upload image for this post{/tr}
-			<br/>
-			<input type="hidden" name="MAX_FILE_SIZE" value="1000000000" />
-			<input name="userfile1" class="blogEdit" type="file" />
 			<br/><br/>
+			<input type="hidden" name="MAX_FILE_SIZE" value="1000000000" />
+			<input name="userfile1" class="button" type="file" />
+			<br/>
 			{if count($post_images) > 0}
 				{tr}Images{/tr}:
 				{section name=ix loop=$post_images}
@@ -122,7 +122,9 @@
 				{/section}
 			{/if}
 		{/if}
-		
+		</div>
+
+		<div class="editblogform" style="text-align: center;">
 		{tr}Mark entry as private:{/tr}
 		<input type="checkbox" name="blogpriv" {if $blogpriv eq 'y'}checked="checked"{/if} />
 

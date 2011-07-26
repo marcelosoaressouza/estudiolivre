@@ -401,7 +401,14 @@ elseif($_REQUEST["comments_reply_threadId"] > 0) {
 
   if(! array_key_exists("title", $comment_info))
   {
-    $comment_info["title"] = $_REQUEST["comments_title"];
+    if(isSet($_REQUEST["comments_title"]))
+    {
+    	$comment_info["title"] = $_REQUEST["comments_title"];
+    }
+    else
+    {
+    	$comment_info["title"] = "";
+    }
   }
 
   $smarty->assign('comment_title', tra('Re:').' '.$comment_info["title"]);

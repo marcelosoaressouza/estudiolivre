@@ -71,8 +71,9 @@
 				{/if}
 		{/if}
 		
-		<h3>{tr}Title{/tr}</h3>
-  		<input type="text" size="40" name="comments_title" id="comments-title" value="{$comment_title|escape}" />
+		<h3>{tr}Title{/tr}</h3><br/>
+  		<input type="text" size="48" name="comments_title" value="{$comment_title|escape}" />
+		<br/>
 
   		{*include file="textareasize.tpl" area_name='editpost2' formId='editpostform'*}
 
@@ -88,8 +89,8 @@
 	   	{else}
 	      	{tr}Comment{/tr}
 	   	{/if}
-	   	</h3>
-  		<textarea id="editpost2" name="comments_data" rows="{$rows}" cols="{$cols}">{$comment_data|escape}</textarea>
+	   	</h3><br/>
+  		<textarea id="editpost2" name="comments_data" rows="{$rows}" cols="{$cols}">{$comment_data|escape}</textarea><br/>
   				
 		<input type="hidden" name="rows" value="{$rows}"/>
 		<input type="hidden" name="cols" value="{$cols}"/>
@@ -99,17 +100,18 @@
 			<input type="hidden" name="MAX_FILE_SIZE" value="{$forum_info.att_max_size|escape}" />
 			<input name="userfile1" type="file" />
 		{/if}
-		<div id="comButtons">
-			<input type="submit" name="comments_previewComment" value="{tr}preview{/tr}"/>
-			<input type="submit" name="comments_postComment" value="{tr}post{/tr}"/>
+<!--		<div id="comButtons"> -->
+		<br/>
+			<input type="submit" name="comments_previewComment" class="button" value="{tr}preview{/tr}"/>
+			<input type="submit" name="comments_postComment" class="button" value="{tr}post{/tr}"/>
 			
 			{if $forum_mode eq 'y'}
 				<input type="button" name="comments_cancelComment" value="{tr}cancel{/tr}" onclick="hide('{$postclass}');"/>
 		    {/if}
-	    </div>
+<!--	    </div> -->
 
     </form>
-
+<br/>
   	{if $forum_mode eq 'y'}
 	  	{tr}Posting replies{/tr}:
   	{else}
