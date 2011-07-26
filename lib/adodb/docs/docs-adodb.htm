@@ -620,7 +620,7 @@ ul
 
 <h2>ADOdb Library for PHP</h2>
 
-<p>V5.11 5 May 2010 (c) 2000-2010 John Lim (jlim#natsoft.com)</p>
+<p>V5.12 30 June 2011 (c) 2000-2011 John Lim (jlim#natsoft.com)</p>
 
 <p><span style='font-size:7.5pt'>This software is dual licensed using BSD-Style
 and LGPL. This means you can use it in compiled proprietary and commercial
@@ -3903,7 +3903,7 @@ security reasons.</p>
 <p><b>raiseErrorFn</b>: Allows you to define an error handling function. See
 adodb-errorhandler.inc.php for an example.</p>
 
-<p><b>debug</b>: Set to <i>true</i> to make debug statements to appear.</p>
+<p><b>debug</b>: Set to <i>true</i> to make debug statements. Set to -99 to only display errors. Set to 99 to display debug statements and add a backtrace.</p>
 
 <p><b>concat_operator</b>: Set to '+' or '||' normally. The operator used to
 concatenate strings in SQL. Used by the <b><a href="#concat">Concat</a></b>
@@ -6135,6 +6135,16 @@ href="http://phplens.com/lens/php-book/optimizing-debugging-php.php">Optimizing
 PHP</a>. </p>
 
 <h2>Change Log<a name=changes></a><a name=changelog></a></h2>
+
+<p><a name=5.12></a><b>5.12 ?? 2011</b> </p>
+<p>Postgres: Added information_schema support for postgresql.
+<p>Postgres: Use pg_unescape_bytea() in _decode.
+<p>Fix bulk binding with oci8. http://phplens.com/lens/lensforum/msgs.php?id=18786
+<p>oci8 perf: added wait evt monitoring. Also db cache advice now handles multiple buffer pools properly.
+<p>sessions2: Fixed setFetchMode problem.
+<p>sqlite: Some DSN connection settings were not parsed correctly.
+<p>mysqli: now GetOne obeys $ADODB_GETONE_EOF;
+<p>memcache: compress option did not work. Fixed. See http://phplens.com/lens/lensforum/msgs.php?id=18899
 <p><a name=5.11></a><b>5.11 5 May 2010</b> </p>
 <p>mysql: Fixed GetOne() to return null if no records returned.
 <p>oci8 perf: added stats on sga, rman, memory usage, and flash in performance tab.

@@ -2,7 +2,7 @@
 
 
 /*
-V5.11 5 May 2010   (c) 2000-2010 John Lim (jlim#natsoft.com). All rights reserved.
+V5.12 30 June 2011   (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
          Contributed by Ross Smith (adodb@netebb.com). 
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
@@ -882,8 +882,8 @@ class ADODB_Session {
 		$savem = $conn->SetFetchMode(ADODB_FETCH_NUM);
 		$sql = "SELECT expireref, sesskey FROM $table WHERE expiry < $time ORDER BY 2"; # add order by to prevent deadlock
 		$rs = $conn->SelectLimit($sql,1000);
-		ADODB_Session::_dumprs($rs);
-		if ($debug) $conn->SetFetchMode($savem);
+		if ($debug) ADODB_Session::_dumprs($rs);
+		$conn->SetFetchMode($savem);
 		if ($rs) {
 			$tr = $conn->hasTransactions;
 			if ($tr) $conn->BeginTrans();
