@@ -38,12 +38,14 @@
 		<div style="border-bottom:1px solid gray;height:1px;margin-top:2px"></div>
 	</div>
 	{/if}
-	
+	<div class="normal_blog">
 	<form enctype="multipart/form-data" name='blogpost' method="post" action="tiki-blog_post.php" id ='editpageform'>
 		<input type="hidden" name="wysiwyg" value="{$wysiwyg|escape}" />
 		<input type="hidden" name="postId" value="{$postId|escape}" />
 		<input type="hidden" name="blogId" value="{$blogId|escape}" />
-		<h3>{tr}Blog{/tr}</h3>
+
+		<div class="editblogform">
+		<h3>{tr}Blog{/tr}</h3><br/>
 		<select name="blogId">
 			{section name=ix loop=$blogs}
 				<option value="{$blogs[ix].blogId|escape}" {if $blogs[ix].blogId eq $blogId}selected="selected"{/if}>
@@ -51,7 +53,8 @@
 				</option>
 			{/section}
 		</select>
-		
+		</div>
+
 		{assign var=area_name value="blogedit"}
 		
 		{if $feature_smileys eq 'y'}
@@ -61,11 +64,14 @@
 	
 		<br/>	
 		{if $blog_data.use_title eq 'y' || !$blogId}
-			<h3>{tr}Title{/tr}</h3>
-			<input class="blogEdit" type="text" size="80" name="title" value="{$title|escape}" />
+		<div class="editblogform"  style="background: #FAA432;">
+			<h3>{tr}Title{/tr}</h3><br/>
+			<input size="64"  type="text" name="title" value="{$title|escape}" />
+		</div>
 		{/if}
 		<br/>
 		
+		<div class="editblogform">
 		<div id="blogeditCont">
 			{if $wysiwyg eq 'n'}
 				{include file=tiki-edit_help.tpl}
@@ -74,9 +80,13 @@
 			{include file=tiki-edit_help_tool.tpl area_name="blogedit"}
 	
 			<textarea id='blogedit' class="blogEdit" name="data" rows="{$rows}" cols="{$cols}" wrap="virtual">{$data|escape}</textarea>
+
 			<input type="hidden" name="rows" value="{$rows}"/>
 			<input type="hidden" name="cols" value="{$cols}"/>
 		</div>
+		</div>
+
+		<div class="editblogform"  style="background: #FAA432;">
 		{if $wysiwyg eq 'y'}
 			<script type="text/javascript" src="lib/htmlarea/htmlarea.js"></script>
 			<script type="text/javascript" src="lib/htmlarea/htmlarea-lang-en.js"></script>
@@ -86,21 +96,14 @@
 			</style>
 			<script defer='defer'>(new HTMLArea(document.forms['blogpost']['data'])).generate();</script>
 		{/if}
-		<br />
 		{if $feature_freetags eq 'y' and $tiki_p_freetags_tag eq 'y'}
 				<br/>
 				{include file=freetag.tpl}
 		{/if}
 
-
-		<div class="blogPostHelp">
-			{tr}Use ...page... to separate pages in a multi-page post{/tr}
-			<br/>
-			{tr}Note: if you want to use images please save the post first and you
-				will be able to edit/post images. Use the &lt;img&gt; snippet to include uploaded images in the textarea editor
-				or use the image URL to include images using the WYSIWYG editor. {/tr}
 		</div>
-		
+
+		<div class="editblogform">
 		{if $postId > 0}
 		<br/>
 			{tr}Upload image for this post{/tr}
@@ -120,7 +123,6 @@
 			{/if}
 		{/if}
 		
-		<br/>
 		{tr}Mark entry as private:{/tr}
 		<input type="checkbox" name="blogpriv" {if $blogpriv eq 'y'}checked="checked"{/if} />
 
@@ -136,13 +138,15 @@
 			{tr}Spellcheck{/tr}:
 				<input type="checkbox" name="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
 		{/if}
-		<br/>
-		<div id="comButtons">
-			<input type="submit" class="wikiaction" name="save" value="{tr}save{/tr}" />
-			<input type="submit" class="wikiaction" name="preview" value="{tr}preview{/tr}" />
-			<input type="submit" class="wikiaction" name="save_exit" value="{tr}save and exit{/tr}" />
 		</div>
+
+		<div class="editblogform">
+		<input type="submit" class="button" name="save" value="{tr}save{/tr}" />
+		<input type="submit" class="button" name="preview" value="{tr}preview{/tr}" />
+		<input type="submit" class="button" name="save_exit" value="{tr}save and exit{/tr}" />
+	</div>
 	</form>
+	</div>
 </div>
 
 

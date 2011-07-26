@@ -40,8 +40,8 @@ IMG {
 
 span.pointer {
 	text-decoration:none;
-	color:grey;
 }
+
 span.pointer:hover {
 	color: black;
 }
@@ -140,4 +140,16 @@ span.hiddenPointer {
 
 .normal_modules {
   max-width: 100%;
+}
+
+.normal_blog {
+  padding: 5px 5px 5px 5px;
+}
+
+.editblogform {
+  margin-top: 8px;
+  padding: 8px 5px 8px 5px;
+  font-weight: bold;
+  text-align: center;
+
 }

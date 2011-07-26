@@ -24,7 +24,8 @@
 		{/if}
 	    {tooltip text="Escreva aqui as tags dessa página (separadas por <b>vírgula</b>)"}<input type="text" id="tagBox" name="freetag_string" value="{$taglist|escape}" size="60" />{/tooltip}<br />
 		{foreach from=$tag_suggestion item=t name=tag_suggest}
-			<span onclick="addTag(this)" class="pointer">{$t}</span><span id="{$t}-v"{if $smarty.foreach.tag_suggest.last} style="display:none"{/if}>,</span>
+			<span onclick="addTag(this)" class="pointer">{$t}</span><span id="{$t}-v"{if $smarty.foreach.tag_suggest.last} style="display:none"{/if}>, </span>
+
 		{/foreach}
 	</div>
 {/if}

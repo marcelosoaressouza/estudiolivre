@@ -20,8 +20,8 @@ or use the image URL to include images using the WYSIWYG editor. {/tr}</small></
 <input type="hidden" name="wysiwyg" value="{$wysiwyg|escape}" />
 <input type="hidden" name="postId" value="{$postId|escape}" />
 <input type="hidden" name="blogId" value="{$blogId|escape}" />
-<table class="normal">
-<tr><td class="editblogform">{tr}Blog{/tr}</td><td class="editblogform">
+<table class="normal_blog">
+<tr class="editblogform"><td class="editblogform">{tr}Blog{/tr}</td><td class="editblogform">
 <select name="blogId">
 {section name=ix loop=$blogs}
 <option value="{$blogs[ix].blogId|escape}" {if $blogs[ix].blogId eq $blogId}selected="selected"{/if}>{$blogs[ix].title}</option>
