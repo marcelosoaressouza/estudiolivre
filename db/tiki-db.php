@@ -1,16 +1,10 @@
 <?php
 
-//this script may only be included - so its better to die if called directly.
 if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   header("location: index.php");
   exit;
 }
 
-//$api_tiki        = 'pear';
-
-// Please use the local.php file instead containing these variables
-// If you set sessions to store in the database, you will need a local.php file
-// Otherwise you will be ok.
 $api_tiki       = 'adodb';
 $db_tiki     = 'mysql';
 $dbversion_tiki = '1.9';
@@ -19,40 +13,6 @@ $user_tiki   = 'root';
 $pass_tiki   = '';
 $dbs_tiki    = 'tiki';
 $tikidomain  = '';
-
-/*
-CVS Developers: Do not change any of the above.
-Instead, create a file, called db/local.php, containing any of
-the variables listed above that are different for your
-development environment.  This will protect you from
-accidentally committing your username/password to CVS!
-
-example of db/local.php
-<?php
-$host_tiki   = 'myhost';
-$user_tiki   = 'myuser';
-$pass_tiki   = 'mypass';
-$dbs_tiki    = 'mytiki';
-?>
-
-** Multi-tiki
-**************************************
-see http://tikiwiki.org/MultiTiki19
-
-Setup of virtual tikis is done using setup.sh script
------------------------------------------------------------
--> Multi-tiki trick for virtualhosting
-
-$tikidomain variable is set to :
-or TIKI_VIRTUAL
-    That is set in apache virtual conf : SetEnv TIKI_VIRTUAL myvirtual
-or SERVER_NAME
-    From apache directive ServerName set for that virtualhost block
-or HTTP_HOST
-    From the real domain name called in the browser
-    (can be ServerAlias from apache conf)
-
-*/
 
 if(!isset($local_php) or !is_file($local_php)) {
   $local_php = 'local.php';
@@ -99,22 +59,16 @@ if(preg_match('/^adodb$/i', $api_tiki)) {
   define('ADODB_CASE_ASSOC', 2); // typo in adodb's driver for sybase?
   include_once('adodb.inc.php');
   include_once('adodb-pear.inc.php');
-  //include_once('adodb-error.inc.php');
-  //include_once('adodb-errorhandler.inc.php');
-  //include_once('adodb-errorpear.inc.php');
 
   if($db_tiki == 'pgsql') {
     $db_tiki = 'postgres7';
   }
 
   if($db_tiki == 'sybase') {
-    // avoid database change messages
     ini_set('sybct.min_server_severity', '11');
   }
 
   $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-
-// ADODB_FETCH_BOTH appears to be buggy for null values
 }
 
 else {
@@ -122,35 +76,19 @@ else {
   include_once('DB.php');
 }
 
-//doesn't work with adodb. adodb doesn't let you inherit
-/*
-class tikiDB extends ADOConnection {
-  var $dbversion;
-}
-*/
 $dsn = "$db_tiki://$user_tiki:$pass_tiki@$host_tiki/$dbs_tiki";
-//$dsn = "mysql://$user_tiki@$pass_tiki(localhost)/$dbs_tiki";
 $dbTiki = &ADONewConnection($db_tiki);
+$dbTiki->memCache = true;
+$dbTiki->memCacheHost = array("127.0.0.1");
+$dbTiki->memCachePort = 11211;
+$dbTiki->memCacheCompress = false;
 
-if(!@$dbTiki->Connect($host_tiki, $user_tiki, $pass_tiki, $dbs_tiki)) {
-  print "
-  <html><body>
-  <center><img src=\"styles/bolha/img/logoTop.png\">
-  <h2>Estamos em manuten&ccedil;&atilde;o</h2>
-  <h3>Volte mais tarde</h3></center>
-  <!--
-  <h1><font color='red'>Unable to connect to the database !</font></h1>
-  ";
-  print $dbTiki->ErrorMsg() . "-->";
+$conn = $dbTiki->Connect($host_tiki, $user_tiki, $pass_tiki, $dbs_tiki);
+
+if(!$conn) {
+  echo "<html><body><center><img src=\"styles/bolha/img/logoTop.png\"><h2>Estamos em manuten&ccedil;&atilde;o</h2><h3>Volte mais tarde</h3></center><br/>";
   exit;
 }
-
-if($db_tiki == 'sybase') {
-  $dbTiki->Execute("set quoted_identifier on");
-}
-
-// set db version
-//$dbTiki->dbversion=$dbversion_tiki;
 
 // Forget db info so that malicious PHP may not get password etc.
 $host_tiki = NULL;
@@ -165,6 +103,5 @@ unset($host_tiki);
 unset($user_tiki);
 unset($pass_tiki);
 unset($dbs_tiki);
-
 
 ?>

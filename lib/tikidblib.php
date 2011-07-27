@@ -43,10 +43,10 @@ class TikiDB {
     $this->convert_query($query);
 
     if($numrows == -1 && $offset == -1)
-      $result = $this->db->Execute($query, $values);
+      $result = $this->db->CacheExecute($query, $values);
 
     else
-      $result = $this->db->SelectLimit($query, $numrows, $offset, $values);
+      $result = $this->db->CacheSelectLimit($query, $numrows, $offset, $values);
 
     if(!$result)
     {
@@ -75,10 +75,10 @@ class TikiDB {
     //print_r($values);
     //echo "\n";
     if($numrows == -1 && $offset == -1)
-      $result = $this->db->Execute($query, $values);
+      $result = $this->db->CacheExecute($query, $values);
 
     else
-      $result = $this->db->SelectLimit($query, $numrows, $offset, $values);
+      $result = $this->db->CacheSelectLimit($query, $numrows, $offset, $values);
 
     //print_r($result);
     //echo "\n</pre>\n";
@@ -106,7 +106,7 @@ class TikiDB {
     //echo "query: $query \n";
     //print_r($values);
     //echo "\n";
-    $result = $this->db->SelectLimit($query, 1, $offset, $values);
+    $result = $this->db->CacheSelectLimit($query, 1, $offset, $values);
 
     //echo "\n</pre>\n";
     if(!$result) {
