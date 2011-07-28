@@ -5,7 +5,7 @@
   <div id="topContainer">
   	{* Logo TESTE *}
     {if $showTeste}
-  	 <a href="http://dev.estudiolivre.org/tiki-view_tracker.php?status=o&trackerId=13&offset=0&sort_mode=created_desc">
+  	 <a href="http://estudiolivre.org/tiki-view_tracker.php?status=o&trackerId=13&offset=0&sort_mode=created_desc">
   	  {tooltip text="Clique aqui e <b>relate os bugs</b> encontrados! Ajude-nos a <b>melhorar</b> o EstúdioLivre!!!"}<img alt="faixaTeste" src="styles/{$style|replace:".css":""}/img/faixaTeste.{if $isIE}gif{else}png{/if}" style="position:absolute; top:-25px; left:0px; z-index:5"/>{/tooltip}
   	 </a>
     {/if}

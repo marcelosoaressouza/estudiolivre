@@ -32,9 +32,9 @@ class TikiDB {
     }
   }
 
-// Queries the database, *returning* an error if one occurs, rather
-// than exiting while printing the error.
-// -rlpowell
+  // Queries the database, *returning* an error if one occurs, rather
+  // than exiting while printing the error.
+  // -rlpowell
   function queryError($query, &$error, $values = null, $numrows = -1,
                       $offset = -1)
   {
@@ -44,7 +44,6 @@ class TikiDB {
 
     if($numrows == -1 && $offset == -1)
       $result = $this->db->CacheExecute($query, $values);
-
     else
       $result = $this->db->CacheSelectLimit($query, $numrows, $offset, $values);
 
@@ -57,31 +56,41 @@ class TikiDB {
     //count the number of queries made
     global $num_queries;
     $num_queries++;
-    //$this->debugger_log($query, $values);
+
     return $result;
   }
 
-// Queries the database reporting an error if detected
-//
   function query($query, $values = null, $numrows = -1,
-                 $offset = -1, $reporterrors = true)
+                 $offset = -1, $reporterrors = true, $cached = true)
   {
     $numrows = intval($numrows);
     $offset = intval($offset);
     $this->convert_query($query);
 
-    //echo "query: $query <br />";
-    //echo "<pre>";
-    //print_r($values);
-    //echo "\n";
-    if($numrows == -1 && $offset == -1)
-      $result = $this->db->CacheExecute($query, $values);
-
+    if ($cached == false)
+    {
+	$cacheTime = 0;
+    }
     else
-      $result = $this->db->CacheSelectLimit($query, $numrows, $offset, $values);
+    {
+	$cacheTime = 3600;
+    }
 
-    //print_r($result);
-    //echo "\n</pre>\n";
+    if($numrows == -1 && $offset == -1)
+    {
+      $result = $this->db->CacheExecute($cacheTime, $query, $values);
+    }
+    else
+    {
+      $result = $this->db->CacheSelectLimit($cacheTime, $query, $numrows, $offset, $values);
+    }
+
+    // Caso a query seja INSERT ou UPDATE faz um Flush no memcached
+    if (preg_match("/insert/", strtolower($query)) || preg_match("/update/", strtolower($query)))
+    {
+      $flush_result = $this->db->CacheFlush($query, $values);
+    }
+
     if(!$result)
     {
       if($reporterrors)
@@ -90,11 +99,10 @@ class TikiDB {
       }
     }
 
-
     //count the number of queries made
     global $num_queries;
     $num_queries++;
-    //$this->debugger_log($query, $values);
+
     return $result;
   }
 
@@ -102,13 +110,12 @@ class TikiDB {
   function getOne($query, $values = null, $reporterrors = true, $offset = 0) {
     $this->convert_query($query);
 
-    //echo "<pre>";
-    //echo "query: $query \n";
-    //print_r($values);
-    //echo "\n";
-    $result = $this->db->CacheSelectLimit($query, 1, $offset, $values);
+    if(preg_match("/tags/", $query))
+      $result = $this->db->CacheSelectLimit(0, $query, 1, $offset, $values);
 
-    //echo "\n</pre>\n";
+    else
+      $result = $this->db->CacheSelectLimit($query, 1, $offset, $values);
+
     if(!$result) {
       if($reporterrors) {
         $this->sql_error($query, $values, $result);
@@ -134,13 +141,10 @@ class TikiDB {
   }
 
 
-// Reports SQL error from PEAR::db object.
+  // Reports SQL error from PEAR::db object.
   function sql_error($query, $values, $result) {
     global $ADODB_LASTDB, $smarty;
 
-    // only for debugging.
-    //trigger_error($ADODB_LASTDB . " error:  " . $this->db->ErrorMsg(). " in query:<br /><pre>\n" . $query . "\n</pre><br />", E_USER_WARNING);
-    //trigger_error($ADODB_LASTDB . " error:  " . $this->db->ErrorMsg(). " in query:<br />" . $query . "<br />", E_USER_WARNING);
     $outp = "<div class='simplebox'><b>".tra("An error occured in a database query!")."</b></div>";
     $outp.= "<br /><table class='form'>";
     $outp.= "<tr class='heading'><td colspan='2'>Context:</td></tr>";
@@ -154,9 +158,6 @@ class TikiDB {
     }
     $outp.= "<tr class='heading'><td colspan='2'>Message:</td></tr><tr class='formcolor'><td>Error Message</td><td>".$this->db->ErrorMsg()."</td></tr>\n";
     $outp.= "</table>";
-    //if($result===false) echo "<br>\$result is false";
-    //if($result===null) echo "<br>\$result is null";
-    //if(empty($result)) echo "<br>\$result is empty";
     require_once('tiki-setup.php');
 
     if($smarty) {
@@ -168,10 +169,6 @@ class TikiDB {
       echo $outp;
     }
 
-    // -- debugging stuff: after php 5.1.1 will disclose db user and password
-    // echo "<pre>";
-    // var_dump(debug_backtrace());
-    // echo "</pre>";
     die;
   }
 

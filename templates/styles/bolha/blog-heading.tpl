@@ -1,11 +1,13 @@
 {css extra=list}
 <div id="blogHead">
 	<h1 onmouseover="tooltip('<b>{tr}Blog{/tr} {tr}Created by{/tr}:</b> {$creator} <br><b>{tr} on {/tr}:</b> {$created|date_format:"%H:%M - %d/%m/%y"}')" onmouseout="nd();">
-		{tr}Blog{/tr}: <a href="tiki-view_blog.php?blogId={$id}">{$title}</a>
+		{tr}Blog{/tr}: <a href="tiki-view_blog.php?blogId={$blogId}">{$title}</a>
 	</h1>
 	{if $printingPost}
 			{*TODO: mudar pra uma variável ao invés de estudiolivre.org!!!... *}
-			<h4><a href="http://www.estudiolivre.org/tiki-view_blog_post.php?blogId={$blogId}&amp;postId={$postId}">http://www.estudiolivre.org/tiki-view_blog_post.php?blogId={$blogId}&amp;postId={$postId}</a></h4>
+			<h4><a href="tiki-view_blog_post.php?blogId={$blogId}&amp;postId={$postId}">
+			tiki-view_blog_post.php?blogId={$blogId}&amp;postId={$postId}</a>
+			</h4>
 	{/if}
 	{if !$nameOnly}
 		<div id="desc">

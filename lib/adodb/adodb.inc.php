@@ -1695,33 +1695,27 @@
 		}
 		return $rs;
 	}
-	
-	
+
 	/**
-	* Flush cached recordsets that match a particular $sql statement. 
-	* If $sql == false, then we purge all files in the cache.
- 	*/
-	
-	/**
-   * Flush cached recordsets that match a particular $sql statement. 
-   * If $sql == false, then we purge all files in the cache.
-    */
+         * Flush cached recordsets that match a particular $sql statement. 
+         * If $sql == false, then we purge all files in the cache.
+        */
 	function CacheFlush($sql=false,$inputarr=false)
 	{
 	global $ADODB_CACHE_DIR, $ADODB_CACHE;
-		
+
 		if (empty($ADODB_CACHE)) return false;
-		
+
 		if (!$sql) {
 			 $ADODB_CACHE->flushall($this->debug);
-	         return;
-	    }
-		
+	        	 return;
+	    	}
+
 		$f = $this->_gencachename($sql.serialize($inputarr),false);
+
 		return $ADODB_CACHE->flushcache($f, $this->debug);
 	}
-   
-	
+
 	/**
 	* Private function to generate filename for caching.
 	* Filename is generated based on:

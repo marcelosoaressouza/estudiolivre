@@ -348,7 +348,7 @@ class FreetagLib extends ObjectLib {
     $query      .= $query_end;
     $query_cant .= $query_end;
 
-    $result = $this->query($query, $bindvals, $maxRecords, $offset);
+    $result = $this->query($query, $bindvals, $maxRecords, $offset, true, false);
 
     $ret = array();
 
