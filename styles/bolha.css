@@ -153,3 +153,8 @@ span.hiddenPointer {
   text-align: center;
 
 }
+
+.blogTitle {
+  font-weight: bold;
+  max-width: 250px;
+}

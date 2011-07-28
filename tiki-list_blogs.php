@@ -109,6 +109,7 @@ else {
 $smarty->assign('find', $find);
 
 // Get a list of last changes to the Wiki database
+$maxRecords = 20;
 $listpages = $tikilib->list_blogs($offset, $maxRecords, $sort_mode, $find);
 
 $temp_max = count($listpages["data"]);
@@ -116,7 +117,6 @@ $temp_max = count($listpages["data"]);
 for($i = 0; $i < $temp_max; $i++) {
   if($userlib->object_has_one_permission($listpages["data"][$i]["blogId"], 'blog')) {
     $listpages["data"][$i]["individual"] = 'y';
-
     // blogs that user cannot read are not displayed at all
     $listpages["data"][$i]["individual_tiki_p_read_blog"] = 'y';
 

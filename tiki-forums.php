@@ -56,6 +56,7 @@ else {
 $smarty->assign('find', $find);
 
 $smarty->assign_by_ref('sort_mode', $sort_mode);
+$maxRecords = 20;
 $channels = $commentslib->list_forums($offset, $maxRecords, $sort_mode, $find);
 
 $temp_max = count($channels["data"]);

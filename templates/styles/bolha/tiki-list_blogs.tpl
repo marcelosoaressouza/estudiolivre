@@ -40,12 +40,6 @@
 					</a>{tr}User{/tr}
 				</td>
 			{/if}
-			
-			{*if $blog_list_description eq 'y'}
-				<td class="heading">
-					{tr}Description{/tr}
-				</td>
-			{/if*}
 	
 			{if $blog_list_created eq 'y'}
 				<td class="heading">
@@ -96,8 +90,8 @@
 		{section name=changes loop=$listpages}
 			<tr class={cycle}>
 				{if $blog_list_title eq 'y'}
-					<td>
-						{tooltip text="<b>Descrição: </b>"|cat:$listpages[changes].description|regex_replace:"/[\r\t\n]/":" "}
+					<td class="blogTitle">
+						{tooltip text="<b>Descrição: </b>"|cat:$listpages[changes].title|regex_replace:"/[\r\t\n]/":" "}
 						{if ($tiki_p_admin eq 'y') or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_tiki_p_read_blog eq 'y' ) }
 
 							<a class="blogname" href="tiki-view_blog.php?blogId={$listpages[changes].blogId}">
@@ -131,11 +125,6 @@
 					{/if}
 				{/if}
 				
-				{*if $blog_list_description eq 'y'}
-					<td>
-						{$listpages[changes].description}
-					</td>
-				{/if*}
 		
 				{if $blog_list_created eq 'y'}
 					<td>
