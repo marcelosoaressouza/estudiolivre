@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/tikiwiki/tiki/templates/confirm.tpl,v 1.3.2.4 2006/02/22 02:20:21 luciash Exp $ *}
+<center>
         <div class="cbox">
         <br />
         <div class="cbox-data">

@@ -106,7 +106,6 @@ span.hiddenPointer {
   width: 75px;
   boder:1px solid;
 }
-
 .heading {
   text-transform: capitalize;
   text-align: center;
@@ -134,7 +133,7 @@ span.hiddenPointer {
 	font-weight: bold;
         border:1px solid;
         background-color: #fff;
-	padding: 1px 4px 1px 4px;
+	padding: 3px 8px 3px 8px;
 }
 
 
@@ -143,7 +142,7 @@ span.hiddenPointer {
 }
 
 .normal_blog {
-  padding: 5px 5px 5px 5px;
+  padding: 3px 5px 3px 5px;
 }
 
 .editblogform {
@@ -157,4 +156,36 @@ span.hiddenPointer {
 .blogTitle {
   font-weight: bold;
   max-width: 250px;
+}
+
+
+.tagBox {
+	float: left;
+	margin: 10px 5px 10px 5px;
+	width: 95%;
+	font-weight: bold;
+}
+
+.wikiEdit {
+  text-align: center;
+}
+
+#label{
+  margin: 0px 0px 0px 5px;
+  text-align: center;
+ 
+}
+
+.wikiEdit img, .quicktagsbar img{
+  padding: 2px 2px 2px 2px;
+}
+
+.wikiEdit a:hover img, .quicktagsbar a:hover img{
+  background: #FFDBAD;
+  border:1px solid;
+}
+
+.quicktagsbar {
+  padding: 5px 5px 5px 5px;
+
 }

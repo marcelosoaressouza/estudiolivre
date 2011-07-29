@@ -49,7 +49,7 @@
 				{/if}
 			{/if}
 		</h4>
-		<div id="edit">
+		<div id="edit" style="padding: 4px 4px 4px 4px;">
 				{if $tiki_p_blog_post eq "y"}
 					{if ($user and $creator eq $user) or $tiki_p_blog_admin eq "y" or $public eq "y"}
 						<a class="bloglink" href="tiki-blog_post.php?blogId={$blogId}">

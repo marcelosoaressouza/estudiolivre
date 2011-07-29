@@ -12,6 +12,7 @@
 			{tr}Edit Post{/tr}
 		{/if}
 	</h2>
+
 	{if $preview eq 'y'}
 	<div id="blogPostPrev">
 		<h3>
@@ -38,8 +39,9 @@
 		<div style="border-bottom:1px solid gray;height:1px;margin-top:2px"></div>
 	</div>
 	{/if}
+
 	<div class="normal_blog">
-	<form enctype="multipart/form-data" name='blogpost' method="post" action="tiki-blog_post.php" id ='editpageform'>
+	<form enctype="multipart/form-data" name='blogpost' method="post" action="tiki-blog_post.php" id='editpageform'>
 		<input type="hidden" name="wysiwyg" value="{$wysiwyg|escape}" />
 		<input type="hidden" name="postId" value="{$postId|escape}" />
 		<input type="hidden" name="blogId" value="{$blogId|escape}" />

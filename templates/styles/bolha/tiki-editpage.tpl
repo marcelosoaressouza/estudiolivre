@@ -64,10 +64,10 @@
 			{assign var='rows' value=$smarty.cookies.editwikiRows} {if !$rows}{assign var='rows' value=40}{/if}
 			
 			<textarea id='editwiki' class="wikiedit" name="edit" rows="{$rows}">{$pagedata|escape}</textarea>
-			
 			{if $feature_freetags eq 'y' and $tiki_p_freetags_tag eq 'y'}
-				<br/>
-				{include file=freetag.tpl}
+			<div class="tagBox">
+			{include file=freetag.tpl}
+			</div>
 			{/if}
 			
 			<div id="wikiEditExtra">
@@ -351,16 +351,10 @@
 						</div>
 					{/if}
 
-					{*ISSO NAO FUNCIONA!...
-					<div id="save-exit" class="aSaveCancel" style="z-index: 10;">
-					  {tooltip text="Salve as modificações que acaba de fazer"}<img name="save" src="styles/{$style|replace:".css":""}/img/bSave.png" onClick="document.forms.namedItem('form-edit-wiki').submit()" style="cursor: pointer">{/tooltip}&nbsp;&nbsp;&nbsp;
-					  {tooltip text="Cancele as modificações que acaba de fazer"}<img name="cancel_edit" src="styles/{$style|replace:".css":""}/img/bCancelar.png" onClick="document.forms.namedItem('form-edit-wiki').submit()" style="cursor: pointer">{/tooltip}
-					</div>
-					*}
 					<div id="edtSaveCancel">
-					<input class="image" name="save" src="styles/{$style|replace:".css":""}/img/bSave.png" type="image" value="{tr}save{/tr}" /> &nbsp;&nbsp;
+					<input class="button" name="save" type="submit" value="{tr}save{/tr}" /> &nbsp;&nbsp;
 					{if $page|lower ne 'sandbox'}
-						<input class="image" name="cancel_edit" src="styles/{$style|replace:".css":""}/img/bCancelar.png" type="image" value="{tr}cancel edit{/tr}"  onclick="cancelar=1"/>
+						<input class="button" name="cancel_edit" type="submit" value="{tr}cancel{/tr}" onclick="cancelar=1"/>
 					{/if}
 					</div>
 				{/if}
@@ -370,12 +364,9 @@
 	</div>
 </form>
 
-<div id="precisaComentar" class="none" style="width:200px;padding:5px">
+          <div id="precisaComentar" class="none" style="width:200px; padding:3px;">
   		{tr}É <b>recomendável</b> comentar as modificações realizadas. Assim todos podem saber qual modificação foi feita na página.{/tr}
-  		<br/>
-  		<br>
   		{tr}Faça o comentário no campo abaixo{/tr}:
-  		<br/>
 		<input class="wikitext" id="lightComment" type="text" name="lightComment" value="" {if $useJavascript eq "y"}onkeydown="lightBoxKey(event){/if}"/>
 		<div id="edtSaveCancel">
 			<img src="styles/{$style|replace:".css":""}/img/bSave.png" value="{tr}save{/tr}" onclick="comment()"/>

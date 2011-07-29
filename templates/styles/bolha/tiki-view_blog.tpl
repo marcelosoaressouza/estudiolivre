@@ -8,18 +8,6 @@
 	
 	{include file="blog-heading.tpl"}
 	
-	{*this too!
-	 if $use_find eq 'y'}
-		<div class="blogtools">
-			<form action="tiki-view_blog.php" method="get">
-			<input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
-			<input type="hidden" name="blogId" value="{$blogId|escape}" />
-			{tr}Find:{/tr}
-			 <input type="text" name="find" /> <input type="submit" name="search" value="{tr}find{/tr}" />
-			</form>
-		</div>
-	{/if *}
-	
 	{section name=ix loop=$listpages}
 		{include file="tiki-view_blog_post_item.tpl" post=$listpages[ix] text=$listpages[ix].parsed_data}
 	{/section}
