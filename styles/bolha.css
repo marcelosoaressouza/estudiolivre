@@ -11,8 +11,12 @@ body {
 	font-family: arial,verdana,helvetica,lucida,sans-serif;
 	font-size:12px;
 	background-image:url(./bolha/img/bgShadow.png);
+        background-position: fixed;
+	background-repeat:repeat-y;
+/*
 	background-repeat:repeat-y;
 	background-position: center;
+*/
 }
 
 a{color:#808080;}
@@ -31,6 +35,9 @@ IMG {
 	background-color:#FFF;
 	padding:0;
 	padding-top:21px;
+	background-image:url(./bolha/img/bgOlhos.png);
+        background-position: right top;
+	background-repeat: no-repeat;
 }
 
 /* para fazer links 'falsos'*/
