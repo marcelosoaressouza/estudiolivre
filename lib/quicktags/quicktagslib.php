@@ -103,7 +103,7 @@ class QuickTagsLib extends TikiLib {
       $handle = opendir($path);
 
       while($file = readdir($handle)) {
-        if(((strtolower(substr($file, -4, 4)) == ".gif") or(strtolower(substr($file, -4, 4)) == ".png")) and(ereg("^[-_a-zA-Z0-9\.]*$", $file))) {
+        if(((strtolower(substr($file, -4, 4)) == ".gif") or(strtolower(substr($file, -4, 4)) == ".png")) and(preg_match("/^[-_a-zA-Z0-9\.]*$/i", $file))) {
           $back[] = $path.'/'.$file;
         }
       }

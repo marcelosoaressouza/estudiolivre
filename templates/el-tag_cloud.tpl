@@ -8,18 +8,20 @@
 		{/if}
 	</h1>
 	
-	<h5>
+<center>
+<h5>
 		<span class="pointer" onclick="javascript:flip('tagOptions');toggleImage(document.getElementById('TArrowTag'),'iArrowGreyDown.png');">
 			Especificar... {$module_title}<img id="TArrowTag"  src="styles/{$style|replace:".css":""}/img/iArrowGreyLeft.png">
 		</span>
 		<div id="tagOptions" style="display: none;">
 			<form method="get" action="el-tag_cloud.php">
 				Usuário: <br>
-				<input name="tagsForUser" size="16" value="" class="input" type="text"><br>
+				 <input name="tagsForUser" size="16" value="" class="input" type="text"><br>
         			 <input value="buscar" type="submit" class="button">
 		    </form>
 		</div>
 	</h5>
+
 	<span>
 	{foreach from=$popularTags item=tag}
 		<a href="tiki-browse_freetags.php?tag={$tag.tag}" style="font-size:{$tag.size+6}pt">{$tag.tag}</a>&nbsp;&nbsp;
@@ -32,4 +34,6 @@
 			<a href="el-tag_cloud.php">Ver tags de todos</a>
 		</h5>
 	{/if}
+</center>
+
 </div>
