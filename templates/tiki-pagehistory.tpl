@@ -1,8 +1,11 @@
 {* $Header: /cvsroot/tikiwiki/tiki/templates/tiki-pagehistory.tpl,v 1.14.2.15 2005/03/03 13:41:54 sylvieg Exp $ *}
+<center>
+<h1><a class="pagetitle" href="tiki-pagehistory.php?page={$page|escape:"url"}{if $preview}&amp;preview={$preview}{elseif $source}&amp;source={$source}{elseif $diff_style}&amp;compare=1&amp;oldver={$old.version}&amp;newver={$new.version}&amp;diff_style={$diff_style}{/if}" title="{tr}history{/tr}"></a></h1>
 
-<h1><a class="pagetitle" href="tiki-pagehistory.php?page={$page|escape:"url"}{if $preview}&amp;preview={$preview}{elseif $source}&amp;source={$source}{elseif $diff_style}&amp;compare=1&amp;oldver={$old.version}&amp;newver={$new.version}&amp;diff_style={$diff_style}{/if}" title="{tr}history{/tr}">{tr}History{/tr}: {$page}</a></h1>
-
-<div class="navbar"><a href="tiki-index.php?page={$page|escape:url}" class="linkbut" title="{tr}view{/tr}">{tr}View page{/tr}</a></div>
+<h1>
+{tr}History{/tr}<br/> <div class="warning"> {$page} </div>
+</h1>
+<div class="navbar"><b><a href="tiki-index.php?page={$page|escape:url}" class="linkbut" title="{tr}view{/tr}">{tr}View page{/tr}</a></b></div>
 
 {if $preview}
 <h2>{tr}Preview of version{/tr}: {$preview}
@@ -105,7 +108,13 @@
 <form action="tiki-pagehistory.php" method="post">
 <input type="hidden" name="page" value="{$page|escape}" />
 <div style="text-align:center;">
-<div class="simplebox"><b>{tr}Legend:{/tr}</b> {tr}v=view{/tr}, {tr}s=source{/tr}{if $default_wiki_diff_style eq "old"}, {tr}c=compare{/tr}, {tr}d=diff{/tr}{/if}{if $tiki_p_rollback eq 'y'}, {tr}b=rollback{/tr}{/if}</div>
+<div class="simplebox"><b>{tr}Legend:{/tr}</b>
+<b style="color:red">     {tr}v - view{/tr}</b>,
+<b style="color:green">   {tr}s - source{/tr}{if $default_wiki_diff_style eq "old"}</b>,
+<b style="color:blue">    {tr}c - compare{/tr}</b>,
+<b style="color:#F4C300"> {tr}d - diff{/tr}{/if}</b>
+{if $tiki_p_rollback eq 'y'},<b style="color:"#F48E00">{tr}b - rollback{/tr}</b>{/if}
+</div>
 {if $default_wiki_diff_style ne "old"}
 <div style=" text-align:right;"><select name="diff_style">
 	<option value="minsidediff" {if $diff_style == "minsidediff"}selected="selected"{/if}>{tr}Side-by-side diff{/tr}</option>
@@ -115,10 +124,10 @@
 </select>
 </div>
 {/if}
-
-<table border="1" cellpadding="2" cellspacing="0">
+<br/>
+<table class="pagehistory">
 <tr>
-{if $tiki_p_remove eq 'y'}<th class="heading"><input type="submit" name="delete" value="{tr}del{/tr}" /></th>{/if}
+{if $tiki_p_remove eq 'y'}<th class="heading"><input type="submit" name="delete" class="button" value="{tr}del{/tr}" /></th>{/if}
 <th class="heading">{tr}Date{/tr}</th>
 <th class="heading">{tr}User{/tr}</th>
 {if $feature_wiki_history_ip ne 'n'}<th class="heading">{tr}Ip{/tr}</th>{/if}
@@ -186,3 +195,4 @@
 </div>
 </form>
 {/if}
+</center>

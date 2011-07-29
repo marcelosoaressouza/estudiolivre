@@ -199,3 +199,18 @@ span.hiddenPointer {
         opacity:0.5;
 }
 
+
+.pagehistory {
+  text-align: center;
+  border:1px solid;
+  width: 79%;
+}
+
+.pagehistory th {
+  background: #FAA432;
+}
+
+.pagehistory td {
+  border:1px solid;
+
+}
