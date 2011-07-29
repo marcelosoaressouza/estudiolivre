@@ -4,7 +4,6 @@
 		{tr}Blog{/tr}: <a href="tiki-view_blog.php?blogId={$blogId}">{$title}</a>
 	</h1>
 	{if $printingPost}
-			{*TODO: mudar pra uma variável ao invés de estudiolivre.org!!!... *}
 			<h4><a href="tiki-view_blog_post.php?blogId={$blogId}&amp;postId={$postId}">
 			tiki-view_blog_post.php?blogId={$blogId}&amp;postId={$postId}</a>
 			</h4>

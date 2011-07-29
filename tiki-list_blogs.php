@@ -29,22 +29,6 @@ if($tiki_p_read_blog != 'y') {
   die;
 }
 
-/*
-if($feature_listPages != 'y') {
-  $smarty->assign('msg',tra("This feature is disabled"));
-  $smarty->display("error.tpl");
-  die;
-}
-*/
-
-/*
-// Now check permissions to access this page
-if($tiki_p_view != 'y') {
-  $smarty->assign('msg',tra("Permission denied you cannot view pages"));
-  $smarty->display("error.tpl");
-  die;
-}
-*/
 if(isset($_REQUEST["remove"])) {
 
   // Check if it is the owner

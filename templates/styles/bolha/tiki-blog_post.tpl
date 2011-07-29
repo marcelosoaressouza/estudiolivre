@@ -64,7 +64,7 @@
 	
 		<br/>	
 		{if $blog_data.use_title eq 'y' || !$blogId}
-		<div class="editblogform"  style="background: #FAA432;">
+		<div class="editblogform"  style="background: #FAA432; border:1px solid;">
 			<h3>{tr}Title{/tr}</h3><br/>
 			<input size="64"  type="text" name="title" value="{$title|escape}" />
 		</div>
@@ -86,7 +86,7 @@
 		</div>
 		</div>
 
-		<div class="editblogform"  style="background: #FAA432;">
+		<div class="editblogform"  style="background: #FAA432; border: 1px solid;">
 		{if $wysiwyg eq 'y'}
 			<script type="text/javascript" src="lib/htmlarea/htmlarea.js"></script>
 			<script type="text/javascript" src="lib/htmlarea/htmlarea-lang-en.js"></script>

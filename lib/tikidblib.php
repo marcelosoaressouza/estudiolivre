@@ -67,29 +67,36 @@ class TikiDB {
     $offset = intval($offset);
     $this->convert_query($query);
 
+    $cacheTime = 30; // 30 secs :)
+
+    if (preg_match("/(insert|update|delete)/", strtolower($query)))
+    {
+	$cached = false;
+    }
+
     if ($cached == false)
     {
-	$cacheTime = 0;
+	    if($numrows == -1 && $offset == -1)
+	    {
+	      $result = $this->db->Execute($query, $values);
+	    }
+	    else
+	    {
+	      $result = $this->db->SelectLimit($query, $numrows, $offset, $values);
+	    }
     }
     else
     {
-	$cacheTime = 3600;
+	    if($numrows == -1 && $offset == -1)
+	    {
+	      $result = $this->db->CacheExecute($cacheTime, $query, $values);
+	    }
+	    else
+	    {
+	      $result = $this->db->CacheSelectLimit($cacheTime, $query, $numrows, $offset, $values);
+	    }
     }
 
-    if($numrows == -1 && $offset == -1)
-    {
-      $result = $this->db->CacheExecute($cacheTime, $query, $values);
-    }
-    else
-    {
-      $result = $this->db->CacheSelectLimit($cacheTime, $query, $numrows, $offset, $values);
-    }
-
-    // Caso a query seja INSERT ou UPDATE faz um Flush no memcached
-    if (preg_match("/insert/", strtolower($query)) || preg_match("/update/", strtolower($query)))
-    {
-      $flush_result = $this->db->CacheFlush($query, $values);
-    }
 
     if(!$result)
     {
