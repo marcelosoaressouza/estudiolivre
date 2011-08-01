@@ -44,6 +44,7 @@ class TikiDB {
 
     if($numrows == -1 && $offset == -1)
       $result = $this->db->CacheExecute($query, $values);
+
     else
       $result = $this->db->CacheSelectLimit($query, $numrows, $offset, $values);
 
@@ -69,32 +70,35 @@ class TikiDB {
 
     $cacheTime = 30; // 30 secs :)
 
-    if (preg_match("/(insert|update|delete)/", strtolower($query)))
+    if(preg_match("/(insert|update|delete)/", strtolower($query)))
     {
-	$cached = false;
+      $cached = false;
     }
 
-    if ($cached == false)
+    if($cached == false)
     {
-	    if($numrows == -1 && $offset == -1)
-	    {
-	      $result = $this->db->Execute($query, $values);
-	    }
-	    else
-	    {
-	      $result = $this->db->SelectLimit($query, $numrows, $offset, $values);
-	    }
+      if($numrows == -1 && $offset == -1)
+      {
+        $result = $this->db->Execute($query, $values);
+      }
+
+      else
+      {
+        $result = $this->db->SelectLimit($query, $numrows, $offset, $values);
+      }
     }
+
     else
     {
-	    if($numrows == -1 && $offset == -1)
-	    {
-	      $result = $this->db->CacheExecute($cacheTime, $query, $values);
-	    }
-	    else
-	    {
-	      $result = $this->db->CacheSelectLimit($cacheTime, $query, $numrows, $offset, $values);
-	    }
+      if($numrows == -1 && $offset == -1)
+      {
+        $result = $this->db->CacheExecute($cacheTime, $query, $values);
+      }
+
+      else
+      {
+        $result = $this->db->CacheSelectLimit($cacheTime, $query, $numrows, $offset, $values);
+      }
     }
 
 

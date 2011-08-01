@@ -403,11 +403,12 @@ elseif($_REQUEST["comments_reply_threadId"] > 0) {
   {
     if(isSet($_REQUEST["comments_title"]))
     {
-    	$comment_info["title"] = $_REQUEST["comments_title"];
+      $comment_info["title"] = $_REQUEST["comments_title"];
     }
+
     else
     {
-    	$comment_info["title"] = "";
+      $comment_info["title"] = "";
     }
   }
 

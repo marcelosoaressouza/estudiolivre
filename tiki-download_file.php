@@ -18,8 +18,14 @@ to come over the 2MB readfile() limitation
 function readfile_chunked($filename,$retbytes=true) {
   $chunksize = 1*(1024*1024); // how many bytes per chunk
   $buffer = '';
-  $cnt =0;
-  $handle = fopen($filename, 'rb');
+  $cnt = 0;
+
+  $handle = false;
+
+  if(file_exists($filename))
+  {
+    $handle = fopen($filename, 'rb');
+  }
 
   if($handle === false) {
     return false;
@@ -116,7 +122,10 @@ header("Content-Disposition: attachment; filename=\"$file\"");
 
 if($info["path"])
 {
-  header("Content-Length: ". filesize($fgal_use_dir.$info["path"]));
+  if(file_exists($fgal_use_dir.$info["path"]))
+  {
+    header("Content-Length: ". filesize($fgal_use_dir.$info["path"]));
+  }
 }
 
 else
