@@ -6,9 +6,9 @@ if(strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
   exit;
 }
 
-include_once('lib/userslib.php');
-include_once('lib/userprefs/scrambleEmail.php');
-include_once('lib/feedcreator/feedcreator.class.php');
+include_once($_SERVER["DOCUMENT_ROOT"].'/lib/userslib.php');
+include_once($_SERVER["DOCUMENT_ROOT"].'/lib/userprefs/scrambleEmail.php');
+include_once($_SERVER["DOCUMENT_ROOT"].'/lib/feedcreator/feedcreator.class.php');
 
 $userslib = new Userslib($dbTiki);
 
