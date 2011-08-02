@@ -1,7 +1,6 @@
 {* $Header: /cvsroot/tikiwiki/tiki/templates/tiki-browse_gallery.tpl,v 1.23.2.20 2007/05/24 00:56:01 mose Exp $ *}
-<h1><a class="pagetitle" href="tiki-browse_gallery.php?galleryId={$galleryId}">
-{tr}Browsing Gallery{/tr}: {$name}
-</a></h1>
+<center>
+<h1>{tr}Browsing Gallery{/tr} {$name}</h1>
 
 <div class="navbar">
 <span class="button2"><a href="tiki-galleries.php" class="linkbut" title="{tr}list galleries{/tr}">{tr}list galleries{/tr}</a></span>
@@ -157,7 +156,7 @@
 <tr><td class="findtable">{tr}Find{/tr}
    <form method="get" action="tiki-browse_gallery.php">
      <input type="text" name="find" value="{$find|escape}" />
-     <input type="submit" value="{tr}find{/tr}" name="search" />
+     <input type="submit" class="button" value="{tr}find{/tr}" name="search" />
      <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
      <input type="hidden" name="galleryId" value="{$galleryId}" />
    </form>
@@ -187,3 +186,4 @@
 </div>
 {include file=comments.tpl}
 {/if}
+</center>

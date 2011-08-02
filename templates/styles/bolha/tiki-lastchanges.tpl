@@ -124,12 +124,13 @@
 				</tr>
 			{sectionelse}
 				<tr><td class="even" colspan="6">
+				<br/>
 				<b>{tr}No records found{/tr}</b>
 				</td>
 				</tr>
 			{/section}
 		</table>
-		
+		{if $cant_pages >= 1}
 		<div class="paginacao">
 			{if $prev_offset >= 0}
 				<a class="prevnext" href="tiki-lastchanges.php?find={$find}&amp;days={$days}&amp;offset={$prev_offset}&amp;sort_mode={$sort_mode}">
@@ -153,6 +154,7 @@
 				{/section}
 			{/if}
 		</div>
+		{/if}
 	
 	</div>
 

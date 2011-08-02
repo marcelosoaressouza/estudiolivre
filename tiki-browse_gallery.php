@@ -27,7 +27,7 @@ if($feature_galleries != 'y') {
   die;
 }
 
-if($_REQUEST["galleryId"] == 0 && $tiki_p_admin_galleries != 'y') {
+if(!isSet($_REQUEST["galleryId"]) && $tiki_p_admin_galleries != 'y') {
   $smarty->assign('msg', tra("Permission denied you cannot access this gallery"));
 
   $smarty->display("error.tpl");
@@ -412,7 +412,10 @@ if($feature_theme_control == 'y') {
 
 ask_ticket('browse-gallery');
 //add a hit
-$statslib->stats_hit($gal_info["name"],"image gallery",$_REQUEST["galleryId"]);
+if (isSet($gal_info["name"]))
+{
+  $statslib->stats_hit($gal_info["name"],"image gallery",$_REQUEST["galleryId"]);
+}
 
 // Display the template
 $smarty->assign('mid', 'tiki-browse_gallery.tpl');

@@ -1,11 +1,12 @@
-<h1><a href="tiki-galleries.php" class="pagetitle">{tr}Galleries{/tr}</a>
+<center>
+<h1>{tr}Galleries{/tr}</h1>
 
-      {if $feature_help eq 'y'}
+{if $feature_help eq 'y'}
 <a href="{$helpurl}Image+Gallery" target="tikihelp" class="tikihelp" title="{tr}Image Gallery{/tr}">
 <img src="img/icons/help.gif" border="0" height="16" width="16" alt='{tr}help{/tr}' /></a>{/if}
 
 
-      {if $feature_view_tpl eq 'y' and $tiki_p_view_templates eq 'y'}
+{if $feature_view_tpl eq 'y' and $tiki_p_view_templates eq 'y'}
 <a href="tiki-edit_templates.php?template=tiki-galleries.tpl" target="tikihelp" class="tikihelp" title="{tr}View tpl{/tr}: {tr}galleries tpl{/tr}">
 <img src="img/icons/info.gif" border="0" height="16" width="16" alt='{tr}edit tpl{/tr}' /></a>{/if}
 
@@ -30,6 +31,7 @@
 <table class="normal">
 <tr><td class="formcolor">{tr}Name{/tr}:</td><td class="formcolor"><input type="text" name="name" value="{$name|escape}"/></td></tr>
 <tr><td class="formcolor">{tr}Description{/tr}:<br />{include file="textareasize.tpl" area_name='gal-desc' formId='gal-edit-form'}</td><td class="formcolor"><textarea   rows="{$rows}" cols="{$cols}" name="description" id="gal-desc">{$description|escape}</textarea></td></tr>
+
 {if $tiki_p_admin_galleries eq 'y'}
 <tr><td class="formcolor">{tr}Gallery is visible to non-admin users?{/tr}</td><td class="formcolor"><input type="checkbox" name="visible" {if $visible eq 'y'}checked="checked"{/if} /></td></tr>
 {* If a user can create a gallery, but doesn't have tiki_p_admin_galleries the new gallery needs to be visible. *}
@@ -106,7 +108,7 @@
 {if $tiki_p_create_galleries eq 'y' && $galleryId ne 0}
 <div class="navbar"><a class="linkbut" href="tiki-galleries.php?edit_mode=1&amp;galleryId=0">{tr}create new gallery{/tr}</a></div>
 {/if}
-<h2>{tr}Available Galleries{/tr}</h2>
+
 <div align="center">
 
 {if $cant_pages > 1}
@@ -141,12 +143,14 @@
 {/if} {* end of if more than one page *}
 
 
-<table class="normal">
+<table class="bloglist">
 <tr>
 {if $gal_list_name eq 'y'}
 <td class="heading"><a class="tableheading" href="tiki-galleries.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_desc'}name_asc{else}name_desc{/if}">{tr}Name{/tr}</a></td>
-<td class="heading">{tr}Parent{/tr}</td>
+<td></td>
+<!-- <td class="heading">{tr}Parent{/tr}</td> -->
 {/if}
+
 {if $gal_list_description eq 'y'}
 <td class="heading"><a class="tableheading" href="tiki-galleries.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'description_desc'}description_asc{else}description_desc{/if}">{tr}Description{/tr}</a></td>
 {/if}
@@ -172,12 +176,15 @@
 {if ($filter eq 'topgal' and $galleries[changes].parentgallery eq -1) or ($filter eq 'parentgal' and $galleries[changes].parentgal eq 'y') or ($filter eq '')}
 {if $galleries[changes].visible eq 'y' or $tiki_p_admin_galleries eq 'y'}
 <tr>
+
+
 {if $gal_list_name eq 'y'}
   <td class="{cycle advance=false}"><a class="galname" href="tiki-browse_gallery.php?galleryId={$galleries[changes].galleryId}">{$galleries[changes].name}</a></td><td class="{cycle advance=false}">
   {if $galleries[changes].parentgallery ne -1 }<a class="galname" href="tiki-browse_gallery.php?galleryId={$galleries[changes].parentgallery}">{$galleries[changes].parentgalleryName}</a>{/if}
-  {if $galleries[changes].parentgal eq 'y'}<i>{tr}Parent{/tr}</i>{/if}
+<!--  {if $galleries[changes].parentgal eq 'y'}<i>{tr}Parent{/tr}</i>{/if} -->
   </td>
 {/if}
+
 {if $gal_list_description eq 'y'}
   <td class="{cycle advance=false}">{$galleries[changes].description}</td>
 {/if}
@@ -262,3 +269,4 @@
 {/if}
 
 </div>
+</center>
