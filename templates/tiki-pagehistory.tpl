@@ -144,7 +144,9 @@
 {if $tiki_p_remove eq 'y'}
 <td class="odd">&nbsp;</td>
 {/if}
-<td class="odd">{$info.lastModif|tiki_short_datetime}</td>
+<!-- <td class="odd">{$info.lastModif|tiki_short_datetime}</td> -->
+<td class="odd">{$info.lastModif|date_format:"%H:%M:%S de %d/%m/%y"}</td>
+
 {if $tiki_p_wiki_view_author ne 'n'}<td class="odd">{$info.user}</td>{/if}
 {if $feature_wiki_history_ip ne 'n'}<td class="odd">{$info.ip}</td>{/if}
 <td class="odd">{if $info.comment}{$info.comment}{else}&nbsp;{/if}</td>
@@ -159,11 +161,11 @@
 </tr>
 {cycle values="odd,even" print=false}
 {section name=hist loop=$history}
-<tr>
+<tr class="{cycle advance=false}">
 {if $tiki_p_remove eq 'y'}
 <td class="{cycle advance=false} button"><input type="checkbox" name="hist[{$history[hist].version}]" /></td>
 {/if}
-<td class="{cycle advance=false}">{$history[hist].lastModif|tiki_short_datetime}</td>
+<td class="{cycle advance=false}">{$history[hist].lastModif|date_format:"%H:%M:%S de %d/%m/%y"}</td>
 {if $tiki_p_wiki_view_author ne 'n'}<td class="{cycle advance=false}">{$history[hist].user}</td>{/if}
 {if $feature_wiki_history_ip ne 'n'}<td class="{cycle advance=false}">{$history[hist].ip}</td>{/if}
 <td class="{cycle advance=false}">{if $history[hist].comment}{$history[hist].comment}{else}&nbsp;{/if}</td>

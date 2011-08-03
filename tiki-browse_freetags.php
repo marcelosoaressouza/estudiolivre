@@ -82,9 +82,11 @@ else {
   $smarty->assign('user_only', 'off');
 }
 
-$smarty->assign('tag', $_REQUEST['tag']);
-
-$objects = $freetaglib->get_objects_with_tag($_REQUEST['tag'], $type, $view_user, $offset, $maxRecords); //, $sort_mode, $find);
+if(isSet($_REQUEST['tag']))
+{
+  $smarty->assign('tag', $_REQUEST['tag']);
+  $objects = $freetaglib->get_objects_with_tag($_REQUEST['tag'], $type, $view_user, $offset, $maxRecords);
+}
 
 $smarty->assign_by_ref('objects', $objects["data"]);
 $smarty->assign_by_ref('cantobjects', $objects["cant"]);
