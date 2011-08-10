@@ -75,6 +75,29 @@ if(isset($_REQUEST['register']) && !empty($_REQUEST['name']) && isset($_REQUEST[
     die;
   }
 
+  if(empty($_REQUEST["email"]))
+  {
+    $smarty->assign('msg',tra("Campo E-Mail está vazio. Você precisa preencher esta campo."));
+    $smarty->display("error.tpl");
+    die;
+  }
+  else
+  {
+    if(strstr($_REQUEST["email"],' '))
+    {
+      $smarty->assign('msg',tra("Campo E-Mail não pode conter espaços em branco"));
+      $smarty->display("error.tpl");
+      die;
+    }
+
+    if (!preg_match("/^[^@]*@[^@]*\.[^@]*$/", $_REQUEST["email"]))
+    {
+      $smarty->assign('msg',tra("Formato de E-Mail Inválido"));
+      $smarty->display("error.tpl");
+      die;
+    }
+  }
+
   //Validate password here
   if(strlen($_REQUEST["pass"])<$min_pass_length) {
     $smarty->assign('msg',tra("Password should be at least").' '.$min_pass_length.' '.tra("characters long"));

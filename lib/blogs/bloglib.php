@@ -435,15 +435,20 @@ class BlogLib extends TikiLib {
 
     if($result->numRows()) {
       $res = $result->fetchRow();
+      $res['trackbacks_from'] = stripslashes(trim($res['trackbacks_from']));
 
       if(!$res['trackbacks_from'] || $res['trackbacks_from']===null)
+      {
         $res['trackbacks_from'] = serialize(array());
+      }
 
       if(!$res['trackbacks_to'] || $res['trackbacks_to']===null)
+      {
         $res['trackbacks_to'] = serialize(array());
-
-      $res['trackbacks_from_count'] = count(array_keys(unserialize($res['trackbacks_from'])));
-      $res['trackbacks_from'] = unserialize($res['trackbacks_from']);
+      }
+// Problema no Serialize - Debugando
+//      $res['trackbacks_from_count'] = count(array_keys(unserialize($res['trackbacks_from'])));
+//      $res['trackbacks_from'] = unserialize($res['trackbacks_from']);
       $res['trackbacks_to'] = unserialize($res['trackbacks_to']);
       $res['trackbacks_to_count'] = count($res['trackbacks_to']);
     }
