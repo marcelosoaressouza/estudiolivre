@@ -81,6 +81,7 @@ if(isset($_REQUEST['register']) && !empty($_REQUEST['name']) && isset($_REQUEST[
     $smarty->display("error.tpl");
     die;
   }
+
   else
   {
     if(strstr($_REQUEST["email"],' '))
@@ -90,7 +91,7 @@ if(isset($_REQUEST['register']) && !empty($_REQUEST['name']) && isset($_REQUEST[
       die;
     }
 
-    if (!preg_match("/^[^@]*@[^@]*\.[^@]*$/", $_REQUEST["email"]))
+    if(!preg_match("/^[^@]*@[^@]*\.[^@]*$/", $_REQUEST["email"]))
     {
       $smarty->assign('msg',tra("Formato de E-Mail Inválido"));
       $smarty->display("error.tpl");

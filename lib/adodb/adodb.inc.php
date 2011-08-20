@@ -14,7 +14,7 @@
 /**
 	\mainpage
 	
-	 @version V5.12 30 June 2011   (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
+	 @version V5.13 15 Aug 2011   (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
 
 	Released under both BSD license and Lesser GPL library license. You can choose which license
 	you prefer.
@@ -177,7 +177,7 @@
 		/**
 		 * ADODB version as a string.
 		 */
-		$ADODB_vers = 'V5.12 30 June 2011  (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved. Released BSD & LGPL.';
+		$ADODB_vers = 'V5.13 15 Aug 2011  (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved. Released BSD & LGPL.';
 	
 		/**
 		 * Determines whether recordset->RecordCount() is used. 
@@ -1695,27 +1695,33 @@
 		}
 		return $rs;
 	}
-
+	
+	
 	/**
-         * Flush cached recordsets that match a particular $sql statement. 
-         * If $sql == false, then we purge all files in the cache.
-        */
+	* Flush cached recordsets that match a particular $sql statement. 
+	* If $sql == false, then we purge all files in the cache.
+ 	*/
+	
+	/**
+   * Flush cached recordsets that match a particular $sql statement. 
+   * If $sql == false, then we purge all files in the cache.
+    */
 	function CacheFlush($sql=false,$inputarr=false)
 	{
 	global $ADODB_CACHE_DIR, $ADODB_CACHE;
-
+		
 		if (empty($ADODB_CACHE)) return false;
-
+		
 		if (!$sql) {
 			 $ADODB_CACHE->flushall($this->debug);
-	        	 return;
-	    	}
-
+	         return;
+	    }
+		
 		$f = $this->_gencachename($sql.serialize($inputarr),false);
-
 		return $ADODB_CACHE->flushcache($f, $this->debug);
 	}
-
+   
+	
 	/**
 	* Private function to generate filename for caching.
 	* Filename is generated based on:

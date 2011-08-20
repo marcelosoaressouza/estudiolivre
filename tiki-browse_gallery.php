@@ -411,8 +411,9 @@ if($feature_theme_control == 'y') {
 }
 
 ask_ticket('browse-gallery');
+
 //add a hit
-if (isSet($gal_info["name"]))
+if(isSet($gal_info["name"]))
 {
   $statslib->stats_hit($gal_info["name"],"image gallery",$_REQUEST["galleryId"]);
 }

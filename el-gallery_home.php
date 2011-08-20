@@ -10,9 +10,10 @@ elAddCrumb('acervo');
 
 $smarty->assign('category', 'gallery');
 
-$info = $tikilib->get_page_info('destak');
-$pdata = $tikilib->parse_data($info["data"],$info["is_html"]);
-$smarty->assign_by_ref('destak', $pdata);
+// Desabilitado Destaque
+//$info  = $tikilib->get_page_info('destak');
+//$pdata = $tikilib->parse_data($info["data"],$info["is_html"]);
+//$smarty->assign_by_ref('destak', $pdata);
 
 if(isset($_COOKIE['sortMode'])) {
   $sortField = $_COOKIE['sortMode'];

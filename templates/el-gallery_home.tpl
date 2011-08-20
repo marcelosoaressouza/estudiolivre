@@ -20,7 +20,7 @@
 	{assign var=imgChange value="iGreenArrowLeft"}	
 {/if}
 
-<!-- Feature Wiki Begin -->
+<!-- Feature Wiki Begin
 <div id="gHomeWiki" {if $tiki_p_edit eq 'y'} ondblclick="location.href='tiki-editpage.php?page=destak'"{/if}>
 	<span id="gHomeWikiTitle">
 		{tooltip name="home-flip-destaques" text="Alternar a visualização dos destaques"}
@@ -41,7 +41,7 @@
 	</div>
 </div>
 
-<!-- Feature Wiki End -->
+Feature Wiki End -->
 	
 {include file="el-gallery_list_filters.tpl"}
 

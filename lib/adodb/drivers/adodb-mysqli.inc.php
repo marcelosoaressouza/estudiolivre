@@ -1,6 +1,6 @@
 <?php
 /*
-V5.12 30 June 2011   (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
+V5.13 15 Aug 2011  (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -98,6 +98,9 @@ class ADODB_mysqli extends ADOConnection {
 		foreach($this->optionFlags as $arr) {	
 			mysqli_options($this->_connectionID,$arr[0],$arr[1]);
 		}
+
+		http ://php.net/manual/en/mysqli.persistconns.php
+		if ($persist && PHP_VERSION > 5.2 && strncmp($argHostname,'p:',2) != 0) $argHostname = 'p:'.$argHostname;
 
 		#if (!empty($this->port)) $argHostname .= ":".$this->port;
 		$ok = mysqli_real_connect($this->_connectionID,
