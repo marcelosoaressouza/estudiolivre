@@ -195,7 +195,10 @@ $smarty->assign_by_ref('results', $results["data"]);
 
 ask_ticket('searchresults');
 
-$smarty->assign('pageExists',$tikilib->page_exists($words));
+if (isSet($words))
+{
+  $smarty->assign('pageExists',$tikilib->page_exists($words));
+}
 
 // Display the template
 $smarty->assign('mid', 'tiki-searchresults.tpl');
